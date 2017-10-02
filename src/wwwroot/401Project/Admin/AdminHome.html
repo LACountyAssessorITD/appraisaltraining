@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<title>LAC Website</title>
+	<link rel="stylesheet" href="AdminHomeStyle.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<script src="AdminHomeJS.js"></script>
+</head>
+
+<body>
+
+	<div class="top">
+		<div class="header">
+			<div class="Welcome">
+				<label>Welcome, </label>
+				<label>Name</label>
+			</div>
+			<h1><strong>Training Record</strong></h1>
+			<hr>
+			<h3><strong>Los Angeles County Office of the Assessor</strong></h3>
+			<img src="../BGimg/Logo.png" alt="Logo" width="130px" height="130px">
+		</div>
+
+		<div class="navigationBar">
+			<a id="homeTab" href="#"><img src="../iconImg/homeicon.png" alt="homeicon" width="20px" height="20px"> Home</a>
+			<a id="uploadTab" href="AdminUpload.html"><img src="../iconImg/uploadicon.png" alt="updateicon" width="20px" height="20px"> Update</a>
+			<a id="uploadTab" href="AdminFAQ.html"><img src="../iconImg/faqicon.png" alt="faqicon" width="20px" height="20px"> FAQs</a>
+			<a id="issueTab" href="#"><img src="../iconImg/issueicon.png" alt="issueicon" width="20px" height="20px"> <strong>Cherwell</strong></a>
+		</div>
+	</div>
+
+	<div class="content">
+		<div class="leftContentColumn">
+
+			<div>
+				<h3 id="filterLabel">Filters</h3>
+			</div>
+
+
+
+			<div class="filterListCol" id="accordion">
+
+				<div id="reportType">
+					<label id="reportTypeLabel">Select Report Type</label>
+					<select id="reportTypeSelect">
+						<option>Type1</option>
+						<option>Type2</option>
+						<option>Type3</option>
+						<option>Type4</option>
+					</select>
+				</div>
+
+				<p class="pFiltersLabel" id="employeeFiltersLabel">Employee</p>
+
+				<div class="employeeFilters">
+
+					<div class="dropDownFilter" id="employeeID_div">
+						<button class="dropDownBtn">EmployeeID</button>
+						<div class="DPBCont">
+							<form class="leftInput">
+								<input type="text" id="EmployeeIDin" onkeyup="myFunction('EmployeeIDin','testTable1')" placeholder="Search..">
+							</form>
+							<table id="testTable1" class="filterContTable">
+								<tr><td><input type="checkbox" name="selected">12345</td></tr>
+								<tr><td><input type="checkbox" name="selected">34512</td></tr>
+								<tr><td><input type="checkbox" name="selected">92132</td></tr>
+								<tr><td><input type="checkbox" name="selected">24254</td></tr>
+							</table>
+						</div>
+					</div>
+
+					<div class="dropDownFilter" id="firstName_div">
+						<button class="dropDownBtn">First Name</button>
+						<div class="DPBCont">
+							<form class="leftInput">
+								<input type="text" id="FirstNamein" onkeyup="myFunction('FirstNamein', 'testTable2')" placeholder="Search..">
+							</form>
+							<table id="testTable2" class="filterContTable">
+								<tr><td>Nelson</td></tr>
+								<tr><td>Mian</td></tr>
+								<tr><td>Yining</td></tr>
+								<tr><td>James</td></tr>
+							</table>
+						</div>
+					</div>
+
+					<div class="dropDownFilter" id="middleName_div">
+						<button class="dropDownBtn">Middle Name</button>
+					</div>
+
+					<div class="dropDownFilter" id="lastName_div">
+						<button class="dropDownBtn">Last Name</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Title</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Item</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Pay Location</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Region/Area</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Office/District</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Manager(s)</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Phone Number</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Email Address</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">TempCertDate</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">PermCertDate</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">AdvCertDate</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Current Status</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Auditor</button>
+					</div>
+				</div>
+
+
+				<p>Certification History</p>
+
+				<div class="certHistoryFilters">
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Certification Number</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Fiscal Year</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Certification Type</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Status</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Hours Earned</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Current Year Balance</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Prior Year Balance</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Carry To Year 1</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Carry To Year 2</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Carry To Year 3</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Carry Forward Total</button>
+					</div>
+				</div>
+
+
+
+				<p class="pFiltersLabel" id="carryOverLimitFiltersLabel">Carry Over Limits</p>
+
+				<div class="carryOverLimitFilters">
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Required Hours</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Year 1 Limit</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Year 2 Limit</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Year 3 Limit</button>
+					</div>
+				</div>
+
+
+				<p>Course Detail</p>
+
+				<div class="courseDetailFilters">
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Item Number</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Course Name</button>
+						<div class="DPBCont">
+							<form class="leftInput">
+								<input type="text" name="search" placeholder="Search..">
+							</form>
+							<a>Select All</a>
+							<a>0</a>
+							<a>20</a>
+						</div>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Course Location</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Course Grade</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">Course Hours Earned</button>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn">End Date</button>
+					</div>
+				</div>
+
+
+			</div>	
+
+
+			<div id="filterApplyBtn">
+				<button>Apply Filter</button>
+			</div>
+			
+		</div>
+
+		<div class="rightContent">
+
+			<div class="viewAndOption">
+
+				<div class="midColumn">
+					<div>
+						<h3 id="previewLabel">Preview Report</h3>
+					</div>
+					<div class="pdfView">
+						<embed id="pdfBox" src="../OrderDetails.pdf" width="100%" height="650px"></embed>
+					</div>
+				</div>
+
+				<div class="rightContentColumn">
+					<div>
+						<h3 id="optionLabel">Options</h3>
+					</div>
+
+					<button id="MyReport">My Report</button>
+					<button id="Download">Download</button>
+					<button id="Print">Print</button>
+					<button id="EmailAll">Email</button>
+				</div>
+
+			</div>
+
+			<div class="filterOverview">
+				<h3 id="overviewLabel">Filter Overview</h3>
+				<div id="overviewTableDiv">
+					<table id="overviewTable">
+						<thead>
+				            <tr>
+				                <th>Select</th>
+				                <th>Name</th>
+				                <th>Email</th>
+				            </tr>
+				        </thead>
+				        <tbody>
+							<tr>
+								<td><input type="checkbox" name="selected"></td>
+								<td>Nelson</td>
+								<td>yuehhsul@usc.edu</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" name="selected"></td>
+								<td>Nelson</td>
+								<td>yuehhsul@usc.edu</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" name="selected"></td>
+								<td>Nelson</td>
+								<td>yuehhsul@usc.edu</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" name="selected"></td>
+								<td>Nelson</td>
+								<td>yuehhsul@usc.edu</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" name="selected"></td>
+								<td>Nelson</td>
+								<td>yuehhsul@usc.edu</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" name="selected"></td>
+								<td>Nelson</td>
+								<td>yuehhsul@usc.edu</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" name="selected"></td>
+								<td>Nelson</td>
+								<td>yuehhsul@usc.edu</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" name="selected"></td>
+								<td>Nelson</td>
+								<td>yuehhsul@usc.edu</td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" name="selected"></td>
+								<td>Nelson</td>
+								<td>yuehhsul@usc.edu</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="footer">
+		<p class="links">
+			<span id="contactUs"><a href="#">Contact Us</a></span>
+			<span id="Disclaimer"><a href="#">Disclaimer</a></span>
+			<span id="FAQs"><a href="#">FAQs</a><span></span>
+		</p>
+		<p>2017 - Present © Los Angeles County Office of the Assessor</p>
+	</div>
+
+</body>
+
+</html>
