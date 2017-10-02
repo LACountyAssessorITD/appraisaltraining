@@ -170,11 +170,7 @@
 
 			/////////////////////////////////// read data from mdb and then insert into SQL sever ///////////////////////////////////
 
-			// $sql_mdb_query  = "SELECT t.LastName, t.FirstName, t.MiddleName, t.CertNo, t.CountyCode, t.CountyName, t.TempCertDate,
-			// 					t.PermCertDate, t.AdvCertDate, t.CurrentStatus, t.Status, t.CertType, t.FiscalYear, t.EarnedHours,
-			// 					t.RequiredHours, t.CurrentYearBalance, t.PriorYearBalance, t.CarryToYear1, t.CarryToYear2, t.CarryToYear3,
-			// 					t.CarryForwardTotal ";
-			// $sql_mdb_query .= "  FROM AnnualReq t;";
+
 
 			/////////////////////////////////// 1. Summary ///////////////////////////////////
 			// query for mdb to read "Summary"
@@ -204,9 +200,21 @@
 				}
 			}
 			echo "<br />";
-			echo "<br />";
 
 
+
+			/////////////////////////////////// 2. AnnualReq ///////////////////////////////////
+			// $AnnualReq_mdb  = "SELECT t.LastName, t.FirstName, t.MiddleName, t.CertNo, t.CountyCode, t.CountyName, t.TempCertDate,
+			// 					t.PermCertDate, t.AdvCertDate, t.CurrentStatus, t.Status, t.CertType, t.FiscalYear, t.EarnedHours,
+			// 					t.RequiredHours, t.CurrentYearBalance, t.PriorYearBalance, t.CarryToYear1, t.CarryToYear2, t.CarryToYear3,
+			// 					t.CarryForwardTotal ";
+			// $AnnualReq_mdb .= "  FROM AnnualReq t;";
+
+			// 1) AnnualReq -> CertHistory
+			$AnnualReq_mdb  = "SELECT t.CertNo, t.FiscalYear, t.CertType, t.CurrentStatus, t.Status, t.EarnedHours,
+								t.RequiredHours, t.CurrentYearBalance, t.PriorYearBalance, t.CarryToYear1, t.CarryToYear2, t.CarryToYear3,
+								t.CarryForwardTotal ";
+			$AnnualReq_mdb .= "  FROM AnnualReq t;";
 
 		?>
 </table>
