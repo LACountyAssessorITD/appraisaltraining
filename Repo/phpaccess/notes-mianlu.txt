@@ -1,0 +1,30 @@
+Created on Oct 1, 2017 by Mian Lu
+
+Summary -> Employee
+
+AnnualReq -> CertHistory
+
+problems:
+
+1. mdb has employees who earned temp/perm/adv certification as early as
+1970/71/85, therefore Employee table needs another 3 columns tracking "which
+year each person first earn their temp/perm/adv certification". Note that in
+AnnualReq, fiscal year starts as early as 1996-1997, which is no early enuf to
+accomodate 1970;
+
+2.0 see pic for AnnualReq
+
+2. AnnualReq: EarnedHours(thisyear) - RequiredHours(thisyear) = CurrentYear-
+Balance, so shall we not create it and just re-generate when creating reports?
+if not, then this could be a routine sanitary check!
+
+2.1 AnnualReq: how is CurrentStatus all "active" for every single row??
+
+2.2 AnnualReq: what does RequiredHours mean? (not consistent, don't fit in COL)
+
+3.0 see pic for Details
+
+3. Details -> CourseDetails for CourseNames+Location(create these 2-tuples as
+columns for Courses table! then create Item# as primary key for Courses! finally
+make CourseDetails rows reference Item# from Courses table!) there should be
+1576 total pairs for Courses table as of current mdb file
