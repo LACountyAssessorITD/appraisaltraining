@@ -122,6 +122,10 @@ $(document).ready(function(){
     	}
     });
 
+    $("#EmailAll").on("click", function() {
+    	alert("email");
+    });
+
 });
 
 
