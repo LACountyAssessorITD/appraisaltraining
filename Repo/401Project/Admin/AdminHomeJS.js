@@ -1,26 +1,21 @@
-function myFunction(inputId, tableId) {
-  // Declare variables 
-  var input, filter, table, tr, td, i;
-  input = document.getElementById(inputId);
-  filter = input.value.toUpperCase();
-  table = document.getElementById(tableId);
-  tr = table.getElementsByTagName("tr");
-
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    } 
-  }
-}
-
-
 $(document).ready(function(){
+
+  $(".leftInput input").on("change keyup paste click", function(){
+      input = $(this);
+      filterText = input.val().toUpperCase();
+      filterTable = $(this).parent().next().children("table");
+
+      filterTable.children("tbody").children("tr").each(function() {
+          cols = $(this).children("td").eq(1);
+          cols.each(function() {
+            if ($(this)[0].innerHTML.toUpperCase().indexOf(filterText) > -1) {
+              $(this).parent().show();
+            } else {
+              $(this).parent().hide();
+            }
+          });
+      });
+  });
 
 /*--------------------------------------------------------------------------------------------*/
 /*------------------------------Display Accordions--------------------------------------------*/
@@ -96,6 +91,25 @@ $(document).ready(function(){
             
         }
     }).change();
+
+    $(".filterContTable").on("click", "input[type='checkbox']",function() {
+        var resultList = $(this).parent().parent().parent().parent().parent().next().children("ul");
+        var selectedVal = $(this).parent().next()[0].innerHTML;
+        if($(this).is(":checked")){
+          // $("#homeTab").text($(this).parent().parent().parent().parent().prop("tagName"));
+          var markup = "<li>" + selectedVal + "</li>";
+          resultList.append(markup);
+        }
+        else {
+          resultList.children("li").each(function() {
+            // $("#homeTab").text($(this)[0].innerHTML.toUpperCase());
+            if($(this)[0].innerHTML==selectedVal) {
+              // $("#homeTab").text("reachremove");
+              $(this).remove();
+            }
+          });
+        }
+    });
 
 });
 

@@ -205,7 +205,7 @@ body{
 	/*border-style: solid;
 	border-width: 2px;*/
 	z-index: 2;
-	opacity: 0.8;
+	opacity: 1;
 }
 
 .viewAndOption {
@@ -224,7 +224,7 @@ body{
 .leftContentColumn {
 	/*display: inline-block;*/
 	width: 25%;
-	opacity: 0.9;
+	/*opacity: 0.9;*/
 }
 
 .rightContent {
@@ -310,7 +310,6 @@ body{
 }
 
 .leftInput input {
-    /*width: 160px;*/
     width: 100%;
     box-sizing: border-box;
     border: 1px solid rgb(150, 150, 150);
@@ -322,10 +321,6 @@ body{
     background-repeat: no-repeat;
     padding: 10px 20px 10px 40px;
     transition: width 0.3s ease-in-out;
-}
-
-.leftInput input:focus {
-    width: 100%;
 }
 
 .dropDownBtn {
@@ -361,7 +356,9 @@ body{
 	display: none;
     position: absolute;
     background-color: rgb(244, 248, 255);
-    min-width: 250px;
+    min-width: 300px;
+    /*width: 100%;*/
+    opacity: 1;
     box-shadow: 0px 8px 12px 0px rgba(0,0,0,0.4);
     z-index: 2;
     border-radius: 5px;
@@ -370,11 +367,24 @@ body{
     left: 20px;
 }
 
-.DPBCont a{
-	color: black;
-    padding: 14px 16px;
-    text-decoration: none;
-    display: block;
+.filterDisplayList{
+	width: 45%;
+	float: right;
+	border-width: 3px;
+	height: 100%;
+	padding: 5px;
+}
+
+.filterDisplayList label {
+	font-size: 1.3vw;
+	font-weight: bold;
+}
+
+.filterDisplayList ul {
+	font-size: 1.3vw;
+	list-style-type: none;
+	padding-left: 5px;
+	margin: 0;
 }
 
 .dropDownBtn:hover {
@@ -385,17 +395,22 @@ body{
 	display: inline-block;
 }
 
-.DPBCont a:hover {
-	background-color: rgb(200, 217, 247);
+.tableWrap {
+	width: 55%;
+	float: left;
+	overflow: auto;
+    background-color: rgba(100,100,100,0.2);
+    /*padding: 5px;*/
 }
 
-
-
 .filterContTable {
+	box-sizing: border-box;
     border-collapse: collapse; /* Collapse borders */
     width: 100%; /* Full-width */
     border: 1px solid #ddd; /* Add a grey border */
     font-size: 18px; /* Increase font-size */
+    /*float: left;*/
+    word-wrap: break-word;
 }
 
 .filterContTable td {
@@ -405,8 +420,13 @@ body{
 
 .filterContTable tr {
     /* Add a bottom border to all table rows */
-    border-bottom: 1px solid #ddd; 
+    border-bottom: 1px solid #ddd;
+    /*word-wrap: break-word;*/
 }
+
+/*.filterContTable tr:nth-child(odd){
+    background-color: rgba(150,150,150,0.4);
+}*/
 
 .filterContTable tr:hover {
     /* Add a grey background color to the table header and on hover */

@@ -4,12 +4,14 @@
 <head>
 	<title>LAC Website</title>
 	<link rel="stylesheet" href="AdminHomeStyle.css">
+	<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"> -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 	<script src="AdminHomeJS.js"></script>
+ 
 </head>
 
 <body>
@@ -41,8 +43,6 @@
 				<h3 id="filterLabel">Filters</h3>
 			</div>
 
-
-
 			<div class="filterListCol" id="accordion">
 
 				<div id="reportType">
@@ -55,45 +55,73 @@
 					</select>
 				</div>
 
-				<p class="pFiltersLabel" id="employeeFiltersLabel">Employee</p>
+				<p class="pFiltersLabel">Employee</p>
 
 				<div class="employeeFilters">
 
-					<div class="dropDownFilter" id="employeeID_div">
+					<div class="dropDownFilter">
 						<button class="dropDownBtn">EmployeeID</button>
 						<div class="DPBCont">
 							<form class="leftInput">
-								<input type="text" id="EmployeeIDin" onkeyup="myFunction('EmployeeIDin','testTable1')" placeholder="Search..">
+								<input type="text" placeholder="Search.." autocomplete="off">
 							</form>
-							<table id="testTable1" class="filterContTable">
-								<tr><td><input type="checkbox" name="selected">12345</td></tr>
-								<tr><td><input type="checkbox" name="selected">34512</td></tr>
-								<tr><td><input type="checkbox" name="selected">92132</td></tr>
-								<tr><td><input type="checkbox" name="selected">24254</td></tr>
-							</table>
+							<div class="tableWrap">
+								<table class="filterContTable" id="testt">
+									<col width="20">
+									<tr>
+										<td><input type="checkbox" name="selected"></td>
+										<td>12345</td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" name="selected"></td>
+										<td>22112sdasdasd3145</td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" name="selected"></td>
+										<td>134245</td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" name="selected"></td>
+										<td>12345</td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" name="selected"></td>
+										<td>22112sdasdasd3145</td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" name="selected"></td>
+										<td>134245</td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" name="selected"></td>
+										<td>12345</td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" name="selected"></td>
+										<td>22112sdasdasd3145</td>
+									</tr>
+									<tr>
+										<td><input type="checkbox" name="selected"></td>
+										<td>134245</td>
+									</tr>
+								</table>
+							</div>
+							<div class="filterDisplayList">
+								<label>Selections:</label>
+								<ul></ul>
+							</div>
 						</div>
 					</div>
 
-					<div class="dropDownFilter" id="firstName_div">
+					<div class="dropDownFilter">
 						<button class="dropDownBtn">First Name</button>
-						<div class="DPBCont">
-							<form class="leftInput">
-								<input type="text" id="FirstNamein" onkeyup="myFunction('FirstNamein', 'testTable2')" placeholder="Search..">
-							</form>
-							<table id="testTable2" class="filterContTable">
-								<tr><td>Nelson</td></tr>
-								<tr><td>Mian</td></tr>
-								<tr><td>Yining</td></tr>
-								<tr><td>James</td></tr>
-							</table>
-						</div>
 					</div>
 
-					<div class="dropDownFilter" id="middleName_div">
+					<div class="dropDownFilter">
 						<button class="dropDownBtn">Middle Name</button>
 					</div>
 
-					<div class="dropDownFilter" id="lastName_div">
+					<div class="dropDownFilter">
 						<button class="dropDownBtn">Last Name</button>
 					</div>
 
@@ -313,18 +341,18 @@
 							</tr>
 							<tr>
 								<td><input type="checkbox" name="selected"></td>
-								<td>Nelson</td>
-								<td>yuehhsul@usc.edu</td>
+								<td>Yi</td>
+								<td>yi@usc.edu</td>
 							</tr>
 							<tr>
 								<td><input type="checkbox" name="selected"></td>
-								<td>Nelson</td>
-								<td>yuehhsul@usc.edu</td>
+								<td>Mao</td>
+								<td>mao@usc.edu</td>
 							</tr>
 							<tr>
 								<td><input type="checkbox" name="selected"></td>
-								<td>Nelson</td>
-								<td>yuehhsul@usc.edu</td>
+								<td>Lin</td>
+								<td>lin@usc.edu</td>
 							</tr>
 							<tr>
 								<td><input type="checkbox" name="selected"></td>
