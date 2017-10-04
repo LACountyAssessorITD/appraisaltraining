@@ -92,7 +92,10 @@ $(document).ready(function(){
         }
     }).change();
 
-    $(".filterContTable").on("click", "input[type='checkbox']",function() {
+    /*Filters: on input checkbox checked, add to right side list
+    			on uncheck, remove from right side list*/
+
+    $(".filterContTable").on("click", "input[name='selected']",function() {
         var resultList = $(this).parent().parent().parent().parent().parent().next().children("ul");
         var selectedVal = $(this).parent().next()[0].innerHTML;
         if($(this).is(":checked")){
@@ -111,6 +114,25 @@ $(document).ready(function(){
         }
     });
 
+
+    /*Select All functionality*/
+    $(".filterContTable").on("click", "input[name='selectAll']",function() {
+    	var tbody = $(this).parent().parent().parent().next("tbody");
+    	// $("#homeTab").text(table.prop("tagName"));
+    	if($(this).is(":checked")){
+    		tbody.find('input[name="selected"]' && 'input:visible').each(function(){
+	        	$(this).prop("checked",true);
+	        });
+        }
+        else {
+        	tbody.find('input[name="selected"]' && 'input:visible').each(function(){
+	        	$(this).prop("checked",false);
+	        });
+        }
+    });
+
+
+    /*Clickable dropdown*/
     $(".dropDownBtn").on("click", function(){
     	if($(this).data("clicked")) {
     		$(this).data("clicked",false);

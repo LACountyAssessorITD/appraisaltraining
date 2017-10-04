@@ -433,6 +433,11 @@ body{
     /*overflow-y: scroll;*/
 }
 
+.filterContTable thead {
+	background-color: rgb(120,120,120);
+	color: white;
+}
+
 .filterContTable td {
     text-align: left; /* Left-align text */
     padding: 12px; /* Add padding */
