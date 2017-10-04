@@ -105,7 +105,7 @@
 				CourseHours float,					-- from dbo.Details(HoursEarned)
 				EndDate datetime2(0),				-- from dbo.Details(EndDate)
 
-				primary key (CertNo, CourseYear, CourseName), -- if ItemNumber correctly implemented, switch to it! CertNo should be foreign key
+				-- primary key (CertNo, CourseYear, CourseName), -- if ItemNumber correctly implemented, switch to it! CertNo should be foreign key
 			)";
 
 			// create table 4 CarryoverLimits
