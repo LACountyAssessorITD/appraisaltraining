@@ -58,7 +58,7 @@ $(document).ready(function(){
         $("#overviewTable tbody").append(markup);
       }
     });
-    
+
     // Find and remove selected table rows
     $("#MyReport").click(function(){
         $("#overviewTable tbody").find('input[name="selected"]').each(function(){
@@ -88,7 +88,7 @@ $(document).ready(function(){
             $(".employeeFilters").hide();
         }
         else {
-            
+
         }
     }).change();
 
@@ -174,6 +174,7 @@ $(document).ready(function(){
     	}
     });
 
+    //Email Alert
     $("#EmailAll").on("click", function() {
     	alert("email");
     });
