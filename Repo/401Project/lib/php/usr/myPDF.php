@@ -3,7 +3,7 @@ require('../FPDF/fpdf.php');
 class myPDF extends FPDF {
     function header() {
         // Add logo
-        $this->Image('../img/Logo.gif',10,8,-270);
+        $this->Image('../../img/Logo.gif',10,8,-270);
 
         // Add Titles
         $this->SetFont('Arial','B',12);
