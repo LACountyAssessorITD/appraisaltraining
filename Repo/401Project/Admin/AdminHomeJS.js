@@ -97,26 +97,44 @@ $(document).ready(function(){
 
     $(".filterContTable").on("click", "input[name='selected']",function() {
         var resultList = $(this).parent().parent().parent().parent().parent().next().children("ul");
-        var selectedVal = $(this).parent().next()[0].innerHTML;
-        if($(this).is(":checked")){
-          // $("#homeTab").text($(this).parent().parent().parent().parent().prop("tagName"));
-          var markup = "<li>" + selectedVal + "</li>";
-          resultList.append(markup);
-        }
-        else {
-          resultList.children("li").each(function() {
-            // $("#homeTab").text($(this)[0].innerHTML.toUpperCase());
-            if($(this)[0].innerHTML==selectedVal) {
-              // $("#homeTab").text("reachremove");
-              $(this).remove();
-            }
-          });
-        }
+        var tbody = $(this).parent().parent().parent();
+
+        // var selectedVal = $(this).parent().next()[0].innerHTML;
+        // if($(this).is(":checked")){
+        //   // $("#homeTab").text($(this).parent().parent().parent().parent().prop("tagName"));
+        //   var markup = "<li>" + selectedVal + "</li>";
+        //   resultList.append(markup);
+        // }
+        // else {
+        //   resultList.children("li").each(function() {
+        //     // $("#homeTab").text($(this)[0].innerHTML.toUpperCase());
+        //     if($(this)[0].innerHTML==selectedVal) {
+        //       // $("#homeTab").text("reachremove");
+        //       $(this).remove();
+        //     }
+        //   });
+        // }
+
+        resultList.children("li").each(function() {
+	        $(this).remove();
+	    });
+        tbody.children("tr").each(function() {
+        	if($(this).children("td").eq(0).children("input[name='selected']").is(":checked")) {
+        		var contTd = $(this).children("td").eq(1);
+        		var toAppend = contTd[0].innerHTML;
+        		var markup = "<li>" + toAppend + "</li>";
+        		resultList.append(markup);
+        	}
+        });
+
+
     });
 
 
     /*Select All functionality*/
     $(".filterContTable").on("click", "input[name='selectAll']",function() {
+    	var resultList = $(this).parent().parent().parent().parent().parent().next().children("ul");
+    	// $("#homeTab").text(resultList.prop("tagName"));
     	var tbody = $(this).parent().parent().parent().next("tbody");
     	// $("#homeTab").text(table.prop("tagName"));
     	if($(this).is(":checked")){
@@ -129,6 +147,18 @@ $(document).ready(function(){
 	        	$(this).prop("checked",false);
 	        });
         }
+
+        resultList.children("li").each(function() {
+	        $(this).remove();
+	    });
+        tbody.children("tr").each(function() {
+        	if($(this).children("td").eq(0).children("input[name='selected']").is(":checked")) {
+        		var contTd = $(this).children("td").eq(1);
+        		var toAppend = contTd[0].innerHTML;
+        		var markup = "<li>" + toAppend + "</li>";
+        		resultList.append(markup);
+        	}
+        });
     });
 
 
