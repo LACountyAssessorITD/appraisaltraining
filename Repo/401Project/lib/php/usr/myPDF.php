@@ -1,5 +1,5 @@
 <?php
-require('FPDF/fpdf.php');
+require('../FPDF/fpdf.php');
 class myPDF extends FPDF {
     function header() {
         // Add logo
