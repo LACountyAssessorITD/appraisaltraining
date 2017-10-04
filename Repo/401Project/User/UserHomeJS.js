@@ -5,7 +5,7 @@ $(document).ready(function(){
     // Run as user enter the page, update years selections in drop downs
     function getFiscalYears () {
         return $.ajax({
-            url:"../lib/php/getFiscalYears.php",
+            url:"../lib/php/usr/getFiscalYears.php",
             type: "POST",
             dataType: "json",
             success:function(results){
@@ -66,7 +66,7 @@ $(document).ready(function(){
                     specificYearInt:specificYearInt},
                 success:function(){
                     var parent = $("embed#pdfBox").parent();
-                    var newElement = "<embed id='pdfBox' src='"+"../lib/php/singleUserReport.php"+"' width='100%' height='800px'></embed>";
+                    var newElement = "<embed id='pdfBox' src='"+"../lib/php/usr/singleUserReport.php"+"' width='100%' height='800px'></embed>";
                     $("embed#pdfBox").remove();
                     parent.append(newElement);
                     // Change Download Button Source
@@ -80,7 +80,7 @@ $(document).ready(function(){
         else {
             yearTypeKey = "range";
             $.ajax({
-                url:"lib/php/reportCommunicator.php",
+                url:"lib/php/usr/reportCommunicator.php",
                 type: "POST",
                 data: {
                     yearTypeKey:yearTypeKey,
@@ -88,7 +88,7 @@ $(document).ready(function(){
                     fromYearInt:fromYearInt},
                 success:function(){
                     var parent = $("embed#pdfBox").parent();
-                    var newElement = "<embed id='pdfBox' src='"+"../lib/php/singleUserReport.php"+"' width='100%' height='800px'></embed>";
+                    var newElement = "<embed id='pdfBox' src='"+"../lib/php/usr/singleUserReport.php"+"' width='100%' height='800px'></embed>";
                     $("embed#pdfBox").remove();
                     parent.append(newElement);
                     // Change Download Button Source
