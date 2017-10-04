@@ -96,9 +96,10 @@ $(document).ready(function(){
     			on uncheck, remove from right side list*/
 
     $(".filterContTable").on("click", "input[name='selected']",function() {
-        var resultList = $(this).parent().parent().parent().parent().parent().next().children("ul");
+        // var resultList = $(this).parent().parent().parent().parent().parent().next().children("ul");
         var tbody = $(this).parent().parent().parent();
-
+        var resultList = $(this).closest(".tableWrap").next().children("ul");
+        
         // var selectedVal = $(this).parent().next()[0].innerHTML;
         // if($(this).is(":checked")){
         //   // $("#homeTab").text($(this).parent().parent().parent().parent().prop("tagName"));
@@ -133,9 +134,11 @@ $(document).ready(function(){
 
     /*Select All functionality*/
     $(".filterContTable").on("click", "input[name='selectAll']",function() {
-    	var resultList = $(this).parent().parent().parent().parent().parent().next().children("ul");
+    	// var resultList = $(this).parent().parent().parent().parent().parent().next().children("ul");
+    	var resultList = $(this).closest(".tableWrap").next().children("ul");
     	// $("#homeTab").text(resultList.prop("tagName"));
-    	var tbody = $(this).parent().parent().parent().next("tbody");
+    	// var tbody = $(this).parent().parent().parent().next("tbody");
+    	var tbody = $(this).closest(".filterContTable").find("tbody");
     	// $("#homeTab").text(table.prop("tagName"));
     	if($(this).is(":checked")){
     		tbody.find('input[name="selected"]' && 'input:visible').each(function(){
