@@ -111,6 +111,17 @@ $(document).ready(function(){
         }
     });
 
+    $(".dropDownBtn").on("click", function(){
+    	if($(this).data("clicked")) {
+    		$(this).data("clicked",false);
+    		$(this).next().hide();
+    	}
+    	else {
+	    	$(this).data("clicked",true);
+	    	$(this).next().show();
+    	}
+    });
+
 });
 
 
