@@ -59,7 +59,7 @@ $(document).ready(function(){
         if (yearTypeStr.toUpperCase()=="Specific Year".toUpperCase()) {
             yearTypeKey = "specific";
             $.ajax({
-                url:"../lib/php/reportCommunicator.php",
+                url:"../lib/php/usr/reportCommunicator.php",
                 type: "POST",
                 data: {
                     yearTypeKey:yearTypeKey,
@@ -80,7 +80,7 @@ $(document).ready(function(){
         else {
             yearTypeKey = "range";
             $.ajax({
-                url:"lib/php/usr/reportCommunicator.php",
+                url:"../lib/php/usr/reportCommunicator.php",
                 type: "POST",
                 data: {
                     yearTypeKey:yearTypeKey,
