@@ -11,7 +11,7 @@ $(document).ready(function(){
                 var temp;
                 for (var i = 2; i < size; i++) {
 	                var type = results[i];
-	                temp = str_replace(".php","",temp);
+	                type = type.replace(".php","");
 	                temp += "<option>"+type+"</option>";
                 }
                 // update drop down selections - reportTypeSelect
