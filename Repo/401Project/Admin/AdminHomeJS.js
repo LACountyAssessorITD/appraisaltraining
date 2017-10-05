@@ -1,4 +1,35 @@
 $(document).ready(function(){
+	getReportType();
+	// This function runs when Admin logs into the page and update dropdown for report types
+	function getReportType () {
+        $.ajax({
+            url:"../lib/php/admin/getReportType.php",
+            type: "POST",
+            dataType: "json",
+            success:function(results){
+                var size = results.length;
+                var temp;
+                for (var i = 2; i < size; i++) {
+	                var type = results[i];
+	                temp = str_replace(".php","",temp);
+	                temp += "<option>"+type+"</option>";
+                }
+                // update drop down selections - reportTypeSelect
+                var parent = $("select#reportTypeSelect").parent();
+                var newElement = '<select id="reportTypeSelect">'+temp+'</select>';
+                $("select#reportTypeSelect").remove();
+                parent.append(newElement);
+            },
+            error: function(xhr, status, error){
+                alert("Fail to connect to the server when trying to retrieve report types");
+            }
+        });
+    }
+
+
+
+
+
 
   $(".leftInput input").on("change keyup paste click", function(){
       input = $(this);
@@ -99,7 +130,7 @@ $(document).ready(function(){
         // var resultList = $(this).parent().parent().parent().parent().parent().next().children("ul");
         var tbody = $(this).parent().parent().parent();
         var resultList = $(this).closest(".tableWrap").next().children("ul");
-        
+
         // var selectedVal = $(this).parent().next()[0].innerHTML;
         // if($(this).is(":checked")){
         //   // $("#homeTab").text($(this).parent().parent().parent().parent().prop("tagName"));
