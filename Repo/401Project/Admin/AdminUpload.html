@@ -4,7 +4,10 @@
 <head>
 	<title>LAC Website</title>
 	<link rel="stylesheet" href="AdminUploadStyle.css">
-	<script src="script.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="AdminUploadJS.js"></script>
 </head>
 
 <body>
@@ -29,7 +32,7 @@
 	</div>
 
 	<div class="content">
-		<div class="upload">
+		<!-- <div class="upload">
 			<h1 id="UploadTitle">Update</h1>
 			<h3>Select File to Upload</h3>
 			<button id="chooseComputer">Choose From Computer</button>
@@ -47,7 +50,22 @@
 			<div class="errorDisplay">
 				<label>Error: <span class="errorMsg">Wrong file type</span></label>
 			</div>
-		</div>
+		</div> -->
+
+		<div class="selectCont" id="accordion">
+
+			<p>Update New</p>
+			<div class="accordionCont">
+				<h2>一行字</h2>					
+			</div>
+
+			<p>Restore Previous</p>
+			<div class="accordionCont">
+				<h2>兩行字</h2>	
+				<h3>兩行字</h3>					
+			</div>
+
+		</div>	
 
 	</div>
 
