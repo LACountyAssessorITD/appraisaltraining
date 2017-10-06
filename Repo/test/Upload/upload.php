@@ -1,10 +1,8 @@
 <?php
-$target_dir = "HistoryFiles/";
+$target_dir = "D:/temp/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-
-// Check if the file is a database file
 
 // Check if file already exists
 if (file_exists($target_file)) {
@@ -27,7 +25,8 @@ if ($uploadOk == 0) {
 // if everything is ok, try to upload file
 } else {
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+        //echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+         echo '<script>alert("File Uploaded!")</script>';
     } else {
         echo "Sorry, there was an error uploading your file.";
     }
