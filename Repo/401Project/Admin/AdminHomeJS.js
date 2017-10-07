@@ -26,8 +26,35 @@ $(document).ready(function(){
         });
     }
 
+    loadFilterOptions();
 
+    function loadFilterOptions() {
+        $(".dropDownFilter").each(function() {
+            // $("#homeTab").text($(this).children().prop("tagName"));
+            var DPBContHtml = "<div class='DPBCont'>\
+                                    <form class='leftInput'>\
+                                        <input type='text' placeholder='Search..'' autocomplete='off'></form>\
+                                    <div class='tableWrap'>\
+                                        <table class='filterContTable'>\
+                                            <col width='20'>\
+                                            <thead>\
+                                                <tr>\
+                                                    <td><input type='checkbox' name='selectAll'></td>\
+                                                    <td>Select All</td>\
+                                                </tr>\
+                                            </thead>\
+                                            <tbody></tbody>\
+                                        </table>\
+                                    </div>\
+                                    <div class='filterDisplayList'>\
+                                        <label>Selections:</label>\
+                                        <ul></ul>\
+                                    </div>\
+                                </div>";
 
+            $(this).append(DPBContHtml);
+        });
+    }
 
 
 
