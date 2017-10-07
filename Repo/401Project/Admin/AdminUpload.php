@@ -108,8 +108,21 @@
 
 			<p>Restore Previous</p>
 			<div class="accordionCont">
-				<h2>兩行字</h2>
-				<h3>兩行字</h3>
+				<?php
+					if ($handle = opendir("D:/temp/")) {
+						echo "<table>";
+
+					    while (false !== ($entry = readdir($handle))) {
+					        if ($entry != "." && $entry != "..") {
+					        	echo "<tr>";
+					            echo "<td>"."$entry"."</td>";
+					            echo "</tr>";
+					        }
+					    }
+					    closedir($handle);
+					    echo "</table>";
+					}
+				?>
 			</div>
 
 		</div>
