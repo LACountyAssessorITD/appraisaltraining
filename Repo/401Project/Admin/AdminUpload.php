@@ -8,6 +8,11 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="AdminUploadJS.js"></script>
+	<script type="text/javascript">
+		function restore_db(db) {
+			alert(db + "clicked");
+		}
+	</script>
 </head>
 
 <body>
@@ -60,16 +65,16 @@
 				<form action="" method="post" enctype="multipart/form-data">
 				    <input type="file" name="fileToUpload" id="fileToUpload">
 				    <input type="submit" value="Upload file" name="submit">
-				</form></br>
+				</form>
 				<?php
 				if(isset($_POST["submit"])) {
 					if ($_FILES["fileToUpload"]["name"] == "") {
 						echo "Please select a file";
-						return;
+						//return;
 					}
 				    $target_dir = "D:/temp/";
 				    $FileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
-				    $target_file = $target_dir . basename("BOE".'_'.time().$FileType);
+				    $target_file = $target_dir . basename("BOE".'_'.time().'.'.$FileType);
 				    $uploadOk = 1;
 
 
@@ -78,7 +83,7 @@
 				        echo "Sorry, file already exists.";
 				        $uploadOk = 0;
 				    }
-				    // Check file size
+					// Check file size
 				    if ($_FILES["fileToUpload"]["size"] > 50000000) { // if the file is larger than 50 MB
 				        echo "Sorry, your file is too large.";
 				        $uploadOk = 0;
@@ -108,14 +113,16 @@
 
 			<p>Restore Previous</p>
 			<div class="accordionCont">
+				<h2>兩行字</h2>
+				<h3>兩行字</h3>
 				<?php
 					if ($handle = opendir("D:/temp/")) {
 						echo "<table>";
-
 					    while (false !== ($entry = readdir($handle))) {
 					        if ($entry != "." && $entry != "..") {
 					        	echo "<tr>";
 					            echo "<td>"."$entry"."</td>";
+					            echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
 					            echo "</tr>";
 					        }
 					    }
