@@ -62,11 +62,12 @@
 			<p>Update New</p>
 			<div class="accordionCont">
 				<h2>Select databse file to upload:</h2>
-				<form action="" method="post" enctype="multipart/form-data">
+				<form action="" method="post" enctype="multipart/form-data" id="uploadForm">
 				    <input type="file" name="fileToUpload" id="fileToUpload">
-				    <input type="submit" value="Upload file" name="submit">
+				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 				</form>
 				<?php
+
 				if(isset($_POST["submit"])) {
 					if ($_FILES["fileToUpload"]["name"] == "") {
 						echo "Please select a file";
@@ -99,9 +100,10 @@
 				    // if everything is ok, try to upload file
 				    } else {
 				        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+				        	//header('Location:AdminUpload.php');
 				        	echo '<script>alert("File Uploaded!")</script>';
 				            echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-				            echo " Renamed as ".basename("BOE".'_'.time().$FileType);
+				            echo " Renamed as ".basename("BOE".'_'.time().'.'.$FileType);
 				            //echo '<script>alert("File Uploaded!")</script>';
 				        } else {
 				            echo "Sorry, there was an error uploading your file.". $_FILES["fileToUpload"]['error'];
@@ -109,27 +111,28 @@
 				    }
 				}
 				?>
+
 			</div>
 
 			<p>Restore Previous</p>
 			<div class="accordionCont">
-				<h2>兩行字</h2>
-				<h3>兩行字</h3>
-				<?php
-					if ($handle = opendir("D:/temp/")) {
-						echo "<table>";
-					    while (false !== ($entry = readdir($handle))) {
-					        if ($entry != "." && $entry != "..") {
-					        	echo "<tr>";
-					            echo "<td>"."$entry"."</td>";
-					            echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
-					            echo "</tr>";
-					        }
-					    }
-					    closedir($handle);
-					    echo "</table>";
-					}
-				?>
+				<div id="restoreTableDiv">
+					<?php
+						if ($handle = opendir("D:/temp/")) {
+							echo "<table>";
+						    while (false !== ($entry = readdir($handle))) {
+						        if ($entry != "." && $entry != "..") {
+						        	echo "<tr>";
+						            echo "<td>"."$entry"."</td>";
+						            echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
+						            echo "</tr>";
+						        }
+						    }
+						    closedir($handle);
+						    echo "</table>";
+						}
+					?>
+				</div>
 			</div>
 
 		</div>

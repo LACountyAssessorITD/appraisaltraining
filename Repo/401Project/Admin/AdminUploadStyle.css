@@ -204,11 +204,66 @@ body{
 
 /*Accordion Selections*/
 .selectCont {
-	margin: 20px;
+	margin: 20px auto;
 	padding: 20px;
 	cursor: pointer;
 	/*z-index: 3;*/
 }
+
+.accordionCont table{
+	margin: auto;
+
+}
+
+
+
+
+
+#restoreTableDiv {
+	margin: 10px;
+	max-height: 500px;
+    overflow: scroll;
+}
+
+#restoreTableDiv {
+	width: 80%;
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    border: 1px solid #ddd; /* Add a grey border */
+    font-size: 18px; /* Increase font-size */
+}
+
+#restoreTableDiv table {
+	width: 100%;
+}
+
+#restoreTableDiv td {
+    text-align: left; /* Left-align text */
+    padding: 12px; /* Add padding */
+}
+
+#restoreTableDiv tr {
+	background-color: white;
+	border-bottom: 1px solid #ddd;
+	text-align: left;
+}
+
+#restoreTableDiv tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: rgb(220,220,220);
+    color: black;
+}
+
+#restoreTableDiv td {
+    text-align: left; /* Left-align text */
+    padding: 12px; /* Add padding */
+}
+
+
+
+
+
+
 
 
 /*Accordrion Selections End*/
