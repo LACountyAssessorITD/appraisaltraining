@@ -62,7 +62,7 @@
 			<p>Update New</p>
 			<div class="accordionCont">
 				<h2>Select databse file to upload:</h2>
-				<form action="AdminUploadPHP.php" method="post" enctype="multipart/form-data" id="uploadForm" target="myFrame">
+				<form action="../lib/php/admin/AdminUploadPHP.php" method="post" enctype="multipart/form-data" id="uploadForm" target="myFrame">
 				    <input type="file" name="fileToUpload" id="fileToUpload">
 				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 				</form>
@@ -76,18 +76,19 @@
 				<div id="restoreTableDiv">
 					<?php
 						if ($handle = opendir("D:/temp/")) {
-							echo "<table>";
-						    while (false !== ($entry = readdir($handle))) {
-						        if ($entry != "." && $entry != "..") {
-						        	echo "<tr>";
-						            echo "<td>"."$entry"."</td>";
-						            echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
-						            echo "</tr>";
-						        }
-						    }
-						    closedir($handle);
-						    echo "</table>";
+						echo "<table>";
+					    while (false !== ($entry = readdir($handle))) {
+					        if ($entry != "." && $entry != "..") {
+					        	echo "<tr>";
+					            echo "<td>"."$entry"."</td>";
+					            echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
+					            echo "</tr>";
+					        }
+					    }
+					    closedir($handle);
+					    echo "</table>";
 						}
+
 					?>
 				</div>
 			</div>
