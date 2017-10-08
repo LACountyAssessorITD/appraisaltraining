@@ -38,12 +38,13 @@ $(document).ready(function(){
     // $("#uploadForm")[0].reset();
 
 
-    // $("#uploadForm").submit(function() {
+    //  $("#uploadForm").submit(function() {
     //     submitForm();
-    //     // return false;
+    //     return false;
     // });
 
     // function submitForm() {
+    //     $.ajax({url:"AdminUploadPHP.php"});
     // }
 
 });
