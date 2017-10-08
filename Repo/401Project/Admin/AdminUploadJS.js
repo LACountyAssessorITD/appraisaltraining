@@ -28,7 +28,7 @@ $(document).ready(function(){
       });
     };
 
-    $("#accordion").togglepanels();
+    // $("#accordion").togglepanels();
 
 /*--------------------------------------------------------------------------------------------*/
 /*------------------------------Display Accordions END----------------------------------------*/
@@ -46,5 +46,30 @@ $(document).ready(function(){
     // function submitForm() {
     //     $.ajax({url:"AdminUploadPHP.php"});
     // }
+    $(".restore").hide()
+    $("#uploadSegCtrl").on("click", function() {
+        // $(".upload").show();
+        // $(".upload").slideDown("slow", function() {
+        //  $(this).show(slide, {direction: "right"});
+        // });
+        $(".upload").show("slide",{direction: "left"});
+        $(".restore").hide("slide",{direction: "right"});
+    });
+
+    $("#restoreSegCtrl").on("click", function() {
+        // alert("restoreclick");
+        // $(".upload").hide();
+        // // $(".restore").show();
+        // $(".restore").slideLeft("slow", function() {
+        //  $(this).show();
+        // });
+
+        $(".upload").hide("slide", {
+            direction: "left"
+        });
+        $(".restore").show("slide", {
+            direction: "right"
+        });
+    });
 
 });

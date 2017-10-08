@@ -202,6 +202,37 @@ body{
 	font-size: 2em;
 }
 
+.buttonGroup {
+	margin: 20px auto;
+	width: 20%;
+	z-index: 2;
+}
+
+.buttonGroup button {
+	width: 50%;
+	background-color: #4CAF50; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    outline: none;
+}
+
+.buttonGroup button:not(:last-child) {
+	border-right: none;
+}
+
+.buttonGroup button:hover {
+	background-color: #3e8e41;
+}
+
+.buttonGroup:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
 /*Accordion Selections*/
 .selectCont {
 	margin: 20px auto;
