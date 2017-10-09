@@ -35,8 +35,9 @@ $(document).ready(function(){
 /*--------------------------------------------------------------------------------------------*/
 
 
-    // $("#uploadForm")[0].reset();
-
+    $("#uploadForm").each(function() {
+    	$(this)[0].reset();
+    });
 
     //  $("#uploadForm").submit(function() {
     //     submitForm();
@@ -46,17 +47,22 @@ $(document).ready(function(){
     // function submitForm() {
     //     $.ajax({url:"AdminUploadPHP.php"});
     // }
-    $(".restore").hide()
-    $("#uploadSegCtrl").on("click", function() {
+    $(".restore").hide();
+    $("#uploadSegCtrl").on("click", function(e) {
+    	// e.preventDefault();
+    	// alert("show upload");
         // $(".upload").show();
         // $(".upload").slideDown("slow", function() {
         //  $(this).show(slide, {direction: "right"});
         // });
-        $(".upload").show("slide",{direction: "left"});
-        $(".restore").hide("slide",{direction: "right"});
+        $(".upload").show();
+        $(".restore").hide();
+        // $(".upload").show("slide",{direction: "left"});
+        // $(".restore").hide("slide",{direction: "right"});
     });
 
     $("#restoreSegCtrl").on("click", function() {
+    	// alert("hide upload");
         // alert("restoreclick");
         // $(".upload").hide();
         // // $(".restore").show();
@@ -64,12 +70,10 @@ $(document).ready(function(){
         //  $(this).show();
         // });
 
-        $(".upload").hide("slide", {
-            direction: "left"
-        });
-        $(".restore").show("slide", {
-            direction: "right"
-        });
+        $(".upload").hide();
+        $(".restore").show();
+     //   $(".upload").hide("slide", {direction: "left"});
+     //   $(".restore").show("slide", {direction: "right"});
     });
 
 });

@@ -62,7 +62,7 @@
 			<button id="restoreSegCtrl">Restore</button>
 		</div>
 
-		<div class="selectCont" id="accordion">
+		<!-- <div class="selectCont" id="accordion"> -->
 
 			<div class="upload">
 				<p>Update New</p>
@@ -101,7 +101,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		<!-- </div> -->
 
 	</div>
 
