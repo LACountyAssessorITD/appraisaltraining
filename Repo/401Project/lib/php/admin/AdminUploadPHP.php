@@ -10,7 +10,8 @@
 		}
 	    $target_dir = "D:/temp/";
 	    $FileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
-	    $target_file = $target_dir . basename("BOE".'_'.time().'.'.$FileType);
+	    $File_name = basename("BOE".'_'.time().'.'.$FileType);
+	    $target_file = $target_dir . $File_name;
 	    $uploadOk = 1;
 	    // $uploadSuccess = 0;
 
@@ -39,10 +40,14 @@
 	        	// header("Location:AdminUpload.php");
 	        	// header("Location:AdminHome.html");
 	        	$message = "file uploaddded";
-	        	echo '<script>alert("File Uploaded!!!!!")</script>';
+	        	echo '<script>alert("File Uploaded!!!!!");</script>';
 	            echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-	            echo " Renamed as ".basename("BOE".'_'.time().'.'.$FileType);
-	            echo '<script>update_confirm('.$target_file.')</script>';
+	            echo " Renamed as ".$File_name;
+	            //echo '<script>update_confirm("'.$target_file.'"");</script>';
+	            echo '<script type="text/javascript">',
+				     'update_confirm('.$target_file.');',
+				     '</script>'
+				;
 	        	// echo "<script>setTimeout('header('Location:AdminUpload.php')');</script>";
 	            //echo '<script>alert("File Uploaded!")</script>';
 	        } else {
