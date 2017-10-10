@@ -1,4 +1,8 @@
 <?php
+/*
+	To handle upload requests by admin
+	@ Yining Huang
+*/
 	if(isset($_POST["submit"])) {
 		if ($_FILES["fileToUpload"]["name"] == "") {
 			echo "Please select a file";
@@ -9,7 +13,6 @@
 	    $target_file = $target_dir . basename("BOE".'_'.time().'.'.$FileType);
 	    $uploadOk = 1;
 	    // $uploadSuccess = 0;
-
 
 	    // Check if file already exists
 	    if (file_exists($target_file)) {
@@ -39,7 +42,7 @@
 	        	echo '<script>alert("File Uploaded!!!!!")</script>';
 	            echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
 	            echo " Renamed as ".basename("BOE".'_'.time().'.'.$FileType);
-	            echo "<?php update_table();?>";
+	            echo '<script>update_confirm('.$target_file.')</script>';
 	        	// echo "<script>setTimeout('header('Location:AdminUpload.php')');</script>";
 	            //echo '<script>alert("File Uploaded!")</script>';
 	        } else {

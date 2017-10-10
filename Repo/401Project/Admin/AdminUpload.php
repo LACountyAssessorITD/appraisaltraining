@@ -12,6 +12,26 @@
 		function restore_db(db) {
 			alert(db + "clicked");
 		}
+		function update_confirm(db) {
+		    var r = confirm("Do you want to update the db file now?");
+		    if (r == true) {
+		        alert("Start updating!");
+		        $.ajax({
+		            url:"../lib/php/admin/updateDB.php",
+		            type: "POST",
+		            data: {
+	                    db:db
+	                },
+		            dataType: "json",
+		            success:function(results){
+		                alert("Finish Updating!");
+		            },
+		            error: function(xhr, status, error){
+		                alert("Fail to connect to the server when trying to submit update request");
+		            }
+		        });
+		    }
+		}
 	</script>
 </head>
 
