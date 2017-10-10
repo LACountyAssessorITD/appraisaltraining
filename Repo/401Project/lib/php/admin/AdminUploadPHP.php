@@ -48,6 +48,25 @@
 				     'update_confirm('.$target_file.');',
 				     '</script>'
 				;
+				echo '<script>
+		          if(confirm("Do you want to update the db file now?")){
+		              alert("Start updating!");
+				        $.ajax({
+				            url:"../lib/php/admin/updateDB.php",
+				            type: "POST",
+				            data: {
+			                    db:db
+			                },
+				            dataType: "json",
+				            success:function(results){
+				                alert("Finish Updating!");
+				            },
+				            error: function(xhr, status, error){
+				                alert("Fail to connect to the server when trying to submit update request");
+				            }
+				        });
+		           }
+		          </script>';
 	        	// echo "<script>setTimeout('header('Location:AdminUpload.php')');</script>";
 	            //echo '<script>alert("File Uploaded!")</script>';
 	        } else {
