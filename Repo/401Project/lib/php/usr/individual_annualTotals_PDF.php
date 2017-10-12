@@ -1,24 +1,31 @@
 <?php
 require('../FPDF/fpdf.php');
 class myPDF extends FPDF {
+    public $isFirstPage = TRUE;
     function header() {
-        // Add logo
-        $this->Image('../../img/Logo.gif',10,8,-270);
+        if ($this->isFirstPage == TRUE) { // if on summary page
+            // Add logo
+            $this->Image('../../img/Logo.gif',10,8,-270);
 
-        // Add Titles
-        $this->SetFont('Arial','B',12);
-        $this->SetTextColor(0,0,128);
-        $this->Cell(0,5,'OFFICE OF THE ASSESSOR',0,0,'C');
-        $this->Ln();
-        $this->Cell(0,5,'Appraiser Annual Totals Calculation',0,0,'C');
-        $this->Ln(10);
+            // Add Titles
+            $this->SetFont('Arial','B',12);
+            $this->SetTextColor(0,0,128);
+            $this->Cell(0,5,'OFFICE OF THE ASSESSOR',0,0,'C');
+            $this->Ln();
+            $this->Cell(0,5,'Appraiser Annual Totals Calculation',0,0,'C');
+            $this->Ln(10);
 
-        // Draw a line
-        $width=$this -> w; // Width of Current Page
-        $height=$this -> h; // Height of Current Page
-        $this->SetLineWidth(0.7);
-        $this->SetDrawColor(162,157,150);
-        $this->Line(10, 30,$width-10,30); // Line one Cross
+            // Draw a line
+            $width=$this -> w; // Width of Current Page
+            $height=$this -> h; // Height of Current Page
+            $this->SetLineWidth(0.7);
+            $this->SetDrawColor(162,157,150);
+            $this->Line(10, 30,$width-10,30); // Line one Cross
+        }
+        else { // if on yearly detailed page
+
+        }
+
     }
 
     function personInfo($conn){
@@ -132,44 +139,66 @@ class myPDF extends FPDF {
         // Add Titles
         $this->SetFont('Arial','B',11);
         $this->SetTextColor(0,0,0);
-        $this->Ln(20);
+        $this->Ln(18);
         $this->Cell(0,0,'Status');
         $this->Ln();
         $this->Cell(20);
         $this->Cell(0,0,'Cert. Type');
         $this->Ln();
-        $this->Cell(55);
+        $this->Cell(50);
         $this->Cell(0,0,'Fiscal Year');
         $this->ln(-5);
-        $this->Cell(90);
+        $this->Cell(82);
         $this->Cell(0,0,'Earned');
         $this->ln(5);
-        $this->Cell(90);
+        $this->Cell(84);
         $this->Cell(0,0,'Hours');
         $this->ln(-5);
-        $this->Cell(115);
+        $this->Cell(103.5);
         $this->Cell(0,0,'Required');
         $this->ln(5);
-        $this->Cell(115);
+        $this->Cell(109);
         $this->Cell(0,0,'Hours');
         $this->ln(-5);
-        $this->Cell(140);
+        $this->Cell(127);
         $this->Cell(0,0,'Current Year');
         $this->ln(5);
-        $this->Cell(140);
+        $this->Cell(129.5);
         $this->Cell(0,0,'Over/Under');
         $this->ln(-5);
-        $this->Cell(170);
+        $this->Cell(161.5);
         $this->Cell(0,0,'Prior Year');
         $this->ln(5);
-        $this->Cell(170);
+        $this->Cell(159);
         $this->Cell(0,0,'Over/Under');
         $this->ln(-5);
-        $this->Cell(200);
+        $this->Cell(187);
         $this->Cell(0,0,'Carry To');
         $this->ln(5);
-        $this->Cell(200);
+        $this->Cell(189);
         $this->Cell(0,0,'Year +1');
+        $this->ln(-5);
+        $this->Cell(207);
+        $this->Cell(0,0,'Carry To');
+        $this->ln(5);
+        $this->Cell(209);
+        $this->Cell(0,0,'Year +2');
+        $this->ln(-5);
+        $this->Cell(227);
+        $this->Cell(0,0,'Carry To');
+        $this->ln(5);
+        $this->Cell(229);
+        $this->Cell(0,0,'Year +3');
+        $this->ln(-5);
+        $this->Cell(0,0,'Carry',0,0,'R');
+        $this->ln(5);
+        $this->Cell(0,0,'Forward Total',0,0,'R');
+
+        // Draw a line
+        $width=$this -> w; // Width of Current Page
+        $this->SetLineWidth(0.7);
+        $this->SetDrawColor(0,0,0);
+        $this->Line(10,67,$width-10,67); // Line one Cross
 
         $certid = $GLOBALS['certid'];
         $EndDate = ""; $Course = ""; $HoursEarned = "";
