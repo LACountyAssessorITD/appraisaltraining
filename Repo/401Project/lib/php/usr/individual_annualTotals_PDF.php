@@ -1,145 +1,93 @@
 <?php
 require('../FPDF/fpdf.php');
 class myPDF extends FPDF {
-    public $isFirstPage = TRUE;
+    private $isSummaryPage = TRUE;
+    private $lastName = "";
+    private $firstname = "";
+    private $middleName = "";
+    private $certid = 0;
+
     function header() {
-        if ($this->isFirstPage == TRUE) { // if on summary page
-            // Add logo
-            $this->Image('../../img/Logo.gif',10,8,-270);
+        if ($this->isSummaryPage == TRUE) { // if on summary page
+            if ($this->PageNo() == 1) { // if on cover page, add logo
+                 // Add logo
+                $this->Image('../../img/Logo.gif',10,8,-270);
 
-            // Add Titles
-            $this->SetFont('Arial','B',12);
-            $this->SetTextColor(0,0,128);
-            $this->Cell(0,5,'OFFICE OF THE ASSESSOR',0,0,'C');
-            $this->Ln();
-            $this->Cell(0,5,'Appraiser Annual Totals Calculation',0,0,'C');
-            $this->Ln(10);
+                // Add Titles
+                $this->SetFont('Arial','B',12);
+                $this->SetTextColor(0,0,128);
+                $this->Cell(0,5,'OFFICE OF THE ASSESSOR',0,0,'C');
+                $this->Ln();
+                $this->Cell(0,5,'Appraiser Annual Totals Calculation',0,0,'C');
+                $this->Ln(10);
 
-            // Draw a line
-            $width=$this -> w; // Width of Current Page
-            $height=$this -> h; // Height of Current Page
-            $this->SetLineWidth(0.7);
-            $this->SetDrawColor(162,157,150);
-            $this->Line(10, 30,$width-10,30); // Line one Cross
+                // Draw a line
+                $width=$this -> w; // Width of Current Page
+                $height=$this -> h; // Height of Current Page
+                $this->SetLineWidth(0.7);
+                $this->SetDrawColor(162,157,150);
+                $this->Line(10, 30,$width-10,30); // Line one Cross
+            }
+            else { // if summary not finish, add columns titles to the next page
+                $this->ln(10);
+                $this->addSummaryTitles();
+            }
         }
-        else { // if on yearly detailed page
+        else { // if on yearly detailed pages
+            $width=$this -> w; // Width of Current Page
+            $height=$this->getY()+5;
+            $this->SetLineWidth(0.5);
+            $this->SetDrawColor(0,0,0);
+            $this->Line(10,$height,$width-10,$height); // Line one Cross
 
+            $this->SetFont('Arial','B',10.5);
+            $this->SetTextColor(0,0,0);
+            $this->Cell(0,5,"Last Name: ".$this->lastName,0,0,'L');
+            $this->ln(0);
+            $this->Cell(70);
+            $this->Cell(0,5,"First Name: ".$this->firstName,0,0,'L');
+            $this->ln(0);
+            $this->Cell(140);
+            $this->Cell(0,5,"Middle Name: ".$this->middleName,0,0,'L');
+            $this->ln(0);
+            $this->Cell(0,5,"Cert.No: ".$this->certid,0,0,'R');
+             $this->ln();
+            // Add Titles
+            $this->SetFont('Arial','',11);
+            $this->SetTextColor(0,0,0);
+            $this->ln();
+            $this->Cell(0,0,'Completion Date');
+            $this->Ln();
+            $this->Cell(40);
+            $this->Cell(0,0,'Courses Taken');
+            $this->Ln();
+            $this->Cell(170);
+            $this->Cell(0,0,'Location');
+            $this->ln();
+            $this->Cell(230);
+            $this->Cell(0,0,'Grade');
+            $this->ln();
+            $this->Cell(0,0,'Hours Earned',0,0,'R');
+
+            $width=$this -> w; // Width of Current Page
+            $height=$this->getY();
+            $this->SetLineWidth(0.5);
+            $this->SetDrawColor(0,0,0);
+            $this->Line(10,$height+5,$width-10,$height+5); // Line one Cross
         }
 
     }
 
-    function personInfo($conn){
-
-        // Get all related personal information
-        $certid = $GLOBALS['certid'];
-        $lastName = ""; $firstName = ""; $middleName = "";
-        $county = "";
-        $temp_certDate = "";
-        $status = ""; // active or not
-        $certDate = ""; $certType =""; $allowedcarryover="";
-
-        $tsql = "SELECT * FROM [AnnualReq] WHERE CertNo=".(string)$certid;
-
-        $stmt = sqlsrv_query( $conn, $tsql);
-        $annualreq;
-        if( $stmt === false )
-        {
-             echo "Error in executing query.</br>";
-             die( print_r( sqlsrv_errors(), true));
-        }
-        else {
-            $row= sqlsrv_fetch_array($stmt);
-            $annualreq = $row;
-            $lastName = $row['LastName'];
-            $firstName = $row['FirstName'];
-            $status = $row['Status'];
-            if ($row['PermCertDate'] == NULL) {
-              $certDate = "NA";
-            }
-            else {
-              $certDate = date("m/d/Y",strtotime($row['PermCertDate']));
-              $certType = $row['CertType'];
-            }
-
-            $allowedcarryover=$row['CarryForwardTotal'];
-        }
-        sqlsrv_free_stmt($stmt);
-
-        // Personal Information: to get specialty
-        $specialty = "";
-        $tsql = "SELECT * FROM [Summary] WHERE CertNo=".(string)$certid;
-        $stmt = sqlsrv_query($conn, $tsql);
-        if( $stmt === false )
-        {
-             echo "Error in executing query.</br>";
-             die( print_r( sqlsrv_errors(), true));
-        }
-        else {
-            $row= sqlsrv_fetch_array($stmt);
-            $specialty = $row['Auditor'];
-            if ($specialty == "True") {
-              $specialty = "Audit";
-            }
-            else {
-              $specialty = "";
-            }
-        }
-        sqlsrv_free_stmt($stmt);
-
-
-        $this->SetFont('Arial','B',12);
-        $this->SetTextColor(0,0,0);
-        $this->Cell(500,5,$status,0,0,'C');
-
-        $this->Ln(10);
-        $this->SetFont('Arial','B',11);
-        $this->SetTextColor(0,0,0);
-        $this->Cell(0,0,'Last Name:');
-        $this->Ln(0);
-        $this->Cell(23);
-        $this->Cell(0,0,$lastName);
-        $this->Ln();
-        $this->SetFont('Arial','',11);
-        $this->Cell(60);
-        $this->Cell(0,0,'First Name:');
-        $this->Ln();
-        $this->Cell(83);
-        $this->Cell(0,0,$firstName);
-        $this->Ln();
-        $this->Cell(255,0,'Certificate Number:',0,0,'R');
-        $this->Cell(0,0,$certid,0,0,'R');
-
-        $this->Ln(5);
-        $this->Cell(0,0,'County:');
-
-        $this->Ln(5);
-        $this->Cell(0,0,'Temporary Cert. Date:');
-        $this->Ln();
-        $this->Cell(60);
-        $this->Cell(0,0,'Permanent Cert. Date::');
-        $this->ln();
-        $this->Cell(100);
-        $this->Cell(0,0,$certDate);
-        $this->Ln();
-        $this->Cell(130);
-        $this->Cell(0,0,'Advanced Cert. Date:');
-
-        $this->Ln();
-        $this->Cell(250,0,'Specialty:  '.$specialty,0,0,'R');
-
-        // Draw a line
+    function addSummaryTitles() {
         $width=$this -> w; // Width of Current Page
-        $height=$this -> h; // Height of Current Page
-        $this->SetLineWidth(0.7);
+        $height=$this->getY();
+        $this->SetLineWidth(0.5);
         $this->SetDrawColor(0,0,0);
-        $this->Line(10,53,$width-10,53); // Line one Cross
-
-
-        // Generate Course Info
+        $this->Line(10,$height-10,$width-10,$height-10); // Line one Cross
         // Add Titles
-        $this->SetFont('Arial','B',11);
+        $this->SetFont('Arial','',11);
         $this->SetTextColor(0,0,0);
-        $this->Ln(18);
+
         $this->Cell(0,0,'Status');
         $this->Ln();
         $this->Cell(20);
@@ -194,11 +142,127 @@ class myPDF extends FPDF {
         $this->ln(5);
         $this->Cell(0,0,'Forward Total',0,0,'R');
 
-        // Draw a line
         $width=$this -> w; // Width of Current Page
-        $this->SetLineWidth(0.7);
+        $height=$this->getY();
+        $this->SetLineWidth(0.5);
         $this->SetDrawColor(0,0,0);
-        $this->Line(10,67,$width-10,67); // Line one Cross
+        $this->Line(10,$height+5,$width-10,$height+5); // Line one Cross
+    }
+
+    function personInfo($conn){
+
+        // Get all related personal information
+        $certid = $GLOBALS['certid'];
+        $this->certid = $certid;
+        $lastName = ""; $firstName = ""; $middleName = "";
+        $county = "";
+        $temp_certDate = "";
+        $status = ""; // active or not
+        $certDate = ""; $certType =""; $allowedcarryover="";
+
+        $tsql = "SELECT * FROM [AnnualReq] WHERE CertNo=".(string)$certid;
+
+        $stmt = sqlsrv_query( $conn, $tsql);
+        $annualreq;
+        if( $stmt === false )
+        {
+             echo "Error in executing query.</br>";
+             die( print_r( sqlsrv_errors(), true));
+        }
+        else {
+            $row= sqlsrv_fetch_array($stmt);
+            $annualreq = $row;
+            $lastName = $row['LastName'];
+            $firstName = $row['FirstName'];
+            $this->lastName = $lastName;
+            $this->firstName = $firstName;
+            $this->middleName = $middleName;
+            $status = $row['Status'];
+            if ($row['PermCertDate'] == NULL) {
+              $certDate = "NA";
+            }
+            else {
+              $certDate = date("m/d/Y",strtotime($row['PermCertDate']));
+              $certType = $row['CertType'];
+            }
+
+            $allowedcarryover=$row['CarryForwardTotal'];
+        }
+        sqlsrv_free_stmt($stmt);
+
+        // Personal Information: to get specialty
+        $specialty = "";
+        $tsql = "SELECT * FROM [Summary] WHERE CertNo=".(string)$certid;
+        $stmt = sqlsrv_query($conn, $tsql);
+        if( $stmt === false )
+        {
+             echo "Error in executing query.</br>";
+             die( print_r( sqlsrv_errors(), true));
+        }
+        else {
+            $row= sqlsrv_fetch_array($stmt);
+            $specialty = $row['Auditor'];
+            if ($specialty == "True") {
+              $specialty = "Audit";
+            }
+            else {
+              $specialty = "";
+            }
+        }
+        sqlsrv_free_stmt($stmt);
+
+
+        $this->SetFont('Arial','B',10.5);
+        $this->SetTextColor(0,0,0);
+        $this->Cell(500,5,$status,0,0,'C');
+
+        $this->Ln(10);
+        $this->SetTextColor(0,0,0);
+        $this->Cell(0,0,'Last Name:');
+        $this->Ln(0);
+        $this->Cell(23);
+        $this->Cell(0,0,$lastName);
+        $this->Ln();
+
+        $this->Cell(60);
+        $this->Cell(0,0,'First Name:');
+        $this->Ln();
+        $this->Cell(83);
+        $this->Cell(0,0,$firstName);
+        $this->Ln();
+        $this->Cell(130);
+        $this->Cell(0,0,'Middle Name:');
+        $this->Ln();
+        $this->Cell(153);
+        $this->Cell(0,0,$middleName);
+        $this->Ln();
+        $this->Cell(255,0,'Certificate Number:',0,0,'R');
+        $this->Cell(0,0,$certid,0,0,'R');
+
+        $this->Ln(5);
+        $this->Cell(0,0,'County:');
+
+        $this->Ln(5);
+        $this->Cell(0,0,'Temporary Cert. Date:');
+        $this->Ln();
+        $this->Cell(60);
+        $this->Cell(0,0,'Permanent Cert. Date:');
+        $this->ln();
+        $this->Cell(100);
+        $this->Cell(0,0,$certDate);
+        $this->Ln();
+        $this->Cell(130);
+        $this->Cell(0,0,'Advanced Cert. Date:');
+
+        $this->Ln();
+        $this->Cell(250,0,'Specialty:  '.$specialty,0,0,'R');
+
+        // Add Titles
+        $this->Ln(14);
+        $this->addSummaryTitles();
+
+        $this->isSummaryPage = FALSE;
+        $this->AddPage();
 
         $certid = $GLOBALS['certid'];
         $EndDate = ""; $Course = ""; $HoursEarned = "";
@@ -213,7 +277,7 @@ class myPDF extends FPDF {
             AND FiscalYear='".(string)$year."-".(string)($year+1)."'";
 
 
-        $stmt = sqlsrv_query( $conn, $tsql);
+        $stmt = sqlsrv_query($conn, $tsql);
         if( $stmt === false )
         {
              echo "Error in executing query.</br>";
