@@ -42,21 +42,3 @@ p.pFiltersLabel {
 	box-shadow: 2px 8px 10px 0px rgba(0,0,0,0.3);
 	overflow: auto;
 }
-
-.footer {
-	/*background-color: rgb(64, 64, 64);*/
-	background: linear-gradient(to top, rgb(70, 70, 70), rgb(40, 40, 40));
-	color: white;
-	padding: 14px;
-	text-align: center;
-	width: 100%;
-	bottom: 0;
-}
-
-.links span a {
-	font-size: 2vw;
-	text-decoration: none;
-	color: white;
-	margin: 50px;
-	margin-top: 30px;
-}

@@ -16,19 +16,6 @@
 	margin-bottom: 10px;
 }
 
-#filterLabel {
-	width: 90%;
-	padding: 7px 10px;
-	font-size: 1.5em;
-	background-color: rgb(0, 0, 0);
-	color: white;
-	border-width: 0px;
-	border-radius: 4px;
-	text-align: center;
-	margin: 15px auto;
-	opacity: 1;
-}
-
 .yearType {
 	width: 100%;
 }
@@ -166,20 +153,6 @@
 
 }
 
-#optionLabel {
-	width: 80%;
-	margin: 15px auto;
-	padding: 7px 10px;
-	font-size: 1.5em;
-	background-color: rgb(0, 0, 0);
-	color: white;
-	border-width: 0px;
-	border-radius: 4px;
-	text-align: center;
-	margin-top: 30px;
-	margin-bottom: 0;
-}
-
 .optionContent button {
 	margin: 10px auto;
 	width: 60%;
@@ -234,19 +207,6 @@
 	pad
 }
 
-#previewLabel {
-	width: 100%;
-	padding: 7px 10px;
-	font-size: 1.5em;
-	background-color: rgb(0, 0, 0);
-	color: white;
-	border-width: 0px;
-	border-radius: 4px;
-	text-align: center;
-	margin-top: 0;
-	margin-bottom: 0;
-}
-
 .midColumn h2 {
 	padding: 0;
 	text-align: center;
@@ -263,28 +223,4 @@
 
 #pdfBox {
 	box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.4);
-}
-
-.content:after {
-	content: "";
-	display: table;
-	clear: both;
-}
-
-.footer {
-	/*background-color: rgb(64, 64, 64);*/
-	background: linear-gradient(to top, rgb(70, 70, 70), rgb(40, 40, 40));
-	color: white;
-	padding: 14px;
-	text-align: center;
-	width: 100%;
-	bottom: 0;
-}
-
-.links span a {
-	font-size: 1.5vw;
-	text-decoration: none;
-	color: white;
-	margin: 50px;
-	margin-top: 30px;
 }
