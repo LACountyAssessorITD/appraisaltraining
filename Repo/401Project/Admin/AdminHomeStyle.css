@@ -48,7 +48,7 @@
 
 .filterListCol p {
 	width: 100%;
-	font-size: 2vw;
+	font-size: 1.5vw;
 	color: white;
 	background-color: grey;
 	margin:0;
@@ -78,7 +78,7 @@
 
 #reportTypeLabel {
 	color: white;
-	font-size: 2vw;
+	font-size: 1.5vw;
 }
 
 #reportTypeSelect {
@@ -89,7 +89,7 @@
 	/*padding: 5px 35px 5px 5px;*/
 	/*margin-bottom: 20px;*/
 	padding: 0px 20px;
-	font-size: 1.5vw;
+	font-size: 1.2vw;
 	border: 1px solid #ccc;
  	height: 30px;
     -webkit-appearance: none;
@@ -167,12 +167,12 @@
 }
 
 .filterDisplayList label {
-	font-size: 1.3vw;
+	font-size: 1vw;
 	font-weight: bold;
 }
 
 .filterDisplayList ul {
-	font-size: 1.3vw;
+	font-size: 1vw;
 	list-style-type: none;
 	padding-left: 5px;
 	margin: 0;
@@ -241,7 +241,7 @@
 	/*background-color: lightgrey;*/
 	width: 100%;
 	background-color: rgb(91, 91, 91);
-	font-size: 2vw;
+	font-size: 1.5vw;
 	color: white;
 
 	padding: 15px;
@@ -273,7 +273,7 @@
 .midColumn h2 {
 	padding: 0;
 	text-align: center;
-	font-size: 1.5em;
+	font-size: 1.2em;
 }
 
 .pdfView {
@@ -314,7 +314,7 @@
 	/*font-family: Tahoma, Geneva, sans-serif;*/
 	font-family: "Times New Roman";
 	/*font-size: 2em;*/
-	font-size: 1.5vw;
+	font-size: 1.2vw;
 	/*box-shadow: 7px 7px 10px rgb(179, 179, 179);*/
 	box-shadow: 7px 7px 10px rgba(20, 20, 20, 0.4);
 	overflow: hidden;
@@ -404,7 +404,7 @@
     border-collapse: collapse; /* Collapse borders */
     width: 100%; /* Full-width */
     border: 1px solid #ddd; /* Add a grey border */
-    font-size: 18px; /* Increase font-size */
+    font-size: 1vw; /* Increase font-size */
 }
 
 #overviewTable td {
