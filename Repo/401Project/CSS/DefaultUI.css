@@ -17,12 +17,13 @@ body{
 .top {
 	position: relative;
 	background: linear-gradient(to left,rgba(0, 41, 124, 1), rgba(237, 243, 255,0.3));
-	padding: 30px;
+	/*padding: 30px;*/
 
 	/*background: linear-gradient(to right,blue, red);*/
     overflow: hidden;
     /*border:none;*/
     border-bottom-width: 5px; 
+    min-height: 250px;
 }
 
 .top:before {
@@ -35,7 +36,7 @@ body{
     height: 100%;
     z-index: 0;
     opacity: 0.4;
-    background-image: url('../BGimg/LAbgAdjCrop.jpg');
+    background-image: url('../BGimg/LAnight.jpg');
     background-repeat: no-repeat;
     background-position: 50% 0;/*
     -ms-background-size: cover;
@@ -45,43 +46,70 @@ body{
     background-size: cover;
 }
 
-.header {
+.header {/*
 	margin-top: 30px;
-	margin-bottom: 30px;
+	margin-bottom: 30px;*/
+	/*margin: 30px auto;*/
+	/*top: 140px;*/
 }
+/*
+#pageTitle {
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}*/
 
 .header h1, .header h3 {
 	position: relative;
 	text-align: center;
+	margin: 100px auto;
+
+	/*position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);*/
 }
 
 .header h1 {
-	font-size: 2.5em;
-	padding-top: 10px;
-	padding-left: 120px;
-	padding-right: 120px;
+	font-size: 2.8vw;
+	/*padding-top: 10px;*/
+	/*padding-left: 120px;*/
+	/*padding-right: 120px;*/
 	padding-bottom: 0px;
 	/*margin-top: 30px;*/
+	/*margin: 20px auto;*/
 	margin-bottom: 0px;
-	z-index: 2;
+	/*z-index: 2;*/
 }
 
 .header h3 {
+	font-size: 1.2vw;
 	margin-top: 0px;
 	padding-top: 0px;
-	margin-bottom: 20px;
-	z-index: 2;
+	/*margin-bottom: 20px;*/
+	/*z-index: 2;*/
 	/*padding-
 	bottom: 20px;*/
 }
 
 .Welcome {
+	/*margin:20px;
 	position: relative;
-	z-index: 2;
+	z-index: 5;
 	float: right;
 	font-size: 1.5vw;
 	text-align: right;
+	color: white;*/
+
+	position: absolute;
+	top:30px;
+	right: 50px;
 	color: white;
+	font-size: 1.2vw;
+	text-align: right;
+	/*z-index: 50;*/
+	/*float: right;*/
 }
 
 .header img {
@@ -95,7 +123,14 @@ body{
 	overflow: hidden;
 }
 
+.header img:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
 .header hr {
+	position: relative;
 	width: 70%;
 	color: black;
 	border-color: black;
@@ -108,14 +143,15 @@ body{
 }
 
 .navigationBar {
-	/*background-color: rgb(51, 51, 51);*/
+	background-color: rgba(51, 51, 51,0.8);
+	margin-top: 60px;
 	position: absolute;
-	background: linear-gradient(to right, rgba(40, 40, 40, 1), rgba(255, 255, 255, 0));
-	width: 90%;
-	z-index: 2;
+	/*background: linear-gradient(to right, rgba(40, 40, 40, 1), rgba(255, 255, 255, 0));*/
+	width: 100%;
+	/*z-index: 2;*/
 	bottom: 0;
 	border-width: 0;
-	border-top-left-radius: 8px;
+	/*border-top-left-radius: 8px;*/
 }
 
 /*.navigationBar img {
@@ -187,7 +223,7 @@ body{
     height: 100%;
     z-index: -1;
     opacity: 0.7;
-    background-image: url('../BGimg/LAnight.jpg');
+    /*background-image: url('../BGimg/LAnight.jpg');*/
     background-repeat: no-repeat;
     background-position: 50% 0;/*
     -ms-background-size: cover;
