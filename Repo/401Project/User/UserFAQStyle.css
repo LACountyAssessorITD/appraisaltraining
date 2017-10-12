@@ -2,7 +2,7 @@
 	padding: 8px;
 	width: 30%;
 	margin:20px;
-	font-size: 1.3vw;
+	font-size: 1.1vw;
 	color: white;
 	/*background-color: rgb(206, 218, 255);*/
 	/*border-width: 0;*/
@@ -18,7 +18,7 @@ p.pFiltersLabel {
 	width: 90%;
 	margin: 30px auto;
 	margin-bottom: 0;
-	font-size: 2vw;
+	font-size: 1.5vw;
 	background-color: rgba(240,240,240,0.6);
 	color: rgb(50,50,50);
 	border-style: inset;
@@ -36,7 +36,7 @@ p.pFiltersLabel {
 	width: 90%;
 	margin: 10px auto;
 	margin-top: 0;
-	font-size: 1.5vw;
+	font-size: 1.2vw;
 	background-color: rgba(240,240,240,0.8);
 	color: rgb(50,50,50);
 	box-shadow: 2px 8px 10px 0px rgba(0,0,0,0.3);
