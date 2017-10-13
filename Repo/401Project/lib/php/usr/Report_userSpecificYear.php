@@ -7,7 +7,7 @@ This Code dynamically generate individual PDF
 include_once "../constants.php";
 include_once "../session.php";
 //session_start();
-include_once "individual_annualTotals_PDF.php";
+include_once "pdfTemplate_specificYear.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -29,9 +29,14 @@ if( $conn === false )
 $totalcarryover = 0;
 
 $certid =  getUserID();
-
-$fromYearInt = $_SESSION["fromYearInt"];
-$toYearInt = $_SESSION["toYearInt"];
+$yearTypeKey = $_SESSION['yearTypeKey'];
+if ($yearTypeKey == 'specific') {
+	$year =  $_SESSION["specific_year"];
+}
+else {
+	$fromYearInt = $_SESSION["fromYearInt"];
+	$toYearInt = $_SESSION["toYearInt"];
+}
 
 
 ///////////////////////////////////////////////////////////////////
