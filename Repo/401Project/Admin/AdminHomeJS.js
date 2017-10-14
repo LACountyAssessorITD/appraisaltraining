@@ -35,6 +35,7 @@ $(document).ready(function(){
                                     <form class='leftInput'>\
                                         <input type='text' placeholder='Search..'' autocomplete='off'></form>\
                                     <div class='tableWrap'>\
+                                    	<div class='filterContTableBG'></div>\
                                         <table class='filterContTable'>\
                                             <col width='20'>\
                                             <thead>\
@@ -234,16 +235,7 @@ $(document).ready(function(){
             $(this).parent().children(".dropDownBtn").data("clicked",false);
         });
 
-        $("#homeTab").text(clicked);
-
-        if(clicked) {
-            $(this).data("clicked",true);
-            $("#homeTab").text("0");
-        }
-        else {
-            $(this).data("clicked",false);
-            $("#homeTab").text("1");
-        }
+        $(this).data("clicked",clicked);
 
     	if($(this).data("clicked")) {
     		$(this).data("clicked",false);
@@ -254,6 +246,16 @@ $(document).ready(function(){
 	    	$(this).next().show();
     	}
     });
+
+
+    /*Collapse will cause all dropdowns to hide*/
+    $(".pFiltersLabel").on("click", function() {
+    	$(this).next().find(".DPBCont").each(function() {
+            $(this).hide();
+            $(this).parent().children(".dropDownBtn").data("clicked",false);
+        });
+    });
+
 
     //Email Alert
     $("#EmailAll").on("click", function() {
