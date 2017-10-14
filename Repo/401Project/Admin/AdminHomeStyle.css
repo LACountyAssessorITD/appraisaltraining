@@ -338,12 +338,16 @@
 	overflow: hidden;
 	outline: none;
 	cursor: pointer;
-	transition: width 0.5s, background-color 0.5s;
+	transition: width 0.5s, background-color 0.5s, box-shadow 0.1s;
 	opacity: 1;
 }
 
 .rightContentColumn button:hover {
 	width: 18%;
+}
+
+.rightContentColumn button:active {
+	box-shadow: none;
 }
 
 .rightContentColumn button[id="MyReport"]:hover {
