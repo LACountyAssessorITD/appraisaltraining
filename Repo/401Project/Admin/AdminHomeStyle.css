@@ -312,7 +312,6 @@
 	padding-left: 12px;*/
 	margin-top: 5px;
 	overflow: scroll;
-	z-index: -1;
 }
 
 #pdfBox {
