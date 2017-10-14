@@ -166,26 +166,36 @@
 	display: none;
     position: absolute;
     background-color: rgb(244, 248, 255);
-    min-width: 300px;
     /*width: 100%;*/
     opacity: 1;
     box-shadow: 0px 8px 12px 0px rgba(0,0,0,0.4);
     z-index: 5;
     border-radius: 5px;
     overflow: scroll;
-    max-height: 320px;
-    width: 300%;
+    /*max-height: 500px;*/
+    width: 200%;
     left: 20px;
 }
 
+.filterContTableBG {
+	position: absolute;
+	/*position: relative;*/
+    top: 0px;
+    left: 0px;
+    width: 50%;
+    height: 100%;
+    background-color: rgba(100,100,100,0.2);
+    z-index: -1;
+}
+
 .filterDisplayList{
-	width: 45%;
+	width: 50%;
 	float: right;
 	border-width: 3px;
 	height: 100%;
 	padding: 5px;
 	overflow: auto;
-	min-height: 300px;
+	/*min-height: 300px;*/
 }
 
 .filterDisplayList label {
@@ -205,11 +215,11 @@
 }
 
 .tableWrap {
-	width: 55%;
+	width: 50%;
 	float: left;
 	overflow: auto;
 	/*overflow-y: scroll;*/
-    background-color: rgba(100,100,100,0.2);
+    /*background-color: rgba(100,100,100,0.2);*/
     /*padding: 5px;*/
 }
 
@@ -231,12 +241,12 @@
 
 .filterContTable td {
     text-align: left; /* Left-align text */
-    padding: 12px; /* Add padding */
+    padding: 5px; /* Add padding */
 }
 
 .filterContTable tr {
     /* Add a bottom border to all table rows */
-    border-bottom: 1px solid #ddd;
+    /*border-bottom: 1px solid #ddd;*/
     /*word-wrap: break-word;*/
 }
 
