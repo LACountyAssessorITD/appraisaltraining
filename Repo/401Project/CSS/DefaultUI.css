@@ -209,7 +209,7 @@ body{
 	padding: 0px;
 
 	/*background: linear-gradient(to right,blue, red);*/
-    overflow: hidden;
+    overflow: auto;
     z-index: 1;
 }
 
