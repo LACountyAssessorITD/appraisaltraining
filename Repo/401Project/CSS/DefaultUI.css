@@ -210,7 +210,7 @@ body{
 
 	/*background: linear-gradient(to right,blue, red);*/
     overflow: auto;
-    z-index: 1;
+    z-index: 0;
 }
 
 .content:before {
