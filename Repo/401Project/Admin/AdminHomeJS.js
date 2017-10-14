@@ -225,6 +225,26 @@ $(document).ready(function(){
 
     /*Clickable dropdown*/
     $(".dropDownBtn").on("click", function(){
+        var clicked = false;
+        if($(this).data("clicked")) {
+            clicked = true;
+        }
+        $(".DPBCont").each(function() {
+            $(this).hide();
+            $(this).parent().children(".dropDownBtn").data("clicked",false);
+        });
+
+        $("#homeTab").text(clicked);
+
+        if(clicked) {
+            $(this).data("clicked",true);
+            $("#homeTab").text("0");
+        }
+        else {
+            $(this).data("clicked",false);
+            $("#homeTab").text("1");
+        }
+
     	if($(this).data("clicked")) {
     		$(this).data("clicked",false);
     		$(this).next().hide();

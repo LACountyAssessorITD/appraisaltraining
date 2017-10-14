@@ -45,6 +45,7 @@
     -moz-appearance: none;
   	appearance: none;
   	background: url('../iconImg/dropdownicon.png') 90% / 5% no-repeat #eee;
+	cursor: pointer;
 }
 
 .filterListCol {
@@ -86,18 +87,18 @@
 }
 
 .dropDownFilter select {
-	/*margin: 50px;*/
-  border: 1px solid #111;
-  background: transparent;
-  width: 150px;
-  padding: 5px 35px 5px 5px;
-  font-size: 1.2vw;
-  border: 1px solid #ccc;
-  height: 60px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: url('../iconImg/dropdownicon.png') 90% / 10% no-repeat #eee;
+ 	border: 1px solid #111;
+  	background: transparent;
+  	width: 150px;
+  	padding: 5px 35px 5px 5px;
+  	font-size: 1.2vw;
+  	border: 1px solid #ccc;
+  	height: 60px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  	appearance: none;
+  	background: url('../iconImg/dropdownicon.png') 90% / 10% no-repeat #eee;
+	cursor: pointer;
 }
 
 .DPBCont {

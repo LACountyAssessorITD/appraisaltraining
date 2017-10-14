@@ -1,10 +1,7 @@
 * {
 	box-sizing: border-box;
-
 	font-family: "Times New Roman";
-
 	text-transform: uppercase;
-
 	font-variant: small-caps;
 }
 
@@ -12,6 +9,10 @@ body{
 	margin: 0px;
 	font-size: 100%;
 	/*background: linear-gradient(rgb(153, 214, 255), rgb(230, 245, 255),rgb(153, 214, 255));*/
+}
+
+button, select {
+	cursor: pointer;
 }
 
 .top {
