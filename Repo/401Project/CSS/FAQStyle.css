@@ -32,10 +32,10 @@ p.pFiltersLabel {
 }
 
 .dropDownFilter p{
-	width: 90%;
+	width: 70%;
 	margin: 10px auto;
 	margin-top: 0;
-	font-size: 1.2vw;
+	font-size: 1.1vw;
 	color: white;
 	/*box-shadow: 2px 8px 10px 0px rgba(0,0,0,0.3);*/
 	overflow: auto;

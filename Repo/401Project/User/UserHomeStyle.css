@@ -9,11 +9,22 @@
 
 .leftContentColumn {
 	/*display: inline-block;*/
-	width: 30%;
+	width: 25%;
 	/*opacity: 0.9;*/
 	text-align: center;
 	height: 100%;
 	margin-bottom: 10px;
+}
+
+#filterBackground {
+	position: absolute;
+	/*position: relative;*/
+    top: 0px;
+    left: 0px;
+    width: 25%;
+    height: 100%;
+    background-color: rgb(65, 65, 76);
+    z-index: -1;
 }
 
 .yearType {
@@ -137,16 +148,19 @@
 	overflow: hidden;
 	outline: none;
 	cursor: pointer;
-	transition: width 0.5s;
+	transition: width 0.5s, box-shadow 0.1s;
 }
 
 #genReportBtn:hover {
 	width: 50%;
 }
 
+#genReportBtn:active {
+	box-shadow: none;
+}
 
 .optionContent {
-	position: absolute;
+	/*position: absolute;*/
 	margin: 30px 0;
 	width: 100%;
 	overflow: auto;
@@ -155,7 +169,7 @@
 
 .optionContent button {
 	margin: 10px auto;
-	width: 60%;
+	width: 80%;
 	padding: 30px;
 	display: block;
 	border-radius: 7px;
@@ -167,11 +181,15 @@
 	overflow: hidden;
 	outline: none;
 	cursor: pointer;
-	transition: width 0.5s, background-color 0.5s;
+	transition: width 0.5s, background-color 0.5s, box-shadow 0.1s;
 }
 
 .optionContent button:hover {
-	width: 50%;
+	width: 70%;
+}
+
+.optionContent button:active {
+	box-shadow: none;
 }
 
 .optionContent button[id="Download"] {
@@ -201,7 +219,7 @@
 .midColumn {
 	/*display: inline-block;*/
 	position: relative;
-	width: 70%;
+	width: 75%;
 	opacity: 1;
 	z-index: 4;
 	pad
@@ -214,13 +232,14 @@
 }
 
 .pdfView {
-	padding-right: 12px;
+	/*padding-right: 12px;
 	padding-bottom: 12px;
-	padding-left: 12px;
+	padding-left: 12px;*/
 	margin-top: 5px;
 	overflow: scroll;
+	margin-bottom: 20px;
 }
 
 #pdfBox {
-	box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.4);
+	/*box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.4);*/
 }
