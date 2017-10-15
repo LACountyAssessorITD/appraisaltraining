@@ -278,7 +278,20 @@ $(document).ready(function(){
 
     $("#sendEmailBtn").on("click", function() {
         var content = getEmailContent();
-        //Do something with content
+        $.ajax({
+            url:"../lib/php/admin/admin_email.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+                content:content
+            },
+            success:function(results){
+                alert("Email Sent!")
+            },
+            error: function(xhr, status, error){
+                alert("Fail to send email.");
+            }
+        });
 
     });
 
