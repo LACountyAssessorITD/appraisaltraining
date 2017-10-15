@@ -88,7 +88,7 @@ $(document).ready(function(){
                     fromYearInt:fromYearInt},
                 success:function(){
                     var parent = $("embed#pdfBox").parent();
-                    var newElement = "<embed id='pdfBox' src='"+"../lib/php/usr/singleUserReport.php"+"' width='100%' height='800px'></embed>";
+                    var newElement = "<embed id='pdfBox' src='"+"../lib/php/usr/Report_userSpecificYear.php"+"' width='100%' height='800px'></embed>";
                     $("embed#pdfBox").remove();
                     parent.append(newElement);
                     // Change Download Button Source
@@ -103,51 +103,6 @@ $(document).ready(function(){
 
     }
 
-
-    // $("#genReportBtn").click(function(){
-    //     alert("123123123");
-    //     //Get string result from selection (Years)
-    //     var toYearVal = $("#toYearSelect").val();
-    //     var fromYearVal = $("#fromYearSelect").val();
-    //     var specificYearVal = $("#specificYearSelect").val();
-
-    //     //Convert value of year from str to int
-    //     var toYearInt = parseInt(toYearVal);
-    //     var fromYearInt = parseInt(fromYearVal);
-    //     var specificYearInt = parseInt(specificYearVal);
-
-    //     //Get selected report type
-    //     var yearTypeStr = $("#yearTypeSelect").val();
-    //     var yearTypeKey = "";
-    //     if (yearTypeStr.toUpperCase()=="Specific Year".toUpperCase()) {
-    //         yearTypeKey = "specific";
-    //     }
-    //     else {
-    //         yearTypeKey = "range";
-    //     }
-
-    //     $.ajax({
-    //         url:"lib/php/reportCommunicator.php",
-    //         type: "POST",
-    //         data: {
-    //             yearTypeKey:yearTypeKey,
-    //             specificYearInt:specificYearInt},
-    //         success:function(){
-    //             var parent = $("embed#pdfBox").parent();
-    //             var newElement = "<embed id='pdfBox' src='"+"lib/php/singleUserReport.php"+"' width='100%' height='800px'></embed>";
-    //             $("embed#pdfBox").remove();
-    //             // var link ='<a href="singleUserReport.php" target="_blank">If you have trouble viewing the file, click here</a>';
-    //             // parent.append(link);
-    //             parent.append(newElement);
-
-    //             // Change Download Button Source
-    //             //getFiscalYears();
-    //         },
-    //         error: function(xhr, status, error){
-    //             alert("Fail to connect to the server");
-    //         }
-    //     });
-    // });
 
     //Hiding subset of filters from result of changing result type selection
     $("#yearTypeSelect").change(function () {
