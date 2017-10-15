@@ -1,3 +1,33 @@
+#outer {
+    position: relative;
+    left: 150px;
+    top: 20px;
+    width: 100px;
+    z-index: 2;
+}
+
+#inner {
+    background: red;
+}
+
+.cover {
+    border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+}
+
+#pdf {
+    position: relative;
+    z-index: 1;
+}
+
+
+
+
 .leftContentColumn, .rightContentColumn, .midColumn {
 	position: relative;
 	float: left;

@@ -13,13 +13,6 @@
 
 	<script src="AdminHomeJS.js"></script>
 
-	<script src="jquery.bgiframe.js"></script>	
-	<script type="text/javascript" charset="utf-8">
-      $(function() {
-          $('.bgiframe').bgiframe();
-      });
-  	</script>
-
 </head>
 
 <body>
@@ -43,6 +36,17 @@
 			<a id="issueTab" href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> <strong>Support</strong></a>
 		</nav>
 	</div>
+
+
+
+	<div id="outer">
+	    <div id="inner">my text that should be on top</div>
+	    <iframe class="cover" src="about:blank"></iframe>
+	</div>
+
+	<iframe id="pdf" src="http://legallo1.free.fr/french/CV_JLG.pdf" width="200" height="200"></iframe>
+
+
 
 	<div class="content">
 
@@ -322,8 +326,6 @@
 
 						<!-- <iframe id="pdfBox" title="PDF in an i-Frame" src="../OrderDetails.pdf" frameborder="0" scrolling="auto" width="100%" height="800px" style="border:0 z-index:-1000;"></iframe> -->
 
-						<div class="bgiframe"><iframe src="http://www.cameronmoll.com/about/cameronmoll_bio.pdf" width="100%" height="300"></iframe></div>
-						
 					</div>
 				</div>
 
