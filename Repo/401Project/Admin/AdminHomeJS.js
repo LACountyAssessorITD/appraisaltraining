@@ -32,9 +32,9 @@ $(document).ready(function(){
         $(".dropDownFilter").each(function() {
             // $("#homeTab").text($(this).children().prop("tagName"));
             var DPBContHtml = "<div class='DPBCont'>\
-                                    <form class='leftInput'>\
-                                        <input type='text' placeholder='Search..'' autocomplete='off'></form>\
                                     <div class='tableWrap'>\
+                                        <form class='leftInput'>\
+                                            <input type='text' placeholder='Search..'' autocomplete='off'></form>\
                                     	<div class='filterContTableBG'></div>\
                                         <table class='filterContTable'>\
                                             <col width='20'>\
@@ -63,7 +63,7 @@ $(document).ready(function(){
   $(".leftInput input").on("change keyup paste click", function(){
       input = $(this);
       filterText = input.val().toUpperCase();
-      filterTable = $(this).parent().next().children("table");
+      filterTable = $(this).parent().next().next("table");
 
       filterTable.children("tbody").children("tr").each(function() {
           cols = $(this).children("td").eq(1);
