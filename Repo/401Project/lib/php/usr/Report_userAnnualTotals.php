@@ -1,6 +1,6 @@
 <?php
 /*
-This Code dynamically generate individual PDF
+This Code dynamically generate individual PDF (Annual Totals Summary)
 @ Yining Huang
 */
 
@@ -39,7 +39,7 @@ $toYearInt = $_SESSION["toYearInt"];
 $pdf = new myPDF('L','mm','A4');
 $pdf->AliasNbPages();
 $pdf->AddPage();
-$pdf->personInfo($conn);
+$pdf->generate($conn);
 
 sqlsrv_close($conn);
 $pdf->Output('I');

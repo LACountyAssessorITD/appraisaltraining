@@ -1,4 +1,9 @@
 <?php
+/*
+This Code draw out individual PDF (Annual Totals Summary)
+@ Yining Huang
+*/
+
 require('../FPDF/fpdf.php');
 class myPDF extends FPDF {
     private $isSummaryPage = TRUE;
@@ -78,6 +83,7 @@ class myPDF extends FPDF {
 
     }
 
+    // Helper function to draw out summary's sub titles
     function addSummaryTitles() {
         $width=$this -> w; // Width of Current Page
         $height=$this->getY();
@@ -149,68 +155,68 @@ class myPDF extends FPDF {
         $this->Line(10,$height+5,$width-10,$height+5); // Line one Cross
     }
 
-    function personInfo($conn){
+
+    function generate($conn){
 
         // Get all related personal information
         $certid = $GLOBALS['certid'];
         $this->certid = $certid;
-        $lastName = ""; $firstName = ""; $middleName = "";
-        $county = "";
-        $temp_certDate = "";
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// ********************       Start of Personal Information          ********************
+
+        // Query from [New_Employee] table
+        $lastName = ""; $firstName = ""; $middleName = ""; //$county = "";
+        $temp_certDate = ""; $perm_certDate = ""; $adv_certDate = ""; 
         $status = ""; // active or not
-        $certDate = ""; $certType =""; $allowedcarryover="";
+        $specialty = "";
 
-        $tsql = "SELECT * FROM [AnnualReq] WHERE CertNo=".(string)$certid;
+        // Query from [New_CertHistory] table   
+        $certType =""; 
+        $allowedcarryover=""; 
 
+
+        // Get Names, Temp/Perm Certification Date, status and specialty 
+        // from [New_Employee]
+        $tsql = "SELECT * FROM [New_Employee] WHERE CertNo=".(string)$certid;
         $stmt = sqlsrv_query( $conn, $tsql);
-        $annualreq;
         if( $stmt === false )
         {
-             echo "Error in executing query.</br>";
+             echo "Error in executing query68.</br>";
              die( print_r( sqlsrv_errors(), true));
         }
         else {
             $row= sqlsrv_fetch_array($stmt);
-            $annualreq = $row;
             $lastName = $row['LastName'];
             $firstName = $row['FirstName'];
+            $middleName = $row['MiddleName'];
+            $status = $row['CurrentStatus'];
+            $specialty = $row['Auditor'];
             $this->lastName = $lastName;
             $this->firstName = $firstName;
             $this->middleName = $middleName;
-            $status = $row['Status'];
-            if ($row['PermCertDate'] == NULL) {
-              $certDate = "NA";
-            }
-            else {
-              $certDate = date("m/d/Y",strtotime($row['PermCertDate']));
-              $certType = $row['CertType'];
-            }
-
-            $allowedcarryover=$row['CarryForwardTotal'];
-        }
-        sqlsrv_free_stmt($stmt);
-
-        // Personal Information: to get specialty
-        $specialty = "";
-        $tsql = "SELECT * FROM [Summary] WHERE CertNo=".(string)$certid;
-        $stmt = sqlsrv_query($conn, $tsql);
-        if( $stmt === false )
-        {
-             echo "Error in executing query.</br>";
-             die( print_r( sqlsrv_errors(), true));
-        }
-        else {
-            $row= sqlsrv_fetch_array($stmt);
-            $specialty = $row['Auditor'];
             if ($specialty == "True") {
               $specialty = "Audit";
-            }
-            else {
+            } else {
               $specialty = "";
             }
+            if ($row['TempCertDate'] == NULL) {
+              $temp_certDate = "NA"; 
+            } else {
+              $temp_certDate = date("m/d/Y",strtotime($row['TempCertDate']));
+            }   
+            if ($row['PermCertDate'] == NULL) {
+              $perm_certDate = "NA"; 
+            } else {
+              $perm_certDate = date("m/d/Y",strtotime($row['PermCertDate']));
+            } 
+            if ($row['AdvCertDate'] == NULL) {
+              $adv_certDate = "NA"; 
+            } else {
+              $adv_certDate = date("m/d/Y",strtotime($row['AdvCertDate']));
+            } 
         }
         sqlsrv_free_stmt($stmt);
-
 
         $this->SetFont('Arial','B',10.5);
         $this->SetTextColor(0,0,0);
@@ -257,14 +263,42 @@ class myPDF extends FPDF {
         $this->Ln();
         $this->Cell(250,0,'Specialty:  '.$specialty,0,0,'R');
 
-        // Add Titles
+// ********************       End of Personal Information          ********************//
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// ********************       Start of Summary Page          ********************      //
+
+        // Add Summary Titles
         $this->Ln(14);
         $this->addSummaryTitles();
+
+
+
+
 
         $this->isSummaryPage = FALSE;
         $this->AddPage();
 
-        $certid = $GLOBALS['certid'];
+// ********************       End of Summary Page          ********************        //
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// ********************       Start of Yearly Details          ********************
+
+
+
+
+
+
+
+// ********************       End of Yearly Details          ********************
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
         $EndDate = ""; $Course = ""; $HoursEarned = "";
         $TotalHoursEarned = 0;
 
@@ -351,75 +385,10 @@ class myPDF extends FPDF {
         $this->Cell(260,0,$TotalHoursEarned,0,0,'R');
 
 
-        // Add Annual Training Hours Summary
-        $y=$this -> getY(); // Height of Current Page
-        if ($y >= 132) {    // Force Page Break if too low on page
-            $this->AddPage();
-            $this->ln(20);
-        }
-        $this->SetFont('Arial','BU',11);
-        $this->Cell(241,0,'Annual Training Hours Summary',0,0,'R');
 
-        //draw out the rectangular border
-        $y=$this -> getY(); // Height of Current Page
-        $this->SetLineWidth(0.5);
-        $this->Rect(163,$y-5,110,52);
-
-        $this->Ln(8);
-        $this->SetFont('Arial','',11);
-        $this->SetFont('','');
-        $this->Cell(237,0,'Carry Over Hours from Prior Years*:',0,0,'R');
-        $this->ln(0);
-        $this->Cell(260,0,$annualreq['PriorYearBalance'],0,0,'R');
-
-        $this->Ln(6);
-        $this->Cell(236.8,0,'Less Req. Hours for FY '.(string)$year."-".(string)($year+1),0,0,'R');
-        $this->ln(0);
-        $this->Cell(260,0,$annualreq['RequiredHours'],0,0,'R');
-
-        //draw out the first line
-        $x=$this -> getX();
-        $y=$this -> getY(); // Height of Current Page
-        $this->SetLineWidth(0.7);
-        $this->Line($x-89,$y+3.5,$x-2,$y+3.5); // Line  Cross
-
-        $this->Ln(8);
-        $this->Cell(236.8,0,'Sub-Total:',0,0,'R');
-        $this->ln(0);
-        $this->Cell(260,0,$annualreq['PriorYearBalance']-$annualreq['RequiredHours'],0,0,'R');
-
-        $this->Ln(6);
-        $this->Cell(236.8,0,'Plus FY '.(string)$year."-".(string)($year+1).' Hours Completed:',0,0,'R');
-        $this->ln(0);
-        $this->Cell(260,0,$TotalHoursEarned,0,0,'R');
-
-        //draw out the second line
-        $x=$this -> getX();
-        $y=$this -> getY(); // Height of Current Page
-        $this->SetLineWidth(0.7);
-        $this->Line($x-89,$y+3.5,$x-2,$y+3.5); // Line  Cross
-
-        $this->Ln(8);
-        $this->Cell(236.8,0,'Total Carry Over Hours:',0,0,'R');
-        $this->ln(0);
-        $totalcarryover = $TotalHoursEarned+$annualreq['PriorYearBalance']-$annualreq['RequiredHours'];
-        $GLOBALS['totalcarryover'] = $totalcarryover;
-        $this->Cell(260,0,$totalcarryover,0,0,'R');
-
-        $this->Ln(6);
-        $this->SetFont('Arial','B',11);
-        $this->Cell(236.8,0,'Allowed Carry Over Hours for Next FY*:',0,0,'R');
-        $this->ln(0);
-        $this->Cell(260,0,$allowedcarryover,0,0,'R');
-
-        $this->Ln(10);
-        $this->SetFont('Arial','I',10);
-        $this->Cell(260,0,'*Please refer to enclosed pamphlet for computation of excess hours',0,0,'R');
     }
 
     function footer(){
-
-
         $this->SetY(-15);
         $this->SetFont('Arial','',8);
         $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'R');

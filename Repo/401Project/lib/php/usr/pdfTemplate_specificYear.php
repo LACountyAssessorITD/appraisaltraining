@@ -1,4 +1,9 @@
 <?php
+/*
+This Code draw out the individual PDF (Specific Year Report)
+@ Yining Huang
+*/
+
 require('../FPDF/fpdf.php');
 class myPDF extends FPDF {
     function header() {
