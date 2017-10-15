@@ -82,6 +82,8 @@
 	</iframe>
 </div>
 
+<a target="popup" onclick="window.open('', 'popup', 'width=580,height=360,scrollbars=no, toolbar=no,status=no,resizable=yes,menubar=no,location=no,directories=no,top=10,left=10')" href="admin_email.php?mail=foo@example.com">foo@example.com</a>
+
 </body>
 </html>
 
