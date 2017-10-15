@@ -65,7 +65,7 @@ class myPDF extends FPDF {
         $stmt = sqlsrv_query( $conn, $tsql);
         if( $stmt === false )
         {
-             echo "Error in executing query.</br>";
+             echo "Error in executing query68.</br>";
              die( print_r( sqlsrv_errors(), true));
         }
         else {
@@ -95,7 +95,7 @@ class myPDF extends FPDF {
         $stmt = sqlsrv_query( $conn, $tsql);
         if( $stmt === false )
         {
-             echo "Error in executing query.</br>";
+             echo "Error in executing query98.</br>";
              die( print_r( sqlsrv_errors(), true));
         }
         else {
@@ -217,7 +217,7 @@ class myPDF extends FPDF {
         $stmt = sqlsrv_query( $conn, $tsql);
         if( $stmt === false )
         {
-             echo "Error in executing query.</br>";
+             echo "Error in executing query220.</br>";
              die( print_r( sqlsrv_errors(), true));
         }
         else {
@@ -326,7 +326,7 @@ class myPDF extends FPDF {
             $stmt = sqlsrv_query( $conn, $tsql);
             if( $stmt === false )
             {
-                 echo "Error in executing query.</br>";
+                 echo "Error in executing query329.</br>";
                  die( print_r( sqlsrv_errors(), true));
             }
             else {
