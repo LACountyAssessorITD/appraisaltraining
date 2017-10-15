@@ -20,7 +20,7 @@
     z-index: -1;
 }
 
-#pdf {
+#pdfBox {
     position: relative;
     z-index: 1;
 }
@@ -149,7 +149,7 @@
     font-size: 16px;
     background-color: white;
     background-image: url('../iconImg/searchicon.png');
-    background-position: 8px 10px; 
+    background-position: 8px 10px;
     background-repeat: no-repeat;
     padding: 10px 20px 10px 40px;
     transition: width 0.3s ease-in-out;
@@ -176,7 +176,7 @@
 
 	background-image: url('../iconImg/dropdownicon.png');
 	background-size: 15px 15px;
-    background-position: 5%; 
+    background-position: 5%;
     background-repeat: no-repeat;
 }
 
@@ -406,7 +406,7 @@
 
 #optionDiv {
 	/*width: 100%;*/
-	margin: 20px; 
+	margin: 20px;
 }
 
 #optionDiv textarea {
