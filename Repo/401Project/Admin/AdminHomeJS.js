@@ -51,6 +51,7 @@ $(document).ready(function(){
                                         <label>Selections:</label>\
                                         <ul></ul>\
                                     </div>\
+                                    <iframe class='cover' src='about:blank'></iframe>\
                                 </div>";
 
             $(this).append(DPBContHtml);
