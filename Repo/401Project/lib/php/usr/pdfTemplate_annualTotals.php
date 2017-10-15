@@ -249,16 +249,15 @@ class myPDF extends FPDF {
         $this->Cell(0,0,'County:');
 
         $this->Ln(5);
-        $this->Cell(0,0,'Temporary Cert. Date:');
+        $this->Cell(0,0,'Temporary Cert. Date: '.$temp_certDate);
         $this->Ln();
         $this->Cell(60);
-        $this->Cell(0,0,'Permanent Cert. Date:');
+        $this->Cell(0,0,'Permanent Cert. Date:'.$perm_certDate);
         $this->ln();
         $this->Cell(100);
-        $this->Cell(0,0,$certDate);
         $this->Ln();
         $this->Cell(130);
-        $this->Cell(0,0,'Advanced Cert. Date:');
+        $this->Cell(0,0,'Advanced Cert. Date: '.$adv_certDate);
 
         $this->Ln();
         $this->Cell(250,0,'Specialty:  '.$specialty,0,0,'R');
