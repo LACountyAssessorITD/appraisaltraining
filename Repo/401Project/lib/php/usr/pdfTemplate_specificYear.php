@@ -322,7 +322,7 @@ class myPDF extends FPDF {
 
 
             // Get Required Hours from [New_CarryoverLimits]
-            $tsql = "SELECT * FROM [New_CarryoverLimits] WHERE Status=".$status;
+            $tsql = "SELECT * FROM [New_CarryoverLimits] WHERE Status='".$status."'";
             $stmt = sqlsrv_query( $conn, $tsql);
             if( $stmt === false )
             {
