@@ -42,8 +42,5 @@ $pdf->AddPage();
 $pdf->generate($conn);
 
 sqlsrv_close($conn);
-if ($_POST['download_request'] == 'download')
-	$pdf->Output('D');
-else 
-	$pdf->Output('I');
+$pdf->Output('I');
 ?>
