@@ -13,7 +13,7 @@ include_once "pdfTemplate_specificYear.php";
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-$db = SQL_SERVER_LACDATABASE;
+$db = SQL_SERVER_BOEDATABASE;
 $connectionInfo = array( "UID"=>$uid,
                          "PWD"=>$pwd,
                          "Database"=>$db,
@@ -44,7 +44,7 @@ else {
 $pdf = new myPDF('L','mm','A4');
 $pdf->AliasNbPages();
 $pdf->AddPage();
-$pdf->generate($conn);
+$pdf->personInfo($conn);
 
 sqlsrv_close($conn);
 $pdf->Output('I');
