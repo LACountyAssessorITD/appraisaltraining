@@ -13,7 +13,7 @@ include_once "pdfTemplate_annualTotals.php";
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-$db = SQL_SERVER_BOEDATABASE;
+$db = SQL_SERVER_LACDATABASE;
 $connectionInfo = array( "UID"=>$uid,
                          "PWD"=>$pwd,
                          "Database"=>$db,
