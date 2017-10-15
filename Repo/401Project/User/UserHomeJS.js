@@ -70,6 +70,21 @@ $(document).ready(function(){
                     $("embed#pdfBox").remove();
                     parent.append(newElement);
                     // Change Download Button Source
+                    var download = 'download';
+                    $("#Download").on("click", function() {
+                        $.ajax({
+                            url:"../lib/php/usr/Report_userSpecificYear.php",
+                            type: "POST",
+                            data: {
+                                download:download
+                            },
+                            success:function(){
+                            },
+                            error: function(xhr, status, error){
+                                alert("Fail to connect to server when downloading.");
+                            }
+                        });
+                    });
 
                 },
                 error: function(xhr, status, error){
@@ -92,7 +107,21 @@ $(document).ready(function(){
                     $("embed#pdfBox").remove();
                     parent.append(newElement);
                     // Change Download Button Source
-
+                    var download = 'download';
+                    $("#Download").on("click", function() {
+                        $.ajax({
+                            url:"../lib/php/usr/Report_userAnnualTotals.php",
+                            type: "POST",
+                            data: {
+                                download:download
+                            },
+                            success:function(){
+                            },
+                            error: function(xhr, status, error){
+                                alert("Fail to connect to server when downloading.");
+                            }
+                        });
+                    });
                 },
                 error: function(xhr, status, error){
                     alert("Fail to connect to the server");
@@ -123,6 +152,8 @@ $(document).ready(function(){
 
 
     $("#genReportBtn").click(generateReport);
+
+
 
 });
 
