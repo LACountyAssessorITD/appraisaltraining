@@ -258,9 +258,20 @@ $(document).ready(function(){
 
 
     //Email Alert
+
+    $("#optionDiv").hide();
     $("#EmailAll").on("click", function() {
-    	alert("email");
+    	if($(this).data("clicked")) {
+    		$(this).data("clicked",false);
+    		$("#optionDiv").hide();
+    	}
+    	else {
+	    	$(this).data("clicked",true);
+	    	$("#optionDiv").show();
+    	}
     });
+
+
 
 });
 

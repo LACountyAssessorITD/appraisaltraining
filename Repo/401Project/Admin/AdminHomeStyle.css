@@ -314,10 +314,6 @@
 	overflow: scroll;
 }
 
-#pdfBox {
-	/*box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.4);*/
-}
-
 .rightContentColumn {
 	width: 100%;
 }
@@ -365,6 +361,24 @@
 .rightContentColumn button[id="EmailAll"]:hover {
 	/*margin-top: 80px;*/
 	background-color: rgb(179, 204, 255);
+}
+
+#optionDiv {
+	/*width: 100%;*/
+	margin: 20px; 
+}
+
+#optionDiv textarea {
+	padding: 15px;
+	font-size: 1.5vw;
+	width: 100%;
+	height: 300px;
+	font-variant: small-caps;
+
+
+	font-family: "Times New Roman";
+	text-transform: none;
+	font-variant: normal;
 }
 
 .viewAndOption:after {
