@@ -54,14 +54,14 @@ body{
 
 .header div{
 	float: left;
-	color: #fff;
+	color: #5379fa !important;
 	font-family: 'Exo', sans-serif;
 	font-size: 35px;
 	font-weight: 200;
 }
 
 .header div span{
-	color: #5379fa !important;
+	color: #fff;
 }
 
 .login{
@@ -69,7 +69,7 @@ body{
 	top: calc(50% - 75px);
 	left: calc(50% - 50px);
 	height: 150px;
-	width: 350px;
+	width: 260px;
 	padding: 10px;
 	z-index: 2;
 }
@@ -145,6 +145,13 @@ body{
 ::-moz-input-placeholder{
    color: rgba(255,255,255,0.6);
 }
+
+div[class="login"] {
+    background-color: black;
+    opacity: 0.5;
+    filter: Alpha(opacity=50); /* IE8 and earlier */
+    border-radius: 10px;
+}
     </style>
 
 </head>
@@ -153,7 +160,7 @@ body{
   <div class="body"></div>
 		<div class="grad"></div>
 		<div class="header">
-			<div>Site<span>Random</span></div>
+			<div>LA<span>County</span></div>
 		</div>
 		<br>
 		<div class="login">
@@ -163,6 +170,5 @@ body{
 				<input type="submit" value="Login" name="login">
 			</form>
 		</div>
-  
 </body>
 </html>
