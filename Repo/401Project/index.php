@@ -54,14 +54,16 @@ body{
 
 .header div{
 	float: left;
-	color: #5379fa !important;
+	color: #fff;
 	font-family: 'Exo', sans-serif;
 	font-size: 35px;
 	font-weight: 200;
+	font-weight: bold;
 }
 
 .header div span{
-	color: #fff;
+	color: #56BDFC !important;
+	font-weight: bold;
 }
 
 .login{
