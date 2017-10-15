@@ -37,6 +37,17 @@
 		</nav>
 	</div>
 
+
+
+	<div id="outer">
+	    <div id="inner">my text that should be on top</div>
+	    <iframe class="cover" src="about:blank"></iframe>
+	</div>
+
+	<iframe id="pdf" src="http://legallo1.free.fr/french/CV_JLG.pdf" width="200" height="200"></iframe>
+
+
+
 	<div class="content">
 
 
@@ -311,7 +322,10 @@
 						<h3 id="previewLabel" class="banLabel">Preview Report</h3>
 					</div>
 					<div class="pdfView">
-						<embed id="pdfBox" src="../OrderDetails.pdf" width="100%" height="650px"></embed>
+						<!-- <embed id="pdfBox" src="../OrderDetails.pdf" width="100%" height="650px"></embed> -->
+
+						<!-- <iframe id="pdfBox" title="PDF in an i-Frame" src="../OrderDetails.pdf" frameborder="0" scrolling="auto" width="100%" height="800px" style="border:0 z-index:-1000;"></iframe> -->
+
 					</div>
 				</div>
 
@@ -324,6 +338,9 @@
 					<button id="Download"><i class="fa fa-download" aria-hidden="true"></i> Download</button>
 					<button id="Print"><i class="fa fa-print" aria-hidden="true"></i> Print</button>
 					<button id="EmailAll"><i class="fa fa-envelope" aria-hidden="true"></i> Email</button>
+				</div>
+				<div id="optionDiv">
+					<textarea placeholder="Your email content..."></textarea>
 				</div>
 
 			</div>
