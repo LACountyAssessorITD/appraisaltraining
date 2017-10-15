@@ -300,8 +300,6 @@
 				<button>Apply Filter</button>
 			</div>
 
-			 <iframe class="cover" src="about:blank"></iframe>
-
 		</div>
 
 		<div class="rightContent">
@@ -315,7 +313,12 @@
 					<div class="pdfView">
 						<!-- <embed id="pdfBox" src="../OrderDetails.pdf" width="100%" height="650px"></embed> -->
 
-						<iframe id="pdfBox" title="PDF in an i-Frame" src="../OrderDetails.pdf" frameborder="0" scrolling="auto" width="100%" height="800px" style="border:0"></iframe>
+						<!-- <iframe id="pdfBox" title="PDF in an i-Frame" src="../OrderDetails.pdf" frameborder="0" scrolling="auto" width="100%" height="800px" style="border:0"></iframe> -->
+
+						<object data="http://www.cameronmoll.com/about/cameronmoll_bio.pdf" type="application/pdf" width="100%" height="300">
+  							<embed src="http://www.cameronmoll.com/about/cameronmoll_bio.pdf" type="application/pdf" />
+  							<param name="wmode" value="transparent" />
+  						</object>
 					</div>
 				</div>
 
