@@ -276,7 +276,7 @@ $(document).ready(function(){
         return content;
     }
 
-    $("#sendEmail").on("click", function() {
+    $("#sendEmailBtn").on("click", function() {
         var content = getEmailContent();
         //Do something with content
 
