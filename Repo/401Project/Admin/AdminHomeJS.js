@@ -271,7 +271,16 @@ $(document).ready(function(){
     	}
     });
 
+    function getEmailContent() {
+        var content = $("#emailContentTA").val();
+        return content;
+    }
 
+    $("#sendEmail").on("click", function() {
+        var content = getEmailContent();
+        //Do something with content
+
+    });
 
 });
 
