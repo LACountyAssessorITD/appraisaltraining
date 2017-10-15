@@ -281,15 +281,17 @@ $(document).ready(function(){
         $.ajax({
             url:"../lib/php/admin/admin_email.php",
             type: "POST",
-            dataType: "json",
             data: {
                 content:content
             },
             success:function(results){
-                alert("Email Sent!")
+                if (results == "success")
+                    alert("Email Sent!");
+                else
+                    alert("Error when sending email");
             },
             error: function(xhr, status, error){
-                alert("Fail to send email.");
+                alert("Fail to connect to server when sending email.");
             }
         });
 

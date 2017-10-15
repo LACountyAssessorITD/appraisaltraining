@@ -7,12 +7,10 @@ send the PDF as attachment to GMAIL
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-include_once 'lib/PHPMailer/src/Exception.php';
-include_once 'lib/PHPMailer/src/PHPMailer.php';
-include_once 'lib/PHPMailer/src/SMTP.php';
+include_once '../PHPMailer/src/Exception.php';
+include_once '../PHPMailer/src/PHPMailer.php';
+include_once '../PHPMailer/src/SMTP.php';
 
-
-$_POST["submit"]；
 $message = $_POST['content'];
 
 $mail = new PHPMailer;
@@ -34,7 +32,7 @@ $mail->Body 	 = $mail->Body."\r\nBest Regards,\r\n\r\nAdmin";
 $mail->AddAddress('assessortestpdf@gmail.com');
 //$mail->addStringAttachment($pdf->Output("S",'Report_'.$certid.'.pdf'), 'Report_'.$certid.'.pdf', $encoding = 'base64', $type = 'application/pdf');
 if(!$mail->send()) {
-     echo "fail";
+   echo "fail";
 }
 else{
    echo "success";
