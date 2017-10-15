@@ -23,10 +23,9 @@ $mail->Port = 587;                              // SMTP Port
 $mail->FromName  = 'Assessor PDF Sender';
 
 $mail->Subject   = 'New Report Remainder';
-$mail->Body      = "Hi somebody, \r\nPlease see the attached";
+$mail->Body      = "Hi somebody, \r\n	Please see the attached. \r\n\r\nBest,\r\nAdmin";
 $mail->AddAddress('assessortestpdf@gmail.com');
 //$mail->addStringAttachment($pdf->Output("S",'Report_'.$certid.'.pdf'), 'Report_'.$certid.'.pdf', $encoding = 'base64', $type = 'application/pdf');
-$mail->send();
 if(!$mail->send()) {
      echo "fail";
 }
