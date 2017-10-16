@@ -70,7 +70,7 @@ session_start();
 		 	if($rows > 0) {
 				echo "This is an appraiser";
 			}
-			e;se {
+			else {
 				echo "You are not an appraiser";
 			}
 		}
