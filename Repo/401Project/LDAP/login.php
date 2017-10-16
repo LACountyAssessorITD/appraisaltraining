@@ -3,7 +3,6 @@ include_once "authenticate.php";
 include_once "../lib/php/constants.php";
 session_start();
 
-if(isset($_POST["submit"])) {
 	$ldapusername = "laassessor"."\\".$_POST["username"];
 	$_SESSION['USERNAME']=$_POST["username"];
 	$ldappassword = $_POST["password"];
@@ -16,10 +15,10 @@ if(isset($_POST["submit"])) {
 	} else {	
 		
 		// Get display name from LDAP
-		
+		// Get Employee ID from LDAP
 		$server = LDAP_SERVER_NAME;
 		$ldap = ldap_connect($server);
-		$userid=$_POST["usernameInput"];
+		$userid=$_POST["username"];
 		if ($ldap) {	
 			ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
 			ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
@@ -28,7 +27,6 @@ if(isset($_POST["submit"])) {
 			$filter = '(samaccountname='.$userid.')';
 			$attributes = array("displayname");
 			$result = ldap_search($ldap, $basedn, $filter, $attributes);
-
 			if (FALSE !== $result) {
 				$info = ldap_get_entries($ldap, $result);
 				if($info["count"] > 0) {				
@@ -37,79 +35,48 @@ if(isset($_POST["submit"])) {
 					}
 				}
 				else {
-					echo "error";
+					echo "error when try to connect LDAP 38";
 				}			
 			}
 		}
 		
-
-
-		$servername = SQL_SERVER_NAME;
-		$username = SQL_SERVER_USERNAME;
-		$password = SQL_SERVER_PASSWORD;
-		$dbname = SQL_SERVER_LACDATABASE;
-	
-		////$conn = new mysqli($servername, $username, $password, $dbname);
-		$connectionInfo = array("UID"=>$username, "PWD"=>$password, "Database"=>$dbname);
-		$conn = sqlsrv_connect($servername, $connectionInfo);
-		
-		if($conn === false) {
-			echo "Connection could not be established.";
-			die(print_r(sqlsrv_errors(), true));
+		$empid;
+		// See if it is an appraiser
+		$serverName = SQL_SERVER_NAME;
+		$uid = SQL_SERVER_USERNAME;
+		$pwd = SQL_SERVER_PASSWORD;
+		$db = SQL_SERVER_LACDATABASE;
+		$connectionInfo = array( "UID"=>$uid,
+		                         "PWD"=>$pwd,
+		                         "Database"=>$db,
+		             "ReturnDatesAsStrings"=>true);  // convert datetime to string
+		/* Connect using SQL Server Authentication. */
+		$conn = sqlsrv_connect( $serverName, $connectionInfo);
+		if( $conn === false )
+		{
+		     echo "Unable to connect.</br>";
+		     die( print_r( sqlsrv_errors(), true));
 		}
-		
-		echo "Connect Successfully\n";	
-		// Query SQL to see whether the user has correct role
-		$sql="SELECT * FROM users WHERE Username='".$_POST["usernameInput"]."' AND ActiveStatus=1";
-		$params = array();
-		$options = array("Scrollable" => SQLSRV_CURSOR_KEYSET);
-		$result = sqlsrv_query($conn, $sql, $params, $options);
-		if($result === false) {
-			die(print_r(sqlsrv_errors(), true));
+
+		$tsql = "SELECT * FROM [tblCertificate Nos] WHERE EmpNo='".$empid."'";
+		$stmt = sqlsrv_query( $conn, $tsql);
+		if( $stmt === false )
+		{
+		     echo "Error in executing query.</br>";
+		     die( print_r( sqlsrv_errors(), true));
 		}
-		$rows = sqlsrv_num_rows($result);
- 		if($rows > 0) {
-			// Log in ==> Session
-
- 			// Get Role , then ==> Session
-
- 			// Redirect to page if User:
-				// header("Location: " . HOME_PAGE_URL);
- 			// or if Admin:
-			
+		else {
+			$rows = sqlsrv_num_rows($stmt);
+		 	if($rows > 0) {
+				echo "This is an appraiser";
+			}
+			e;se {
+				echo "You are not an appraiser";
+			}
 		}
-		else {	
-			$_SESSION["logged_in"] = FALSE;
-			header("Location: " . LOGIN_ERROR_URL);
-		}
-		////$conn->close();
-		sqlsrv_close ($conn);		
-	}
+
+		sqlsrv_free_stmt($stmt);
+		sqlsrv_close($conn);
 
 
-	
-
-
-	/*
-	$success = false;
-	if(empty($_POST['username']))
-	{
-		$this->HandleError("UserName is empty!");
-		$success = false;
-	} else if(empty($_POST['password']))
-	{
-		$this->HandleError("Password is empty!");
-		$success = false;
-	}
-	$username = trim($_POST['username']);
-	$password = trim($_POST['password']);
-	if(!$this->CheckLoginInDB($username,$password))
-	{
-		return false;
-	}
-	session_start();
-	$_SESSION[$this->GetLoginSessionVar()] = $username;
-	return true;
-	*/
-}
 ?>

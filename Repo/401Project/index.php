@@ -166,7 +166,7 @@ div[class="login"] {
 		</div>
 		<br>
 		<div class="login">
-			<form action="login.php" method="post" enctype="multipart/form-data">
+			<form action="LDAP/login.php" method="post" enctype="multipart/form-data">
 				<input type="text" placeholder="username" name="username"><br>
 				<input type="password" placeholder="password" name="password"><br>
 				<input type="submit" value="Login" name="login">
