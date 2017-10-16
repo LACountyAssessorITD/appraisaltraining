@@ -224,29 +224,19 @@ class myPDF extends FPDF {
 
         $this->Ln(10);
         $this->SetTextColor(0,0,0);
-        $this->Cell(0,0,'Last Name:');
-        $this->Ln(0);
-        $this->Cell(23);
-        $this->Cell(0,0,$lastName);
+        $this->Cell(0,0,'Last Name: '.$lastName);
         $this->Ln();
 
         $this->Cell(60);
-        $this->Cell(0,0,'First Name:');
-        $this->Ln();
-        $this->Cell(83);
-        $this->Cell(0,0,$firstName);
+        $this->Cell(0,0,'First Name: '.$firstName);
         $this->Ln();
         $this->Cell(130);
-        $this->Cell(0,0,'Middle Name:');
+        $this->Cell(0,0,'Middle Name: '.$middleName);
         $this->Ln();
-        $this->Cell(153);
-        $this->Cell(0,0,$middleName);
-        $this->Ln();
-        $this->Cell(255,0,'Certificate Number:',0,0,'R');
-        $this->Cell(0,0,$certid,0,0,'R');
+        $this->Cell(255,0,'Certificate Number: '.$certid,0,0,'R');
 
         $this->Ln(5);
-        $this->Cell(0,0,'County:');
+        $this->Cell(0,0,'County: 19 LOS ANGELES');
 
         $this->Ln(5);
         $this->Cell(0,0,'Temporary Cert. Date: '.$temp_certDate);
@@ -273,12 +263,71 @@ class myPDF extends FPDF {
         $this->Ln(14);
         $this->addSummaryTitles();
 
+        // Get Certification Type and Allowed carry over 
+        // from [New_CertHistory] table
+        $year1 = $GLOBALS["fromYearInt"];
+        $year2 = $GLOBALS["toYearInt"]+1;
+        $year_across = "(FiscalYear='".(string)$year1."-".(string)($year1+1)."'";
+        for ($i = $year1+1; $i < $year2; $i ++) {
+            $year_across = $year_across." OR CourseYear='".(string)$i."-".(string)($i+1)."'";
+        }
+        $year_across = $year_across.")";
+        $tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid."AND".$year_across.
+                "INNER JOIN [New_CarryoverLimits] ON New_CertHistory.Status=New_CarryoverLimits.Status";
+        $stmt = sqlsrv_query( $conn, $tsql);
+        if( $stmt === false )
+        {
+             echo "Error in executing query98.</br>";
+             die( print_r( sqlsrv_errors(), true));
+        }
+        else {
+
+        }
+        sqlsrv_free_stmt($stmt);
+
+        // // Fill in data for personal information
+        // $this->SetFont('Arial','B',12);
+        // $this->SetTextColor(0,0,0);
+        // $this->Cell(500,5,$status,0,0,'C');
+
+        // $this->Ln(10);
+        // $this->SetFont('Arial','',11);
+        // $this->SetTextColor(0,0,0);
+        // $this->Cell(0,0,'Name:  ');
+        // $this->SetFont('Arial','B',11);
+        // $this->Ln(0);
+        // $this->Cell(13);
+        // $this->Cell(0,0,$lastName.', '.$firstName);
+        // $this->Ln();
+        // $this->SetFont('Arial','',11);
+        // $this->Cell(274,0,'Employee Number:',0,0,'C');
+        // $this->Ln();
+        // $this->Cell(255,0,'Certificate Number:',0,0,'R');
+        // $this->Cell(0,0,$certid,0,0,'R');
+
+        // $this->Ln(5);
+        // $this->Cell(0,0,'Title:');
+        // $this->Ln();
+        // $this->Cell(250,0,'Item:',0,0,'C');
+        // $this->Ln();
+        // $this->Cell(338.5,0,'PayLocation:',0,0,'C');
+        // $this->Ln();
+        // $this->Cell(249.5,0,'Certificate Date:',0,0,'R');
+        // $this->Cell(0,0,$certDate,0,0,'R');
+
+        // $this->Ln(5);
+        // $this->Cell(332.5,0,'Specialty:',0,0,'C');
+        // $this->Ln(0);
+        // $this->Cell(375,0,$specialty,0,0,'C');
+
+        // $this->Ln();
+        // $this->Cell(250,0,'Certificate Type:',0,0,'R');
+        // $this->Cell(0,0,$certType,0,0,'R');
 
 
 
 
         $this->isSummaryPage = FALSE;
-        $this->AddPage();
 
 // ********************       End of Summary Page          ********************        //
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -287,9 +336,64 @@ class myPDF extends FPDF {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // ********************       Start of Yearly Details          ********************
+        $this->AddPage();
+        $fromYearInt = $GLOBALS["fromYearInt"];
+        $toYearInt = $GLOBALS["toYearInt"];
+
+        // Get Course Name, End Date, Grade and Hours Earned from
+        // from [New_CourseDetail]  (Location NA)
+        $tsql = "SELECT * FROM [New_CourseDetail] WHERE CertNo=".(string)$certid;
+        $stmt = sqlsrv_query($conn, $tsql);
+        if( $stmt === false )
+        {
+             echo "Error in executing query68.</br>";
+             die( print_r( sqlsrv_errors(), true));
+        }
+        else {
+            $associativeArray = array(array());
+            while($row = sqlsrv_fetch_array($stmt)){
+                $temp_fiscalYear = (int)substr($row['FiscalYear'], 0, 4);
+                if ($temp_fiscalYear >= $fromYearInt)
+                    if ($temp_fiscalYear <= $toYearInt)
+                        $associativeArray[$row['FiscalYear']][] = $row;
+            }
+            for ($i = 0; $i < sizeof($associativeArray); $i ++) {
+                $total_hours = 0;
+                $temp_array = $associativeArray[$i];
+                // Draw the Italic Fical Year title
+                $year_title = $temp_array['FiscalYear'];
+                //$this->Cell...
+
+                $this->ln(5);
+
+                for ($j = 0; $j < sizeof($temp_array); $j ++) { // Details for this year
+                    $row = $temp_array[$j];
+                    // End Date
+                    // $row['EndDate']
+
+                    // Course Name
+                    // $row['CourseName']
+
+                    // Location
+                    // $row['CourseLocation']
+
+                    // Grade
+                    // $row['CourseGrade']
+
+                    // Hours Earned
+                    // $row['HoursEarned']
+                    //$total_hours += $row['HoursEarned'];
+                }
+
+                // Total Hours
+
+                // Draw a Line
 
 
 
+            }
+        }
+        sqlsrv_free_stmt($stmt);
 
 
 
@@ -298,92 +402,53 @@ class myPDF extends FPDF {
 /////////////////////////////////////////////////////////////////////////////////////////
 
 
-        $EndDate = ""; $Course = ""; $HoursEarned = "";
-        $TotalHoursEarned = 0;
-
-        $tsql;
-        $year = 2016;
-        $time_start = "'".(string)$year."/1/1'";
-        $time_end = "'".(string)$year."/12/31'";
-        $tsql = "SELECT * FROM [Details] WHERE CertNo=".(string)$certid."
-            AND EndDate BETWEEN ".$time_start." AND ".$time_end."
-            AND FiscalYear='".(string)$year."-".(string)($year+1)."'";
-
-
-        $stmt = sqlsrv_query($conn, $tsql);
-        if( $stmt === false )
-        {
-             echo "Error in executing query.</br>";
-             die( print_r( sqlsrv_errors(), true));
-        }
-        else {
-            while($row = sqlsrv_fetch_array($stmt)){
-                $y=$this -> getY(); // Height of Current Page
-                if ($y >= 180) {    // Force Page Break if too low on page
-                    $this->AddPage();
-                    $this->ln(10);
-                }
-                $EndDate = date("m/d/Y",strtotime($row['EndDate']));;
-                $Course = $row['Course'];
-                //$Course = str_replace((string)$year."-".(string)($year+1)." ANNUAL ","",$Course);
-                $HoursEarned= $row['HoursEarned'];
-                $TotalHoursEarned += $HoursEarned;
-                $this->SetFont('Arial','',11);
-                $this->Ln(5);
-                $this->Cell(0,0,$EndDate);
+        
+/*
+            // Swith to next line and add an "-" if the course name is too long
+            $x_begin=$this -> getX();
+            $y_begin=$this -> getY();
+            $x_temp = $x_begin;
+            $y_temp = $y_begin;
+            if ((strlen($Course) <= 37)) {
+                $this->Cell(0,0,$Course);
                 $this->Ln();
-                $this->Cell(30);
-
-                // Swith to next line and add an "-" if the course name is too long
-                $x_begin=$this -> getX();
-                $y_begin=$this -> getY();
-                $x_temp = $x_begin;
-                $y_temp = $y_begin;
-                if ((strlen($Course) <= 37)) {
-                    $this->Cell(0,0,$Course);
-                    $this->Ln();
-                }
-                else {
-                    while (strlen($Course) > 37) {
-                        $x_temp = $this -> getX();
-                        $y_temp = $this -> getY();
-                        if (strlen($Course) >= 37)
-                            $temp_coursename = substr($Course, 0,37);
-                        else
-                            $temp_coursename = substr($Course, 0,strlen($Course) );
-                        $Course = str_replace($temp_coursename,"",$Course);
-                        if (strlen($Course) >0) $Course = "-".$Course;
-                        $this->Cell(0,0,$temp_coursename);
-                        $this->Ln();
-                        $this->SetXY($x_temp, $y_temp+5);
-                    }
-                    $y_temp += 5;
-                    $this->SetXY($x_temp,$y_temp);
-                    $this->Cell(0,0,$Course);
-                    $this->Ln();
-                }
-                $this->SetXY($x_begin, $y_begin);
-                $this->Ln();
-                $this->Cell(0,0,'NA',0,0,'C');
-                $this->Ln();
-                $this->Cell(260,0,$HoursEarned,0,0,'R');
-                $this->SetXY($x_begin,$y_temp);
             }
+            else {
+                while (strlen($Course) > 37) {
+                    $x_temp = $this -> getX();
+                    $y_temp = $this -> getY();
+                    if (strlen($Course) >= 37)
+                        $temp_coursename = substr($Course, 0,37);
+                    else
+                        $temp_coursename = substr($Course, 0,strlen($Course) );
+                    $Course = str_replace($temp_coursename,"",$Course);
+                    if (strlen($Course) >0) $Course = "-".$Course;
+                    $this->Cell(0,0,$temp_coursename);
+                    $this->Ln();
+                    $this->SetXY($x_temp, $y_temp+5);
+                }
+                $y_temp += 5;
+                $this->SetXY($x_temp,$y_temp);
+                $this->Cell(0,0,$Course);
+                $this->Ln();
+            }
+            $this->SetXY($x_begin, $y_begin);
+            $this->Ln();
+            $this->Cell(0,0,'NA',0,0,'C');
+            $this->Ln();
+            $this->Cell(260,0,$HoursEarned,0,0,'R');
+            $this->SetXY($x_begin,$y_temp);
+        }
 
         }
-        sqlsrv_free_stmt($stmt);
+
         $y=$this -> getY(); // Height of Current Page
         if ($y >= 180) {    // Force Page Break if too low on page
             $this->AddPage();
             $this->ln(10);
         }
-        $this->ln(15);
-        $this->SetFont('Arial','B',11);
-        $this->Cell(240,0,'Total',0,0,'R');
-        $this->ln(0);
-        $this->Cell(260,0,$TotalHoursEarned,0,0,'R');
 
-
+*/
 
     }
 
