@@ -262,7 +262,7 @@ class myPDF extends FPDF {
         // Add Summary Titles
         $this->Ln(14);
         $this->addSummaryTitles();
-
+        /*
         // Get Certification Type and Allowed carry over
         // from [New_CertHistory] table
         $year1 = $GLOBALS["fromYearInt"];
@@ -284,7 +284,7 @@ class myPDF extends FPDF {
 
         }
         sqlsrv_free_stmt($stmt);
-
+        */
         // // Fill in data for personal information
         // $this->SetFont('Arial','B',12);
         // $this->SetTextColor(0,0,0);
@@ -361,7 +361,7 @@ class myPDF extends FPDF {
                 $total_hours = 0;
                 $temp_array = $associativeArray[$i];
                 // Draw the Italic Fical Year title
-                $year_title = $temp_array['FiscalYear'];
+                //$year_title = $temp_array['FiscalYear'];
                 //$this->Cell...
 
                 $this->ln(5);
