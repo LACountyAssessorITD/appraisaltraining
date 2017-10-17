@@ -6,8 +6,6 @@
 	// put include_once statements here:
 	include_once "../../constants.php";
 
-
-
 	////////////////////////////////// Mian's sql server - open connection //////////////////////////////////
 	$serverName = SQL_SERVER_NAME;
 	$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
@@ -29,25 +27,14 @@
 	$drop_E		= "IF OBJECT_ID('dbo.New_Employee', 'U') IS NOT NULL DROP TABLE dbo.New_Employee";
 	// 2. run the above queries
 	$srvr_stmt = sqlsrv_query( $conn, $drop_CH );
-	if( $srvr_stmt === false ) {
-		die( print_r( sqlsrv_errors(), true));
-	}
+	if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 	$srvr_stmt = sqlsrv_query( $conn, $drop_CD );
-	if( $srvr_stmt === false ) {
-		die( print_r( sqlsrv_errors(), true));
-	}
+	if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 	$srvr_stmt = sqlsrv_query( $conn, $drop_COL );
-	if( $srvr_stmt === false ) {
-		die( print_r( sqlsrv_errors(), true));
-	}
+	if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 	$srvr_stmt = sqlsrv_query( $conn, $drop_EX );
-	if( $srvr_stmt === false ) {
-		die( print_r( sqlsrv_errors(), true));
-	}
+	if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 	$srvr_stmt = sqlsrv_query( $conn, $drop_E );
-	if( $srvr_stmt === false ) {
-		die( print_r( sqlsrv_errors(), true));
-	}
 	// 3. create table 3 Employee (DO THIS FIRST! CertNo need to be a foreign key for all other tables!)
 	$create_E = "CREATE TABLE dbo.New_Employee (
 		CertNo float,						--dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
@@ -121,7 +108,6 @@
 	if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 	$srvr_stmt = sqlsrv_query( $conn, $create_EX );
 	if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-
 	////////////////////////////////// read data from xlsx or mdb, and then insert into SQL sever //////////////////////////////////
 	// JamesT's xlsx reading - initialization
 	error_reporting(E_ALL ^ E_NOTICE);
@@ -129,7 +115,6 @@
 	$summary_filename 		= "summary.xlsx";
 	$details_filename 		= "details.xlsx";
 	$annualreq_filename 	= "annualreq.xlsx";
-
 	// 1. Summary
 	// JT:
 	$excelReader = PHPExcel_IOFactory::createReaderForFile($summary_filename);
@@ -144,17 +129,17 @@
 		$LastName	= $summary->getCell('D'.$row_count)->getValue();
 		$FirstName	= $summary->getCell('E'.$row_count)->getValue();
 		$Auditor	= $summary->getCell('H'.$row_count)->getValue();
-		// echo $row_count."\t".$LastName."\t".$FirstName."\t".(int)$CertNo."\t".$Auditor."<br />";
 		$params 	= array($CertNo, $FirstName, $LastName, $Auditor);
 		$stmt 		= sqlsrv_query( $conn, $Summary_to_Employee, $params);
 		if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
 		$row_count ++;
+		// echo $row_count."\t".$LastName."\t".$FirstName."\t".(int)$CertNo."\t".$Auditor."<br />"; // debug
+
 	}
 	echo "===== Summary into Employee finished, ";
 	echo $row_count;
 	echo " rows inserted. =====<br />";
 
-	/* // block comment starter
 
 	////////////////////////////////// 2. AnnualReq //////////////////////////////////
 	// $AnnualReq_mdb  = "SELECT t.LastName, t.FirstName, t.MiddleName, t.CertNo, t.CountyCode, t.CountyName, t.TempCertDate,
@@ -210,5 +195,6 @@
 	// 2) AnnualReq -> Employee
 	// very tricky, do it later; how to match CertNo in AnnualReq to CertNo in Employee(PK)? using SELECT WHERE (match) would be too slow...?
 
-// */ // ML: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
+	/* // block comment starter
+	// */ // ML: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
 ?>
