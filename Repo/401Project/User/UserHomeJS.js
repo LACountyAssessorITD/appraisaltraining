@@ -115,9 +115,14 @@ $(document).ready(function(){
             $("#fromYearLabel, #toYearLabel").hide();
             $("#fromYearDiv, #toYearDiv").hide();
         }
-        else {
+        else if (str.toUpperCase()=="Completed Course".toUpperCase()){
             $(".filterListCol p, .dropDownFilter").show();
             $("#specificYearLabel, #specificYearDiv").hide();
+        }
+        else {
+            $("#specificYearLabel, #specificYearDiv").hide();
+            $("#fromYearLabel, #toYearLabel").hide();
+            $("#fromYearDiv, #toYearDiv").hide();
         }
     }).change();
 
