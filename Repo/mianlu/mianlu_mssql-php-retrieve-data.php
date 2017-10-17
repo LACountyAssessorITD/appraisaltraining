@@ -98,5 +98,3 @@ odbc_close($connect);
 </body>
 </html>
 
-
-s
