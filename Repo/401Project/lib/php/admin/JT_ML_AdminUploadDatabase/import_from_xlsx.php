@@ -137,7 +137,7 @@
 
 	}
 	echo "===== Summary into Employee finished, ";
-	echo $row_count;
+	echo $row_count-2;
 	echo " rows inserted. =====<br />";
 	// 2. AnnualReq pt1 - AnnualReq -> CertHistory
 	// JT:
@@ -149,9 +149,9 @@
 													CurrentYearBalance, PriorYearBalance, CarryToYear1,
 													CarryToYear2, CarryToYear3, CarryForwardTotal)";
 	$srvr_query .= " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-	$row_count = (int)1;
+	$row_count = (int)2;
+	echo "===== Start inserting AnnualReq into CertHistory =====<br />";
 	while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
-		$row_count ++;
 		// int counter logic end
 		$CertNo = $annualreq->getCell('D'.$row_count)->getValue();
 		$CertYear = $annualreq->getCell('M'.$row_count)->getValue();
@@ -169,12 +169,12 @@
 						$CurrentYearBalance, $PriorYearBalance, $CarryToYear1,$CarryToYear2, $CarryToYear3,
 						$CarryForwardTotal);
 		$srvr_exec = sqlsrv_query( $conn, $srvr_query, $params);
-		if( $srvr_exec == false ) {
-			echo "<br />";
-			print_r( "heyyyyyyyyy BUGGGGGGGGG " + $CertNo );
-			die( print_r(sqlsrv_errors(), true) );
-		}
+		if( $srvr_exec == false ) { die( print_r(sqlsrv_errors(), true) ); }
+		$row_count ++;
 	}
+	echo "===== AnnualReq into CertHistory finished, ";
+	echo $row_count-2;
+	echo " rows inserted. =====<br />";
 
 	// 2) AnnualReq -> Employee
 	// very tricky, do it later; how to match CertNo in AnnualReq to CertNo in Employee(PK)? using SELECT WHERE (match) would be too slow...?
