@@ -4,6 +4,9 @@
 
 	$_SESSION["id"] = 6995;
 
+	function getCertID() {
+		return $_SESSION['CERTID'];
+	}
 	function getEmployeeID() {
 		return $_SESSION['EMPLOYEEID'];
 	}

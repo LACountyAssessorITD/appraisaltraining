@@ -28,7 +28,7 @@ if( $conn === false )
 }
 $totalcarryover = 0;
 
-$certid =  getUserID();
+$certid = getCertID();
 
 $fromYearInt = $_SESSION["fromYearInt"];
 $toYearInt = $_SESSION["toYearInt"];
