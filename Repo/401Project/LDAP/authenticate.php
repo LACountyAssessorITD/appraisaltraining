@@ -10,7 +10,7 @@ function authenticateUser($username, $password) {
 	
 		$bind = ldap_bind($ldap, $username, $password);
 		if ($bind) {
-			$msg = "Authentication successful";
+			$msg = "Authentication successful ";
 			echo $msg;
 			ldap_close($ldap);
 			return TRUE;

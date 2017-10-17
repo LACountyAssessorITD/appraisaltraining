@@ -11,4 +11,8 @@
 
 	// LDAP Info
 	define("LDAP_SERVER_NAME", "ldap://laassessor.co.la.ca.us");
+
+	define("USER_HOME_PAGE_URL", "../../User/UserHome.html");
+	define("ADMIN_HOME_PAGE_URL", "../../Admin/AdminHome.html");
+    define("LOGIN_URL", "../../index.php");
 ?>

@@ -9,22 +9,21 @@ session_start();
 	$_SESSION['password']=$_POST["password"];
 
 	if (!authenticateUser($ldapusername, $ldappassword)) {
-		// $_SESSION["logged_in"] = FALSE;
-		// header("Location: " . LOGIN_ERROR_URL);
+		$_SESSION["logged_in"] = FALSE;
+		header("Location: " . LOGIN_URL);
 		echo "authenticateUser failure";
 	} else {
-
 		// Get display name from LDAP
 		// Get Employee ID from LDAP
 		$server = LDAP_SERVER_NAME;
 		$ldap = ldap_connect($server);
-		$userid=$_POST["username"];
+		$user_name=$_POST["username"];
 		if ($ldap) {
 			ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
 			ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
 			$bind = ldap_bind($ldap, $ldapusername, $ldappassword);
 			$basedn = "OU=ASSR,DC=laassessor,DC=co,DC=la,DC=ca,DC=us";
-			$filter = '(samaccountname='.$userid.')';
+			$filter = '(samaccountname='.$user_name.')';
 			$attributes = array("displayname");
 			$result = ldap_search($ldap, $basedn, $filter, $attributes);
 			if (FALSE !== $result) {
@@ -32,7 +31,8 @@ session_start();
 				if($info["count"] > 0) {
 					for ($i=0; $i<$info["count"]; $i++) {
 						 $_SESSION['NAME']=$info[$i]["displayname"][0];
-						 echo "The Name is ".$_SESSION['NAME'];
+						 $_SESSION['EMPLOYEEID']=$info[$i]["employeeID"][0];
+						 echo "The Name is ".$_SESSION['NAME']." with ID ".$_SESSION['EMPLOYEEID'];
 					}
 				}
 				else {
@@ -41,16 +41,15 @@ session_start();
 			}
 		}
 
-		$empid;
 		// See if it is an appraiser
 		$serverName = SQL_SERVER_NAME;
 		$uid = SQL_SERVER_USERNAME;
 		$pwd = SQL_SERVER_PASSWORD;
 		$db = SQL_SERVER_LACDATABASE;
 		$connectionInfo = array( "UID"=>$uid,
-		                         "PWD"=>$pwd,
-		                         "Database"=>$db,
-		             "ReturnDatesAsStrings"=>true);  // convert datetime to string
+								"PWD"=>$pwd,
+								"Database"=>$db,
+								"ReturnDatesAsStrings"=>true);  // convert datetime to string
 		/* Connect using SQL Server Authentication. */
 		$conn = sqlsrv_connect( $serverName, $connectionInfo);
 		if( $conn === false )
@@ -58,8 +57,7 @@ session_start();
 		     echo "Unable to connect.</br>";
 		     die( print_r( sqlsrv_errors(), true));
 		}
-
-		$tsql = "SELECT * FROM [tblCertificate Nos] WHERE EmpNo='".$empid."'";
+		$tsql = "SELECT * FROM [tblCertificate Nos] WHERE EmpNo=".$_SESSION['EMPLOYEEID'];
 		$stmt = sqlsrv_query( $conn, $tsql);
 		if( $stmt === false )
 		{
@@ -69,15 +67,21 @@ session_start();
 		else {
 			$rows = sqlsrv_num_rows($stmt);
 		 	if($rows > 0) {
-				echo "This is an appraiser";
+				$_SESSION["ROLE"] = $row['Role'];
+				$_SESSION["logged_in"] = TRUE;
+				if ($_SESSION["ROLE"] == "admin") { // if Admin
+					header("Location: " . ADMIN_HOME_PAGE_URL);
+				}
+				else { // if User
+					header("Location: " . USER_HOME_PAGE_URL);
+				}
 			}
-			else {
-				echo "You are not an appraiser";
+			else {	
+				$_SESSION["logged_in"] = FALSE;
+				header("Location: " . LOGIN_URL);
 			}
 		}
-
 		sqlsrv_free_stmt($stmt);
 		sqlsrv_close($conn);
-
 	}
 ?>

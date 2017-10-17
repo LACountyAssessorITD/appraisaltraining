@@ -1,13 +1,13 @@
+<?php
+	session_start();
+?>
+
 <!DOCTYPE html>
 <html >
 <head>
   <meta charset="UTF-8">
-  <title>Random Login Form</title>
+  <title>Training Record Login</title>
       <style>
-      /* NOTE: The styles were added inline because Prefixfree needs access to your styles and they must be inlined if they are on local disk! */
- /*     @import url(https://fonts.googleapis.com/css?family=Exo:100,200,400);
-@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:700,400,300);*/
-
 body{
 	margin: 0;
 	padding: 0;
@@ -154,7 +154,12 @@ div[class="login"] {
     filter: Alpha(opacity=50); /* IE8 and earlier */
     border-radius: 10px;
 }
-    </style>
+
+div[class="message"] {
+    color: red;
+}
+
+</style>
 
 </head>
 
@@ -162,7 +167,7 @@ div[class="login"] {
   <div class="body"></div>
 		<div class="grad"></div>
 		<div class="header">
-			<div>LA<span>County</span></div>
+			<div>Ass<span>Man</span></div>
 		</div>
 		<br>
 		<div class="login">
@@ -171,6 +176,7 @@ div[class="login"] {
 				<input type="password" placeholder="password" name="password"><br>
 				<input type="submit" value="Login" name="login">
 			</form>
+			<div class="message"><?php //echo "Error: Incorrect Username / Password" ?></div>
 		</div>
 </body>
 </html>
