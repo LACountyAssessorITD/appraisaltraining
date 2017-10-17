@@ -2,7 +2,7 @@
 	session_start();
 	include_once "constants.php";
 
-	$_SESSION["id"] = 6995;
+	$_SESSION["CERTID"] = 6995;
 
 	function getCertID() {
 		return $_SESSION['CERTID'];
@@ -33,5 +33,5 @@
 		return $_SESSION["ROLE"];
 	}
 
-	
+
 ?>
