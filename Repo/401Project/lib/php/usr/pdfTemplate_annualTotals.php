@@ -167,16 +167,16 @@ class myPDF extends FPDF {
 
         // Query from [New_Employee] table
         $lastName = ""; $firstName = ""; $middleName = ""; //$county = "";
-        $temp_certDate = ""; $perm_certDate = ""; $adv_certDate = ""; 
+        $temp_certDate = ""; $perm_certDate = ""; $adv_certDate = "";
         $status = ""; // active or not
         $specialty = "";
 
-        // Query from [New_CertHistory] table   
-        $certType =""; 
-        $allowedcarryover=""; 
+        // Query from [New_CertHistory] table
+        $certType ="";
+        $allowedcarryover="";
 
 
-        // Get Names, Temp/Perm Certification Date, status and specialty 
+        // Get Names, Temp/Perm Certification Date, status and specialty
         // from [New_Employee]
         $tsql = "SELECT * FROM [New_Employee] WHERE CertNo=".(string)$certid;
         $stmt = sqlsrv_query( $conn, $tsql);
@@ -201,20 +201,20 @@ class myPDF extends FPDF {
               $specialty = "";
             }
             if ($row['TempCertDate'] == NULL) {
-              $temp_certDate = "NA"; 
+              $temp_certDate = "NA";
             } else {
               $temp_certDate = date("m/d/Y",strtotime($row['TempCertDate']));
-            }   
+            }
             if ($row['PermCertDate'] == NULL) {
-              $perm_certDate = "NA"; 
+              $perm_certDate = "NA";
             } else {
               $perm_certDate = date("m/d/Y",strtotime($row['PermCertDate']));
-            } 
+            }
             if ($row['AdvCertDate'] == NULL) {
-              $adv_certDate = "NA"; 
+              $adv_certDate = "NA";
             } else {
               $adv_certDate = date("m/d/Y",strtotime($row['AdvCertDate']));
-            } 
+            }
         }
         sqlsrv_free_stmt($stmt);
 
@@ -263,7 +263,7 @@ class myPDF extends FPDF {
         $this->Ln(14);
         $this->addSummaryTitles();
 
-        // Get Certification Type and Allowed carry over 
+        // Get Certification Type and Allowed carry over
         // from [New_CertHistory] table
         $year1 = $GLOBALS["fromYearInt"];
         $year2 = $GLOBALS["toYearInt"]+1;
@@ -402,7 +402,7 @@ class myPDF extends FPDF {
 /////////////////////////////////////////////////////////////////////////////////////////
 
 
-        
+
 /*
             // Swith to next line and add an "-" if the course name is too long
             $x_begin=$this -> getX();
