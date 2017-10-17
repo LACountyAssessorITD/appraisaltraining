@@ -1,7 +1,7 @@
 <?php
 	// IMPORTANT: toggle between the below two lines when switching between Azure and LAC Server!
-	// define("SQL_SERVER_NAME", "Assessor");				// SQL Server Name for Azure
-	define("SQL_SERVER_NAME", "HTRAINDATADEV-V");		// SQL Server Name for LAC Server
+	define("SQL_SERVER_NAME", "Assessor");				// SQL Server Name for Azure
+	// define("SQL_SERVER_NAME", "HTRAINDATADEV-V");		// SQL Server Name for LAC Server
 
 	// SQL Server Common Credentials/DatabaseNames
 	define("SQL_SERVER_USERNAME", "superadmin");
