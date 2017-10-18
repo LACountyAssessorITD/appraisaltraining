@@ -21,7 +21,7 @@ class myPDF extends FPDF {
         // Add year
         $fromYearInt = $GLOBALS["fromYearInt"];
         $toYearInt = $GLOBALS["toYearInt"];
-        $this->Cell(0,5,'FY '.(string)$fromYearInt.'-'.(string)($toYearInt)+1,0,0,'C');
+        $this->Cell(0,5,'FY '.(string)$fromYearInt.'-'.(string)($toYearInt+1),0,0,'C');
         $this->Ln();
 
         // Draw a lin
