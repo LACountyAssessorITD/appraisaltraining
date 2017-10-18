@@ -385,7 +385,8 @@
 					<p>Content</p>
 					<textarea id="emailContentTA" placeholder="Email content..."></textarea>
 					<div id="sendEmailBtnDiv">
-						<button id="sendEmailBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
+						<button id="sendEmailSelectedBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Selected</button>
+						<button id="sendEmailAllBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send All</button>
 					</div>
 				</div>
 
@@ -397,12 +398,18 @@
 					<table id="overviewTable">
 						<thead>
 				            <tr>
-				                <th>Select</th>
-				                <th>Name</th>
-				                <th>Email</th>
+				                <th width="10%">Select</th>
+				                <th width="35%">Name</th>
+				                <th width="35%">Email</th>
+				                <th width="20%">View</th>
 				            </tr>
 				        </thead>
-				        <tbody></tbody>
+				        <tbody>
+				        	<tr id="overviewSelectAll">
+				        		<td><input type='checkbox' name='selected'></td>
+				        		<td colspan="3">Select All</td>
+				        	</tr>
+				        </tbody>
 					</table>
 				</div>
 			</div>

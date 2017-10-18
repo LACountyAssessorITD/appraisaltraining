@@ -62,11 +62,11 @@ $(document).ready(function(){
 
     function loadTable(name, email) {
         var trHTML = "<tr>\
-                            <td><input type='checkbox' name='selected'></td>\
-                            <td>"+name+"</td>\
-                            <td>"+email+"</td>\
-                            <td><button class='viewReportBtn'></button></td>\
-                        </tr>";
+                        <td><input type='checkbox' name='selected'></td>\
+                        <td>"+name+"</td>\
+                        <td>"+email+"</td>\
+                        <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
+                    </tr>";
 
         $("#overviewTable tbody").append(trHTML);
     }
@@ -293,7 +293,7 @@ $(document).ready(function(){
     	return $("#emailSubjectTA").val();
     }
 
-    $("#sendEmailBtn").on("click", function() {
+    $("#sendEmailSelectedBtn").on("click", function() {
     	var subject = getEmailSubject();
         var content = getEmailContent();
         $.ajax({

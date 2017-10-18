@@ -450,8 +450,8 @@
 	width: 100%;
 }
 
-#sendEmailBtn {
-	width: 10%;
+#sendEmailBtnDiv button {
+	width: 20%;
 	padding: 10px;
 	font-size: 1.1vw;
 	text-align: center;
@@ -462,11 +462,11 @@
 	box-shadow: 7px 7px 10px rgba(20, 20, 20, 0.4);
 }
 
-#sendEmailBtn:hover {
+#sendEmailBtnDiv button:hover {
 	background-color: rgb(210,210,232);
 }
 
-#sendEmailBtn:active {
+#sendEmailBtnDiv button:active {
 	box-shadow: none;
 }
 
@@ -496,17 +496,19 @@
     width: 100%; /* Full-width */
     border: 1px solid #ddd; /* Add a grey border */
     font-size: 1vw; /* Increase font-size */
+    text-align: center;
 }
 
 #overviewTable td {
-    text-align: left; /* Left-align text */
-    padding: 12px; /* Add padding */
+    text-align: center; /* Left-align text */
+    vertical-align: middle;
+    padding: 10px; /* Add padding */
 }
 
 #overviewTable tr {
 	background-color: white;
 	border-bottom: 1px solid #ddd;
-	text-align: left;
+	text-align: center;
 }
 
 #overviewTable tr:hover {
@@ -515,7 +517,20 @@
     color: black;
 }
 
-#overviewTable td {
-    text-align: left; /* Left-align text */
-    padding: 12px; /* Add padding */
+#overviewSelectAll td{
+	background-color: rgb(165,165,165);
+}
+
+.viewReportBtn {
+	width: 60%;
+	height: 30px;
+	font-size: 1vw;
+	border-radius: 4px;
+	background-color: white;
+	outline: none;
+	/*margin:auto;*/
+}
+
+#overviewTableSelectAllRow {
+
 }
