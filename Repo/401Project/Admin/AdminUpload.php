@@ -72,11 +72,12 @@
 			<h1 id="UploadTitle">Update</h1>
 			<h3>Select File to Upload</h3>
 			<form action="../lib/php/admin/AdminUploadPHP.php" method="post" enctype="multipart/form-data" id="uploadForm" target="myFrame">
-				<label>
-		    		<input type="file" name="fileToUpload" id="fileToUpload">
-		    		<span id="uploadBtn">Choose yo file</span>
-		    	</label>
-		    	<input id="chosenFile" placeholder="Chosen File" disabled="disabled" />
+    			<input type="file" name="fileToUpload" id="fileToUpload">
+    			<div class="clearRow">
+		    		<button id="chooseFileBtn">Choose File</button>
+		    	</div>
+		    	<p id="chosenFileLabel">File Chosen:</p>
+		    	<p id="chosenFileName"></p>
 			    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 			</form>
 

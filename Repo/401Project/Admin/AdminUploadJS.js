@@ -91,10 +91,10 @@ $(document).ready(function(){
 
     $("#submitNewBtn").on("click",function() {
       $("#chosenFile").val($("#fileToUpload").val());
-    })
-
-    $("document").on("change","#fileToUpload",function() {
-        $("#chosenFile").text($("#fileToUpload").val());
     });
+
+    $("#chooseFileBtn").on("click",function() {
+      $("#fileToUpload").click();
+    })
 
 });
