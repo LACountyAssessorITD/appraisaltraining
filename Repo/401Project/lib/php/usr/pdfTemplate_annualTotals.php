@@ -368,9 +368,6 @@ class myPDF extends FPDF {
 /////////////////////////////////////////////////////////////////////////////////////////
 // ********************       Start of Yearly Details          ********************
         $this->AddPage();
-        $fromYearInt = $GLOBALS["fromYearInt"];
-        $toYearInt = $GLOBALS["toYearInt"];
-
         // Get Course Name, End Date, Grade and Hours Earned from
         // from [New_CourseDetail]  (Location NA)
         $tsql = "SELECT * FROM [New_CourseDetail] WHERE CertNo=".(string)$certid;
@@ -419,7 +416,6 @@ class myPDF extends FPDF {
                 // Total Hours
 
                 // Draw a Line
-
 
 
             }
