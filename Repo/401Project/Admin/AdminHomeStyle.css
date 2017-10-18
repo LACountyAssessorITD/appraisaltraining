@@ -414,22 +414,28 @@
 	background-color: rgb(179, 204, 255);
 }
 
-#optionDiv {
+#emailDiv {
 	/*width: 100%;*/
 	margin: 20px;
 }
 
-#optionDiv textarea {
-	padding: 15px;
-	font-size: 1.5vw;
-	width: 100%;
-	height: 300px;
+#emailDiv textarea {
+	padding: 12px;
+	font-size: 1.3vw;
 	font-variant: small-caps;
-
 
 	font-family: "Times New Roman";
 	text-transform: none;
 	font-variant: normal;
+}
+
+#emailSubjectTA {
+	width: 50%;
+}
+
+#emailContentTA {
+	width: 100%;
+	height: 300px;
 }
 
 #sendEmailBtn {
