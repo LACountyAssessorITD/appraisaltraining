@@ -20,17 +20,9 @@ class myPDF extends FPDF {
 
         // Add year
         $yearTypeKey = $GLOBALS['yearTypeKey'];
-        if ($yearTypeKey == 'specific') {
-            $year = $GLOBALS['year'];
-            $this->Cell(0,5,'FY '.(string)$year.'-'.(string)($year+1),0,0,'C');
-            $this->Ln();
-        }
-        else {
-            $fromYearInt = $GLOBALS["fromYearInt"];
-            $toYearInt = $GLOBALS["toYearInt"];
-            $this->Cell(0,5,'FY '.(string)$fromYearInt.'-'.(string)($toYearInt),0,0,'C');
-            $this->Ln();
-        }
+        $year = $GLOBALS['year'];
+        $this->Cell(0,5,'FY '.(string)$year.'-'.(string)($year+1),0,0,'C');
+        $this->Ln();
 
         // Draw a line
         $width=$this -> w; // Width of Current Page
@@ -44,14 +36,9 @@ class myPDF extends FPDF {
         $year;
         $certid = $GLOBALS['certid'];
         $yearTypeKey = $GLOBALS['yearTypeKey'];
-        if ($yearTypeKey == 'specific') {
-            $year = $GLOBALS['year'];
-        }
-        else {
-            $year = $GLOBALS["toYearInt"];
-        }
+        $year = $GLOBALS['year'];
 
-        
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // ********************       Start of Personal Information          ********************
 
@@ -172,16 +159,11 @@ class myPDF extends FPDF {
         $this->SetFont('Arial','B',11);
         $this->SetTextColor(0,0,0);
         $this->Ln(22);
-        if ($yearTypeKey == 'specific') {
-            $year = $GLOBALS['year'];
-            $this->Cell(263,0,(string)$year."-".(string)($year+1),0,0,'R');
-            $this->Ln(5);
-        } else {
-            $year1 = $GLOBALS["fromYearInt"];
-            $year2 = $GLOBALS["toYearInt"];
-            $this->Cell(263,0,(string)$year1."-".(string)($year2),0,0,'R');
-            $this->Ln(5);
-        }
+
+        $year = $GLOBALS['year'];
+        $this->Cell(263,0,(string)$year."-".(string)($year+1),0,0,'R');
+        $this->Ln(5);
+
         $this->Cell(0,0,'DATE');
         $this->Ln();
         $this->Cell(30);
@@ -196,28 +178,11 @@ class myPDF extends FPDF {
         $EndDate = ""; $Course = ""; $HoursEarned = "";
         $TotalHoursEarned = 0;
 
-        $tsql;
-        if ($yearTypeKey == 'specific') {
-            $time_start = "'".(string)$year."/1/1'";
-            $time_end = "'".(string)$year."/12/31'";
-            $tsql = "SELECT * FROM [New_CourseDetail] WHERE CertNo=".(string)$certid."
+        $time_start = "'".(string)$year."/1/1'";
+        $time_end = "'".(string)$year."/12/31'";
+        $tsql = "SELECT * FROM [New_CourseDetail] WHERE CertNo=".(string)$certid."
                 AND EndDate BETWEEN ".$time_start." AND ".$time_end."
                 AND CourseYear='".(string)$year."-".(string)($year+1)."'";
-        }
-        else {
-            $year1 = $GLOBALS["fromYearInt"];
-            $year2 = $GLOBALS["toYearInt"]+1;
-            $time_start = "'".(string)$year1."/1/1'";
-            $time_end = "'".(string)$year2."/12/31'";
-            $year_across = "(CourseYear='".(string)$year1."-".(string)($year1+1)."'";
-            for ($i = $year1+1; $i < $year2; $i ++) {
-                $year_across = $year_across." OR CourseYear='".(string)$i."-".(string)($i+1)."'";
-            }
-            $year_across = $year_across.")";
-            $tsql = "SELECT * FROM [New_CourseDetail] WHERE CertNo=".(string)$certid."
-                AND EndDate BETWEEN ".$time_start." AND ".$time_end."
-                AND".$year_across;
-        }
 
         $stmt = sqlsrv_query( $conn, $tsql);
         if( $stmt === false )
@@ -303,86 +268,85 @@ class myPDF extends FPDF {
         // Query from [New_CarryoverLimits]
         $RequiredHours;
 
-        if ($yearTypeKey == 'specific') {
-            // Add Annual Training Hours Summary
-            $y=$this -> getY(); // Height of Current Page
-            if ($y >= 132) {    // Force Page Break if too low on page
-                $this->AddPage();
-                $this->ln(20);
-            }
-            $this->SetFont('Arial','BU',11);
-            $this->Cell(241,0,'Annual Training Hours Summary',0,0,'R');
-
-            //draw out the rectangular border
-            $y=$this -> getY(); // Height of Current Page
-            $this->SetLineWidth(0.5);
-            $this->Rect(163,$y-5,110,52);
-
-            $this->Ln(8);
-            $this->SetFont('Arial','',11);
-            $this->SetFont('','');
-            $this->Cell(237,0,'Carry Over Hours from Prior Years*:',0,0,'R');
-            $this->ln(0);
-            $this->Cell(260,0,$PriorYearBalance,0,0,'R');
-
-
-            // Get Required Hours from [New_CarryoverLimits]
-            $tsql = "SELECT * FROM [New_CarryoverLimits] WHERE Status='".$status."'";
-            $stmt = sqlsrv_query( $conn, $tsql);
-            if( $stmt === false )
-            {
-                 echo "Error in executing query329.</br>";
-                 die( print_r( sqlsrv_errors(), true));
-            }
-            else {
-                $row= sqlsrv_fetch_array($stmt);
-                $RequiredHours = $row['RequiredHours'];
-            }
-            sqlsrv_free_stmt($stmt);
-            $this->Ln(6);
-            $this->Cell(236.8,0,'Less Req. Hours for FY '.(string)$year."-".(string)($year+1),0,0,'R');
-            $this->ln(0);
-            $this->Cell(260,0,$RequiredHours,0,0,'R');
-
-            //draw out the first line
-            $x=$this -> getX();
-            $y=$this -> getY(); // Height of Current Page
-            $this->SetLineWidth(0.7);
-            $this->Line($x-89,$y+3.5,$x-2,$y+3.5); // Line  Cross
-
-            $this->Ln(8);
-            $this->Cell(236.8,0,'Sub-Total:',0,0,'R');
-            $this->ln(0);
-            $this->Cell(260,0,$PriorYearBalance-$RequiredHours,0,0,'R');
-
-            $this->Ln(6);
-            $this->Cell(236.8,0,'Plus FY '.(string)$year."-".(string)($year+1).' Hours Completed:',0,0,'R');
-            $this->ln(0);
-            $this->Cell(260,0,$TotalHoursEarned,0,0,'R');
-
-            //draw out the second line
-            $x=$this -> getX();
-            $y=$this -> getY(); // Height of Current Page
-            $this->SetLineWidth(0.7);
-            $this->Line($x-89,$y+3.5,$x-2,$y+3.5); // Line  Cross
-
-            $this->Ln(8);
-            $this->Cell(236.8,0,'Total Carry Over Hours:',0,0,'R');
-            $this->ln(0);
-            $totalcarryover = $TotalHoursEarned+$PriorYearBalance-$RequiredHours;
-            $GLOBALS['totalcarryover'] = $totalcarryover;
-            $this->Cell(260,0,$totalcarryover,0,0,'R');
-
-            $this->Ln(6);
-            $this->SetFont('Arial','B',11);
-            $this->Cell(236.8,0,'Allowed Carry Over Hours for Next FY*:',0,0,'R');
-            $this->ln(0);
-            $this->Cell(260,0,$allowedcarryover,0,0,'R');
-
-            $this->Ln(10);
-            $this->SetFont('Arial','I',10);
-            $this->Cell(260,0,'*Please refer to enclosed pamphlet for computation of excess hours',0,0,'R');
+        // Add Annual Training Hours Summary
+        $y=$this -> getY(); // Height of Current Page
+        if ($y >= 132) {    // Force Page Break if too low on page
+            $this->AddPage();
+            $this->ln(20);
         }
+        $this->SetFont('Arial','BU',11);
+        $this->Cell(241,0,'Annual Training Hours Summary',0,0,'R');
+
+        //draw out the rectangular border
+        $y=$this -> getY(); // Height of Current Page
+        $this->SetLineWidth(0.5);
+        $this->Rect(163,$y-5,110,52);
+
+        $this->Ln(8);
+        $this->SetFont('Arial','',11);
+        $this->SetFont('','');
+        $this->Cell(237,0,'Carry Over Hours from Prior Years*:',0,0,'R');
+        $this->ln(0);
+        $this->Cell(260,0,$PriorYearBalance,0,0,'R');
+
+
+        // Get Required Hours from [New_CarryoverLimits]
+        $tsql = "SELECT * FROM [New_CarryoverLimits] WHERE Status='".$status."'";
+        $stmt = sqlsrv_query( $conn, $tsql);
+        if( $stmt === false )
+        {
+             echo "Error in executing query329.</br>";
+             die( print_r( sqlsrv_errors(), true));
+        }
+        else {
+            $row= sqlsrv_fetch_array($stmt);
+            $RequiredHours = $row['RequiredHours'];
+        }
+        sqlsrv_free_stmt($stmt);
+        $this->Ln(6);
+        $this->Cell(236.8,0,'Less Req. Hours for FY '.(string)$year."-".(string)($year+1),0,0,'R');
+        $this->ln(0);
+        $this->Cell(260,0,$RequiredHours,0,0,'R');
+
+        //draw out the first line
+        $x=$this -> getX();
+        $y=$this -> getY(); // Height of Current Page
+        $this->SetLineWidth(0.7);
+        $this->Line($x-89,$y+3.5,$x-2,$y+3.5); // Line  Cross
+
+        $this->Ln(8);
+        $this->Cell(236.8,0,'Sub-Total:',0,0,'R');
+        $this->ln(0);
+        $this->Cell(260,0,$PriorYearBalance-$RequiredHours,0,0,'R');
+
+        $this->Ln(6);
+        $this->Cell(236.8,0,'Plus FY '.(string)$year."-".(string)($year+1).' Hours Completed:',0,0,'R');
+        $this->ln(0);
+        $this->Cell(260,0,$TotalHoursEarned,0,0,'R');
+
+        //draw out the second line
+        $x=$this -> getX();
+        $y=$this -> getY(); // Height of Current Page
+        $this->SetLineWidth(0.7);
+        $this->Line($x-89,$y+3.5,$x-2,$y+3.5); // Line  Cross
+
+        $this->Ln(8);
+        $this->Cell(236.8,0,'Total Carry Over Hours:',0,0,'R');
+        $this->ln(0);
+        $totalcarryover = $TotalHoursEarned+$PriorYearBalance-$RequiredHours;
+        $GLOBALS['totalcarryover'] = $totalcarryover;
+        $this->Cell(260,0,$totalcarryover,0,0,'R');
+
+        $this->Ln(6);
+        $this->SetFont('Arial','B',11);
+        $this->Cell(236.8,0,'Allowed Carry Over Hours for Next FY*:',0,0,'R');
+        $this->ln(0);
+        $this->Cell(260,0,$allowedcarryover,0,0,'R');
+
+        $this->Ln(10);
+        $this->SetFont('Arial','I',10);
+        $this->Cell(260,0,'*Please refer to enclosed pamphlet for computation of excess hours',0,0,'R');
+        
 
 // ********************       End of Annual Summary         ********************
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -392,15 +356,15 @@ class myPDF extends FPDF {
         $this->SetY(-18);
         $this->SetFont('Arial','B',11);
         $this->SetLineWidth(0.5);
-        if ($GLOBALS['yearTypeKey'] == 'specific') {
-            $year = $GLOBALS['year'];
-            if ($GLOBALS['totalcarryover']>=0) {
-              $this->Cell(0,5,'TRAINING HOURS REQUIREMENT HAS BEEN MET FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
-            }
-            else {
-              $this->Cell(0,5,'TRAINING HOURS REQUIREMENT HAS NOT BEEN MET FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
-            }
+        
+        $year = $GLOBALS['year'];
+        if ($GLOBALS['totalcarryover']>=0) {
+          $this->Cell(0,5,'TRAINING HOURS REQUIREMENT HAS BEEN MET FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
         }
+        else {
+          $this->Cell(0,5,'TRAINING HOURS REQUIREMENT HAS NOT BEEN MET FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
+        }
+        
         $this->SetY(-15);
         $this->SetFont('Arial','',8);
         $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'R');

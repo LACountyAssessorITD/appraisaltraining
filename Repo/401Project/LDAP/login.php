@@ -34,7 +34,6 @@ session_start();
 						 $_SESSION['NAME']=$info[$i]["displayname"][0];
 						 $_SESSION['EMAIL']=$info[$i]["mail"][0];
 						 $_SESSION['MANAGER']=$info[$i]["manager"][0];
-						 
 						 echo "The Name is ".$_SESSION['NAME']." with ID ".$_SESSION['EMPLOYEEID']." with email ".$_SESSION['EMAIL']." with manager ".$_SESSION['MANAGER'];
 					}
 				}
@@ -43,7 +42,6 @@ session_start();
 				}
 			}
 		}
-
 		// See if it is an appraiser
 		$serverName = SQL_SERVER_NAME;
 		$uid = SQL_SERVER_USERNAME;
