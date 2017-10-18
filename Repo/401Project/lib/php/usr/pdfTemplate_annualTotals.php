@@ -63,13 +63,13 @@ class myPDF extends FPDF {
             $this->ln();
             $this->Cell(0,0,'Completion Date');
             $this->Ln();
-            $this->Cell(40);
+            $this->Cell(38);
             $this->Cell(0,0,'Courses Taken');
             $this->Ln();
-            $this->Cell(170);
+            $this->Cell(186);
             $this->Cell(0,0,'Location');
             $this->ln();
-            $this->Cell(230);
+            $this->Cell(232);
             $this->Cell(0,0,'Grade');
             $this->ln();
             $this->Cell(0,0,'Hours Earned',0,0,'R');
@@ -79,6 +79,7 @@ class myPDF extends FPDF {
             $this->SetLineWidth(0.5);
             $this->SetDrawColor(0,0,0);
             $this->Line(10,$height+5,$width-10,$height+5); // Line one Cross
+            $this->ln(10);
         }
 
     }
@@ -153,6 +154,7 @@ class myPDF extends FPDF {
         $this->SetLineWidth(0.5);
         $this->SetDrawColor(0,0,0);
         $this->Line(10,$height+5,$width-10,$height+5); // Line one Cross
+        $this->ln(10);
     }
 
 
@@ -227,30 +229,29 @@ class myPDF extends FPDF {
         $this->Cell(0,0,'Last Name: '.$lastName);
         $this->Ln();
 
-        $this->Cell(60);
+        $this->Cell(65);
         $this->Cell(0,0,'First Name: '.$firstName);
         $this->Ln();
-        $this->Cell(130);
+        $this->Cell(135);
         $this->Cell(0,0,'Middle Name: '.$middleName);
         $this->Ln();
         $this->Cell(255,0,'Certificate Number: '.$certid,0,0,'R');
 
         $this->Ln(5);
-        $this->Cell(0,0,'County: 19 LOS ANGELES');
+        $this->Cell(0,0,'County:    19 LOS ANGELES');
 
         $this->Ln(5);
-        $this->Cell(0,0,'Temporary Cert. Date: '.$temp_certDate);
+        $this->Cell(0,0,'Temporary Cert. Date: '."11/22/1029");
+        //$this->Cell(0,0,'Temporary Cert. Date: '.$temp_certDate);
         $this->Ln();
-        $this->Cell(60);
-        $this->Cell(0,0,'Permanent Cert. Date:'.$perm_certDate);
-        $this->ln();
-        $this->Cell(100);
+        $this->Cell(65);
+        $this->Cell(0,0,'Permanent Cert. Date: '.$perm_certDate);
         $this->Ln();
-        $this->Cell(130);
+        $this->Cell(135);
         $this->Cell(0,0,'Advanced Cert. Date: '.$adv_certDate);
 
         $this->Ln();
-        $this->Cell(250,0,'Specialty:  '.$specialty,0,0,'R');
+        $this->Cell(257,0,'Specialty: '.$specialty,0,0,'R');
 
 // ********************       End of Personal Information          ********************//
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -262,7 +263,6 @@ class myPDF extends FPDF {
         // Add Summary Titles
         $this->Ln(14);
         $this->addSummaryTitles();
-        $this->ln(10);
 
         $this->SetFont('Arial','',11);
         $this->SetTextColor(0,0,0);
@@ -275,21 +275,23 @@ class myPDF extends FPDF {
             $this->Ln();
             $this->Cell(50);
             $this->Cell(0,0,'2017-2019');
-            $this->Cell(93);
-            $this->Cell(0,0,'2');
-            $this->Cell(109);
-            $this->Cell(0,0,'3');
-            $this->Cell(129.5);
-            $this->Cell(0,0,'2');
-            $this->Cell(159);
-            $this->Cell(0,0,'0');
-            $this->Cell(189);
-            $this->Cell(0,0,'1');
-            $this->Cell(209);
-            $this->Cell(0,0,'87');
-            $this->Cell(229);
-            $this->Cell(0,0,'12');
+            $this->Ln();
+            $this->Cell(96,0,$i,0,0,'R');
+            $this->Ln();
+            $this->Cell(121,0,$i,0,0,'R');
+            $this->Ln();
+            $this->Cell(151,0,'2',0,0,'R');
+            $this->Ln();
+            $this->Cell(181,0,'0',0,0,'R');
+            $this->Ln();
+            $this->Cell(204,0,'1',0,0,'R');
+            $this->Ln();
+            $this->Cell(225,0,'87',0,0,'R');
+            $this->Ln();
+            $this->Cell(245,0,'12',0,0,'R');
+            $this->Ln();
             $this->Cell(0,0,'15',0,0,'R');
+            $this->Ln(5);
         }
 
         /*
@@ -363,6 +365,26 @@ class myPDF extends FPDF {
 /////////////////////////////////////////////////////////////////////////////////////////
 // ********************       Start of Yearly Details          ********************
         $this->AddPage();
+
+        $this->SetFont('Arial','',11);
+        $this->SetTextColor(0,0,0);
+        for ($i = 0; $i < 100; $i ++) {
+            $this->Cell(0,0,'11/10/2016');
+            $this->Ln();
+            $this->Cell(38);
+            $this->Cell(0,0,'VALUATION AND ASSESSMENT CONCEPTS FOR SERVICE STATIONS');
+            $this->Ln();
+            $this->Cell(186);
+            $this->Cell(0,0,'VENTURA');
+            $this->ln();
+            $this->Cell(232);
+            $this->Cell(0,0,'Passed');
+            $this->ln();
+            $this->Cell(0,0,'14',0,0,'R');
+            $this->ln(5);
+        }
+
+
         // Get Course Name, End Date, Grade and Hours Earned from
         // from [New_CourseDetail]  (Location NA)
         $tsql = "SELECT * FROM [New_CourseDetail] WHERE CertNo=".(string)$certid;
