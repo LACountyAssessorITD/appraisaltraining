@@ -273,15 +273,15 @@ $(document).ready(function(){
 
     //Email Alert
 
-    $("#optionDiv").hide();
+    $("#emailDiv").hide();
     $("#EmailAll").on("click", function() {
     	if($(this).data("clicked")) {
     		$(this).data("clicked",false);
-    		$("#optionDiv").hide();
+    		$("#emailDiv").hide();
     	}
     	else {
 	    	$(this).data("clicked",true);
-	    	$("#optionDiv").show();
+	    	$("#emailDiv").show();
     	}
     });
 

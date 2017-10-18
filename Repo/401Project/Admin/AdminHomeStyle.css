@@ -438,6 +438,7 @@
 
 #emailSubjectTA {
 	width: 50%;
+	font-weight: bold;
 }
 
 #emailContentTA {
