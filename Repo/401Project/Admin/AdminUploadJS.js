@@ -48,32 +48,53 @@ $(document).ready(function(){
     //     $.ajax({url:"AdminUploadPHP.php"});
     // }
     $(".restore").hide();
-    $("#uploadSegCtrl").on("click", function(e) {
-    	// e.preventDefault();
-    	// alert("show upload");
-        // $(".upload").show();
-        // $(".upload").slideDown("slow", function() {
-        //  $(this).show(slide, {direction: "right"});
-        // });
+    setSegActive(0);
+    $("#uploadSegCtrl").on("click", function() {
         $(".upload").show();
         $(".restore").hide();
+        setSegActive(0);
         // $(".upload").show("slide",{direction: "left"});
         // $(".restore").hide("slide",{direction: "right"});
     });
 
     $("#restoreSegCtrl").on("click", function() {
-    	// alert("hide upload");
-        // alert("restoreclick");
-        // $(".upload").hide();
-        // // $(".restore").show();
-        // $(".restore").slideLeft("slow", function() {
-        //  $(this).show();
-        // });
-
         $(".upload").hide();
         $(".restore").show();
+        setSegActive(1);
+        // $("#restoreSegCtrl").css("color","black");
      //   $(".upload").hide("slide", {direction: "left"});
      //   $(".restore").show("slide", {direction: "right"});
+    });
+
+    function setSegActive(seg) {
+      if(seg==0) {
+        $("#uploadSegCtrl").css({
+            "background-color":"rgba(255,255,255,1",
+            "color":"black"
+          });
+        $("#restoreSegCtrl").css({
+            "background-color":"rgba(255,255,255,0",
+            "color":"white"
+          });
+      }
+      else {
+        $("#uploadSegCtrl").css({
+            "background-color":"rgba(255,255,255,0",
+            "color":"white"
+          });
+        $("#restoreSegCtrl").css({
+            "background-color":"rgba(255,255,255,1",
+            "color":"black"
+          });
+      }
+    }
+
+    $("#submitNewBtn").on("click",function() {
+      $("#chosenFile").val($("#fileToUpload").val());
+    })
+
+    $("document").on("change","#fileToUpload",function() {
+        $("#chosenFile").text($("#fileToUpload").val());
     });
 
 });
