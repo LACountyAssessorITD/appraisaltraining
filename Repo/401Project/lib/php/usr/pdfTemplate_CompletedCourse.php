@@ -15,16 +15,16 @@ class myPDF extends FPDF {
         $this->SetTextColor(0,0,128);
         $this->Cell(0,5,'OFFICE OF THE ASSESSOR',0,0,'C');
         $this->Ln();
-        $this->Cell(0,5,'Record of Appraisal Training Hours',0,0,'C');
+        $this->Cell(0,5,'Record of Completed Courses Summary',0,0,'C');
         $this->Ln();
 
         // Add year
         $fromYearInt = $GLOBALS["fromYearInt"];
         $toYearInt = $GLOBALS["toYearInt"];
-        $this->Cell(0,5,'FY '.(string)$fromYearInt.'-'.(string)($toYearInt),0,0,'C');
+        $this->Cell(0,5,'FY '.(string)$fromYearInt.'-'.(string)($toYearInt)+1,0,0,'C');
         $this->Ln();
 
-        // Draw a line
+        // Draw a lin
         $width=$this -> w; // Width of Current Page
         $height=$this -> h; // Height of Current Page
         $this->SetLineWidth(0.7);

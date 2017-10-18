@@ -101,7 +101,7 @@ $(document).ready(function(){
         }
         else if (yearTypeStr.toUpperCase()=="Annual Totals".toUpperCase()) {
             var parent = $("embed#pdfBox").parent();
-            var newElement = "<embed id='pdfBox' src='"+"../lib/php/usr/Report_userCompletedCourse.php"+"' width='100%' height='800px'></embed>";
+            var newElement = "<embed id='pdfBox' src='"+"../lib/php/usr/Report_userAnnualTotals.php"+"' width='100%' height='800px'></embed>";
             $("embed#pdfBox").remove();
             parent.append(newElement);
             // Change Download Button Source
