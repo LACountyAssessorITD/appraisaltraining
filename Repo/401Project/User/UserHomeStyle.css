@@ -48,6 +48,10 @@
 	cursor: pointer;
 }
 
+#yearTypeSelect {
+	width: 80%;
+}
+
 .filterListCol {
 	position: relative;
 	margin-top: 10px;
