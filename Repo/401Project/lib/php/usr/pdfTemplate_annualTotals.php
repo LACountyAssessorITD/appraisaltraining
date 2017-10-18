@@ -262,6 +262,41 @@ class myPDF extends FPDF {
         // Add Summary Titles
         $this->Ln(14);
         $this->addSummaryTitles();
+        $this->ln(5);
+
+        $this->SetFont('Arial','',11);
+        $this->SetTextColor(0,0,0);
+
+        $this->Cell(0,0,'Active');
+        $this->Ln();
+        $this->Cell(20);
+        $this->Cell(0,0,'Temporary');
+        $this->Ln();
+        $this->Cell(50);
+        $this->Cell(0,0,'2017-2019');
+        $this->ln(5);
+        $this->Cell(84);
+        $this->Cell(0,0,'2');
+        $this->ln(5);
+        $this->Cell(109);
+        $this->Cell(0,0,'3');
+        $this->ln(5);
+        $this->Cell(129.5);
+        $this->Cell(0,0,'2');
+        $this->ln(5);
+        $this->Cell(159);
+        $this->Cell(0,0,'0');
+        $this->ln(5);
+        $this->Cell(189);
+        $this->Cell(0,0,'1');
+        $this->ln(5);
+        $this->Cell(209);
+        $this->Cell(0,0,'87');
+        $this->ln(5);
+        $this->Cell(229);
+        $this->Cell(0,0,'12');
+        $this->ln(5);
+        $this->Cell(0,0,'15',0,0,'R');
         /*
         // Get Certification Type and Allowed carry over
         // from [New_CertHistory] table
@@ -324,14 +359,10 @@ class myPDF extends FPDF {
         // $this->Cell(250,0,'Certificate Type:',0,0,'R');
         // $this->Cell(0,0,$certType,0,0,'R');
 
-
-
-
         $this->isSummaryPage = FALSE;
 
 // ********************       End of Summary Page          ********************        //
 /////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////////

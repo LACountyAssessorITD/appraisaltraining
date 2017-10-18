@@ -30,9 +30,6 @@ $totalcarryover = 0;
 
 $certid = getCertID();
 
-$fromYearInt = $_SESSION["fromYearInt"];
-$toYearInt = $_SESSION["toYearInt"];
-
 
 ///////////////////////////////////////////////////////////////////
 
