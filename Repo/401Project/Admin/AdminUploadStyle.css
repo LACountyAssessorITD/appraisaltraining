@@ -1,3 +1,12 @@
+iframe {
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 4px;
+	border-color: white;
+	width: 40%;
+	height: 110px;
+}
+
 .buttonGroup {
 	margin: 20px auto;
 	width: 30%;
@@ -48,10 +57,7 @@
 	margin: 10px auto;
 	padding: 40px;
 	width: 100%;
-}
-
-#uploadForm {
-	background-color: green;
+	text-align: center;
 }
 
 #UploadTitle {
@@ -65,6 +71,7 @@
 
 .clearRow {
 	width: 100%;
+	/*text-align: center;*/
 }
 
 #chooseFileBtn {
@@ -75,6 +82,12 @@
 	border-width: 0px;
 	outline: none;
 	font-size: 1.5vw;
+	background-color: white;
+	box-shadow: 7px 7px 10px rgba(20, 20, 20, 0.4);
+}
+
+#chooseFileBtn:hover {
+	background-color: rgb(255, 221, 197);
 }
 
 #chosenFileLabel, #chosenFileName {
@@ -102,17 +115,18 @@
 	overflow: auto;
 	outline: none;
 	cursor: pointer;
+
+	background-color: white;
 }
 
 #submitNewBtn:hover {
-	background-color: rgb(255, 161, 137);
-	color: black;
+	background-color: rgb(255, 221, 197);
 }
 
 .uploadStatus {
 	/*margin: auto;*/
 	/*width: 50%*/
-	padding: 20px;
+	padding: 10px;
 }
 
 #uploadStatusResult {
@@ -121,14 +135,17 @@
 }
 
 .errorDisplay {
-	margin-top: 40px;
+	margin-top: 10px;
 	text-align: center;
 	font-size: 1.5vw;
 	padding: 20px;
 }
 
-.errorDisplay span.errorMsg {
+.errorDisplay label {
+	width: 100%;
 	color: red;
+	font-size: 1.5vw;
+	font-weight: bold;
 }
 
 

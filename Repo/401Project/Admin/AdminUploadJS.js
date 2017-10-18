@@ -89,12 +89,18 @@ $(document).ready(function(){
       }
     }
 
-    $("#submitNewBtn").on("click",function() {
-      $("#chosenFile").val($("#fileToUpload").val());
-    });
-
     $("#chooseFileBtn").on("click",function() {
       $("#fileToUpload").click();
-    })
+    });
+
+    $(document).on("change","#fileToUpload",function() {
+      $("#chosenFileName").text($("#fileToUpload").val());
+    });
+
+    $("#submitNewBtn").on("click",function() {
+      // $("#chosenFileName").text("");
+    });
+
+    
 
 });

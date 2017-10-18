@@ -50,12 +50,12 @@
 			<img src="../BGimg/Logo.png" alt="Logo" width="130px" height="130px">
 		</div>
 
-		<div class="navigationBar">
-			<a id="homeTab" href="AdminHome.html"><img src="../iconImg/homeicon.png" alt="homeicon" width="20px" height="20px"> Home</a>
-			<a id="uploadTab" href="#"><img src="../iconImg/uploadicon.png" alt="updateicon" width="20px" height="20px"> Update</a>
-			<a id="uploadTab" href="AdminFAQ.html"><img src="../iconImg/faqicon.png" alt="faqicon" width="20px" height="20px"> FAQs</a>
-			<a id="issueTab" href="#"><img src="../iconImg/issueicon.png" alt="issueicon" width="20px" height="20px"> <strong>Support</strong></a>
-		</div>
+		<nav class="navigationBar">
+			<a id="homeTab" href="AdminHome.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+			<a id="uploadTab" href="#"><i class="fa fa-upload" aria-hidden="true"></i> Update</a>
+			<a id="uploadTab" href="AdminFAQ.html"><i class="fa fa-question-circle-o" aria-hidden="true"></i> FAQs</a>
+			<a id="issueTab" href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> <strong>Support</strong></a>
+		</nav>
 	</div>
 
 	<div class="content">
@@ -77,20 +77,21 @@
 		    		<button id="chooseFileBtn">Choose File</button>
 		    	</div>
 		    	<p id="chosenFileLabel">File Chosen:</p>
-		    	<p id="chosenFileName"></p>
+		    	<p id="chosenFileName">None</p>
 			    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 			</form>
 
-			<iframe name="myFrame"></iframe>
 
 			<div class="uploadStatus">
 				<h2>Upload Status</h2>
-				<h1 id="uploadStatusResult">Successful</h1>
+				<h1 id="uploadStatusResult"></h1>
 			</div>
 
 			<div class="errorDisplay">
-				<label>Error Log:</label>
-				<iframe></iframe>
+				<div class="clearRow">
+					<label>Error Log:</label>
+				</div>
+				<iframe name="myFrame"></iframe>
 			</div>
 
 		</div>
