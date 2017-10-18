@@ -11,6 +11,7 @@ include_once '../PHPMailer/src/Exception.php';
 include_once '../PHPMailer/src/PHPMailer.php';
 include_once '../PHPMailer/src/SMTP.php';
 
+$subject = $_POST['subject'];
 $message = $_POST['content'];
 
 $mail = new PHPMailer;
@@ -24,7 +25,7 @@ $mail->From = 'assessortestpdf@gmail.com';
 $mail->Port = 587;                              // SMTP Port
 $mail->FromName  = 'Assessor PDF Sender';
 
-$mail->Subject   = 'New Report Remainder';
+$mail->Subject   = $subject;
 $mail->Body      = "Hi SB, \r\n\r\n";
 $mail->Body 	 = $mail->Body.$message."\r\n\r\n";
 $mail->Body 	 = $mail->Body."\r\nBest Regards,\r\n\r\nAdmin";

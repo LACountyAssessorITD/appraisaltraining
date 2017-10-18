@@ -286,16 +286,21 @@ $(document).ready(function(){
     });
 
     function getEmailContent() {
-        var content = $("#emailContentTA").val();
-        return content;
+        return $("#emailContentTA").val();
+    }
+
+    function getEmailSubject() {
+    	return $("#emailSubjectTA").val();
     }
 
     $("#sendEmailBtn").on("click", function() {
+    	var subject = getEmailSubject();
         var content = getEmailContent();
         $.ajax({
             url:"../lib/php/admin/admin_email.php",
             type: "POST",
             data: {
+            	subject:subject,
                 content:content
             },
             success:function(results){
