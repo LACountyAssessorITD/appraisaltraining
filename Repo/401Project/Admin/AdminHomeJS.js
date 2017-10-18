@@ -58,9 +58,22 @@ $(document).ready(function(){
         });
     }
 
+    loadTable("nelson", "yuehhsul@usc.edu");
+
+    function loadTable(name, email) {
+        var trHTML = "<tr>\
+                            <td><input type='checkbox' name='selected'></td>\
+                            <td>"+name+"</td>\
+                            <td>"+email+"</td>\
+                            <td><button class='viewReportBtn'></button></td>\
+                        </tr>";
+
+        $("#overviewTable tbody").append(trHTML);
+    }
 
 
-  $(".leftInput input").on("change keyup paste click", function(){
+
+    $(".leftInput input").on("change keyup paste click", function(){
       input = $(this);
       filterText = input.val().toUpperCase();
       filterTable = $(this).parent().next().next("table");
@@ -75,13 +88,13 @@ $(document).ready(function(){
             }
           });
       });
-  });
+    });
 
 /*--------------------------------------------------------------------------------------------*/
 /*------------------------------Display Accordions--------------------------------------------*/
 /*--------------------------------------------------------------------------------------------*/
 
-   $.fn.togglepanels = function(){
+    $.fn.togglepanels = function(){
       return this.each(function(){
         $(this).addClass("ui-accordion ui-accordion-icons ui-widget ui-helper-reset")
       .find("p")
