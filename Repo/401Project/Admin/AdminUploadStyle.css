@@ -52,10 +52,10 @@ iframe {
 
 
 
-.upload {
+.upload, .restore {
 	position: relative;
 	margin: 10px auto;
-	padding: 40px;
+	/*padding: 40px;*/
 	width: 100%;
 	text-align: center;
 }
@@ -130,8 +130,6 @@ iframe {
 }
 
 #uploadStatusResult {
-	color: rgb(38, 28, 117);
-	font-size: 3vw;
 }
 
 .errorDisplay {

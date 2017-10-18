@@ -84,7 +84,7 @@
 
 			<div class="uploadStatus">
 				<h2>Upload Status</h2>
-				<h1 id="uploadStatusResult"></h1>
+				<h2 id="uploadStatusResult"></h2>
 			</div>
 
 			<div class="errorDisplay">
