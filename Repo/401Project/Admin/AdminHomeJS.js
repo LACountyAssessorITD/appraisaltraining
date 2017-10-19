@@ -48,6 +48,8 @@ $(document).ready(function(){
         $("#homeTab").text("hello");
     }
 
+    var globalint = 0;
+
     function loadFilterOptions() {
         $(".dropDownFilter").each(function() {
             var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
@@ -75,7 +77,8 @@ $(document).ready(function(){
             // count();
 
             $.when(getResultArray()).done(function() {
-                $("#homeTab").text("he");
+                globalint += 1;
+                $("#homeTab").text("he"+globalint);
                 var DPBContHtml_top = "<div class='DPBCont'>\
                                         <div class='tableWrap'>\
                                             <form class='leftInput'>\
