@@ -75,7 +75,7 @@ $(document).ready(function(){
             // count();
 
             $.when(getResultArray()).done(function() {
-                // $("#homeTab").text("he");
+                $("#homeTab").text("he");
                 var DPBContHtml_top = "<div class='DPBCont'>\
                                         <div class='tableWrap'>\
                                             <form class='leftInput'>\
