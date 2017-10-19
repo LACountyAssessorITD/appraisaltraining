@@ -33,9 +33,20 @@ $(document).ready(function(){
             var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
             var filter_type = $(this).parent().prev("p")[0].innerHTML;
             $("#homeTab").text(filter_type);
-
-            var result_array =  getFilterNameAndType(filter_name,filter_type);
-            if (result_array == null) alert("no");
+            var result_array;
+            $.ajax({
+                url:"../lib/php/admin/getReportType.php",
+                type: "POST",
+                dataType: "json",
+                success:function(results){
+                    result_array = results;
+                },
+                error: function(xhr, status, error){
+                    alert("Fail to connect to the server when trying to retrieve report types");
+                }
+            });
+            //var result_array =  getFilterNameAndType(filter_name,filter_type);
+            alert(filter_name + " received");
             // $.when(getFilterNameAndType()).done(generateReport);
 
             var DPBContHtml_top = "<div class='DPBCont'>\
