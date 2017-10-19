@@ -3,6 +3,8 @@
 	// updated by James Tseng and Mian Lu
 	// last edit October 2017
 
+	// TOT remember to add code to close filestream for excel files! and close $conn!
+
 	// put include_once statements here:
 	include_once "../../constants.php";
 
@@ -11,9 +13,7 @@
 	$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
 	$conn = sqlsrv_connect( $serverName, $connectionInfo);
 
-	if( $conn ) {
-		echo "SQL Server connection established.<br />";
-	}
+	if( $conn ) echo "SQL Server connection established.<br />";
 	else {
 		echo "SQL Server connection could not be established.<br />";
 		die( print_r( sqlsrv_errors(), true));
@@ -115,15 +115,68 @@
 	$summary_filename 		= "summary.xlsx";
 	$details_filename 		= "details.xlsx";
 	$annualreq_filename 	= "annualreq.xlsx";
+
 	// 1. Summary
-	// JT:
+	// JT: open xlsx summary
 	$excelReader = PHPExcel_IOFactory::createReaderForFile($summary_filename);
 	$excelObj = $excelReader->load($summary_filename);
 	$summary = $excelObj->getActiveSheet();
+	// open xlsx annualreq for additional data!
+	$excelReader_ar = PHPExcel_IOFactory::createReaderForFile($annualreq_filename);
+	$excelObj_ar = $excelReader_ar->load($annualreq_filename);
+	$annualreq = $excelObj_ar->getActiveSheet();
 	// ml:
 	$Summary_to_Employee = "INSERT INTO New_Employee (CertNo, FirstName, LastName, Auditor) VALUES (?, ?, ?, ?)";
 	$row_count = 2; // JT: actual data starts at row 2 of Excel spreadsheet
 	echo "===== Start inserting Summary into Employee =====<br />";
+
+
+
+
+
+
+
+	// now do the tricky work: create a whole new table called dbo.temp,
+	// insert all distinct by CertID rows from AnnualReq
+	// then within the while loop, select from it and insert along with each row
+	$drop_temp	= "IF OBJECT_ID('dbo.New_Temp', 'U') IS NOT NULL DROP TABLE dbo.New_Temp";
+	$srvr_stmt = sqlsrv_query( $conn, $drop_temp );
+	if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+	$create_temp = "CREATE TABLE dbo.New_Temp (
+		CertNo float,						--dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
+		TempCertDate datetime2(0),			--dbo.AnnualReq
+		PermCertDate datetime2(0),			--dbo.AnnualReq
+		AdvCertDate datetime2(0),			--dbo.AnnualReq
+	)";
+	$srvr_stmt = sqlsrv_query( $conn, $create_temp );
+	if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+	// open annualreq
+	$excelReader = PHPExcel_IOFactory::createReaderForFile("annualreq_date_formatted.xlsx");
+	$excelObj = $excelReader->load("annualreq_date_formatted.xlsx");
+	$annualreq = $excelObj->getActiveSheet();
+	$srvr_query = "INSERT INTO New_Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate)";
+	$srvr_query .= " VALUES (?,?,?,?)";
+	$row_count = (int)2;
+	while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
+		// select distinct CertID rows from AnnualReq
+		$CertNo			= $annualreq->getCell('D'.$row_count)->getValue();
+		$TempCertDate	= $annualreq->getCell('G'.$row_count)->getValue();
+		$PermCertDate	= $annualreq->getCell('H'.$row_count)->getValue();
+		$AdvCertDate	= $annualreq->getCell('I'.$row_count)->getValue();
+		$params 		= array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate);
+		$stmt 			= sqlsrv_query( $conn, $srvr_query, $params);
+		if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
+		$row_count ++;
+		// '"&TEXT(A1,"YYYY-MM-DD HH:MM")&"'
+
+	}
+
+
+
+
+
+
+
 	while ( $row_count <= $summary->getHighestRow() ) { // read until the last line
 		$CertNo		= $summary->getCell('G'.$row_count)->getValue();
 		$LastName	= $summary->getCell('D'.$row_count)->getValue();
@@ -135,10 +188,18 @@
 		$row_count ++;
 		// echo $row_count."\t".$LastName."\t".$FirstName."\t".(int)$CertNo."\t".$Auditor."<br />"; // debug
 
+		// add logic to read additional TmpCertDate/AdvCertDate/PermCertDate (column G, H, I) from Annualreq!
+
+		// $TempCertDate = $annualreq->getCell('G'.$)
+
 	}
 	echo "===== Summary into Employee finished, ";
 	echo $row_count-2;
 	echo " rows inserted. =====<br />";
+
+
+	/* // block comment starter
+
 	// 2. AnnualReq pt1 - AnnualReq -> CertHistory
 	// JT:
 	$excelReader = PHPExcel_IOFactory::createReaderForFile($annualreq_filename);
@@ -146,8 +207,8 @@
 	$annualreq = $excelObj->getActiveSheet();
 	// ml:
 	$srvr_query = "INSERT INTO New_CertHistory (CertNo, CertYear, CertType, Status, HoursEarned, RequiredHours,
-													CurrentYearBalance, PriorYearBalance, CarryToYear1,
-													CarryToYear2, CarryToYear3, CarryForwardTotal)";
+	CurrentYearBalance, PriorYearBalance, CarryToYear1,
+	CarryToYear2, CarryToYear3, CarryForwardTotal)";
 	$srvr_query .= " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 	$row_count = (int)2;
 	echo "===== Start inserting AnnualReq into CertHistory =====<br />";
@@ -166,8 +227,8 @@
 		$CarryToYear3 = $annualreq->getCell('T'.$row_count)->getValue();
 		$CarryForwardTotal = $annualreq->getCell('U'.$row_count)->getValue();
 		$params = array($CertNo, $CertYear, $CertType, $Status, $HoursEarned, $RequiredHours,
-						$CurrentYearBalance, $PriorYearBalance, $CarryToYear1,$CarryToYear2, $CarryToYear3,
-						$CarryForwardTotal);
+		$CurrentYearBalance, $PriorYearBalance, $CarryToYear1,$CarryToYear2, $CarryToYear3,
+		$CarryForwardTotal);
 		$srvr_exec = sqlsrv_query( $conn, $srvr_query, $params);
 		if( $srvr_exec == false ) { die( print_r(sqlsrv_errors(), true) ); }
 		$row_count ++;
@@ -179,6 +240,5 @@
 	// 2) AnnualReq -> Employee
 	// very tricky, do it later; how to match CertNo in AnnualReq to CertNo in Employee(PK)? using SELECT WHERE (match) would be too slow...?
 
-	/* // block comment starter
 	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
 ?>
