@@ -29,6 +29,27 @@ $(document).ready(function(){
     loadFilterOptions();
 
     function loadFilterOptions() {
+    	// send request to retrieve distinctive rows
+    	$.ajax({
+            url:"../lib/php/admin/getFilters.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+            	filter_name:filter_name,
+            	filter_type:filter_type
+            },
+            success:function(results){
+                var size = results.length;
+                var temp;
+                for (var i = 0; i < size; i++) {
+	                var type = results[i];
+	             }
+            },
+            error: function(xhr, status, error){
+                alert("Fail to connect to the server when trying to retrieve report types");
+            }
+        });
+
         $(".dropDownFilter").each(function() {
             // $("#homeTab").text($(this).children().prop("tagName"));
             var DPBContHtml = "<div class='DPBCont'>\
