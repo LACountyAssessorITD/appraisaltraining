@@ -28,13 +28,10 @@ $(document).ready(function(){
 
     loadFilterOptions();
 
-    function loadFilterOptions() {
-        $(".dropDownFilter").each(function() {
-            var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
-            var filter_type = $(this).parent().prev("p")[0].innerHTML;
-            $("#homeTab").text(filter_type);
-            var result_array;
-            $.ajax({
+    // var result_array;
+
+    function getResultArray() {
+        return $.ajax({
                 url:"../lib/php/admin/getFilters.php",
                 type: "POST",
                 dataType: "json",
@@ -42,51 +39,78 @@ $(document).ready(function(){
                     result_array = results;
                 },
                 error: function(xhr, status, error){
+                    // alert("Fail to connect to the server when trying to retrieve report types");
+                }
+            });
+    }
+
+    function loadFilterOptions() {
+        $(".dropDownFilter").each(function() {
+            var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
+            var filter_type = $(this).parent().prev("p")[0].innerHTML;
+            // $("#homeTab").text(filter_type);
+            var result_array;
+            $.ajax({
+                url:"../lib/php/admin/getFilters.php",
+                type: "POST",
+                dataType: "json",
+                success:function(results){
+                    result_array = results;
+
+                    var DPBContHtml_top = "<div class='DPBCont'>\
+                                            <div class='tableWrap'>\
+                                                <form class='leftInput'>\
+                                                    <input type='text' placeholder='Search..'' autocomplete='off'></form>\
+                                                <div class='filterContTableBG'></div>\
+                                                <table class='filterContTable'>\
+                                                    <col width='20'>\
+                                                    <thead>\
+                                                        <tr>\
+                                                            <td><input type='checkbox' name='selectAll'></td>\
+                                                            <td>Select All</td>\
+                                                        </tr>\
+                                                    </thead>\
+                                                    <tbody>\
+                                                        <tr>";
+
+                    var DPBContHtml_bottom = "\
+                                                        </tr>\
+                                                    </tbody>\
+                                                </table>\
+                                            </div>\
+                                            <div class='filterDisplayList'>\
+                                                <label>Selections:</label>\
+                                                <ul></ul>\
+                                            </div>\
+                                            <iframe class='cover' src='about:blank'></iframe>\
+                                        </div>";
+
+                    $(this).append(DPBContHtml_top);
+
+                    var i;
+                    for(i=0;i<result_array.length;i++) {
+                        var htmlStr = "<td><input type='checkbox' name='selected'></td>\
+                                    <td>"+result_array[i]+"</td>";
+                        $(this).append(htmlStr);
+                    }
+
+                    $(this).append(DPBContHtml_bottom);
+                },
+                error: function(xhr, status, error){
                     alert("Fail to connect to the server when trying to retrieve report types");
                 }
             });
-            //var result_array =  getFilterNameAndType(filter_name,filter_type);
-            alert(filter_name + " received");
-            // $.when(getFilterNameAndType()).done(generateReport);
 
-            var DPBContHtml_top = "<div class='DPBCont'>\
-                                    <div class='tableWrap'>\
-                                        <form class='leftInput'>\
-                                            <input type='text' placeholder='Search..'' autocomplete='off'></form>\
-                                    	<div class='filterContTableBG'></div>\
-                                        <table class='filterContTable'>\
-                                            <col width='20'>\
-                                            <thead>\
-                                                <tr>\
-                                                    <td><input type='checkbox' name='selectAll'></td>\
-                                                    <td>Select All</td>\
-                                                </tr>\
-                                            </thead>\
-                                            <tbody>\
-                                                <tr>";
 
-            var DPBContHtml_bottom = "\
-                                                </tr>\
-                                            </tbody>\
-                                        </table>\
-                                    </div>\
-                                    <div class='filterDisplayList'>\
-                                        <label>Selections:</label>\
-                                        <ul></ul>\
-                                    </div>\
-                                    <iframe class='cover' src='about:blank'></iframe>\
-                                </div>";
+            // var result_array =  getFilterNameAndType(filter_name,filter_type);
+            // alert(filter_name + " received");
+            // $.when(getFilterNameAndType()).done(generateReport);5
 
-            $(this).append(DPBContHtml_top);
+            $.when(getResultArray()).done(function() {
+                
+            });
 
-            var i;
-            for(i=0;i<result_array.length;i++) {
-                var htmlStr = "<td><input type='checkbox' name='selected'></td>\
-                            <td>"+result_array[i]+"</td>";
-                $(this).append(htmlStr);
-            }
-
-            $(this).append(DPBContHtml_bottom);
+            
         });
     }
 
