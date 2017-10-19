@@ -30,8 +30,16 @@ $(document).ready(function(){
 
     function loadFilterOptions() {
         $(".dropDownFilter").each(function() {
-            // $("#homeTab").text($(this).children().prop("tagName"));
-            var DPBContHtml = "<div class='DPBCont'>\
+            var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
+            var filter_type = $(this).parent().prev("p")[0].innerHTML;
+            $("#homeTab").text(filter_type);
+            getFilterNameAndType(filter_name,filter_type);
+
+            var result_array = "TO BE READ IN";
+
+            // $.when(getFilterNameAndType()).done(generateReport);
+
+            var DPBContHtml_top = "<div class='DPBCont'>\
                                     <div class='tableWrap'>\
                                         <form class='leftInput'>\
                                             <input type='text' placeholder='Search..'' autocomplete='off'></form>\
@@ -44,7 +52,12 @@ $(document).ready(function(){
                                                     <td>Select All</td>\
                                                 </tr>\
                                             </thead>\
-                                            <tbody></tbody>\
+                                            <tbody>\
+                                                <tr>";
+
+            var DPBContHtml_bottom = "\
+                                                </tr>\
+                                            </tbody>\
                                         </table>\
                                     </div>\
                                     <div class='filterDisplayList'>\
@@ -54,13 +67,64 @@ $(document).ready(function(){
                                     <iframe class='cover' src='about:blank'></iframe>\
                                 </div>";
 
-            $(this).append(DPBContHtml);
+            $(this).append(DPBContHtml_top);
+
+            var i;
+            for(i=0;i<result_array.length;i++) {
+                var htmlStr = "<td><input type='checkbox' name='selected'></td>\
+                            <td>"+result_array[i]+"</td>";
+                $(this).append(htmlStr);
+            }
+
+            $(this).append(DPBContHtml_bottom);
         });
     }
 
-    function getFilterNameAndType() {
+    // function appendHTMLFilterDropDown(thisObj,result_array) {
+    //     var DPBContHtml_top = "<div class='DPBCont'>\
+    //                             <div class='tableWrap'>\
+    //                                 <form class='leftInput'>\
+    //                                     <input type='text' placeholder='Search..'' autocomplete='off'></form>\
+    //                                 <div class='filterContTableBG'></div>\
+    //                                 <table class='filterContTable'>\
+    //                                     <col width='20'>\
+    //                                     <thead>\
+    //                                         <tr>\
+    //                                             <td><input type='checkbox' name='selectAll'></td>\
+    //                                             <td>Select All</td>\
+    //                                         </tr>\
+    //                                     </thead>\
+    //                                     <tbody>\
+    //                                         <tr>";
+
+    //     var DPBContHtml_bottom = "\
+    //                                         </tr>\
+    //                                     </tbody>\
+    //                                 </table>\
+    //                             </div>\
+    //                             <div class='filterDisplayList'>\
+    //                                 <label>Selections:</label>\
+    //                                 <ul></ul>\
+    //                             </div>\
+    //                             <iframe class='cover' src='about:blank'></iframe>\
+    //                         </div>";
+
+    //     $(this).append(DPBContHtml_top);
+
+    //     var i;
+    //     for(i=0;i<result_array.length;i++) {
+    //         var htmlStr = "<td><input type='checkbox' name='selected'></td>\
+    //                     <td>"+result_array[i]+"</td>";
+    //         $(this).append(htmlStr);
+    //     }
+
+    //     $(this).append(DPBContHtml_bottom);
+    // }
+
+
+    function getFilterNameAndType(filter_name, filter_type) {
         // send request to retrieve distinctive rows
-        $.ajax({
+        return $.ajax({
             url:"../lib/php/admin/getFilters.php",
             type: "POST",
             dataType: "json",
@@ -93,7 +157,6 @@ $(document).ready(function(){
 
         $("#overviewTable tbody").append(trHTML);
     }
-
 
 
     $(".leftInput input").on("change keyup paste click", function(){
