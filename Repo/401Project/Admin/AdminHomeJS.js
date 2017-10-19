@@ -35,7 +35,7 @@ $(document).ready(function(){
             $("#homeTab").text(filter_type);
             var result_array;
             $.ajax({
-                url:"../lib/php/admin/getReportType.php",
+                url:"../lib/php/admin/getFilters.php",
                 type: "POST",
                 dataType: "json",
                 success:function(results){
