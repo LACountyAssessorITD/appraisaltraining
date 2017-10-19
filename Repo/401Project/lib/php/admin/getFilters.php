@@ -24,7 +24,7 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "SELECT DISTINCT ".$filter_name." FROM ".$filter_type;
+$tsql = "SELECT DISTINCT CertNo FROM [New_Employee]";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {

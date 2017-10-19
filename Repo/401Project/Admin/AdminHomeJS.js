@@ -33,10 +33,9 @@ $(document).ready(function(){
             var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
             var filter_type = $(this).parent().prev("p")[0].innerHTML;
             $("#homeTab").text(filter_type);
-            getFilterNameAndType(filter_name,filter_type);
 
-            var result_array = "TO BE READ IN";
-
+            var result_array =  getFilterNameAndType(filter_name,filter_type);
+            if (result_array == null) alert("no");
             // $.when(getFilterNameAndType()).done(generateReport);
 
             var DPBContHtml_top = "<div class='DPBCont'>\
@@ -124,23 +123,20 @@ $(document).ready(function(){
 
     function getFilterNameAndType(filter_name, filter_type) {
         // send request to retrieve distinctive rows
-        return $.ajax({
+         $.ajax({
             url:"../lib/php/admin/getFilters.php",
             type: "POST",
-            dataType: "json",
+            dataType: "text",
             data: {
                 filter_name:filter_name,
                 filter_type:filter_type
             },
             success:function(results){
-                var size = results.length;
-                var temp;
-                for (var i = 0; i < size; i++) {
-                    var type = results[i];
-                 }
+                return JSON.parse(results);
             },
             error: function(xhr, status, error){
-                alert("Fail to connect to the server when trying to retrieve report types");
+                alert("Fail to connect to the server when trying to retrieve filters");
+                alert(status);
             }
         });
     }
