@@ -56,7 +56,7 @@ $(document).ready(function(){
                 dataType: "json",
                 success:function(results){
                     result_array = results;
-
+                    alert("1");
                     var DPBContHtml_top = "<div class='DPBCont'>\
                                             <div class='tableWrap'>\
                                                 <form class='leftInput'>\
@@ -86,6 +86,7 @@ $(document).ready(function(){
                                         </div>";
 
                     $(this).append(DPBContHtml_top);
+                    alert("2");
 
                     var i;
                     for(i=0;i<result_array.length;i++) {
