@@ -34,7 +34,7 @@ if( $stmt === false )
 else {
 	$filter = array();
     while($row = sqlsrv_fetch_array($stmt)){
-    	$filter[] = $row[$filter_name];
+    	$filter[] = $row['CertNo'];
     }
     echo json_encode($filter);
 }
