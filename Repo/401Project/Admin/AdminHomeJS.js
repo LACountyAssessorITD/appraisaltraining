@@ -85,8 +85,8 @@ $(document).ready(function(){
                                             <iframe class='cover' src='about:blank'></iframe>\
                                         </div>";
 
-                    $(this).append(DPBContHtml_top);
                     alert("2");
+                    $(this).append(DPBContHtml_top);
 
                     var i;
                     for(i=0;i<result_array.length;i++) {
