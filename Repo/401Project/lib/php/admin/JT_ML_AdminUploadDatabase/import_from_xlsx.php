@@ -154,29 +154,46 @@
 	$excelReader = PHPExcel_IOFactory::createReaderForFile("annualreq_date_formatted.xlsx");
 	$excelObj = $excelReader->load("annualreq_date_formatted.xlsx");
 	$annualreq = $excelObj->getActiveSheet();
-	$srvr_query = "INSERT INTO New_Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate)";
-	$srvr_query .= " VALUES (?,?,?,?)";
+	$srvr_query = "INSERT INTO New_Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate)"; // TOTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+	// $srvr_query = "INSERT INTO New_Temp (CertNo, TempCertDate)";
+	$srvr_query .= " VALUES (?,?,?,?)"; // TOTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+	// $srvr_query .= " VALUES (?,?)";
 	$row_count = (int)2;
 	while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
 		// select distinct CertID rows from AnnualReq
 		$CertNo			= $annualreq->getCell('D'.$row_count)->getValue();
-		$TempCertDate	= $annualreq->getCell('G'.$row_count)->getValue();
-		$PermCertDate	= $annualreq->getCell('H'.$row_count)->getValue();
-		$AdvCertDate	= $annualreq->getCell('I'.$row_count)->getValue();
-		$params 		= array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate);
+
+		$TempCell		= $annualreq->getCell('G'.$row_count);
+		$TempCertDate	= $TempCell->getValue();
+		if(PHPExcel_Shared_Date::isDateTime($TempCell)) $TempCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($TempCertDate));
+
+		$PermCell		= $annualreq->getCell('H'.$row_count);
+		$PermCertDate	= $PermCell->getValue();
+		if(PHPExcel_Shared_Date::isDateTime($PermCell)) $PermCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($PermCertDate));
+
+		$AdvCell		= $annualreq->getCell('I'.$row_count);
+		$AdvCertDate	= $AdvCell->getValue();
+		if(PHPExcel_Shared_Date::isDateTime($AdvCell)) $AdvCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($AdvCertDate));
+
+		$params 		= array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate); // TOTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+		// $params 		= array($CertNo, $TempCertDate);
 		$stmt 			= sqlsrv_query( $conn, $srvr_query, $params);
 		if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
 		$row_count ++;
 		// '"&TEXT(A1,"YYYY-MM-DD HH:MM")&"'
-
+		// $cell = $excel->getActiveSheet()->getCell('B' . $i);
+		// $InvDate= $cell->getValue();
+		// if(PHPExcel_Shared_Date::isDateTime($cell)) {
+		// 	$InvDate = date($format, PHPExcel_Shared_Date::ExcelToPHP($InvDate));
+		// }
 	}
 
 
 
 
 
-
-
+	// reset row count and loop again to insert everything in Summary
+	$row_count = (int)2;
 	while ( $row_count <= $summary->getHighestRow() ) { // read until the last line
 		$CertNo		= $summary->getCell('G'.$row_count)->getValue();
 		$LastName	= $summary->getCell('D'.$row_count)->getValue();
