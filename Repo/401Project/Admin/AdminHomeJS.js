@@ -78,7 +78,7 @@ $(document).ready(function(){
 
             $.when(getResultArray()).done(function() {
                 globalint += 1;
-                $("#homeTab").text("he"+globalint);
+                $("#homeTab").text($(this).prop("className"));
                 var DPBContHtml_top = "<div class='DPBCont'>\
                                         <div class='tableWrap'>\
                                             <form class='leftInput'>\
