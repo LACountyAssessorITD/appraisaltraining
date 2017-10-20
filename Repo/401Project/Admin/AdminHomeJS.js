@@ -35,7 +35,7 @@ $(document).ready(function(){
     function loadFilterOptions() {
         $(".dropDownFilter").each(function() {
             var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
-            var filter_type = $(this).parent().prev("p")[0].innerHTML;
+            var filter_type = $(this).parent().prop("name");
             // $("#homeTab").text(filter_type);
             var result_array = [];
             $.ajax({
