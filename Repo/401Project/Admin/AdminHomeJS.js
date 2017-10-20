@@ -55,7 +55,7 @@ $(document).ready(function(){
             var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
             var filter_type = $(this).parent().prev("p")[0].innerHTML;
             // $("#homeTab").text(filter_type);
-            var result_array;
+            var result_array = [];
             $.ajax({
                 url:"../lib/php/admin/getFilters.php",
                 type: "POST",
@@ -71,7 +71,7 @@ $(document).ready(function(){
 
 
             // var result_array =  getFilterNameAndType(filter_name,filter_type);
-            alert(filter_name + " received");
+            // alert(filter_name + " received");
             // $.when(getFilterNameAndType()).done(generateReport);
 
             // count();
@@ -98,40 +98,43 @@ $(document).ready(function(){
                     $("#homeTab").text("isLen0--1");
                 }
                 var DPBContHtml_top = "<div class='DPBCont'>\
-                                        <div class='tableWrap'>\
-                                            <form class='leftInput'>\
-                                                <input type='text' placeholder='Search..'' autocomplete='off'></form>\
-                                            <div class='filterContTableBG'></div>\
-                                            <table class='filterContTable'>\
-                                                <col width='20'>\
-                                                <thead>\
-                                                    <tr>\
-                                                        <td><input type='checkbox' name='selectAll'></td>\
-                                                        <td>Select All</td>\
-                                                    </tr>\
-                                                </thead>\
-                                                <tbody>";
+                            <div class='tableWrap'>\
+                                <form class='leftInput'>\
+                                    <input type='text' placeholder='Search..' autocomplete='off'>\
+                                </form>\
+                                <div class='filterContTableBG'></div>\
+                                <table class='filterContTable'>\
+                                    <col width='20'>\
+                                    <thead>\
+                                        <tr>\
+                                            <td><input type='checkbox' name='selectAll'></td>\
+                                            <td>Select All</td>\
+                                        </tr>\
+                                    </thead>\
+                                    <tbody>";
 
-                var DPBContHtml_bottom = "</tbody>\
-                                            </table>\
-                                        </div>\
-                                        <div class='filterDisplayList'>\
-                                            <label>Selections:</label>\
-                                            <ul></ul>\
-                                        </div>\
-                                        <iframe class='cover' src='about:blank'></iframe>\
-                                    </div>";
-
-                thisObj.append(DPBContHtml_top);
-
-                thisObj.append(DPBContHtml_bottom);
                 var i;
+                var htmlStr;
                 for(i=0;i<result_array.length;i++) {
-                    var htmlStr = "<tr><td><input type='checkbox' name='selected'></td>\
+                    htmlStr += "<tr><td><input type='checkbox' name='selected'></td>\
                                 <td>"+result_array[i]+"</td></tr>";
                     // thisObj.append(htmlStr);
-                    thisObj.append(htmlStr);
+                    // thisObj.append(htmlStr);
                 }
+
+                var DPBContHtml_bottom = "</tbody>\
+                                </table>\
+                            </div>\
+                            <div class='filterDisplayList'>\
+                                <label>Selections:</label>\
+                                <ul></ul>\
+                            </div>\
+                            <iframe class='cover' src='about:blank'></iframe>\
+                        </div>";
+
+                var DPBContHtml = DPBContHtml_top + htmlStr + DPBContHtml_bottom;
+
+                thisObj.append(DPBContHtml);
 
             // });
 
