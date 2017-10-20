@@ -59,6 +59,27 @@ $(document).ready(function(){
 
             // var result_array =  getFilterNameAndType(filter_name,filter_type);
 
+            // $.ajax({
+            //     url:"../lib/php/admin/getFilters.php",
+            //     type: "POST",
+            //     // dataType: "text",
+            //     dataType: "json",
+            //     data: {
+            //         filter_name:filter_name,
+            //         filter_type:filter_type
+            //     },
+            //     success:function(results){
+            //         // return JSON.parse(results);
+            //         result_array = results;
+
+            //     },
+            //     error: function(xhr, status, error){
+            //         alert("Fail to connect to the server when trying to retrieve filters");
+            //         alert(status);
+            //     },
+            //     async:false
+            // });
+
             var thisObj = $(this);
 
             if(result_array.length==0) {
@@ -103,47 +124,6 @@ $(document).ready(function(){
         });
     }
 
-    // function appendHTMLFilterDropDown(thisObj,result_array) {
-    //     var DPBContHtml_top = "<div class='DPBCont'>\
-    //                             <div class='tableWrap'>\
-    //                                 <form class='leftInput'>\
-    //                                     <input type='text' placeholder='Search..'' autocomplete='off'></form>\
-    //                                 <div class='filterContTableBG'></div>\
-    //                                 <table class='filterContTable'>\
-    //                                     <col width='20'>\
-    //                                     <thead>\
-    //                                         <tr>\
-    //                                             <td><input type='checkbox' name='selectAll'></td>\
-    //                                             <td>Select All</td>\
-    //                                         </tr>\
-    //                                     </thead>\
-    //                                     <tbody>\
-    //                                         <tr>";
-
-    //     var DPBContHtml_bottom = "\
-    //                                         </tr>\
-    //                                     </tbody>\
-    //                                 </table>\
-    //                             </div>\
-    //                             <div class='filterDisplayList'>\
-    //                                 <label>Selections:</label>\
-    //                                 <ul></ul>\
-    //                             </div>\
-    //                             <iframe class='cover' src='about:blank'></iframe>\
-    //                         </div>";
-
-    //     $(this).append(DPBContHtml_top);
-
-    //     var i;
-    //     for(i=0;i<result_array.length;i++) {
-    //         var htmlStr = "<td><input type='checkbox' name='selected'></td>\
-    //                     <td>"+result_array[i]+"</td>";
-    //         $(this).append(htmlStr);
-    //     }
-
-    //     $(this).append(DPBContHtml_bottom);
-    // }
-
 
     function getFilterNameAndType(filter_name, filter_type) {
         // send request to retrieve distinctive rows
@@ -161,7 +141,8 @@ $(document).ready(function(){
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when trying to retrieve filters");
                 alert(status);
-            }
+            },
+            async:false
         });
     }
 

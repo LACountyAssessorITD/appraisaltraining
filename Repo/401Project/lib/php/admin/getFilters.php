@@ -24,7 +24,7 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "SELECT DISTINCT CertNo FROM [New_Employee]";
+$tsql = "SELECT DISTINCT FirstName FROM [New_Employee]";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
@@ -34,7 +34,7 @@ if( $stmt === false )
 else {
 	$filter = array();
     while($row = sqlsrv_fetch_array($stmt)){
-    	$filter[] = $row['CertNo'];
+    	$filter[] = $row['FirstName'];
     }
     echo json_encode($filter);
 }
