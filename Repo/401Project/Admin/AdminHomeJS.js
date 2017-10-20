@@ -34,7 +34,7 @@ $(document).ready(function(){
 
     function loadFilterOptions() {
         $(".dropDownFilter").each(function() {
-            var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
+            var filter_name = $(this).children(".dropDownBtn").attr("name");
             var filter_type = $(this).parent().attr("name");
             $("#homeTab").text(filter_type);
             var result_array = [];
@@ -50,8 +50,8 @@ $(document).ready(function(){
                     result_array = results;
                 },
                 error: function(xhr, status, error){
-                    alert("Fail to connect to the server when trying to retrieve report types");
-                    alert(status);
+                    // alert("Fail to connect to the server when trying to retrieve report types");
+                     alert(status);
                 },
                 async:false
             });

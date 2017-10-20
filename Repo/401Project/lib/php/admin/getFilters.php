@@ -4,13 +4,14 @@ include_once "../session.php";
 //session_start();
 
 $filter_name = $_POST['filter_name'];
-if ($filter_name == "CertNo" or "FirstName" or "LastName" or "CurrentStatus" or "Auditor"){
-    $filter_table = "[New_Employee]";
-} else if ($filter_name == "FiscalYear") {
-    $filter_table = "[New_CourseDetail]";
-} else if ($filter_name == "CurrentYearBalance" or "Status") {
-    $filter_table = "[New_CertHistory]";
-}
+// if ($filter_name == "CertNo" or "FirstName" or "LastName" or "CurrentStatus" or "Auditor"){
+//     $filter_table = "[New_Employee]";
+// } else if ($filter_name == "FiscalYear") {
+//     $filter_table = "[New_CourseDetail]";
+// } else if ($filter_name == "CurrentYearBalance" or "Status") {
+//     $filter_table = "[New_CertHistory]";
+// }
+$filter_table = $_POST['filter_type'];
 
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
