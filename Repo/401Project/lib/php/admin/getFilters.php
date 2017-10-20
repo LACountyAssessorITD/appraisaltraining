@@ -4,7 +4,13 @@ include_once "../session.php";
 //session_start();
 
 $filter_name = $_POST['filter_name'];
-$filter_type = $_POST['filter_type'];
+if ($filter_name == "CertNo" or "FirstName" or "LastName" or "CurrentStatus" or "Auditor"){
+    $filter_table = "[New_Employee]";
+} else if ($filter_name == "FiscalYear") {
+    $filter_table = "[New_CourseDetail]";
+} else if ($filter_name == "CurrentYearBalance" or "Status") {
+    $filter_table = "[New_CertHistory]";
+}
 
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -24,7 +30,7 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "SELECT DISTINCT CertNo FROM [New_Employee]";
+$tsql = "SELECT DISTINCT ".$filter_name." FROM ".$filter_table;
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
