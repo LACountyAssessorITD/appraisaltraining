@@ -184,6 +184,13 @@
 	// drop & create dbo.Temp2 finished
 	$select_query = "SELECT DISTINCT * FROM New_Temp ORDER BY CertID";
 	$insert_query = "INSERT INTO New_Temp2 (CertNo, TempCertDate, PermCertDate, AdvCertDate) VALUES (?,?,?,?)";
+
+	if(($result = sqlsrv_query($conn, $select_query)) !== false){
+              echo $obj->colName.'<br />';
+        }
+    }
+
+
 	foreach ($conn->query($select_query) as $temp_row) {
 		$params = array($temp_row["CertNo"], $temp_row["TempCertDate"], $temp_row["PermCertDate"], $temp_row["AdvCertDate"]);
 		$stmt = sqlsrv_query($conn, $insert_query, $params);

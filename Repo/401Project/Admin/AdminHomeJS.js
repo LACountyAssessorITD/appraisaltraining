@@ -28,10 +28,35 @@ $(document).ready(function(){
 
     loadFilterOptions();
 
-    var result_array;
+    // var result_array = ["1","4","7","5","2"];
+    // var result_array = [];
 
-    function getResultArray() {
-        return $.ajax({
+    // function getResultArray() {
+    //     return $.ajax({
+    //             url:"../lib/php/admin/getFilters.php",
+    //             type: "POST",
+    //             dataType: "json",
+    //             success:function(results){
+    //                 // result_array = results;
+    //                 result_array.push("1");
+    //             },
+    //             error: function(xhr, status, error){
+    //                 // alert("Fail to connect to the server when trying to retrieve report types");
+    //             }
+    //         });
+    // }
+
+    function count() {
+        $("#homeTab").text("hello");
+    }
+
+    function loadFilterOptions() {
+        $(".dropDownFilter").each(function() {
+            var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
+            var filter_type = $(this).parent().prev("p")[0].innerHTML;
+            // $("#homeTab").text(filter_type);
+            var result_array;
+            $.ajax({
                 url:"../lib/php/admin/getFilters.php",
                 type: "POST",
                 dataType: "json",
@@ -39,46 +64,39 @@ $(document).ready(function(){
                     result_array = results;
                 },
                 error: function(xhr, status, error){
-                    // alert("Fail to connect to the server when trying to retrieve report types");
+                    alert("Fail to connect to the server when trying to retrieve report types");
+                    alert(status);
                 }
             });
-    }
-
-    function count() {
-        $("#homeTab").text("hello");
-    }
-
-    var globalint = 0;
-
-    function loadFilterOptions() {
-        $(".dropDownFilter").each(function() {
-            var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
-            var filter_type = $(this).parent().prev("p")[0].innerHTML;
-            // $("#homeTab").text(filter_type);
-            // var result_array;
-            // $.ajax({
-            //     url:"../lib/php/admin/getFilters.php",
-            //     type: "POST",
-            //     dataType: "json",
-            //     success:function(results){
-            //         result_array = results;
-            //     },
-            //     error: function(xhr, status, error){
-            //         alert("Fail to connect to the server when trying to retrieve report types");
-            //         alert(status);
-            //     }
-            // });
 
 
             // var result_array =  getFilterNameAndType(filter_name,filter_type);
-            // alert(filter_name + " received");
+            alert(filter_name + " received");
             // $.when(getFilterNameAndType()).done(generateReport);
 
             // count();
+            var thisObj = $(this);
+            // if(result_array.length==0) {
+            //     $("#homeTab").text("isLen0--0");
+            // }
 
-            $.when(getResultArray()).done(function() {
-                globalint += 1;
-                $("#homeTab").text($(this).prop("class"));
+            // $.when(function() {
+            //     return $.ajax({
+            //         url:"../lib/php/admin/getFilters.php",
+            //         type: "POST",
+            //         dataType: "json",
+            //         success:function(results){
+            //             result_array = results;
+            //         },
+            //         error: function(xhr, status, error){
+            //             alert("Fail to connect to the server when trying to retrieve report types");
+            //             alert(status);
+            //         }
+            //     });
+            // }).done(function() {
+                if(result_array.length==0) {
+                    $("#homeTab").text("isLen0--1");
+                }
                 var DPBContHtml_top = "<div class='DPBCont'>\
                                         <div class='tableWrap'>\
                                             <form class='leftInput'>\
@@ -92,12 +110,9 @@ $(document).ready(function(){
                                                         <td>Select All</td>\
                                                     </tr>\
                                                 </thead>\
-                                                <tbody>\
-                                                    <tr>";
+                                                <tbody>";
 
-                var DPBContHtml_bottom = "\
-                                                    </tr>\
-                                                </tbody>\
+                var DPBContHtml_bottom = "</tbody>\
                                             </table>\
                                         </div>\
                                         <div class='filterDisplayList'>\
@@ -107,19 +122,20 @@ $(document).ready(function(){
                                         <iframe class='cover' src='about:blank'></iframe>\
                                     </div>";
 
-                $(this).append(DPBContHtml_top);
+                thisObj.append(DPBContHtml_top);
 
+                thisObj.append(DPBContHtml_bottom);
                 var i;
                 for(i=0;i<result_array.length;i++) {
-                    var htmlStr = "<td><input type='checkbox' name='selected'></td>\
-                                <td>"+result_array[i]+"</td>";
-                    $(this).append(htmlStr);
+                    var htmlStr = "<tr><td><input type='checkbox' name='selected'></td>\
+                                <td>"+result_array[i]+"</td></tr>";
+                    // thisObj.append(htmlStr);
+                    thisObj.append(htmlStr);
                 }
 
-                $(this).append(DPBContHtml_bottom);
-            });
+            // });
 
-            
+
         });
     }
 
