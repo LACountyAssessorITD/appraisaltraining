@@ -19,7 +19,6 @@ class myPDF extends FPDF {
         $this->Ln();
 
         // Add year
-        $yearTypeKey = $GLOBALS['yearTypeKey'];
         $year = $GLOBALS['year'];
         $this->Cell(0,5,'FY '.(string)$year.'-'.(string)($year+1),0,0,'C');
         $this->Ln();
@@ -35,7 +34,6 @@ class myPDF extends FPDF {
     function generate($conn){
         $year;
         $certid = $GLOBALS['certid'];
-        $yearTypeKey = $GLOBALS['yearTypeKey'];
         $year = $GLOBALS['year'];
 
 

@@ -29,15 +29,7 @@ if( $conn === false )
 $totalcarryover = 0;
 
 $certid =  getCertID();
-$yearTypeKey = $_SESSION['yearTypeKey'];
-if ($yearTypeKey == 'specific') {
-	$year =  $_SESSION["specific_year"];
-}
-else {
-	$fromYearInt = $_SESSION["fromYearInt"];
-	$toYearInt = $_SESSION["toYearInt"];
-}
-
+$year =  $_SESSION["specific_year"];
 
 ///////////////////////////////////////////////////////////////////
 
