@@ -3,8 +3,8 @@ include_once "../constants.php";
 include_once "../session.php";
 //session_start();
 
-//$filter_name = $_POST['filter_name'];
-//$filter_type = $_POST['filter_type'];
+$filter_name = $_POST['filter_name'];
+$filter_type = $_POST['filter_type'];
 
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;

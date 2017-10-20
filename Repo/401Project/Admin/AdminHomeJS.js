@@ -42,6 +42,10 @@ $(document).ready(function(){
                 url:"../lib/php/admin/getFilters.php",
                 type: "POST",
                 dataType: "json",
+                data: {
+                    filter_type:filter_type,
+                    filter_name:filter_name,
+                },
                 success:function(results){
                     result_array = results;
                 },
