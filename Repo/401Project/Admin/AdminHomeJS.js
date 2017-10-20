@@ -35,8 +35,8 @@ $(document).ready(function(){
     function loadFilterOptions() {
         $(".dropDownFilter").each(function() {
             var filter_name = $(this).children(".dropDownBtn")[0].innerHTML;
-            var filter_type = $(this).parent().prop("name");
-            // $("#homeTab").text(filter_type);
+            var filter_type = $(this).parent().attr("name");
+            $("#homeTab").text(filter_type);
             var result_array = [];
             $.ajax({
                 url:"../lib/php/admin/getFilters.php",
@@ -62,7 +62,7 @@ $(document).ready(function(){
             var thisObj = $(this);
 
             if(result_array.length==0) {
-                $("#homeTab").text("isLen0--1");
+                // $("#homeTab").text("isLen0--1");
             }
             var DPBContHtml_top = "<div class='DPBCont'>\
                         <div class='tableWrap'>\
