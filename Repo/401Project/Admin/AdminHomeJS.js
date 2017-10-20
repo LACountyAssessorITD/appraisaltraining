@@ -28,24 +28,6 @@ $(document).ready(function(){
 
     loadFilterOptions();
 
-    // var result_array = ["1","4","7","5","2"];
-    // var result_array = [];
-
-    // function getResultArray() {
-    //     return $.ajax({
-    //             url:"../lib/php/admin/getFilters.php",
-    //             type: "POST",
-    //             dataType: "json",
-    //             success:function(results){
-    //                 // result_array = results;
-    //                 result_array.push("1");
-    //             },
-    //             error: function(xhr, status, error){
-    //                 // alert("Fail to connect to the server when trying to retrieve report types");
-    //             }
-    //         });
-    // }
-
     function count() {
         $("#homeTab").text("hello");
     }
@@ -66,79 +48,54 @@ $(document).ready(function(){
                 error: function(xhr, status, error){
                     alert("Fail to connect to the server when trying to retrieve report types");
                     alert(status);
-                }
+                },
+                async:false
             });
 
 
             // var result_array =  getFilterNameAndType(filter_name,filter_type);
-            // alert(filter_name + " received");
-            // $.when(getFilterNameAndType()).done(generateReport);
 
-            // count();
             var thisObj = $(this);
-            // if(result_array.length==0) {
-            //     $("#homeTab").text("isLen0--0");
-            // }
 
-            // $.when(function() {
-            //     return $.ajax({
-            //         url:"../lib/php/admin/getFilters.php",
-            //         type: "POST",
-            //         dataType: "json",
-            //         success:function(results){
-            //             result_array = results;
-            //         },
-            //         error: function(xhr, status, error){
-            //             alert("Fail to connect to the server when trying to retrieve report types");
-            //             alert(status);
-            //         }
-            //     });
-            // }).done(function() {
-                if(result_array.length==0) {
-                    $("#homeTab").text("isLen0--1");
-                }
-                var DPBContHtml_top = "<div class='DPBCont'>\
-                            <div class='tableWrap'>\
-                                <form class='leftInput'>\
-                                    <input type='text' placeholder='Search..' autocomplete='off'>\
-                                </form>\
-                                <div class='filterContTableBG'></div>\
-                                <table class='filterContTable'>\
-                                    <col width='20'>\
-                                    <thead>\
-                                        <tr>\
-                                            <td><input type='checkbox' name='selectAll'></td>\
-                                            <td>Select All</td>\
-                                        </tr>\
-                                    </thead>\
-                                    <tbody>";
+            if(result_array.length==0) {
+                $("#homeTab").text("isLen0--1");
+            }
+            var DPBContHtml_top = "<div class='DPBCont'>\
+                        <div class='tableWrap'>\
+                            <form class='leftInput'>\
+                                <input type='text' placeholder='Search..' autocomplete='off'>\
+                            </form>\
+                            <div class='filterContTableBG'></div>\
+                            <table class='filterContTable'>\
+                                <col width='20'>\
+                                <thead>\
+                                    <tr>\
+                                        <td><input type='checkbox' name='selectAll'></td>\
+                                        <td>Select All</td>\
+                                    </tr>\
+                                </thead>\
+                                <tbody>";
 
-                var i;
-                var htmlStr;
-                for(i=0;i<result_array.length;i++) {
-                    htmlStr += "<tr><td><input type='checkbox' name='selected'></td>\
-                                <td>"+result_array[i]+"</td></tr>";
-                    // thisObj.append(htmlStr);
-                    // thisObj.append(htmlStr);
-                }
+            var i;
+            var htmlStr = '';
+            for(i=0;i<result_array.length;i++) {
+                htmlStr += "<tr><td><input type='checkbox' name='selected'></td>\
+                            <td>"+result_array[i]+"</td></tr>";
+            }
 
-                var DPBContHtml_bottom = "</tbody>\
-                                </table>\
-                            </div>\
-                            <div class='filterDisplayList'>\
-                                <label>Selections:</label>\
-                                <ul></ul>\
-                            </div>\
-                            <iframe class='cover' src='about:blank'></iframe>\
-                        </div>";
+            var DPBContHtml_bottom = "</tbody>\
+                            </table>\
+                        </div>\
+                        <div class='filterDisplayList'>\
+                            <label>Selections:</label>\
+                            <ul></ul>\
+                        </div>\
+                        <iframe class='cover' src='about:blank'></iframe>\
+                    </div>";
 
-                var DPBContHtml = DPBContHtml_top + htmlStr + DPBContHtml_bottom;
+            var DPBContHtml = DPBContHtml_top + htmlStr + DPBContHtml_bottom;
 
-                thisObj.append(DPBContHtml);
-
-            // });
-
-
+            thisObj.append(DPBContHtml);
         });
     }
 
