@@ -36,18 +36,17 @@ $(document).ready(function(){
         $(".dropDownFilter").each(function() {
             var filter_name = $(this).children(".dropDownBtn").attr("name");
             var filter_type = $(this).parent().attr("name");
-            $("#homeTab").text(filter_type);
             var result_array = [];
             $.ajax({
                 url:"../lib/php/admin/getFilters.php",
                 type: "POST",
-                dataType: "json",
+                dataType: "text",
                 data: {
                     filter_type:filter_type,
                     filter_name:filter_name,
                 },
                 success:function(results){
-                    result_array = results;
+                    result_array = JSON.parse(results);
                 },
                 error: function(xhr, status, error){
                     // alert("Fail to connect to the server when trying to retrieve report types");
