@@ -342,15 +342,15 @@ $(document).ready(function(){
         });
 
 
-        var DPBcont = $(this).closest(".DPBCont");
-        var ul = DPBcont.find(".filterDisplayList").find("ul");
-        var button = $(this).parent().parent().parent().parent().parent().parent().prev();
-        if(ul[0].innerHTML == "") {
-            button.css("background-color","white");
-        }
-        else {
-            button.css("background-color","blue");
-        }
+        // var DPBcont = $(this).closest(".DPBCont");
+        // var ul = DPBcont.find(".filterDisplayList").find("ul");
+        // var button = $(this).parent().parent().parent().parent().parent().parent().prev();
+        // if(ul[0].innerHTML == "") {
+        //     button.css("background-color","white");
+        // }
+        // else {
+        //     button.css("background-color","blue");
+        // }
 
     });
 
@@ -380,10 +380,10 @@ $(document).ready(function(){
 
 
     //Dropdown changes color on selected options
-    $(".filterContTable").on("click", "input[name='selected']",function() {
+    $(".filterContTable").on("click", "input[name='selected'], input[name='selectAll']",function() {
         var DPBcont = $(this).closest(".DPBCont");
         var ul = DPBcont.find(".filterDisplayList").find("ul");
-        var button = $(this).parent().parent().parent().parent().parent().parent().prev();
+        var button = DPBcont.prev();
         if(ul[0].innerHTML == "") {
             button.css("background-color","white");
         }
