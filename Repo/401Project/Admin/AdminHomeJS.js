@@ -40,13 +40,13 @@ $(document).ready(function(){
             $.ajax({
                 url:"../lib/php/admin/getFilters.php",
                 type: "POST",
-                dataType: "text",
+                dataType: "json",
                 data: {
                     filter_type:filter_type,
                     filter_name:filter_name,
                 },
                 success:function(results){
-                    result_array = JSON.parse(results);
+                    result_array = results;
                 },
                 error: function(xhr, status, error){
                     // alert("Fail to connect to the server when trying to retrieve report types");
