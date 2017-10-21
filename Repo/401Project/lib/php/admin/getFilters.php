@@ -31,7 +31,12 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "SELECT DISTINCT ".$filter_name." FROM ".$filter_table;
+if ($filter_name == "Name") {
+    $tsql = "SELECT FirstName,LastName FROM ".$filter_table;
+}
+else {
+    $tsql = "SELECT DISTINCT ".$filter_name." FROM ".$filter_table;
+}
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
@@ -41,7 +46,13 @@ if( $stmt === false )
 else {
 	$filter = array();
     while($row = sqlsrv_fetch_array($stmt)){
-    	$filter[] = $row[$filter_name];
+        if ($filter_name == "Name") {
+            $filter[] = $row["FirstName"]." ".$row["LastName"];
+        }
+        else {
+            $filter[] = $row[$filter_name];
+        }
+
     }
     echo json_encode($filter);
 }
