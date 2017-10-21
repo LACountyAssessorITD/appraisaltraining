@@ -340,6 +340,18 @@ $(document).ready(function(){
         		resultList.append(markup);
         	}
         });
+
+
+        var DPBcont = $(this).closest(".DPBCont");
+        var ul = DPBcont.find(".filterDisplayList").find("ul");
+        var button = $(this).parent().parent().parent().parent().parent().parent().prev();
+        if(ul[0].innerHTML == "") {
+            button.css("background-color","white");
+        }
+        else {
+            button.css("background-color","blue");
+        }
+
     });
 
 
@@ -368,12 +380,15 @@ $(document).ready(function(){
 
 
     //Dropdown changes color on selected options
-    $(".filterDisplayList").children("ul").on(change, function() {
-        if($(this)[0].innerHTML = "") {
-            $(this).closest("button").css("background-color","white");
+    $(".filterContTable").on("click", "input[name='selected']",function() {
+        var DPBcont = $(this).closest(".DPBCont");
+        var ul = DPBcont.find(".filterDisplayList").find("ul");
+        var button = $(this).parent().parent().parent().parent().parent().parent().prev();
+        if(ul[0].innerHTML == "") {
+            button.css("background-color","white");
         }
         else {
-            $(this).closest("button").css("background-color","blue");
+            button.css("background-color","blue");
         }
     });
 
