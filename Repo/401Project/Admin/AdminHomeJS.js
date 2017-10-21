@@ -367,6 +367,17 @@ $(document).ready(function(){
     });
 
 
+    //Dropdown changes color on selected options
+    $(".filterDisplayList").children("ul").on(change, function() {
+        if($(this)[0].innerHTML = "") {
+            $(this).closest("button").css("background-color","white");
+        }
+        else {
+            $(this).closest("button").css("background-color","blue");
+        }
+    });
+
+
     /*Collapse will cause all dropdowns to hide*/
     $(".pFiltersLabel").on("click", function() {
     	$(this).next().find(".DPBCont").each(function() {
