@@ -215,7 +215,9 @@ $(document).ready(function(){
                     query:query,
                 },
                 success:function(results){
-                    // Generate table here
+                    for (var i =0; i < results.length; i ++) {
+                    	alert(results[i][certID]);
+                    }
                 },
                 error: function(xhr, status, error){
                     alert("Fail to connect to the server when trying to retrieve report types");
