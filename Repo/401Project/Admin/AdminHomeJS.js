@@ -179,7 +179,30 @@ $(document).ready(function(){
 
     function applyFilter() {
         // generate SQL query clause
-        var query;
+        var query = "";                                 //!!!!!!!!!!!!!!!!!!!
+        var filterNum = 0;
+        $(".dropDownFilter").each(function() {
+            var filterDisplayList = $(this).find(".filterDisplayList");
+            var list = filterDisplayList.children(ul);
+            var orStr = "";                             //!!!!!!!!!!!!!!!!!
+            if(list[0].innerHTML != "") {
+                list.children("li").each(function() {
+                    liStr = $(this)[0].innerHTML;
+                    orStr.append(" "+liStr+" ");        //!!!!!!!!!!!!!!!!!!!!!
+                    $(this).remove();
+                    if(list[0].innerHTML != "") {
+                        orStr.append(" OR ");           //!!!!!!!!!!!!!!!!!!!!!
+                    }
+                });
+                if(filterNum!=0) {
+                    query.append(" AND " + orStr);  //the rest in the query statement !!!!!!!!!!!!!!!!
+                }
+                else {
+                    query.append(orStr);    //First in the query statement !!!!!!!!!!!!!!!!!!!!!
+                }
+            }
+        });
+
 
         $.ajax({
                 url:"../lib/php/admin/reportType/Type1 Specific Year.php",
