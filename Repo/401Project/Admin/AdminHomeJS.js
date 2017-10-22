@@ -180,11 +180,10 @@ $(document).ready(function(){
     function applyFilter() {
         // generate SQL query clause
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
-        //如果是第一個dropdown那麼在做ANDing的append時 前面不加上 "AND" ---line 200 to 205
         var filterNum = 0;
         $(".dropDownFilter").each(function() {
             var filterDisplayList = $(this).find(".filterDisplayList");
-            var list = filterDisplayList.children(ul);
+            var list = filterDisplayList.children("ul");
             var orStr = "";                             //!!!!!!!!!!!!!!!!!
             if(list[0].innerHTML != "") {
                 list.children("li").each(function() {
