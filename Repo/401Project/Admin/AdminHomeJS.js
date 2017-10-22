@@ -188,19 +188,19 @@ $(document).ready(function(){
             if(list[0].innerHTML != "") {
                 list.children("li").each(function() {
                     liStr = $(this)[0].innerHTML;
-                    orStr.append(" "+liStr+" ");        //!!!!!!!!!!!!!!!!!!!!!
+                    orStr += (" "+liStr+" ");        //!!!!!!!!!!!!!!!!!!!!!
                     //Remove each li once appended in the Or string
                     $(this).remove();
                     //if empty then do NOT append Or, only append or if there are more li
                     if(list[0].innerHTML != "") {
-                        orStr.append(" OR ");           //!!!!!!!!!!!!!!!!!!!!!
+                        orStr += (" OR ");           //!!!!!!!!!!!!!!!!!!!!!
                     }
                 });
                 if(filterNum!=0) {
-                    query.append(" AND " + orStr);  //the rest in the query statement !!!!!!!!!!!!!!!!
+                    query += (" AND " + orStr);  //the rest in the query statement !!!!!!!!!!!!!!!!
                 }
                 else {
-                    query.append(" "+orStr+" ");    //First in the query statement !!!!!!!!!!!!!!!!!!!!!
+                    query += (" "+orStr+" ");    //First in the query statement !!!!!!!!!!!!!!!!!!!!!
                 }
             }
         });
