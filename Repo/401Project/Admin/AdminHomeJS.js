@@ -495,7 +495,9 @@ $(document).ready(function(){
         });
 
     });
-    $("#filterApplyBtn").click(applyFilter);
+
+    // $("#filterApplyBtn").click(applyFilter);
+    $("#filterApplyBtn").on("click", applyFilter);
 });
 
 
