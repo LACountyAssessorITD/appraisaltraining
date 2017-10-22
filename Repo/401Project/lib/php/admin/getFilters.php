@@ -47,7 +47,7 @@ else {
 	$filter = array();
     while($row = sqlsrv_fetch_array($stmt)){
         if ($filter_name == "Name") {
-            $filter[] = $row["FirstName"]." ".$row["LastName"];
+            $filter[] = $row["LastName"]." ,  ".$row["FirstName"];
         }
         else {
             $filter[] = $row[$filter_name];

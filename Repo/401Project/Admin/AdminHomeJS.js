@@ -177,6 +177,28 @@ $(document).ready(function(){
         $("#overviewTable tbody").append(trHTML);
     }
 
+    function applyFilter() {
+        // generate SQL query clause
+        var query;
+
+        $.ajax({
+                url:"../lib/php/admin/reportType/Type1 Specific Year.php",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    query:query,
+                },
+                success:function(results){
+                    // Generate table here
+                },
+                error: function(xhr, status, error){
+                    alert("Fail to connect to the server when trying to retrieve report types");
+                    alert(status);
+                },
+                async:false
+            });
+    }
+
 
     $(".leftInput input").on("change keyup paste click", function(){
       input = $(this);
