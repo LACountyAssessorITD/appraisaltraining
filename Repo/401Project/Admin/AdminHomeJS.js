@@ -179,7 +179,8 @@ $(document).ready(function(){
 
     function applyFilter() {
         // generate SQL query clause
-        var query = "";                                 //!!!!!!!!!!!!!!!!!!!
+        var query = "";                               //!!!!!!!!!!!!!!!!!!!
+        //如果是第一個dropdown那麼在做ANDing的append時 前面不加上 "AND" ---line 200 to 205
         var filterNum = 0;
         $(".dropDownFilter").each(function() {
             var filterDisplayList = $(this).find(".filterDisplayList");
@@ -189,7 +190,9 @@ $(document).ready(function(){
                 list.children("li").each(function() {
                     liStr = $(this)[0].innerHTML;
                     orStr.append(" "+liStr+" ");        //!!!!!!!!!!!!!!!!!!!!!
+                    //Remove each li once appended in the Or string
                     $(this).remove();
+                    //if empty then do NOT append Or, only append or if there are more li
                     if(list[0].innerHTML != "") {
                         orStr.append(" OR ");           //!!!!!!!!!!!!!!!!!!!!!
                     }
@@ -198,7 +201,7 @@ $(document).ready(function(){
                     query.append(" AND " + orStr);  //the rest in the query statement !!!!!!!!!!!!!!!!
                 }
                 else {
-                    query.append(orStr);    //First in the query statement !!!!!!!!!!!!!!!!!!!!!
+                    query.append(" "+orStr+" ");    //First in the query statement !!!!!!!!!!!!!!!!!!!!!
                 }
             }
         });
