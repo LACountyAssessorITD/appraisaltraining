@@ -12,7 +12,12 @@
 	// LDAP Info
 	define("LDAP_SERVER_NAME", "ldap://laassessor.co.la.ca.us");
 
+	// file paths
 	define("USER_HOME_PAGE_URL", "../../User/UserHome.html");
 	define("ADMIN_HOME_PAGE_URL", "../../Admin/AdminHome.html");
     define("LOGIN_URL", "../../index.php");
+
+    // xlsx file paths for importing database
+    define("$PATH_XLSX_ANNUALREQ", "./admin/JT_ML_AdminUpdateDatabase/annualreq_date_formatted.xlsx")
+    // define("$PATH_XLSX_ANNUALREQ", "./admin/JT_ML_AdminUpdateDatabase/annualreq.xlsx")
 ?>
