@@ -209,7 +209,7 @@ $(document).ready(function(){
 
         alert("Now the SQL Query is :" +query);
         $.ajax({
-                url:"../lib/php/admin/reportType/Type1_Specific_Year.php",
+                url:"../lib/php/admin/reportType/1_Specific_Year.php",  //TODO: Fix here
                 type: "POST",
                 dataType: "json",
                 data: {
@@ -230,12 +230,12 @@ $(document).ready(function(){
                     	var parent = $("iframe#pdfBox").parent();
 	                    var newElement = "<iframe id='pdfBox' src='"+"../lib/php/usr/Report_userSpecificYear.php"+"' width='100%' height='800px'></iframe>";
 	                    $("iframe#pdfBox").remove();
-	                    parent.append(newElement);            
+	                    parent.append(newElement);   */
                         $("#overviewTable tbody").append(trHTML);
-						*/
-						
+
+
                         // var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + audit + "</td></tr>";
-                        // $("#overviewTable tbody").append(markup);
+                        //$("#overviewTable tbody").append(markup);
                     }
                     alert("size of returned results is "+results.length);
                     //console.log(escape(results));
