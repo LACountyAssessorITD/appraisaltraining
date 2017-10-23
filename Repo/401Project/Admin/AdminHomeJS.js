@@ -219,7 +219,15 @@ $(document).ready(function(){
                     for (var i = 0; i < results.length; i ++) {
                         var name = results[i]['FirstName']+" "+results[i]['LastName'];
                         var audit = results[i]['Auditor'];
-                        loadTable(name, audit);
+                        var certNo = results[i]['CertNo'];
+                        var trHTML = "<tr>\
+                                        <td><input type='checkbox' name='selected'></td>\
+                                        <td>"+name+"</td>\
+                                        <td>"+audit+"</td>\
+                                        <td><button class='viewReportBtn' onclick='viewReport("+certNo+")'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
+                                    </tr>";
+
+                        $("#overviewTable tbody").append(trHTML);
                         // var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + audit + "</td></tr>";
                         // $("#overviewTable tbody").append(markup);
                     }
@@ -231,6 +239,23 @@ $(document).ready(function(){
                     //alert(status + error + xhr);
                 },
             });
+    }
+
+    function viewReport(certNo) {
+        $.ajax({
+            url:"../lib/php/usr/reportCommunicator.php",
+            type: "POST",
+            data: {certNo:certNo},
+            success:function(){
+                var parent = $("#pdfBox").parent();
+                var newElement = "<iframe id='pdfBox' src='"+"../lib/php/usr/Report_userSpecificYear.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
+                $("#pdfBox").remove();
+                parent.append(newElement);
+            },
+            error: function(xhr, status, error){
+                alert("Fail to connect to the server when generaeting the report");
+            }
+        });
     }
 
 
