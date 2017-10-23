@@ -219,8 +219,17 @@ $(document).ready(function(){
                     for (var i = 0; i < results.length; i ++) {
                         var name = results[i]['FirstName']+" "+results[i]['LastName'];
                         var audit = results[i]['Auditor'];
-                        var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + audit + "</td></tr>";
-                        $("#overviewTable tbody").append(markup);
+                        var certNo = results[i]['CertNo'];
+                        var trHTML = "<tr>\
+                                        <td><input type='checkbox' name='selected'></td>\
+                                        <td>"+name+"</td>\
+                                        <td>"+audit+"</td>\
+                                        <td><button class='viewReportBtn' onclick='viewReport("+certNo+")'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
+                                    </tr>";
+
+                        $("#overviewTable tbody").append(trHTML);
+                        // var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + audit + "</td></tr>";
+                        // $("#overviewTable tbody").append(markup);
                     }
                     alert("size of returned results is "+results.length);
                     //console.log(escape(results));
@@ -228,8 +237,26 @@ $(document).ready(function(){
                 error: function(xhr, status, error){
                     alert("Fail to connect to the server when trying to filter");
                     //alert(status + error + xhr);
-                },
+                }
             });
+    }
+
+    function viewReport(certNo) {
+        alert("click view");
+        $.ajax({
+            url:"../lib/php/usr/reportCommunicator.php",
+            type: "POST",
+            data: {certNo:certNo},
+            success:function(){
+                var parent = $("#pdfBox").parent();
+                var newElement = "<iframe id='pdfBox' src='"+"../lib/php/usr/Report_userSpecificYear.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
+                $("#pdfBox").remove();
+                parent.append(newElement);
+            },
+            error: function(xhr, status, error){
+                alert("Fail to connect to the server when generaeting the report");
+            }
+        });
     }
 
 
@@ -283,14 +310,15 @@ $(document).ready(function(){
 /*--------------------------------------------------------------------------------------------*/
 
 
-    $("#filterApplyBtn").click(function(){
-    for (var i = 0; i < 3; i++) {
-        var name = "NelsonLin" + i;
-        var email = "nelsons@email.com";
-        var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + email + "</td></tr>";
-        $("#overviewTable tbody").append(markup);
-      }
-    });
+    // $("#filterApplyBtn").click(function(){
+    // for (var i = 0; i < 3; i++) {
+    //     var name = "NelsonLin" + i;
+    //     var email = "nelsons@email.com";
+    //     var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + email + "</td>\
+    //                 <td></td></tr>";
+    //     $("#overviewTable tbody").append(markup);
+    //   }
+    // });
 
     // Find and remove selected table rows
     $("#MyReport").click(function(){
