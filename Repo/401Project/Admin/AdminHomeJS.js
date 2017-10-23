@@ -188,7 +188,7 @@ $(document).ready(function(){
             if(list[0].innerHTML != "") {
                 list.children("li").each(function() {
                     liStr = $(this)[0].innerHTML;
-                    orStr += (" "+liStr+" ");        //!!!!!!!!!!!!!!!!!!!!!
+                    orStr += (""+liStr+"");        //!!!!!!!!!!!!!!!!!!!!!
                     //Remove each li once appended in the Or string
                     $(this).remove();
                     //if empty then do NOT append Or, only append or if there are more li
@@ -200,29 +200,35 @@ $(document).ready(function(){
                     query += (" AND " + orStr);  //the rest in the query statement !!!!!!!!!!!!!!!!
                 }
                 else {
-                    query += (" "+orStr+" ");    //First in the query statement !!!!!!!!!!!!!!!!!!!!!
+                    query += (""+orStr+"");    //First in the query statement !!!!!!!!!!!!!!!!!!!!!
                 }
+                var filter_name = $(this).children(".dropDownBtn").attr("name");
+                query = "["+filter_name+"]" + "='" +query+"'";
             }
         });
 
-
+        alert("Now the SQL Query is :" +query);
         $.ajax({
-                url:"../lib/php/admin/reportType/Type1 Specific Year.php",
+                url:"../lib/php/admin/reportType/Type1_Specific_Year.php",
                 type: "POST",
                 dataType: "json",
                 data: {
                     query:query,
                 },
                 success:function(results){
-                    for (var i =0; i < results.length; i ++) {
-                    	alert(results[i][certID]);
+                    for (var i = 0; i < results.length; i ++) {
+                        var name = results[i]['FirstName']+" "+results[i]['LastName'];
+                        var audit = results[i]['Auditor'];
+                        var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + audit + "</td></tr>";
+                        $("#overviewTable tbody").append(markup);
                     }
+                    alert("size of returned results is "+results.length);
+                    //console.log(escape(results));
                 },
                 error: function(xhr, status, error){
-                    alert("Fail to connect to the server when trying to retrieve report types");
-                    alert(status);
+                    alert("Fail to connect to the server when trying to filter");
+                    //alert(status + error + xhr);
                 },
-                async:false
             });
     }
 

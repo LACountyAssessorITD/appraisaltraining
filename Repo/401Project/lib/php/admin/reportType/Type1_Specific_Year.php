@@ -20,8 +20,8 @@ if( $conn === false ) {
 	echo "Unable to connect.</br>";
 	die( print_r( sqlsrv_errors(), true));
 }
-$tsql = "SELECT * FROM "."[New_Employee]"." WHERE ".$query;
-$stmt = sqlsrv_query( $conn, $tsql);
+$tsql = "SELECT * FROM [New_Employee]"." WHERE ".(string)$query;
+$stmt = sqlsrv_query($conn, $tsql);
 if( $stmt === false ) {
 	echo "Error in executing query.</br>";
 	die( print_r( sqlsrv_errors(), true));
