@@ -219,8 +219,9 @@ $(document).ready(function(){
                     for (var i = 0; i < results.length; i ++) {
                         var name = results[i]['FirstName']+" "+results[i]['LastName'];
                         var audit = results[i]['Auditor'];
-                        var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + audit + "</td></tr>";
-                        $("#overviewTable tbody").append(markup);
+                        loadTable(name, audit);
+                        // var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + audit + "</td></tr>";
+                        // $("#overviewTable tbody").append(markup);
                     }
                     alert("size of returned results is "+results.length);
                     //console.log(escape(results));
@@ -287,7 +288,8 @@ $(document).ready(function(){
     for (var i = 0; i < 3; i++) {
         var name = "NelsonLin" + i;
         var email = "nelsons@email.com";
-        var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + email + "</td></tr>";
+        var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + email + "</td>\
+                    <td></td></tr>";
         $("#overviewTable tbody").append(markup);
       }
     });
