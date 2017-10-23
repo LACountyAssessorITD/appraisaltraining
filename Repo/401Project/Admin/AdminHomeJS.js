@@ -209,7 +209,7 @@ $(document).ready(function(){
 
         alert("Now the SQL Query is :" +query);
         $.ajax({
-                url:"../lib/php/admin/reportType/Type1_Specific_Year.php",
+                url:"../lib/php/admin/applyFilters.php",
                 type: "POST",
                 dataType: "json",
                 data: {
