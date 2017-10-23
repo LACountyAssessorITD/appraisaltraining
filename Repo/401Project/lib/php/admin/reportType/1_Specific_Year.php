@@ -4,8 +4,8 @@ This Code dynamically generate individual PDF (Specific Year Report)
 @ Yining Huang
 */
 
-include_once "../constants.php";
-include_once "../session.php";
+include_once "../../constants.php";
+include_once "../../session.php";
 //session_start();
 include_once "pdfTemplate_specificYear.php";
 ///////////////////////////////////////////////////////////////////
@@ -28,8 +28,8 @@ if( $conn === false )
 }
 $totalcarryover = 0;
 
-$certid =  getCertID();
-$year =  $_SESSION["specific_year"];
+$certid = $_GET['id'];
+$year = $_GET['year'];
 
 ///////////////////////////////////////////////////////////////////
 
