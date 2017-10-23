@@ -237,11 +237,12 @@ $(document).ready(function(){
                 error: function(xhr, status, error){
                     alert("Fail to connect to the server when trying to filter");
                     //alert(status + error + xhr);
-                },
+                }
             });
     }
 
     function viewReport(certNo) {
+        alert("click view");
         $.ajax({
             url:"../lib/php/usr/reportCommunicator.php",
             type: "POST",
@@ -309,15 +310,15 @@ $(document).ready(function(){
 /*--------------------------------------------------------------------------------------------*/
 
 
-    $("#filterApplyBtn").click(function(){
-    for (var i = 0; i < 3; i++) {
-        var name = "NelsonLin" + i;
-        var email = "nelsons@email.com";
-        var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + email + "</td>\
-                    <td></td></tr>";
-        $("#overviewTable tbody").append(markup);
-      }
-    });
+    // $("#filterApplyBtn").click(function(){
+    // for (var i = 0; i < 3; i++) {
+    //     var name = "NelsonLin" + i;
+    //     var email = "nelsons@email.com";
+    //     var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + email + "</td>\
+    //                 <td></td></tr>";
+    //     $("#overviewTable tbody").append(markup);
+    //   }
+    // });
 
     // Find and remove selected table rows
     $("#MyReport").click(function(){
