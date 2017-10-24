@@ -186,14 +186,16 @@ $(document).ready(function(){
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
         var filterNum = 0;
         $(".dropDownFilter").each(function() {
+            if (query != "")  query += (" AND "); 
             var filterDisplayList = $(this).find(".filterDisplayList");
+            var filter_name = $(this).children(".dropDownBtn").attr("name");
             var list = filterDisplayList.children("ul");
             var orStr = "";                             //!!!!!!!!!!!!!!!!!
-            if(list[0].innerHTML != "") {
+            if(list[0].innerHTML != "") {  // if user select any options in the dropdown
                 var listHtml = list[0].innerHTML;
                 list.children("li").each(function() {
                     liStr = $(this)[0].innerHTML;
-                    orStr += (""+liStr+"");        //!!!!!!!!!!!!!!!!!!!!!
+                    orStr += (filter_name +"="+liStr);        //!!!!!!!!!!!!!!!!!!!!!
                     //Remove each li once appended in the Or string
                     $(this).remove();
                     //if empty then do NOT append Or, only append or if there are more li
@@ -202,14 +204,12 @@ $(document).ready(function(){
                     }
                 });
                 list.append(listHtml);  //reappend original list
-                if(filterNum!=0) {
-                    query += (" AND " + orStr);  //the rest in the query statement !!!!!!!!!!!!!!!!
-                }
-                else {
-                    query += (""+orStr+"");    //First in the query statement !!!!!!!!!!!!!!!!!!!!!
-                }
-                var filter_name = $(this).children(".dropDownBtn").attr("name");
-                query = "["+filter_name+"]" + "='" +query+"'";
+                // if(filterNum!=0) {
+                //     query += (orStr+ " AND ");  //the rest in the query statement !!!!!!!!!!!!!!!!
+                // }
+                // else {
+                //     query += (""+orStr+"");    //First in the query statement !!!!!!!!!!!!!!!!!!!!!
+                // }
             }
         });
 
