@@ -51,7 +51,7 @@
 		</div>
 
 		<nav class="navigationBar">
-			<a id="homeTab" href="AdminHome.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+			<a id="homeTab" href="AdminHome.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
 			<a id="uploadTab" href="#"><i class="fa fa-upload" aria-hidden="true"></i> Update</a>
 			<a id="uploadTab" href="AdminFAQ.html"><i class="fa fa-question-circle-o" aria-hidden="true"></i> FAQs</a>
 			<a id="issueTab" href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> <strong>Support</strong></a>
@@ -59,7 +59,7 @@
 	</div>
 
 	<div class="content">
-		
+
 
 		<div class="buttonGroup">
 			<button id="uploadSegCtrl">Upload</button>

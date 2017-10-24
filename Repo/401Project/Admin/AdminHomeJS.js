@@ -224,7 +224,7 @@ $(document).ready(function(){
             query += orStr;
         });
 
-        //alert("Now the SQL Query is :" +query);
+        alert("Now the SQL Query is :" +query);
         $.ajax({
                 url:"../lib/php/admin/applyFilters.php",
                 type: "POST",
