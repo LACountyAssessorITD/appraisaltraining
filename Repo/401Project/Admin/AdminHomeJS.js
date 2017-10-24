@@ -164,15 +164,16 @@ $(document).ready(function(){
         });
     }
 
-    loadTable("nelson", "yuehhsul@usc.edu");
-    loadTable("testAdmin", "assessortestpdf@gmail.com");
-    loadTable("Yining", "yininghu@usc.edu");
+    loadTable("nelson", "yuehhsul@usc.edu", "1234");
+    loadTable("testAdmin", "assessortestpdf@gmail.com", "5678");
+    loadTable("Yining", "yininghu@usc.edu", "91011");
 
-    function loadTable(name, email) {
+    function loadTable(name, email, certNo) {
         var trHTML = "<tr>\
                         <td><input type='checkbox' name='selected'></td>\
                         <td class='nameinfo'>"+name+"</td>\
                         <td class='emailInfo'>"+email+"</td>\
+                        <td class='certNoInfo'>"+certNo+"</td>\
                         <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
                     </tr>";
 
@@ -188,6 +189,7 @@ $(document).ready(function(){
             var list = filterDisplayList.children("ul");
             var orStr = "";                             //!!!!!!!!!!!!!!!!!
             if(list[0].innerHTML != "") {
+                var listHtml = list[0].innerHTML;
                 list.children("li").each(function() {
                     liStr = $(this)[0].innerHTML;
                     orStr += (""+liStr+"");        //!!!!!!!!!!!!!!!!!!!!!
@@ -198,6 +200,7 @@ $(document).ready(function(){
                         orStr += (" OR ");           //!!!!!!!!!!!!!!!!!!!!!
                     }
                 });
+                list.append(listHtml);  //reappend original list
                 if(filterNum!=0) {
                     query += (" AND " + orStr);  //the rest in the query statement !!!!!!!!!!!!!!!!
                 }
@@ -226,7 +229,8 @@ $(document).ready(function(){
                                         <td><input type='checkbox' name='selected'></td>\
                                         <td class='nameinfo'>"+name+"</td>\
                                         <td class='emailInfo'>"+audit+"</td>\
-                                        <td><button class='viewReportBtn' onclick='viewReport("+certNo+")'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
+                                        <td class='certNoInfo'>"+certNo+"</td>\
+                                        <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
                                     </tr>";
                         /*
                     	var parent = $("iframe#pdfBox").parent();
@@ -249,7 +253,7 @@ $(document).ready(function(){
             });
     }
 
-    function viewReport(certNo) {
+    $(".viewReportBtn").on("click", function() {
         alert("click view");
         $.ajax({
             url:"../lib/php/usr/reportCommunicator.php",
@@ -265,7 +269,7 @@ $(document).ready(function(){
                 alert("Fail to connect to the server when generaeting the report");
             }
         });
-    }
+    });
 
 
     $(".leftInput input").on("change keyup paste click", function(){
@@ -520,12 +524,10 @@ $(document).ready(function(){
             alert("pressed cancel");
             return;
         }
-        alert("2");
     	var subject = getEmailSubject();
         var content = getEmailContent();
         $("#overviewTable").find(".emailInfo").each(function() {
             var address = $(this)[0].innerHTML;
-            alert("reach send email");
             alert(address);
             // alert(stringEMAIL);
             $.ajax({
