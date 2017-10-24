@@ -539,27 +539,30 @@ $(document).ready(function(){
     	var subject = getEmailSubject();
         var content = getEmailContent();
         $("#overviewTable").find(".emailInfo").each(function() {
-            var address = $(this)[0].innerHTML;
-            alert(address);
-            // alert(stringEMAIL);
-            $.ajax({
-                url:"../lib/php/admin/admin_email.php",
-                type: "POST",
-                data: {
-                    address:address,
-                    subject:subject,
-                    content:content
-                },
-                success:function(results){
-                    if (results == "success")
-                        alert("Email Sent!");
-                    else
-                        alert("Error when sending email");
-                },
-                error: function(xhr, status, error){
-                    alert("Fail to connect to server when sending email.");
-                }
-            });
+            var checkbox = $(this).closest("tr").find("input[name='selected']");
+            if(checkbox.is(":checked")) {
+                var address = $(this)[0].innerHTML;
+                alert(address);
+                // alert(stringEMAIL);
+                $.ajax({
+                    url:"../lib/php/admin/admin_email.php",
+                    type: "POST",
+                    data: {
+                        address:address,
+                        subject:subject,
+                        content:content
+                    },
+                    success:function(results){
+                        if (results == "success")
+                            alert("Email Sent!");
+                        else
+                            alert("Error when sending email");
+                    },
+                    error: function(xhr, status, error){
+                        alert("Fail to connect to server when sending email.");
+                    }
+                });
+            }
         });
 
 
