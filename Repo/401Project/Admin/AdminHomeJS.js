@@ -186,12 +186,12 @@ $(document).ready(function(){
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
         var filterNum = 0;
         $(".dropDownFilter").each(function() {
-            if (query != "")  query += (" AND "); 
             var filterDisplayList = $(this).find(".filterDisplayList");
             var filter_name = $(this).children(".dropDownBtn").attr("name");
             var list = filterDisplayList.children("ul");
             var orStr = "";                             //!!!!!!!!!!!!!!!!!
             if(list[0].innerHTML != "") {  // if user select any options in the dropdown
+                if (query != "")  query += (" AND "); 
                 var listHtml = list[0].innerHTML;
                 list.children("li").each(function() {
                     liStr = $(this)[0].innerHTML;
