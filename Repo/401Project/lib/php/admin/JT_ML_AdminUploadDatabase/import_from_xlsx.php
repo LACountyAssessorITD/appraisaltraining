@@ -117,19 +117,19 @@
 
 	////////////////////////////////// Step III: read data from xlsx or mdb, and then insert into SQL sever //////////////////////////////////
 
-	////////////////////////////////// xlsx reading - initialization & open 3 .xlsx files
+	////////////////////////////////// JT: xlsx reading - initialization & open 3 .xlsx files
 	if(true) {
 		error_reporting(E_ALL ^ E_NOTICE);
 		require_once 'Classes/PHPExcel.php';
-		$excelReader_Summary	= PHPExcel_IOFactory::createReaderForFile($PATH_XLSX_SUMMARY);
-		$excelObj_Summary		= $excelReader_Summary->load($PATH_XLSX_SUMMARY);
-		$Summary				= $excelObj_Summary->getActiveSheet();
-		$excelReader_AnnualReq	= PHPExcel_IOFactory::createReaderForFile($PATH_XLSX_ANNUALREQ);
-		$excelObj_AnnualReq		= $excelReader_AnnualReq->load($PATH_XLSX_ANNUALREQ);
-		$AnnualReq				= $excelObj_AnnualReq->getActiveSheet();
-		$excelReader_Details	= PHPExcel_IOFactory::createReaderForFile($PATH_XLSX_DETAILS);
-		$excelObj_Details		= $excelReader_Details->load($PATH_XLSX_DETAILS);
-		$Details				= $excelObj_Details->getActiveSheet();
+		$excelReader_Summary	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_SUMMARY);
+		$excelObj_Summary		= $excelReader_Summary->load(PATH_XLSX_SUMMARY);
+		$summary				= $excelObj_Summary->getActiveSheet();
+		$excelReader_AnnualReq	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_ANNUALREQ);
+		$excelObj_AnnualReq		= $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
+		$annualreq				= $excelObj_AnnualReq->getActiveSheet();
+		$excelReader_Details	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_DETAILS);
+		$excelObj_Details		= $excelReader_Details->load(PATH_XLSX_DETAILS);
+		$details				= $excelObj_Details->getActiveSheet();
 	}
 
 	// 1. Summary & AnnualReq -> Employee: START
@@ -214,7 +214,6 @@
 			}
 		}
 
-		// BLOCK End
 		// TrickyWork Pt.5: insert into Employee table from summary.xlsx(line-by-line) & Temp2(querying 3 dates along with each line)
 		if(true) {
 			$row_count = (int)2;
@@ -222,6 +221,7 @@
 				$params		= NULL;
 				$CertNo		= $summary->getCell('G'.$row_count)->getValue();
 				$LastName	= $summary->getCell('D'.$row_count)->getValue();
+				$MiddleName	= $summary->getCell('F'.$row_count)->getValue();
 				$FirstName	= $summary->getCell('E'.$row_count)->getValue();
 				$Auditor	= $summary->getCell('H'.$row_count)->getValue();
 				// echo $row_count."\t".$LastName."\t".$FirstName."\t".(int)$CertNo."\t".$Auditor."<br />"; // debug
@@ -233,17 +233,18 @@
 				// each person i.e. CertNo should have all rows with the same 3 dates; however if this is not the case,
 				// then Temp2 (which contains all distinct rows from Temp) would contain multiple rows with the same CertNo but different
 				// 3 dates, which is an error in BOE data. This integer counter would detect it.
-				(int)$errorcheck_counter = 0;
-				if( $stmt = sqlsrv_query($conn, $Select_Temp2_Dates) === false ) die( print_r(sqlsrv_errors(), true) ); // TOT generic line for executing SQL Server query
+				$errorcheck_counter = (int)0;
+				$stmt = sqlsrv_query($conn, $Select_Temp2_Dates); // TOT
+				if( $stmt === false ) die( print_r(sqlsrv_errors(), true) ); // TOT generic 2-line-template for executing SQL Server query
 				while( $temp_row = sqlsrv_fetch_object( $stmt )) { // $temp_row should have 3 columns
 					$errorcheck_counter ++;
 					// echo $temp_row->CertNo.'<br />';
-					$params = array($CertNo, $LastName, $FirstName, $Auditor, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate);
+					$params = array($CertNo, $LastName, $MiddleName, $FirstName, $Auditor, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate);
 				}
 				if($errorcheck_counter != 1) echo "ERROR: defective data from annualreq.xlsx! conflicting 3-date tuples";
-				$Summary_to_Employee = "INSERT INTO New_Employee (CertNo, LastName, FirstName, Auditor,
+				$Summary_to_Employee = "INSERT INTO New_Employee (CertNo, LastName, MiddleName, FirstName, Auditor,
 																  TempCertDate, PermCertDate, AdvCertDate)
-																  VALUES (?,?,?,?,?,?,?)";
+																  VALUES (?,?,?,?,?,?,?,?)";
 				if( $stmt = sqlsrv_query( $conn, $Summary_to_Employee, $params) === false ) die( print_r(sqlsrv_errors(), true) );
 				$row_count ++;
 			}
@@ -253,6 +254,7 @@
 			$row_count = 2; // reset counter
 		}
 	}  // Summary & AnnualReq -> Employee: DONE
+
 
 	// 2. AnnualReq pt1 - AnnualReq -> CertHistory: START
 	if(true) {
@@ -269,29 +271,31 @@
 		$row_count = (int)2;
 		while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
 			// int counter logic end
-			$CertNo = $annualreq->getCell('D'.$row_count)->getValue();
-			$CertYear = $annualreq->getCell('M'.$row_count)->getValue();
-			$CertType = $annualreq->getCell('L'.$row_count)->getValue();
-			$Status = $annualreq->getCell('K'.$row_count)->getValue();
-			$HoursEarned = $annualreq->getCell('N'.$row_count)->getValue();
-			$RequiredHours = $annualreq->getCell('O'.$row_count)->getValue();
-			$CurrentYearBalance = $annualreq->getCell('P'.$row_count)->getValue();
-			$PriorYearBalance = $annualreq->getCell('Q'.$row_count)->getValue();
-			$CarryToYear1 = $annualreq->getCell('R'.$row_count)->getValue();
-			$CarryToYear2 = $annualreq->getCell('S'.$row_count)->getValue();
-			$CarryToYear3 = $annualreq->getCell('T'.$row_count)->getValue();
-			$CarryForwardTotal = $annualreq->getCell('U'.$row_count)->getValue();
+			$CertNo				= $annualreq->getCell('D'.$row_count)->getValue();
+			$CertYear			= $annualreq->getCell('M'.$row_count)->getValue();
+			$CertType			= $annualreq->getCell('L'.$row_count)->getValue();
+			$Status				= $annualreq->getCell('K'.$row_count)->getValue();
+			$HoursEarned		= $annualreq->getCell('N'.$row_count)->getValue();
+			$RequiredHours		= $annualreq->getCell('O'.$row_count)->getValue();
+			$CurrentYearBalance	= $annualreq->getCell('P'.$row_count)->getValue();
+			$PriorYearBalance	= $annualreq->getCell('Q'.$row_count)->getValue();
+			$CarryToYear1		= $annualreq->getCell('R'.$row_count)->getValue();
+			$CarryToYear2		= $annualreq->getCell('S'.$row_count)->getValue();
+			$CarryToYear3		= $annualreq->getCell('T'.$row_count)->getValue();
+			$CarryForwardTotal	= $annualreq->getCell('U'.$row_count)->getValue();
 			$params = array($CertNo, $CertYear, $CertType, $Status, $HoursEarned, $RequiredHours,
 			$CurrentYearBalance, $PriorYearBalance, $CarryToYear1,$CarryToYear2, $CarryToYear3,
 			$CarryForwardTotal);
-			$srvr_exec = sqlsrv_query( $conn, $srvr_query, $params);
-			if( $srvr_exec == false ) { die( print_r(sqlsrv_errors(), true) ); }
+			$stmt = sqlsrv_query( $conn, $srvr_query, $params);
+			if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
 			$row_count ++;
 		}
 		echo "===== AnnualReq into CertHistory finished, ";
 		echo $row_count-2;
 		echo " rows inserted. =====<br />";
 	}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
+
+
 
 	/* // block comment starter
 	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
