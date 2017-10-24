@@ -169,8 +169,8 @@ $(document).ready(function(){
     function loadTable(name, email) {
         var trHTML = "<tr>\
                         <td><input type='checkbox' name='selected'></td>\
-                        <td>"+name+"</td>\
-                        <td>"+email+"</td>\
+                        <td id='nameinfo'>"+name+"</td>\
+                        <td id='emailInfo'>"+email+"</td>\
                         <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
                     </tr>";
 
@@ -222,8 +222,8 @@ $(document).ready(function(){
                         var certNo = results[i]['CertNo'];
                         var trHTML = "<tr>\
                                         <td><input type='checkbox' name='selected'></td>\
-                                        <td>"+name+"</td>\
-                                        <td>"+audit+"</td>\
+                                        <td id='nameinfo'>"+name+"</td>\
+                                        <td id='emailInfo'>"+audit+"</td>\
                                         <td><button class='viewReportBtn' onclick='viewReport("+certNo+")'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
                                     </tr>";
                         /*
@@ -514,25 +514,38 @@ $(document).ready(function(){
     }
 
     $("#sendEmailSelectedBtn").on("click", function() {
+        if(confirm("Send email to the selected people?")==0) {
+            alert("pressed cancel");
+            return;
+        }
+        alert("2");
     	var subject = getEmailSubject();
         var content = getEmailContent();
-        $.ajax({
-            url:"../lib/php/admin/admin_email.php",
-            type: "POST",
-            data: {
-            	subject:subject,
-                content:content
-            },
-            success:function(results){
-                if (results == "success")
-                    alert("Email Sent!");
-                else
-                    alert("Error when sending email");
-            },
-            error: function(xhr, status, error){
-                alert("Fail to connect to server when sending email.");
-            }
+        $("#overviewTable").find("#emailInfo").each(function() {
+            var address = $(this)[0].innerHTML;
+            alert("reach send email");
+            alert(address);
+            // alert(stringEMAIL);
+            $.ajax({
+                url:"../lib/php/admin/admin_email.php",
+                type: "POST",
+                data: {
+                    address:address,
+                    subject:subject,
+                    content:content
+                },
+                success:function(results){
+                    if (results == "success")
+                        alert("Email Sent!");
+                    else
+                        alert("Error when sending email");
+                },
+                error: function(xhr, status, error){
+                    alert("Fail to connect to server when sending email.");
+                }
+            });
         });
+        
 
     });
 

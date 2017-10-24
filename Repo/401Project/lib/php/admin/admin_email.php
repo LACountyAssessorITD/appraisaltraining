@@ -13,6 +13,7 @@ include_once '../PHPMailer/src/SMTP.php';
 
 $subject = $_POST['subject'];
 $message = $_POST['content'];
+$address = $_POST['address'];
 
 $mail = new PHPMailer;
 $mail->isSMTP();                                // Set mailer to use SMTP
@@ -31,6 +32,7 @@ $mail->Body 	 = $mail->Body.$message."\r\n\r\n";
 $mail->Body 	 = $mail->Body."\r\nBest Regards,\r\n\r\nAdmin";
 
 $mail->AddAddress('assessortestpdf@gmail.com');
+// $mail->AddAddress($address);
 //$mail->addStringAttachment($pdf->Output("S",'Report_'.$certid.'.pdf'), 'Report_'.$certid.'.pdf', $encoding = 'base64', $type = 'application/pdf');
 if(!$mail->send()) {
    echo "fail";
