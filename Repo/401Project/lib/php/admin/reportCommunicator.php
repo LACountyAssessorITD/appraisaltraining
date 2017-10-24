@@ -1,5 +1,7 @@
 <?php
 
+$certNo = $_POST['certNO'];
+/*
 $type = $_GET['type'];
 $certNo = $_GET['certNo'];
 $year1 = $_GET['year1'];
@@ -12,5 +14,5 @@ if ($type == "specific") { // if requesting xpecific year report
 } else if ($type == "summary") { // if requesting annual total summary
 	include_once("reportType/3_Annual_Summary.php?id=".$certNo);
 }
-
+*/
 ?>

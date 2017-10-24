@@ -28,8 +28,8 @@ if( $conn === false )
 }
 $totalcarryover = 0;
 
-$certid = $_GET['id'];
-$year = $_GET['year'];
+$certid = $_POST['certNo'];
+$year = 2017;
 
 ///////////////////////////////////////////////////////////////////
 

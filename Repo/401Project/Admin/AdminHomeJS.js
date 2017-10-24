@@ -264,7 +264,7 @@ $(document).ready(function(){
             data: {certNo:certNo},
             success:function(){
                 var parent = $("#pdfBox").parent();
-                var newElement = "<iframe id='pdfBox' src='"+"../lib/php/usr/Report_userSpecificYear.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
+                var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
                 $("#pdfBox").remove();
                 parent.append(newElement);
             },
