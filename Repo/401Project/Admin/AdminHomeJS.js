@@ -181,6 +181,7 @@ $(document).ready(function(){
     loadTable("Yining", "yininghu@usc.edu", "91011");
 
     function applyFilter() {
+        clearTable();
         // generate SQL query clause
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
         var filterNum = 0;
@@ -254,6 +255,14 @@ $(document).ready(function(){
                 },
                 async:false
             });
+    }
+
+    function clearTable() {
+        var row = 0;
+        $("#overviewTable").find("tr").each(function() {
+            if($(this).attr('id')=="overviewSelectAll") {}
+            else{$(this).remove();}
+        });
     }
 
     $(document).on("click",".viewReportBtn", function() {
