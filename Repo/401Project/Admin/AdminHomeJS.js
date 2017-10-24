@@ -190,12 +190,21 @@ $(document).ready(function(){
             var filter_name = $(this).children(".dropDownBtn").attr("name");
             var list = filterDisplayList.children("ul");
             var orStr = "";                             //!!!!!!!!!!!!!!!!!
-            if(list[0].innerHTML != "") {  // if user select any options in the dropdown
-                if (query != "")  query += (" AND "); 
+            if(list[0].innerHTML != "") {
+                if (query != "")  query += (" AND (");
+                else query += "(";
                 var listHtml = list[0].innerHTML;
                 list.children("li").each(function() {
                     liStr = $(this)[0].innerHTML;
-                    orStr += (filter_name +"="+liStr);        //!!!!!!!!!!!!!!!!!!!!!
+                    if (filter_name == "Name") {
+                        var n = liStr.split(" ,  ");
+                        var ln = n[0];
+                        var fn = n[1];
+                        orStr += ("([FirstName]='"+fn+"'");
+                        orStr += (" AND [LastName]='"+ln+"')");
+                    } else {
+                        orStr += ("["+filter_name +"]='"+liStr+"'");        //!!!!!!!!!!!!!!!!!!!!!
+                    }
                     //Remove each li once appended in the Or string
                     $(this).remove();
                     //if empty then do NOT append Or, only append or if there are more li
@@ -204,6 +213,7 @@ $(document).ready(function(){
                     }
                 });
                 list.append(listHtml);  //reappend original list
+                orStr += ")";
                 // if(filterNum!=0) {
                 //     query += (orStr+ " AND ");  //the rest in the query statement !!!!!!!!!!!!!!!!
                 // }
@@ -211,9 +221,10 @@ $(document).ready(function(){
                 //     query += (""+orStr+"");    //First in the query statement !!!!!!!!!!!!!!!!!!!!!
                 // }
             }
+            query += orStr;
         });
 
-        alert("Now the SQL Query is :" +query);
+        //alert("Now the SQL Query is :" +query);
         $.ajax({
                 url:"../lib/php/admin/applyFilters.php",
                 type: "POST",
@@ -251,7 +262,7 @@ $(document).ready(function(){
                 },
                 error: function(xhr, status, error){
                     alert("Fail to connect to the server when trying to filter");
-                    //alert(status + error + xhr);
+                    alert(status + error + xhr);
                 },
                 async:false
             });
