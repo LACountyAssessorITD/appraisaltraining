@@ -407,6 +407,24 @@ $(document).ready(function(){
 
     });
 
+    $("#overviewTable").on("click", "input[name='tableSelectAll']",function() {
+        // $("#homeTab").text($(this).prop("tagName"));
+        var tbody = $(this).closest("tbody");
+        var selectAllLabel = $(this).parent().next();
+        if($(this).is(":checked")){
+            selectAllLabel[0].innerHTML = "Deselect All";
+            tbody.find('input[name="selected"]' && 'input:visible').each(function(){
+                $(this).prop("checked",true);
+            });
+        }
+        else {
+            selectAllLabel[0].innerHTML = "Select All";
+            tbody.find('input[name="selected"]' && 'input:visible').each(function(){
+                $(this).prop("checked",false);
+            });
+        }
+    });
+
 
     /*Select All functionality*/
     $(".filterContTable").on("click", "input[name='selectAll']",function() {
@@ -415,13 +433,15 @@ $(document).ready(function(){
     	// $("#homeTab").text(resultList.prop("tagName"));
     	// var tbody = $(this).parent().parent().parent().next("tbody");
     	var tbody = $(this).closest(".filterContTable").find("tbody");
-    	// $("#homeTab").text(table.prop("tagName"));
+    	var selectAllLabel = $(this).parent().next();
     	if($(this).is(":checked")){
+            selectAllLabel[0].innerHTML = "Deselect All";
     		tbody.find('input[name="selected"]' && 'input:visible').each(function(){
 	        	$(this).prop("checked",true);
 	        });
         }
         else {
+            selectAllLabel[0].innerHTML = "Select All";
         	tbody.find('input[name="selected"]' && 'input:visible').each(function(){
 	        	$(this).prop("checked",false);
 	        });
@@ -438,17 +458,6 @@ $(document).ready(function(){
         		resultList.append(markup);
         	}
         });
-
-
-        // var DPBcont = $(this).closest(".DPBCont");
-        // var ul = DPBcont.find(".filterDisplayList").find("ul");
-        // var button = $(this).parent().parent().parent().parent().parent().parent().prev();
-        // if(ul[0].innerHTML == "") {
-        //     button.css("background-color","white");
-        // }
-        // else {
-        //     button.css("background-color","blue");
-        // }
 
     });
 
@@ -530,27 +539,30 @@ $(document).ready(function(){
     	var subject = getEmailSubject();
         var content = getEmailContent();
         $("#overviewTable").find(".emailInfo").each(function() {
-            var address = $(this)[0].innerHTML;
-            alert(address);
-            // alert(stringEMAIL);
-            $.ajax({
-                url:"../lib/php/admin/admin_email.php",
-                type: "POST",
-                data: {
-                    address:address,
-                    subject:subject,
-                    content:content
-                },
-                success:function(results){
-                    if (results == "success")
-                        alert("Email Sent!");
-                    else
-                        alert("Error when sending email");
-                },
-                error: function(xhr, status, error){
-                    alert("Fail to connect to server when sending email.");
-                }
-            });
+            var checkbox = $(this).closest("tr").find("input[name='selected']");
+            if(checkbox.is(":checked")) {
+                var address = $(this)[0].innerHTML;
+                alert(address);
+                // alert(stringEMAIL);
+                $.ajax({
+                    url:"../lib/php/admin/admin_email.php",
+                    type: "POST",
+                    data: {
+                        address:address,
+                        subject:subject,
+                        content:content
+                    },
+                    success:function(results){
+                        if (results == "success")
+                            alert("Email Sent!");
+                        else
+                            alert("Error when sending email");
+                    },
+                    error: function(xhr, status, error){
+                        alert("Fail to connect to server when sending email.");
+                    }
+                });
+            }
         });
 
 
