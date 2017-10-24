@@ -519,7 +519,7 @@ $(document).ready(function(){
             button.css("background-color","white");
         }
         else {
-            button.css("background-color","blue");
+            button.css("background-color","rgb(189, 207, 237)");
         }
     });
 
