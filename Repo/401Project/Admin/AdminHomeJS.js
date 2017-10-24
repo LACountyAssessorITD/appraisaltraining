@@ -260,15 +260,15 @@ $(document).ready(function(){
 
     // });
     // $(".viewReportBtn").on("click", function() {
-        alert("click view");
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
+        alert("click view " + certNo + " 's report");
         $.ajax({
-            url:"../lib/php/usr/reportCommunicator.php",
+            url:"../lib/php/admin/reportCommunicator.php",
             type: "POST",
             data: {certNo:certNo},
-            success:function(){
+            success:function(result){
                 var parent = $("#pdfBox").parent();
-                var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
+                var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
                 $("#pdfBox").remove();
                 parent.append(newElement);
             },

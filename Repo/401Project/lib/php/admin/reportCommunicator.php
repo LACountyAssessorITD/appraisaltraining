@@ -1,6 +1,6 @@
 <?php
-
-$certNo = $_POST['certNO'];
+session_start();
+$_SESSION['view_certNo'] = $_POST["certNo"];
 /*
 $type = $_GET['type'];
 $certNo = $_GET['certNo'];

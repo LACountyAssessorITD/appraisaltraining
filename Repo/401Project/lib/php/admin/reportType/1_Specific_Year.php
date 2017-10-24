@@ -6,7 +6,6 @@ This Code dynamically generate individual PDF (Specific Year Report)
 
 include_once "../../constants.php";
 include_once "../../session.php";
-//session_start();
 include_once "pdfTemplate_specificYear.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
@@ -28,7 +27,7 @@ if( $conn === false )
 }
 $totalcarryover = 0;
 
-$certid = $_POST['certNo'];
+$certid = $_SESSION['view_certNo'];
 $year = 2017;
 
 ///////////////////////////////////////////////////////////////////
