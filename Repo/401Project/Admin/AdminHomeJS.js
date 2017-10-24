@@ -164,10 +164,6 @@ $(document).ready(function(){
         });
     }
 
-    loadTable("nelson", "yuehhsul@usc.edu", "1234");
-    loadTable("testAdmin", "assessortestpdf@gmail.com", "5678");
-    loadTable("Yining", "yininghu@usc.edu", "91011");
-
     function loadTable(name, email, certNo) {
         var trHTML = "<tr>\
                         <td><input type='checkbox' name='selected'></td>\
@@ -179,6 +175,10 @@ $(document).ready(function(){
 
         $("#overviewTable tbody").append(trHTML);
     }
+
+    loadTable("nelson", "yuehhsul@usc.edu", "1234");
+    loadTable("testAdmin", "assessortestpdf@gmail.com", "5678");
+    loadTable("Yining", "yininghu@usc.edu", "91011");
 
     function applyFilter() {
         // generate SQL query clause
@@ -251,11 +251,15 @@ $(document).ready(function(){
                 error: function(xhr, status, error){
                     alert("Fail to connect to the server when trying to filter");
                     //alert(status + error + xhr);
-                }
+                },
+                async:false
             });
     }
 
-    $(".viewReportBtn").on("click", function() {
+    $(document).on("click",".viewReportBtn", function() {
+
+    // });
+    // $(".viewReportBtn").on("click", function() {
         alert("click view");
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
         $.ajax({
