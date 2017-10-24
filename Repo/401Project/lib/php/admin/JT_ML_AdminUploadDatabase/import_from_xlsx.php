@@ -4,6 +4,7 @@
 	// last edit October 2017
 
 	// TOT remember to add code to close filestream for excel files! and close $conn!
+	// mianlu: NOTE: if(true){ } blocks are used to foster code snippit folding with Sublime functionalities.
 
 	// put include_once statements here:
 	include_once "../../constants.php";
@@ -115,13 +116,6 @@
 
 
 	////////////////////////////////// Step III: read data from xlsx or mdb, and then insert into SQL sever //////////////////////////////////
-	// // JamesT's xlsx reading - initialization
-	// if(true) {
-
-	// 	$summary_filename 		= "summary.xlsx";
-	// 	$details_filename 		= "details.xlsx";
-	// 	$annualreq_filename 	= "annualreq.xlsx";
-	// }
 
 	////////////////////////////////// xlsx reading - initialization & open 3 .xlsx files
 	if(true) {
@@ -138,165 +132,167 @@
 		$Details				= $excelObj_Details->getActiveSheet();
 	}
 
-	// 1. Summary & AnnualReq -> Employee
-	echo "===== Start inserting Summary into Employee =====<br />";
-	// Tricky work: create table Temp to store all CertNo + 3 Dates; then create Temp2 to store distinct rows from Temp; then
-	// insert into Employee row by row from Summary, while querying Temp2 for the 3 dates
-	// TrickyWork Pt.1: create table Temp
+	// 1. Summary & AnnualReq -> Employee: START
 	if(true) {
-		$drop_temp	= "IF OBJECT_ID('dbo.New_Temp', 'U') IS NOT NULL DROP TABLE dbo.New_Temp";
-		$srvr_stmt = sqlsrv_query( $conn, $drop_temp );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		$create_temp = "CREATE TABLE dbo.New_Temp (
-			CertNo float,						--dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
-			TempCertDate datetime2(0),			--dbo.AnnualReq
-			PermCertDate datetime2(0),			--dbo.AnnualReq
-			AdvCertDate datetime2(0),			--dbo.AnnualReq
-		)";
-		$srvr_stmt = sqlsrv_query( $conn, $create_temp );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-	}
-	// TrickyWork Pt.2: populate Temp
+		echo "===== Start inserting Summary into Employee =====<br />";
+		// Tricky work: create table Temp to store all CertNo + 3 Dates; then create Temp2 to store distinct rows from Temp; then
+		// insert into Employee row by row from Summary, while querying Temp2 for the 3 dates
+		// TrickyWork Pt.1: create table Temp
+		if(true) {
+			$drop_temp	= "IF OBJECT_ID('dbo.New_Temp', 'U') IS NOT NULL DROP TABLE dbo.New_Temp";
+			$srvr_stmt = sqlsrv_query( $conn, $drop_temp );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+			$create_temp = "CREATE TABLE dbo.New_Temp (
+				CertNo float,						--dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
+				TempCertDate datetime2(0),			--dbo.AnnualReq
+				PermCertDate datetime2(0),			--dbo.AnnualReq
+				AdvCertDate datetime2(0),			--dbo.AnnualReq
+			)";
+			$srvr_stmt = sqlsrv_query( $conn, $create_temp );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		}
+		// TrickyWork Pt.2: populate Temp
+		if(true) {
+			$srvr_query = "INSERT INTO New_Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate)";
+			$srvr_query .= " VALUES (?,?,?,?)";
+			$row_count = (int)2; // actual data starts at row 2 of Excel spreadsheet
+			while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
+				// select distinct CertID rows from AnnualReq
+				$CertNo			= $annualreq->getCell('D'.$row_count)->getValue();
+				// 3 tricky dates
+				// one weird bug: getCell and getValue naively would result in today's date being inserted into New_Temp! which would mess
+				// up everything from this point onwards in php code execution!
+				// TempCertDate
+				$TempCell		= $annualreq->getCell('G'.$row_count);
+				$TempCertDate	= $TempCell->getValue();
+				if($TempCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in TempCertDate!<br/>";
+				// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
+				else if(PHPExcel_Shared_Date::isDateTime($TempCell)) $TempCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($TempCertDate));
+				// PermCertDate
+				$PermCell		= $annualreq->getCell('H'.$row_count);
+				$PermCertDate	= $PermCell->getValue();
+				if($PermCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in PermCertDate!<br/>";
+				else if(PHPExcel_Shared_Date::isDateTime($PermCell)) $PermCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($PermCertDate));
+				// AdvCertDate
+				$AdvCell		= $annualreq->getCell('I'.$row_count);
+				$AdvCertDate	= $AdvCell->getValue();
+				if($AdvCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in AdvCertDate!<br/>";
+				else if(PHPExcel_Shared_Date::isDateTime($AdvCell)) $AdvCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($AdvCertDate));
+				// inserting operation
+				$params 		= array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate); // TOTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+				$stmt 			= sqlsrv_query( $conn, $srvr_query, $params);
+				if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
+				$row_count ++;
+			}
+		}
+		// TrickyWork Pt.3: create table Temp2
+		if(true) {
+			$drop_temp2 = "IF OBJECT_ID('dbo.New_Temp2', 'U') IS NOT NULL DROP TABLE dbo.New_Temp2";
+			$srvr_stmt = sqlsrv_query( $conn, $drop_temp2 );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+			$create_temp2 = "CREATE TABLE dbo.New_Temp2 (
+				CertNo float,
+				TempCertDate datetime2(0),
+				PermCertDate datetime2(0),
+				AdvCertDate datetime2(0),
+			)";
+			$srvr_stmt = sqlsrv_query( $conn, $create_temp2 );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		}
+		// TrickyWork Pt.4: populate Temp2
+		if(true) {
+			$select_query = "SELECT DISTINCT * FROM New_Temp ORDER BY CertNo";
+			$insert_query = "INSERT INTO New_Temp2 (CertNo, TempCertDate, PermCertDate, AdvCertDate) VALUES (?,?,?,?)";
+			// BLOCK looping thru query selected lines and manipulate data fetched!
+			if(($result = sqlsrv_query($conn, $select_query)) !== false){
+				while( $temp_row = sqlsrv_fetch_object( $result )) {
+					// echo $temp_row->CertNo.'<br />';
+					$params = array($temp_row->CertNo, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate);
+					$stmt = sqlsrv_query($conn, $insert_query, $params);
+					if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
+				}
+			}
+		}
+
+		// BLOCK End
+		// TrickyWork Pt.5: insert into Employee table from summary.xlsx(line-by-line) & Temp2(querying 3 dates along with each line)
+		if(true) {
+			$row_count = (int)2;
+			while ( $row_count <= $summary->getHighestRow() ) { // read until the last line
+				$params		= NULL;
+				$CertNo		= $summary->getCell('G'.$row_count)->getValue();
+				$LastName	= $summary->getCell('D'.$row_count)->getValue();
+				$FirstName	= $summary->getCell('E'.$row_count)->getValue();
+				$Auditor	= $summary->getCell('H'.$row_count)->getValue();
+				// echo $row_count."\t".$LastName."\t".$FirstName."\t".(int)$CertNo."\t".$Auditor."<br />"; // debug
+				$Select_Temp2_Dates = "SELECT TempCertDate, PermCertDate, AdvCertDate FROM New_Temp2";
+				$Select_Temp2_Dates .= " WHERE CertNo = ";
+				$Select_Temp2_Dates .= $CertNo;
+				// use a counter to check for conflicting dates across Temp2:
+				// ideally, Temp2 table should never contain multiple rows with the same CertNo, since in Temp,
+				// each person i.e. CertNo should have all rows with the same 3 dates; however if this is not the case,
+				// then Temp2 (which contains all distinct rows from Temp) would contain multiple rows with the same CertNo but different
+				// 3 dates, which is an error in BOE data. This integer counter would detect it.
+				(int)$errorcheck_counter = 0;
+				if( $stmt = sqlsrv_query($conn, $Select_Temp2_Dates) === false ) die( print_r(sqlsrv_errors(), true) ); // TOT generic line for executing SQL Server query
+				while( $temp_row = sqlsrv_fetch_object( $stmt )) { // $temp_row should have 3 columns
+					$errorcheck_counter ++;
+					// echo $temp_row->CertNo.'<br />';
+					$params = array($CertNo, $LastName, $FirstName, $Auditor, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate);
+				}
+				if($errorcheck_counter != 1) echo "ERROR: defective data from annualreq.xlsx! conflicting 3-date tuples";
+				$Summary_to_Employee = "INSERT INTO New_Employee (CertNo, LastName, FirstName, Auditor,
+																  TempCertDate, PermCertDate, AdvCertDate)
+																  VALUES (?,?,?,?,?,?,?)";
+				if( $stmt = sqlsrv_query( $conn, $Summary_to_Employee, $params) === false ) die( print_r(sqlsrv_errors(), true) );
+				$row_count ++;
+			}
+			echo "===== Summary into Employee finished, ";
+			echo $row_count-2;
+			echo " rows inserted. =====<br />";
+			$row_count = 2; // reset counter
+		}
+	}  // Summary & AnnualReq -> Employee: DONE
+
+	// 2. AnnualReq pt1 - AnnualReq -> CertHistory: START
 	if(true) {
-		$srvr_query = "INSERT INTO New_Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate)";
-		$srvr_query .= " VALUES (?,?,?,?)";
-		$row_count = (int)2; // actual data starts at row 2 of Excel spreadsheet
+		// // JT:
+		// $excelReader = PHPExcel_IOFactory::createReaderForFile($annualreq_filename);
+		// $excelObj = $excelReader->load($annualreq_filename);
+		// $annualreq = $excelObj->getActiveSheet();
+		// ml:
+		$srvr_query = "INSERT INTO New_CertHistory (CertNo, CertYear, CertType, Status, HoursEarned, RequiredHours,
+		CurrentYearBalance, PriorYearBalance, CarryToYear1,
+		CarryToYear2, CarryToYear3, CarryForwardTotal)";
+		$srvr_query .= " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+		echo "===== Start inserting AnnualReq into CertHistory =====<br />";
+		$row_count = (int)2;
 		while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
-			// select distinct CertID rows from AnnualReq
-			$CertNo			= $annualreq->getCell('D'.$row_count)->getValue();
-			// 3 tricky dates
-			// one weird bug: getCell and getValue naively would result in today's date being inserted into New_Temp! which would mess
-			// up everything from this point onwards in php code execution!
-			// TempCertDate
-			$TempCell		= $annualreq->getCell('G'.$row_count);
-			$TempCertDate	= $TempCell->getValue();
-			if($TempCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in TempCertDate!<br/>";
-			// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
-			else if(PHPExcel_Shared_Date::isDateTime($TempCell)) $TempCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($TempCertDate));
-			// PermCertDate
-			$PermCell		= $annualreq->getCell('H'.$row_count);
-			$PermCertDate	= $PermCell->getValue();
-			if($PermCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in PermCertDate!<br/>";
-			else if(PHPExcel_Shared_Date::isDateTime($PermCell)) $PermCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($PermCertDate));
-			// AdvCertDate
-			$AdvCell		= $annualreq->getCell('I'.$row_count);
-			$AdvCertDate	= $AdvCell->getValue();
-			if($AdvCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in AdvCertDate!<br/>";
-			else if(PHPExcel_Shared_Date::isDateTime($AdvCell)) $AdvCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($AdvCertDate));
-			// inserting operation
-			$params 		= array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate); // TOTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-			$stmt 			= sqlsrv_query( $conn, $srvr_query, $params);
-			if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
+			// int counter logic end
+			$CertNo = $annualreq->getCell('D'.$row_count)->getValue();
+			$CertYear = $annualreq->getCell('M'.$row_count)->getValue();
+			$CertType = $annualreq->getCell('L'.$row_count)->getValue();
+			$Status = $annualreq->getCell('K'.$row_count)->getValue();
+			$HoursEarned = $annualreq->getCell('N'.$row_count)->getValue();
+			$RequiredHours = $annualreq->getCell('O'.$row_count)->getValue();
+			$CurrentYearBalance = $annualreq->getCell('P'.$row_count)->getValue();
+			$PriorYearBalance = $annualreq->getCell('Q'.$row_count)->getValue();
+			$CarryToYear1 = $annualreq->getCell('R'.$row_count)->getValue();
+			$CarryToYear2 = $annualreq->getCell('S'.$row_count)->getValue();
+			$CarryToYear3 = $annualreq->getCell('T'.$row_count)->getValue();
+			$CarryForwardTotal = $annualreq->getCell('U'.$row_count)->getValue();
+			$params = array($CertNo, $CertYear, $CertType, $Status, $HoursEarned, $RequiredHours,
+			$CurrentYearBalance, $PriorYearBalance, $CarryToYear1,$CarryToYear2, $CarryToYear3,
+			$CarryForwardTotal);
+			$srvr_exec = sqlsrv_query( $conn, $srvr_query, $params);
+			if( $srvr_exec == false ) { die( print_r(sqlsrv_errors(), true) ); }
 			$row_count ++;
 		}
-	}
-	// TrickyWork Pt.3: create table Temp2
-	if(true) {
-		$drop_temp2 = "IF OBJECT_ID('dbo.New_Temp2', 'U') IS NOT NULL DROP TABLE dbo.New_Temp2";
-		$srvr_stmt = sqlsrv_query( $conn, $drop_temp2 );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		$create_temp2 = "CREATE TABLE dbo.New_Temp2 (
-			CertNo float,
-			TempCertDate datetime2(0),
-			PermCertDate datetime2(0),
-			AdvCertDate datetime2(0),
-		)";
-		$srvr_stmt = sqlsrv_query( $conn, $create_temp2 );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-	}
-	// TrickyWork Pt.4: populate Temp2
-	if(true) {
-		$select_query = "SELECT DISTINCT * FROM New_Temp ORDER BY CertNo";
-		$insert_query = "INSERT INTO New_Temp2 (CertNo, TempCertDate, PermCertDate, AdvCertDate) VALUES (?,?,?,?)";
-		// BLOCK looping thru query selected lines and manipulate data fetched!
-		if(($result = sqlsrv_query($conn, $select_query)) !== false){
-			while( $temp_row = sqlsrv_fetch_object( $result )) {
-				// echo $temp_row->CertNo.'<br />';
-				$params = array($temp_row->CertNo, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate);
-				$stmt = sqlsrv_query($conn, $insert_query, $params);
-				if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
-			}
-		}
-	}
-
-	// BLOCK End
-	// tricky work pt.3: now New_Temp2 contains duplicate-eliminated CertNo + 3 dates; start inserting Summary->Employee
-	// and within each row insertion, query the 3 dates from New_Temp2 and insert along with other information
-	// reset row count and loop again to insert everything in Summary
-	$row_count = (int)2;
-	while ( $row_count <= $summary->getHighestRow() ) { // read until the last line
-		$params = NULL;
-		$CertNo		= $summary->getCell('G'.$row_count)->getValue();
-		$LastName	= $summary->getCell('D'.$row_count)->getValue();
-		$FirstName	= $summary->getCell('E'.$row_count)->getValue();
-		$Auditor	= $summary->getCell('H'.$row_count)->getValue();
-		// echo $row_count."\t".$LastName."\t".$FirstName."\t".(int)$CertNo."\t".$Auditor."<br />"; // debug
-		// tricky work pt.3
-		$Select_Temp2_Dates = "SELECT TempCertDate, PermCertDate, AdvCertDate FROM New_Temp2";
-		$Select_Temp2_Dates .= " WHERE CertNo = ";
-		$Select_Temp2_Dates .= $CertNo;
-		// $Dates = $conn->query($Select_Temp2_Dates);
-
-		(int)$errorcheck_counter = 0;
-		if(($result = sqlsrv_query($conn, $Select_Temp2_Dates)) !== false){
-			while( $temp_row = sqlsrv_fetch_object( $result )) { // $temp_row should have 3 columns
-				$errorcheck_counter ++;
-				// echo $temp_row->CertNo.'<br />';
-				$params = array($CertNo, $LastName, $FirstName, $Auditor, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate);
-			}
-		}
-		if($errorcheck_counter != 1) echo "ERRORNEOUS DATA FROM ANNUALREQ.XLSX!!!!! CONFLICTING 3-DATE TUPLES";
-		$Summary_to_Employee = "INSERT INTO New_Employee (CertNo, LastName, FirstName, Auditor,
-														  TempCertDate, PermCertDate, AdvCertDate)
-														  VALUES (?,?,?,?,?,?,?)";
-		$stmt 		= sqlsrv_query( $conn, $Summary_to_Employee, $params);
-		if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
-		$row_count ++;
-	}
-	echo "===== Summary into Employee finished, ";
-	echo $row_count-2;
-	echo " rows inserted. =====<br />";
-	$row_count = 2; // reset counter
-
+		echo "===== AnnualReq into CertHistory finished, ";
+		echo $row_count-2;
+		echo " rows inserted. =====<br />";
+	}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
 
 	/* // block comment starter
-
-	// 2. AnnualReq pt1 - AnnualReq -> CertHistory
-	// JT:
-	$excelReader = PHPExcel_IOFactory::createReaderForFile($annualreq_filename);
-	$excelObj = $excelReader->load($annualreq_filename);
-	$annualreq = $excelObj->getActiveSheet();
-	// ml:
-	$srvr_query = "INSERT INTO New_CertHistory (CertNo, CertYear, CertType, Status, HoursEarned, RequiredHours,
-	CurrentYearBalance, PriorYearBalance, CarryToYear1,
-	CarryToYear2, CarryToYear3, CarryForwardTotal)";
-	$srvr_query .= " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-	$row_count = (int)2;
-	echo "===== Start inserting AnnualReq into CertHistory =====<br />";
-	while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
-		// int counter logic end
-		$CertNo = $annualreq->getCell('D'.$row_count)->getValue();
-		$CertYear = $annualreq->getCell('M'.$row_count)->getValue();
-		$CertType = $annualreq->getCell('L'.$row_count)->getValue();
-		$Status = $annualreq->getCell('K'.$row_count)->getValue();
-		$HoursEarned = $annualreq->getCell('N'.$row_count)->getValue();
-		$RequiredHours = $annualreq->getCell('O'.$row_count)->getValue();
-		$CurrentYearBalance = $annualreq->getCell('P'.$row_count)->getValue();
-		$PriorYearBalance = $annualreq->getCell('Q'.$row_count)->getValue();
-		$CarryToYear1 = $annualreq->getCell('R'.$row_count)->getValue();
-		$CarryToYear2 = $annualreq->getCell('S'.$row_count)->getValue();
-		$CarryToYear3 = $annualreq->getCell('T'.$row_count)->getValue();
-		$CarryForwardTotal = $annualreq->getCell('U'.$row_count)->getValue();
-		$params = array($CertNo, $CertYear, $CertType, $Status, $HoursEarned, $RequiredHours,
-		$CurrentYearBalance, $PriorYearBalance, $CarryToYear1,$CarryToYear2, $CarryToYear3,
-		$CarryForwardTotal);
-		$srvr_exec = sqlsrv_query( $conn, $srvr_query, $params);
-		if( $srvr_exec == false ) { die( print_r(sqlsrv_errors(), true) ); }
-		$row_count ++;
-	}
-	echo "===== AnnualReq into CertHistory finished, ";
-	echo $row_count-2;
-	echo " rows inserted. =====<br />";
-
 	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
 ?>
