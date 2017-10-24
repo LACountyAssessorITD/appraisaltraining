@@ -3,7 +3,7 @@
 ?>
 
 <!DOCTYPE html>
-<html >
+<html>
 <head>
   <meta charset="UTF-8">
   <title>Training Record Login</title>
@@ -172,8 +172,10 @@ div[class="message"] {
 		<br>
 		<div class="login">
 			<form action="LDAP/login.php" method="post" enctype="multipart/form-data">
-				<input type="text" placeholder="username" name="username"><br>
-				<input type="password" placeholder="password" name="password"><br>
+				<input type="text" placeholder="First Name" name="username"><br>
+				<input type="text" placeholder="Last Name" name="password"><br>
+				<input type="text" placeholder="Username" name="username"><br>
+				<input type="password" placeholder="Password" name="password"><br>
 				<input type="submit" value="Login" name="login">
 			</form>
 			<div class="message"><?php //echo "Error: Incorrect Username / Password" ?></div>
