@@ -24,8 +24,8 @@ body{
 	left: -20px;
 	right: -40px;
 	bottom: -40px;
-	width: auto;
-	height: auto;
+	/*width: auto;
+	height: auto;*/
 	background-image: url(BGimg/LAbgAdj.jpg);
 	background-size: cover;
 	-webkit-filter: blur(5px);
@@ -70,26 +70,26 @@ body{
 	position: absolute;
 	top: calc(50% - 75px);
 	left: calc(50% - 50px);
-	height: 150px;
 	width: 260px;
-	padding: 10px;
 	z-index: 2;
 }
 
-.login input[type=text]{
-	width: 250px;
-	height: 30px;
-	background: transparent;
-	border: 1px solid rgba(255,255,255,0.6);
-	border-radius: 2px;
-	color: #fff;
-	font-family: 'Exo', sans-serif;
-	font-size: 16px;
-	font-weight: 400;
-	padding: 4px;
+.formDiv {
+	padding: 10px;
+	width: 100%;
+
+	background-color: black;
+    opacity: 0.5;
+    filter: Alpha(opacity=50);  /*IE8 and earlier*/ 
+    border-radius: 10px;
 }
 
-.login input[type=password]{
+.loginDiv {
+	padding: 10px;
+}
+
+.inputField {
+	margin: 5px auto;
 	width: 250px;
 	height: 30px;
 	background: transparent;
@@ -100,7 +100,6 @@ body{
 	font-size: 16px;
 	font-weight: 400;
 	padding: 4px;
-	margin-top: 10px;
 }
 
 .login input[type=submit]{
@@ -148,13 +147,6 @@ body{
    color: rgba(255,255,255,0.6);
 }
 
-div[class="login"] {
-    background-color: black;
-    opacity: 0.5;
-    filter: Alpha(opacity=50); /* IE8 and earlier */
-    border-radius: 10px;
-}
-
 div[class="message"] {
     color: red;
 }
@@ -164,21 +156,25 @@ div[class="message"] {
 </head>
 
 <body>
-  <div class="body"></div>
-		<div class="grad"></div>
-		<div class="header">
-			<div>Ass<span>Man</span></div>
-		</div>
-		<br>
-		<div class="login">
-			<form action="LDAP/login.php" method="post" enctype="multipart/form-data">
-				<input type="text" placeholder="First Name" name="username"><br>
-				<input type="text" placeholder="Last Name" name="password"><br>
-				<input type="text" placeholder="Username" name="username"><br>
-				<input type="password" placeholder="Password" name="password"><br>
-				<input type="submit" value="Login" name="login">
-			</form>
-			<div class="message"><?php //echo "Error: Incorrect Username / Password" ?></div>
-		</div>
+	<div class="body"></div>
+	<div class="grad"></div>
+	<div class="header">
+		<div>Ass<span>Man</span></div>
+	</div>
+	<br>
+	<div class="login">
+		<form action="LDAP/login.php" method="post" enctype="multipart/form-data">
+			<div class="formDiv">
+				<input class="inputField" type="text" placeholder="FirstName" name="username"><br>
+				<input class="inputField" type="text" placeholder="LastName" name="password"><br>
+				<input class="inputField" type="text" placeholder="Username" name="username"><br>
+				<input class="inputField" type="password" placeholder="Password" name="password"><br>
+			</div>
+			<div class="loginDiv">
+				<input type="submit" value="SignUp" name="login">
+			</div>	
+		</form>
+		<div class="message"><?php //echo "Error: Incorrect Username / Password" ?></div>
+	</div>
 </body>
 </html>
