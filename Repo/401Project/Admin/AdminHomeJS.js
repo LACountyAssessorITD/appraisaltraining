@@ -165,12 +165,14 @@ $(document).ready(function(){
     }
 
     loadTable("nelson", "yuehhsul@usc.edu");
+    loadTable("testAdmin", "assessortestpdf@gmail.com");
+    loadTable("Yining", "yininghu@usc.edu");
 
     function loadTable(name, email) {
         var trHTML = "<tr>\
                         <td><input type='checkbox' name='selected'></td>\
-                        <td id='nameinfo'>"+name+"</td>\
-                        <td id='emailInfo'>"+email+"</td>\
+                        <td class='nameinfo'>"+name+"</td>\
+                        <td class='emailInfo'>"+email+"</td>\
                         <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
                     </tr>";
 
@@ -222,18 +224,18 @@ $(document).ready(function(){
                         var certNo = results[i]['CertNo'];
                         var trHTML = "<tr>\
                                         <td><input type='checkbox' name='selected'></td>\
-                                        <td id='nameinfo'>"+name+"</td>\
-                                        <td id='emailInfo'>"+audit+"</td>\
+                                        <td class='nameinfo'>"+name+"</td>\
+                                        <td class='emailInfo'>"+audit+"</td>\
                                         <td><button class='viewReportBtn' onclick='viewReport("+certNo+")'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
                                     </tr>";
                         /*
                     	var parent = $("iframe#pdfBox").parent();
 	                    var newElement = "<iframe id='pdfBox' src='"+"../lib/php/usr/Report_userSpecificYear.php"+"' width='100%' height='800px'></iframe>";
 	                    $("iframe#pdfBox").remove();
-	                    parent.append(newElement);            
+	                    parent.append(newElement);
                         $("#overviewTable tbody").append(trHTML);
 						*/
-						
+
                         // var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + audit + "</td></tr>";
                         // $("#overviewTable tbody").append(markup);
                     }
@@ -521,7 +523,7 @@ $(document).ready(function(){
         alert("2");
     	var subject = getEmailSubject();
         var content = getEmailContent();
-        $("#overviewTable").find("#emailInfo").each(function() {
+        $("#overviewTable").find(".emailInfo").each(function() {
             var address = $(this)[0].innerHTML;
             alert("reach send email");
             alert(address);
@@ -545,7 +547,7 @@ $(document).ready(function(){
                 }
             });
         });
-        
+
 
     });
 
