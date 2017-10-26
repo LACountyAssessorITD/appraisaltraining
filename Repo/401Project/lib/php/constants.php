@@ -24,6 +24,7 @@
 	define("SQL_SERVER_PASSWORD", "admin");
 	define("SQL_SERVER_BOEDATABASE", "BOE");
 	define("SQL_SERVER_LACDATABASE", "temporary_5_table");
+	define("SQL_SERVER_LACDATABASE_ML_DEVELOPMENT", "ml_development");
 
 	// LDAP Info
 	define("LDAP_SERVER_NAME", "ldap://laassessor.co.la.ca.us");
