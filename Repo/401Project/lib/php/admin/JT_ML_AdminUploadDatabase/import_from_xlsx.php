@@ -129,17 +129,23 @@
 		*/
 
 		// $excelReader_Summary	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_SUMMARY);
-		$excelReader_Summary	= PHPExcel_IOFactory::createReader('Excel2007');
-		$excelReader_Summary->setReadDataOnly(true);
-		$excelObj_Summary		= $excelReader_Summary->load(PATH_XLSX_SUMMARY);
+		// $excelReader_Summary	= PHPExcel_IOFactory::createReader('Excel2007');
+		// $excelReader_Summary	->setReadDataOnly(true);
+		// $excelObj_Summary		= $excelReader_Summary->load(PATH_XLSX_SUMMARY);
+		// $summary				= $excelObj_Summary->getActiveSheet();
 
-		$summary				= $excelObj_Summary->getActiveSheet();
-		$excelReader_AnnualReq	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_ANNUALREQ);
+
+		/*
+		$excelReader_AnnualReq	= PHPExcel_IOFactory::createReader('Excel2007');
+		$excelReader_AnnualReq	->setReadDataOnly(true);
 		$excelObj_AnnualReq		= $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
 		$annualreq				= $excelObj_AnnualReq->getActiveSheet();
-		$excelReader_Details	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_DETAILS);
+
+		$excelReader_Details	= PHPExcel_IOFactory::createReader('Excel2007');
+		$excelReader_Details	->setReadDataOnly(true);
 		$excelObj_Details		= $excelReader_Details->load(PATH_XLSX_DETAILS);
 		$details				= $excelObj_Details->getActiveSheet();
+		*/
 	}
 
 	// 1. Summary & AnnualReq -> Employee: START
@@ -154,17 +160,27 @@
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 			$create_temp = "CREATE TABLE dbo.New_Temp (
 				CertNo float,						--dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
-				TempCertDate datetime2(0),			--dbo.AnnualReq
-				PermCertDate datetime2(0),			--dbo.AnnualReq
-				AdvCertDate datetime2(0),			--dbo.AnnualReq
+				TempCertDate date,			--dbo.AnnualReq
+				PermCertDate date,			--dbo.AnnualReq
+				AdvCertDate date,			--dbo.AnnualReq
 			)";
 			$srvr_stmt = sqlsrv_query( $conn, $create_temp );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		}
+
+
+
+
 		// TrickyWork Pt.2: populate Temp
 		if(true) {
 			$srvr_query = "INSERT INTO New_Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate)";
 			$srvr_query .= " VALUES (?,?,?,?)";
+			// lazy-loading
+			$excelReader_AnnualReq	= PHPExcel_IOFactory::createReader('Excel2007');
+			$excelReader_AnnualReq	->setReadDataOnly(true);
+			$excelObj_AnnualReq		= $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
+			$annualreq				= $excelObj_AnnualReq->getActiveSheet();
+			// lazy-loading end
 			$row_count = (int)2; // actual data starts at row 2 of Excel spreadsheet
 			while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
 				// select distinct CertID rows from AnnualReq
@@ -195,6 +211,8 @@
 				$row_count ++;
 			}
 		}
+		/* // block comment starter
+
 		// TrickyWork Pt.3: create table Temp2
 		if(true) {
 			$drop_temp2 = "IF OBJECT_ID('dbo.New_Temp2', 'U') IS NOT NULL DROP TABLE dbo.New_Temp2";
@@ -263,9 +281,13 @@
 			echo " rows inserted. =====<br />";
 			$row_count = 2; // reset counter
 		}
+
+		// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
+
 	}  // Summary & AnnualReq -> Employee: DONE
 
 
+	/* // block comment starter
 	// 2. AnnualReq pt1 - AnnualReq -> CertHistory: START
 	if(true) {
 		// // JT:
@@ -303,8 +325,15 @@
 		echo "===== AnnualReq into CertHistory finished, ";
 		echo $row_count-2;
 		echo " rows inserted. =====<br />";
-	}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
 
+
+
+
+
+
+
+	}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
+	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
 
 
 	/* // block comment starter
