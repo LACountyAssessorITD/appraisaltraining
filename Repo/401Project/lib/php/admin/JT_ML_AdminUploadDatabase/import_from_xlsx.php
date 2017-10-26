@@ -122,30 +122,35 @@
 		error_reporting(E_ALL ^ E_NOTICE);
 		require_once 'Classes/PHPExcel.php';
 
+		$cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
+		$cacheSettings = array( ' memoryCacheSize ' => '8MB');
+		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+
 		/*
 		$objReader = PHPExcel_IOFactory::createReader('Excel2007');
 		$objReader->setReadDataOnly(true);
 		$objPHPExcel = $objReader->load("test.xlsx");
 		*/
 
-		// $excelReader_Summary	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_SUMMARY);
-		// $excelReader_Summary	= PHPExcel_IOFactory::createReader('Excel2007');
+
+		$excelReader_Summary	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_SUMMARY);
+		$excelReader_Summary	= PHPExcel_IOFactory::createReader('Excel2007');
 		// $excelReader_Summary	->setReadDataOnly(true);
-		// $excelObj_Summary		= $excelReader_Summary->load(PATH_XLSX_SUMMARY);
-		// $summary				= $excelObj_Summary->getActiveSheet();
+		$excelObj_Summary		= $excelReader_Summary->load(PATH_XLSX_SUMMARY);
+		$summary				= $excelObj_Summary->getActiveSheet();
 
 
-		/*
+
 		$excelReader_AnnualReq	= PHPExcel_IOFactory::createReader('Excel2007');
-		$excelReader_AnnualReq	->setReadDataOnly(true);
+		// $excelReader_AnnualReq	->setReadDataOnly(true);
 		$excelObj_AnnualReq		= $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
 		$annualreq				= $excelObj_AnnualReq->getActiveSheet();
 
 		$excelReader_Details	= PHPExcel_IOFactory::createReader('Excel2007');
-		$excelReader_Details	->setReadDataOnly(true);
+		// $excelReader_Details	->setReadDataOnly(true);
 		$excelObj_Details		= $excelReader_Details->load(PATH_XLSX_DETAILS);
 		$details				= $excelObj_Details->getActiveSheet();
-		*/
+		// */
 	}
 
 	// 1. Summary & AnnualReq -> Employee: START
@@ -176,10 +181,12 @@
 			$srvr_query = "INSERT INTO New_Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate)";
 			$srvr_query .= " VALUES (?,?,?,?)";
 			// lazy-loading
+			/*
 			$excelReader_AnnualReq	= PHPExcel_IOFactory::createReader('Excel2007');
 			$excelReader_AnnualReq	->setReadDataOnly(true);
 			$excelObj_AnnualReq		= $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
 			$annualreq				= $excelObj_AnnualReq->getActiveSheet();
+			*/
 			// lazy-loading end
 			$row_count = (int)2; // actual data starts at row 2 of Excel spreadsheet
 			while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
@@ -211,7 +218,6 @@
 				$row_count ++;
 			}
 		}
-		/* // block comment starter
 
 		// TrickyWork Pt.3: create table Temp2
 		if(true) {
@@ -287,7 +293,6 @@
 	}  // Summary & AnnualReq -> Employee: DONE
 
 
-	/* // block comment starter
 	// 2. AnnualReq pt1 - AnnualReq -> CertHistory: START
 	if(true) {
 		// // JT:
