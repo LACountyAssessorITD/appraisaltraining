@@ -363,8 +363,8 @@
 	padding-bottom: 12px;
 	padding-left: 12px;*/
 	margin-top: 5px;
-	overflow: scroll;
-	z-index: -1;
+	overflow: hidden;
+	/*z-index: -1;*/
 }
 
 .rightContentColumn {
@@ -501,6 +501,12 @@
     text-align: center;
 }
 
+#overviewTable thead > tr{
+	/*padding: 10px;*/
+	height: 50px;
+	background-color: rgb(185,185,185);
+}
+
 #overviewTable td {
     text-align: center; /* Left-align text */
     vertical-align: middle;
@@ -513,14 +519,14 @@
 	text-align: center;
 }
 
-#overviewTable tr:hover {
+#overviewTable tbody > tr:hover {
     /* Add a grey background color to the table header and on hover */
     background-color: rgb(220,220,220);
     color: black;
 }
 
 #overviewSelectAll td{
-	background-color: rgb(165,165,165);
+	/*background-color: rgb(165,165,165);*/
 }
 
 .viewReportBtn {

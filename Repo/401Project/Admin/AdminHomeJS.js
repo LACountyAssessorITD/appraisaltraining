@@ -270,7 +270,7 @@ $(document).ready(function(){
 
     function clearTable() {
         var row = 0;
-        $("#overviewTable").find("tr").each(function() {
+        $("#overviewTable").find("tbody").find("tr").each(function() {
             if($(this).attr('id')=="overviewSelectAll") {}
             else{$(this).remove();}
         });
@@ -288,7 +288,10 @@ $(document).ready(function(){
             data: {certNo:certNo},
             success:function(result){
                 var parent = $("#pdfBox").parent();
-                var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
+                // var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
+                var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' type='/pdf' width='100%' height='800px'>\
+                            <embed src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' type='application/pdf'></embed>\
+                        </object>";
                 $("#pdfBox").remove();
                 parent.append(newElement);
             },
