@@ -204,6 +204,8 @@ $(document).ready(function(){
                         var n = liStr.split(" ,  ");
                         var ln = n[0];
                         var fn = n[1];
+                        ln = str.replace("'", "''");
+                        fn = str.replace("'", "''");
                         orStr += ("([FirstName]='"+fn+"'");
                         orStr += (" AND [LastName]='"+ln+"')");
                     } else {
