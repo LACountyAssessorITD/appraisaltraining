@@ -1,6 +1,6 @@
 <?php
 	// IMPORTANT: toggle T/F for line below, when switching between Azure and LAC Server!
-	define("ON_AZURE", False);
+	define("ON_AZURE", True);
 
 	if(ON_AZURE) {
 		// SQL Server Name
@@ -23,7 +23,7 @@
 	define("SQL_SERVER_USERNAME", "superadmin");
 	define("SQL_SERVER_PASSWORD", "admin");
 	define("SQL_SERVER_BOEDATABASE", "BOE");
-	define("SQL_SERVER_LACDATABASE", "ml_LAC_mdb_data");
+	define("SQL_SERVER_LACDATABASE", "temporary_5_table");
 
 	// LDAP Info
 	define("LDAP_SERVER_NAME", "ldap://laassessor.co.la.ca.us");

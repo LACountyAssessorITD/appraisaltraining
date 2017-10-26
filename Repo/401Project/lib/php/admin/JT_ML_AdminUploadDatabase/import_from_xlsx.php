@@ -121,8 +121,18 @@
 	if(true) {
 		error_reporting(E_ALL ^ E_NOTICE);
 		require_once 'Classes/PHPExcel.php';
-		$excelReader_Summary	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_SUMMARY);
+
+		/*
+		$objReader = PHPExcel_IOFactory::createReader('Excel2007');
+		$objReader->setReadDataOnly(true);
+		$objPHPExcel = $objReader->load("test.xlsx");
+		*/
+
+		// $excelReader_Summary	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_SUMMARY);
+		$excelReader_Summary	= PHPExcel_IOFactory::createReader('Excel2007');
+		$excelReader_Summary->setReadDataOnly(true);
 		$excelObj_Summary		= $excelReader_Summary->load(PATH_XLSX_SUMMARY);
+
 		$summary				= $excelObj_Summary->getActiveSheet();
 		$excelReader_AnnualReq	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_ANNUALREQ);
 		$excelObj_AnnualReq		= $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);

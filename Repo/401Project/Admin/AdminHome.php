@@ -1,5 +1,5 @@
-
-<?php session_start(); ?><!DOCTYPE html>
+<?php session_start(); ?>
+<!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -387,12 +387,13 @@
 					</div>
 					<div class="pdfView">
 						<!-- <embed id="pdfBox" src="../OrderDetails.pdf" width="100%" height="650px"></embed> -->
-						<a href="singleUserReport.php">Click here to download the PDF</a>. Or
-						<a href="http://get.adobe.com/reader/" target="_blank">click here to install Adobe Reader</a>.</p>
-						<iframe id="pdfBox" title="PDF in an i-Frame" src="../LACLogo.pdf" frameborder="0" scrolling="auto" width="100%" height="800px"></iframe>
-
-
-
+						<!-- <a href="singleUserReport.php">Click here to download the PDF</a>. Or -->
+						<!-- <a href="http://get.adobe.com/reader/" target="_blank">click here to install Adobe Reader</a>.</p> -->
+						<!-- <iframe id="pdfBox" title="PDF in an i-Frame" src="../LACLogo.pdf" frameborder="0" scrolling="auto" width="100%" height="800px"></iframe> -->
+						<!-- <embed id="pdfBox" src="../LACLogo.pdf" width="100%" height="800px"></embed>; -->
+						<object id="pdfBox" data="../LACLogo.pdf" type="application/pdf" width="100%" height="800px">
+							<embed src="../LACLogo.pdf" type="application/pdf"></embed>
+						</object>
 					</div>
 				</div>
 
