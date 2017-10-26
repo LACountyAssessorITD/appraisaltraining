@@ -28,7 +28,7 @@ if( $conn === false )
 }
 $totalcarryover = 0;
 
-$certid = getCertID();
+$certid = getCertNo();
 
 
 ///////////////////////////////////////////////////////////////////

@@ -6,7 +6,7 @@ include_once "../session.php";
 
 //*******************************************************************
 // For Testing purposes, Id here is hard-coded"
-$certid = getCertID();
+$certid = getCertNo();
 
 //*******************************************************************8
 
