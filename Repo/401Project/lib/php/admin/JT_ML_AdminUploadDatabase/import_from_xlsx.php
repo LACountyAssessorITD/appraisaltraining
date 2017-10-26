@@ -293,7 +293,7 @@
 	}  // Summary & AnnualReq -> Employee: DONE
 
 
-	// 2. AnnualReq pt1 - AnnualReq -> CertHistory: START
+	// 2. AnnualReq -> CertHistory: START
 	if(true) {
 		// // JT:
 		// $excelReader = PHPExcel_IOFactory::createReaderForFile($annualreq_filename);
@@ -330,16 +330,44 @@
 		echo "===== AnnualReq into CertHistory finished, ";
 		echo $row_count-2;
 		echo " rows inserted. =====<br />";
-
-
-
-
-
-
-
 	}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
-	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
 
+	// 3. Details -> CourseDetail: START
+	if(true) {
+		// $create_CD = "CREATE TABLE dbo.New_CourseDetail (
+		// 	CertNo float references dbo.New_Employee(CertNo), -- foreign key from Employee
+		// 	CourseYear nvarchar(10),			-- from dbo.Details(FiscalYear)
+		// 	ItemNumber float,					-- undefined, maybe an index for all possible courses, if so then new table all_courses needed
+		// 	CourseName nvarchar(100),			-- from dbo.tbl: Course Title + dbo.Details(Course)
+		// 	CourseLocation nvarchar(50),		-- from dbo.Details(Location)
+		// 	CourseGrade nvarchar(50),			-- from dbo.Details(Grade)
+		// 	CourseHours float,					-- from dbo.Details(HoursEarned)
+		// 	EndDate datetime2(0),				-- from dbo.Details(EndDate)
+		// 	-- primary key (CertNo, CourseYear, CourseName), -- if ItemNumber correctly implemented, switch to it! CertNo should be foreign key
+		// )";
+		$srvr_query = "INSERT INTO New_CourseDetail (CertNo, CourseYear, --ItemNumber,
+													CourseName, CourseLocation, CourseGrade, CourseHours, EndDate)";
+		$srvr_query .= " VALUES (?,?,?,?,?,?,?)";
+		echo "===== Start inserting Details into CourseDetail =====<br />";
+		$row_count = (int)2;
+		while ( $row_count <= $details->getHighestRow() ) { // read until the last line
+			$CertNo				= $details->getCell('C'.$row_count)->getValue();
+			$CourseYear			= $details->getCell('G'.$row_count)->getValue();
+			// $ItemNumber
+			$CourseName			= $details->getCell('I'.$row_count)->getValue();
+			$CourseLocation		= $details->getCell('J'.$row_count)->getValue();
+			$CourseGrade		= $details->getCell('K'.$row_count)->getValue();
+			$CourseHours		= $details->getCell('L'.$row_count)->getValue();
+			$EndDate			= $details->getCell('H'.$row_count)->getValue();
+			$params = array($CertNo, $CourseYear, $CourseName, $CourseLocation, $CourseGrade, $CourseHours, $EndDate);
+			$stmt = sqlsrv_query( $conn, $srvr_query, $params);
+			if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
+			$row_count ++;
+		}
+		echo "===== Details into CourseDetail finished, ";
+		echo $row_count-2;
+		echo " rows inserted. =====<br />";
+	}
 
 	/* // block comment starter
 	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
