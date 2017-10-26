@@ -204,8 +204,8 @@ $(document).ready(function(){
                         var n = liStr.split(" ,  ");
                         var ln = n[0];
                         var fn = n[1];
-                        ln = str.replace("'", "''");
-                        fn = str.replace("'", "''");
+                        ln = ln.replace("'", "''");
+                        fn = fn.replace("'", "''");
                         orStr += ("([FirstName]='"+fn+"'");
                         orStr += (" AND [LastName]='"+ln+"')");
                     } else {
@@ -288,7 +288,7 @@ $(document).ready(function(){
     // $(".viewReportBtn").on("click", function() {
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
         alert("click view " + certNo + " 's report");
-        alert($("#reportTypeSelect").val();)
+        alert($("#reportTypeSelect").val());
         $.ajax({
             url:"../lib/php/admin/reportCommunicator.php",
             type: "POST",
