@@ -182,6 +182,10 @@ $(document).ready(function(){
 
     function applyFilter() {
         clearTable();
+        // Get report type
+
+
+
         // generate SQL query clause
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
         var filterNum = 0;
@@ -282,6 +286,7 @@ $(document).ready(function(){
     // $(".viewReportBtn").on("click", function() {
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
         alert("click view " + certNo + " 's report");
+        alert($("#reportTypeSelect").val();)
         $.ajax({
             url:"../lib/php/admin/reportCommunicator.php",
             type: "POST",
