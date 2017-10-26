@@ -11,7 +11,7 @@
 
 	////////////////////////////////// Step I: Mian's sql server - open connection //////////////////////////////////
 	if(true) {
-		$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
+		$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
 		$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
 		if( $conn ) echo "SQL Server connection established.<br />";
 		else {
