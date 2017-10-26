@@ -363,8 +363,8 @@
 	padding-bottom: 12px;
 	padding-left: 12px;*/
 	margin-top: 5px;
-	overflow: hidden;
-	/*z-index: -1;*/
+	overflow: auto;
+	z-index: -1;
 }
 
 .rightContentColumn {
