@@ -78,6 +78,10 @@ $(document).ready(function(){
             });
         }
         else if (yearTypeStr.toUpperCase()=="Completed Course".toUpperCase()) {
+            if(fromYearInt>toYearInt) {
+                alert("Invalid year range");
+                return;
+            }
             yearTypeKey = "range";
             $.ajax({
                 url:"../lib/php/usr/reportCommunicator.php",
@@ -104,7 +108,6 @@ $(document).ready(function(){
             var newElement = "<embed id='pdfBox' src='"+"../lib/php/usr/Report_userAnnualTotals.php"+"' width='100%' height='800px'></embed>";
             $("embed#pdfBox").remove();
             parent.append(newElement);
-            // Change Download Button Source
 
         }
 
