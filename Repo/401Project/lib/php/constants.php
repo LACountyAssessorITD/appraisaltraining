@@ -9,6 +9,7 @@
 		define("USER_HOME_PAGE_URL", "../../User/UserHome.html");
 		define("ADMIN_HOME_PAGE_URL", "../../Admin/AdminHome.html");
 		define("LOGIN_URL", "../../index.php");
+		define("ERROR_URL", "../../error.php");
 		// Importing From These XLSX Paths
 		define("PATH_XLSX_ANNUALREQ",	"C:/inetpub/wwwroot/appraisaltraining/Repo/401Project/lib/php/admin/JT_ML_AdminUploadDatabase/annualreq_date_formatted.xlsx");
 		define("PATH_XLSX_SUMMARY",		"C:/inetpub/wwwroot/appraisaltraining/Repo/401Project/lib/php/admin/JT_ML_AdminUploadDatabase/summary.xlsx");
