@@ -172,38 +172,45 @@ $(document).ready(function(){
 
         // Get available fiscal years for current user
         // TO DO
+        var optionHTML = "";
         $.ajax({
             url:"../lib/php/admin/getFiscalYears.php",
             type: "POST",
             dataType: "json",
             data: {
                 certNo:certNo,
-            }
+            },
             success:function(results){
                 var size = results.length;
-                var temp;
                 for (var i = size-1; i >= 0; i--) {
                     var fiscalyear = results[i];
-                    temp += "<option>"+fiscalyear+"</option>";
+                    optionHTML += "<option>"+fiscalyear+"</option>";
                 }
-                // update drop down selections 
-                // TO DO
-                // var newElement = '<select id="specificYearSelect">'+temp+'</select>';
-
-            
 
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when trying to fetch available years");
-            }
+                return;
+            },
+            async:false
         });
 
+        var selectHTML = "<select>"+optionHTML+"</select>";
+
+        var selectUI = "";
+        if($("#reportTypeSelect")[0].selectedIndex==0) {
+            selectUI = "<label>Year</label>"+selectHTML;
+        }
+        else if($("#reportTypeSelect")[0].selectedIndex==1) {
+            selectUI = "<label>From</label><br>"+selectHTML+"<br><label>To</label><br>"+selectHTML;
+        }
 
         var trHTML = "<tr>\
                         <td><input type='checkbox' name='selected'></td>\
                         <td class='nameinfo'>"+name+"</td>\
                         <td class='emailInfo'>"+email+"</td>\
                         <td class='certNoInfo'>"+certNo+"</td>\
+                        <td class='yearSelect'>"+selectUI+"</td>\
                         <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
                     </tr>";
 
@@ -323,7 +330,7 @@ $(document).ready(function(){
         var year2;
 
         // get years selected
-        
+
 
         alert("click view " + certNo + " 's report");
         $.ajax({

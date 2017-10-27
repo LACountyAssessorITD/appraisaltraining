@@ -426,17 +426,18 @@
 					<table id="overviewTable">
 						<thead>
 				            <tr>
-				                <th width="10%">Select</th>
-				                <th width="25%">Name</th>
+				                <th width="5%">Select</th>
+				                <th width="20%">Name</th>
 				                <th width="25%">Email</th>
-				                <th width="25%">CertNo</th>
+				                <th width="15%">CertNo</th>
+				                <th width="20%">Year</th>
 				                <th width="15%">View</th>
 				            </tr>
 				        </thead>
 				        <tbody>
 				        	<tr id="overviewSelectAll">
 				        		<td><input type='checkbox' name='tableSelectAll'></td>
-				        		<td colspan="4">Select All</td>
+				        		<td colspan="5">Select All</td>
 				        	</tr>
 				        </tbody>
 					</table>
