@@ -165,13 +165,15 @@ $(document).ready(function(){
         });
     }
 
-    function loadTable(name, email, certNo) {
+    function loadTable(name, email, certNo, dropDownType) {
         // Get LDAP Information
         // TO DO
 
 
         // Get available fiscal years for current user
         // TO DO
+
+
         var optionHTML = "";
         $.ajax({
             url:"../lib/php/admin/getFiscalYears.php",
@@ -199,10 +201,12 @@ $(document).ready(function(){
 
         var selectYearUI = "<label>Year</label>"+selectHTML;
         var selectRangeUI = "<label>From</label><br>"+selectHTML+"<br><label>To</label><br>"+selectHTML;
-        if($("#reportTypeSelect")[0].selectedIndex==0) {
+        var selectUI = "";
+
+        if($(dropDownType==1) {
             selectUI = selectYearUI;
         }
-        else if($("#reportTypeSelect")[0].selectedIndex==1) {
+        else if(dropDownType==2) {
             selectUI = selectRangeUI;
         }
 
@@ -217,6 +221,17 @@ $(document).ready(function(){
 
         $("#overviewTable tbody").append(trHTML);
     }
+
+
+    function loadReportSelection() {
+        //dropDownType should be read in from table
+        var dropDownType = 0;
+        var reportTypeName = $("#reportTypeSelect").text();
+
+        return dropDownType;
+    }
+
+
 
     loadTable("nelson", "yuehhsul@usc.edu", "1234");
     loadTable("testAdmin", "assessortestpdf@gmail.com", "5678");
@@ -280,12 +295,14 @@ $(document).ready(function(){
                     query:query,
                 },
                 success:function(results){
+                    var dropDownType = loadReportSelection();
+
                     for (var i = 0; i < results.length; i ++) {
                         var name = results[i]['FirstName']+" "+results[i]['LastName'];
                         var audit = results[i]['Auditor'];
                         var certNo = results[i]['CertNo'];
                         var email = "someEmail@email.com";
-                        loadTable(name,email,certNo);
+                        loadTable(name,email,certNo,dropDownType);
                         // var trHTML = "<tr>\
                         //                 <td><input type='checkbox' name='selected'></td>\
                         //                 <td class='nameinfo'>"+name+"</td>\
