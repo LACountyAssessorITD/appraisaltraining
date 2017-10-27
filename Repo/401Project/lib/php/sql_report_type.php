@@ -1,6 +1,6 @@
 <?php
-include_once "../constants.php";
-include_once "../session.php";
+include_once "constants.php";
+include_once "session.php";
 //session_start();
 
 
@@ -22,14 +22,14 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "CREATE TABLE ReportType (ReportType varchar(50),YearInputType int,PhpFileName varchar(50),
-        Description varchar(255));";
-$tsql += "INSERT INTO ReportType VALUES ('Specific Year',1, 'Report_userSpecificYear.php', 
-            'Generate report for a specific fiscal year');";
-$tsql += "INSERT INTO ReportType VALUES ('Completed Courses',2,'Report_userCompletedCourse.php', 
-            'Generate report for all completed courses within a year range');";
-$tsql += "INSERT INTO ReportType VALUES ('Annual Total Summary',2,'Report_userAnnualTotals.php', 
-            'Generate report for annual total summary based on BOE record');";
+$tsql = "CREATE TABLE ReportType (ReportType varchar(50) NOT NULL,YearInputType int NOT NULL,
+        PhpFileName varchar(100) NOT NULL, Description varchar(255));";
+// $tsql += "INSERT INTO ReportType VALUES ('Specific Year',1, 'Report_userSpecificYear.php',
+//             'Generate report for a specific fiscal year');";
+// $tsql += "INSERT INTO ReportType VALUES ('Completed Courses',2,'Report_userCompletedCourse.php',
+//             'Generate report for all completed courses within a year range');";
+// $tsql += "INSERT INTO ReportType VALUES ('Annual Total Summary',0,'Report_userAnnualTotals.php',
+//             'Generate report for annual total summary based on BOE record');";
 
 $stmt = sqlsrv_query( $conn, $tsql);
 
