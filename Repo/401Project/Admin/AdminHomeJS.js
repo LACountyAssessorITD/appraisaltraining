@@ -197,12 +197,13 @@ $(document).ready(function(){
 
         var selectHTML = "<select>"+optionHTML+"</select>";
 
-        var selectUI = "";
+        var selectYearUI = "<label>Year</label>"+selectHTML;
+        var selectRangeUI = "<label>From</label><br>"+selectHTML+"<br><label>To</label><br>"+selectHTML;
         if($("#reportTypeSelect")[0].selectedIndex==0) {
-            selectUI = "<label>Year</label>"+selectHTML;
+            selectUI = selectYearUI;
         }
         else if($("#reportTypeSelect")[0].selectedIndex==1) {
-            selectUI = "<label>From</label><br>"+selectHTML+"<br><label>To</label><br>"+selectHTML;
+            selectUI = selectRangeUI;
         }
 
         var trHTML = "<tr>\
@@ -330,6 +331,8 @@ $(document).ready(function(){
         var year2;
 
         // get years selected
+
+        //TODO: year range validation
 
 
         alert("click view " + certNo + " 's report");
