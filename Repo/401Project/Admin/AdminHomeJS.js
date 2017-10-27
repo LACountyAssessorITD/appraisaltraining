@@ -203,7 +203,7 @@ $(document).ready(function(){
         var selectRangeUI = "<label>From</label><br>"+selectHTML+"<br><label>To</label><br>"+selectHTML;
         var selectUI = "";
 
-        if($(dropDownType==1) {
+        if($(dropDownType==1)) {
             selectUI = selectYearUI;
         }
         else if(dropDownType==2) {
@@ -240,7 +240,7 @@ $(document).ready(function(){
     function applyFilter() {
         clearTable();
         // Get report type that admin selected
-        
+
 
         // generate SQL query clause
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
@@ -346,10 +346,10 @@ $(document).ready(function(){
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
         var report_name = "1_Specific_Year";
         var year_type = 1;  // # of year inputs
-        var year1;
+        var year1 = 2017;
         var year2;
 
-        alert("click view " + certNo + " 's "+ type );
+        alert("click view " + certNo + " 's "+ report_name );
         $.ajax({
             url:"../lib/php/admin/reportCommunicator.php",
             type: "POST",
@@ -372,7 +372,7 @@ $(document).ready(function(){
                 else {
                     alert("Undefined Report Type!");
                 }
-                
+
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when generaeting the report");
