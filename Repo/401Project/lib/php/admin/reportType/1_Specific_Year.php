@@ -28,7 +28,7 @@ if( $conn === false )
 $totalcarryover = 0;
 
 $certid = $_SESSION['view_certNo'];
-$year = 2017;
+$year = $_SESSION['view_year1'];
 
 ///////////////////////////////////////////////////////////////////
 

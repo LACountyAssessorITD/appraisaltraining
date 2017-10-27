@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var requested_report_type;
+
 	getReportType();
 	// This function runs when Admin logs into the page and update dropdown for report types
 	function getReportType () {
@@ -240,7 +240,7 @@ $(document).ready(function(){
     function applyFilter() {
         clearTable();
         // Get report type that admin selected
-        requested_report_type = $("#reportTypeSelect").val();
+        
 
         // generate SQL query clause
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
@@ -342,34 +342,37 @@ $(document).ready(function(){
 
     $(document).on("click",".viewReportBtn", function() {
 
+        // TO DO: Fill in data
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
-        var type = requested_report_type;
+        var report_name = "1_Specific_Year";
+        var year_type = 1;  // # of year inputs
         var year1;
         var year2;
 
-        // get years selected
-
-        //TODO: year range validation
-
-
-        alert("click view " + certNo + " 's report");
+        alert("click view " + certNo + " 's "+ type );
         $.ajax({
             url:"../lib/php/admin/reportCommunicator.php",
             type: "POST",
             data: {
                 certNo:certNo,
-                type:type,
+                year_type:year_type,
                 year1:year1,
                 year2:year2,
             },
-            success:function(){
-                var parent = $("#pdfBox").parent();
-                // var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
-                var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' type='/pdf' width='100%' height='800px'>\
-                            <embed src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' type='application/pdf'></embed>\
-                        </object>";
-                $("#pdfBox").remove();
-                parent.append(newElement);
+            success:function(result){
+                if (result != "!UNDEFINED") {
+                    var parent = $("#pdfBox").parent();
+                    // var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
+                    var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' type='/pdf' width='100%' height='800px'>\
+                                <embed src='"+"../lib/php/admin/reportType/"+report_name+".php type='application/pdf'></embed>\
+                            </object>";
+                    $("#pdfBox").remove();
+                    parent.append(newElement);
+                }
+                else {
+                    alert("Undefined Report Type!");
+                }
+                
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when generaeting the report");
