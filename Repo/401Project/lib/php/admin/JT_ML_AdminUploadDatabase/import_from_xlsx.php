@@ -123,7 +123,7 @@
 		require_once 'Classes/PHPExcel.php';
 
 		$cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
-		$cacheSettings = array( ' memoryCacheSize ' => '8MB');
+		$cacheSettings = array( ' memoryCacheSize ' => '16MB');
 		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 
 		/*
@@ -362,6 +362,7 @@
 			$params = array($CertNo, $CourseYear, $CourseName, $CourseLocation, $CourseGrade, $CourseHours, $EndDate);
 			$stmt = sqlsrv_query( $conn, $srvr_query, $params);
 			if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
+			echo "success for row ".
 			$row_count ++;
 		}
 		echo "===== Details into CourseDetail finished, ";
