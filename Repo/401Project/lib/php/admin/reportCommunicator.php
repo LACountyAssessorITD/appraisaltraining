@@ -1,12 +1,13 @@
 <?php
 session_start();
 $_SESSION['view_certNo'] = $_POST["certNo"];
-/*
-$type = $_GET['type'];
-$certNo = $_GET['certNo'];
-$year1 = $_GET['year1'];
-$year2 = $_GET['year2'];
+// $type = $_POST['type'];
+// $year1 = $_POST['year1'];
+// $year2 = $_POST['year2'];
 
+
+
+/*
 if ($type == "specific") { // if requesting xpecific year report
 	include_once("reportType/1_Specific_Year.php?id=".$certNo."&year=".$year1);
 } else if ($type == "course") { // if requesting completed corse summary

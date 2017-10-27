@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    var requested_report_type;
 	getReportType();
 	// This function runs when Admin logs into the page and update dropdown for report types
 	function getReportType () {
@@ -165,6 +166,39 @@ $(document).ready(function(){
     }
 
     function loadTable(name, email, certNo) {
+        // Get LDAP Information
+        // TO DO
+
+
+        // Get available fiscal years for current user
+        // TO DO
+        $.ajax({
+            url:"../lib/php/admin/getFiscalYears.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+                certNo:certNo,
+            }
+            success:function(results){
+                var size = results.length;
+                var temp;
+                for (var i = size-1; i >= 0; i--) {
+                    var fiscalyear = results[i];
+                    temp += "<option>"+fiscalyear+"</option>";
+                }
+                // update drop down selections 
+                // TO DO
+                // var newElement = '<select id="specificYearSelect">'+temp+'</select>';
+
+            
+
+            },
+            error: function(xhr, status, error){
+                alert("Fail to connect to the server when trying to fetch available years");
+            }
+        });
+
+
         var trHTML = "<tr>\
                         <td><input type='checkbox' name='selected'></td>\
                         <td class='nameinfo'>"+name+"</td>\
@@ -182,9 +216,8 @@ $(document).ready(function(){
 
     function applyFilter() {
         clearTable();
-        // Get report type
-
-
+        // Get report type that admin selected
+        requested_report_type = $("#reportTypeSelect").val();
 
         // generate SQL query clause
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
@@ -284,16 +317,25 @@ $(document).ready(function(){
 
     $(document).on("click",".viewReportBtn", function() {
 
-    // });
-    // $(".viewReportBtn").on("click", function() {
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
+        var type = requested_report_type;
+        var year1;
+        var year2;
+
+        // get years selected
+        
+
         alert("click view " + certNo + " 's report");
-        alert($("#reportTypeSelect").val());
         $.ajax({
             url:"../lib/php/admin/reportCommunicator.php",
             type: "POST",
-            data: {certNo:certNo},
-            success:function(result){
+            data: {
+                certNo:certNo,
+                type:type,
+                year1:year1,
+                year2:year2,
+            },
+            success:function(){
                 var parent = $("#pdfBox").parent();
                 // var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
                 var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' type='/pdf' width='100%' height='800px'>\
