@@ -20,7 +20,6 @@
 		}
 	}
 
-
 	////////////////////////////////// Step II: Mian's sql server - create 5 empty tables //////////////////////////////////
 	if(true) {
 		// 1. create queries to drop existing tables with same names that we're gonna create
@@ -114,43 +113,16 @@
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 	}
 
-
 	////////////////////////////////// Step III: read data from xlsx or mdb, and then insert into SQL sever //////////////////////////////////
-
-	////////////////////////////////// JT: xlsx reading - initialization & open 3 .xlsx files
+	// 0. xlsx reading - initialization
 	if(true) {
 		error_reporting(E_ALL ^ E_NOTICE);
 		require_once 'Classes/PHPExcel.php';
-
+		// enable caching to reduce memory usage for PHPExcel (tips/trick from StackOverflow)
 		$cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
 		$cacheSettings = array( ' memoryCacheSize ' => '16MB');
 		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
-
-		/*
-		$objReader = PHPExcel_IOFactory::createReader('Excel2007');
-		$objReader->setReadDataOnly(true);
-		$objPHPExcel = $objReader->load("test.xlsx");
-		*/
-
-
-		$excelReader_Summary	= PHPExcel_IOFactory::createReaderForFile(PATH_XLSX_SUMMARY);
-		$excelReader_Summary	= PHPExcel_IOFactory::createReader('Excel2007');
-		// $excelReader_Summary	->setReadDataOnly(true);
-		$excelObj_Summary		= $excelReader_Summary->load(PATH_XLSX_SUMMARY);
-		$summary				= $excelObj_Summary->getActiveSheet();
-
-
-
-		$excelReader_AnnualReq	= PHPExcel_IOFactory::createReader('Excel2007');
-		// $excelReader_AnnualReq	->setReadDataOnly(true);
-		$excelObj_AnnualReq		= $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
-		$annualreq				= $excelObj_AnnualReq->getActiveSheet();
-
-		$excelReader_Details	= PHPExcel_IOFactory::createReader('Excel2007');
-		// $excelReader_Details	->setReadDataOnly(true);
-		$excelObj_Details		= $excelReader_Details->load(PATH_XLSX_DETAILS);
-		$details				= $excelObj_Details->getActiveSheet();
-		// */
+		// lazy-reading from now on! all Excel file reading are done immediately before using its data, not earlier!
 	}
 
 	// 1. Summary & AnnualReq -> Employee: START
@@ -172,22 +144,15 @@
 			$srvr_stmt = sqlsrv_query( $conn, $create_temp );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		}
-
-
-
-
 		// TrickyWork Pt.2: populate Temp
 		if(true) {
 			$srvr_query = "INSERT INTO New_Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate)";
 			$srvr_query .= " VALUES (?,?,?,?)";
-			// lazy-loading
-			/*
-			$excelReader_AnnualReq	= PHPExcel_IOFactory::createReader('Excel2007');
-			$excelReader_AnnualReq	->setReadDataOnly(true);
+			//////////////////// lazy-reading INIT ////////////////////
+			$excelReader_AnnualReq	= PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq	->setReadDataOnly(true);
 			$excelObj_AnnualReq		= $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
 			$annualreq				= $excelObj_AnnualReq->getActiveSheet();
-			*/
-			// lazy-loading end
+			//////////////////// lazy-reading READY ////////////////////
 			$row_count = (int)2; // actual data starts at row 2 of Excel spreadsheet
 			while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
 				// select distinct CertID rows from AnnualReq
@@ -217,8 +182,8 @@
 				if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
 				$row_count ++;
 			}
+			unset($excelObj_AnnualReq); //////////////////// lazy-reading END
 		}
-
 		// TrickyWork Pt.3: create table Temp2
 		if(true) {
 			$drop_temp2 = "IF OBJECT_ID('dbo.New_Temp2', 'U') IS NOT NULL DROP TABLE dbo.New_Temp2";
@@ -247,9 +212,13 @@
 				}
 			}
 		}
-
-		// TrickyWork Pt.5: insert into Employee table from summary.xlsx(line-by-line) & Temp2(querying 3 dates along with each line)
+		// TrickyWork Pt.5: insert into Employee table from summary.xlsx (line-by-line) & Temp2 (querying 3 dates along with each line)
 		if(true) {
+			//////////////////// lazy-reading INIT ////////////////////
+			$excelReader_Summary	= PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary->setReadDataOnly(true);
+			$excelObj_Summary		= $excelReader_Summary->load(PATH_XLSX_SUMMARY);
+			$summary				= $excelObj_Summary->getActiveSheet();
+			//////////////////// lazy-reading READY ////////////////////
 			$row_count = (int)2;
 			while ( $row_count <= $summary->getHighestRow() ) { // read until the last line
 				$params		= NULL;
@@ -282,29 +251,24 @@
 				if( $stmt = sqlsrv_query( $conn, $Summary_to_Employee, $params) === false ) die( print_r(sqlsrv_errors(), true) );
 				$row_count ++;
 			}
-			echo "===== Summary into Employee finished, ";
-			echo $row_count-2;
-			echo " rows inserted. =====<br />";
-			$row_count = 2; // reset counter
+			unset($excelObj_Summary); //////////////////// lazy-reading END
 		}
-
+		echo "===== Summary into Employee finished, ".($row_count-2)." rows inserted. =====<br />";
 		// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
-
 	}  // Summary & AnnualReq -> Employee: DONE
-
 
 	// 2. AnnualReq -> CertHistory: START
 	if(true) {
-		// // JT:
-		// $excelReader = PHPExcel_IOFactory::createReaderForFile($annualreq_filename);
-		// $excelObj = $excelReader->load($annualreq_filename);
-		// $annualreq = $excelObj->getActiveSheet();
-		// ml:
 		$srvr_query = "INSERT INTO New_CertHistory (CertNo, CertYear, CertType, Status, HoursEarned, RequiredHours,
 		CurrentYearBalance, PriorYearBalance, CarryToYear1,
 		CarryToYear2, CarryToYear3, CarryForwardTotal)";
 		$srvr_query .= " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 		echo "===== Start inserting AnnualReq into CertHistory =====<br />";
+		//////////////////// lazy-reading INIT ////////////////////
+		$excelReader_AnnualReq	= PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq->setReadDataOnly(true);
+		$excelObj_AnnualReq		= $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
+		$annualreq				= $excelObj_AnnualReq->getActiveSheet();
+		//////////////////// lazy-reading READY ////////////////////
 		$row_count = (int)2;
 		while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
 			// int counter logic end
@@ -327,28 +291,21 @@
 			if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
 			$row_count ++;
 		}
-		echo "===== AnnualReq into CertHistory finished, ";
-		echo $row_count-2;
-		echo " rows inserted. =====<br />";
+		unset($excelObj_AnnualReq); //////////////////// lazy-reading END
+		echo "===== AnnualReq into CertHistory finished, ".($row_count-2)." rows inserted. =====<br />";
 	}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
 
 	// 3. Details -> CourseDetail: START
 	if(true) {
-		// $create_CD = "CREATE TABLE dbo.New_CourseDetail (
-		// 	CertNo float references dbo.New_Employee(CertNo), -- foreign key from Employee
-		// 	CourseYear nvarchar(10),			-- from dbo.Details(FiscalYear)
-		// 	ItemNumber float,					-- undefined, maybe an index for all possible courses, if so then new table all_courses needed
-		// 	CourseName nvarchar(100),			-- from dbo.tbl: Course Title + dbo.Details(Course)
-		// 	CourseLocation nvarchar(50),		-- from dbo.Details(Location)
-		// 	CourseGrade nvarchar(50),			-- from dbo.Details(Grade)
-		// 	CourseHours float,					-- from dbo.Details(HoursEarned)
-		// 	EndDate datetime2(0),				-- from dbo.Details(EndDate)
-		// 	-- primary key (CertNo, CourseYear, CourseName), -- if ItemNumber correctly implemented, switch to it! CertNo should be foreign key
-		// )";
 		$srvr_query = "INSERT INTO New_CourseDetail (CertNo, CourseYear, --ItemNumber,
 													CourseName, CourseLocation, CourseGrade, CourseHours, EndDate)";
 		$srvr_query .= " VALUES (?,?,?,?,?,?,?)";
 		echo "===== Start inserting Details into CourseDetail =====<br />";
+		//////////////////// lazy-reading INIT ////////////////////
+		$excelReader_Details	= PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details->setReadDataOnly(true);
+		$excelObj_Details		= $excelReader_Details->load(PATH_XLSX_DETAILS);
+		$details				= $excelObj_Details->getActiveSheet();
+		//////////////////// lazy-reading READY ////////////////////
 		$row_count = (int)2;
 		while ( $row_count <= $details->getHighestRow() ) { // read until the last line
 			$CertNo				= $details->getCell('C'.$row_count)->getValue();
@@ -365,9 +322,8 @@
 			echo "success for row ".
 			$row_count ++;
 		}
-		echo "===== Details into CourseDetail finished, ";
-		echo $row_count-2;
-		echo " rows inserted. =====<br />";
+		unset($excelObj_Details); //////////////////// lazy-reading END
+		echo "===== Details into CourseDetail finished, ".($row_count-2)." rows inserted. =====<br />";
 	}
 
 	/* // block comment starter
