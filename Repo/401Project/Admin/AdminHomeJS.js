@@ -207,10 +207,10 @@ $(document).ready(function(){
         var selectRangeUI = "<label>From</label><br><select class='fromYear'>"+optionHTML+"</select><br><label>To</label><br><select class='toYear'>"+optionHTML+"</select>";
         var selectUI = "";
 
-        if($(dropDownType==1)) {
+        if(dropDownType == 1) {
             selectUI = selectYearUI;
         }
-        else if(dropDownType==2) {
+        else if(dropDownType == 2) {
             selectUI = selectRangeUI;
         }
 
@@ -230,10 +230,6 @@ $(document).ready(function(){
     function loadReportSelection() {
         //dropDownType should be read in from table
         var reportTypeName = $("#reportTypeSelect option:selected").val();
-        alert("jj"+reportTypeName+"jj");
-        // reportTypeName = "Specific Year";
-        //Assign value to dropDownType
-        // dropDownType = 1; //TODO remove hardcode
 
         $.ajax({
             url:"../lib/php/admin/getReportInputType.php",
@@ -242,15 +238,7 @@ $(document).ready(function(){
                 reportType: reportTypeName,
             },
             success:function(result){
-                alert("successfully return in loadReportSelection()");
-                // var array = [];
-                // array = result;
-                // dropDownType = result;
-
                 dropDownType = parseInt(result[1]);
-
-                alert(dropDownType + " is dropDownType");
-
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when loading report input type");
