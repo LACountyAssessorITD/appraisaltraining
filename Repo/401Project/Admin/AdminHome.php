@@ -18,6 +18,10 @@
 
 <body>
 
+	<div id="splash">
+		<h2>Welcome to LAC</h2>
+	</div>
+
 	<div class="top">
 		<div class="header">
 			<div class="Welcome">
@@ -38,14 +42,7 @@
 		</nav>
 	</div>
 
-
-
-
-
-
-
 	<div class="content">
-
 
 		<div id="filterBackground"></div>
 		<div class="leftContentColumn">
