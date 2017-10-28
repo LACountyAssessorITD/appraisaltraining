@@ -58,6 +58,23 @@ body{
 	}
 }
 
+#splashScreen img {
+    position: absolute;
+    /*vertical-align: center;*/
+    left: 18px;
+    top: 18px;
+    max-width: 20%;
+    height: auto;
+    z-index: 1;
+    overflow: hidden;
+}
+
+#splashScreen img:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
 #splashBg {
 	background-color: ;
 	width: 100%;

@@ -25,6 +25,7 @@
 			<div id="lineTwo"></div>
 			<h1>Training Records</h1>
 		</div>
+		<img src="../BGimg/Logo.png" alt="Logo" width="130px" height="130px">
 		<iframe class="cover"></iframe>
 	</div>
 
