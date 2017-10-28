@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    // $(".top, .content, .footer").hide();
+    $(".top, .content, .footer").hide();
 
     $("#lineOne").on("animationend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd", function() {
         $(".top, .content, .footer").fadeIn(500);
