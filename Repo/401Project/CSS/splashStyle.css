@@ -38,9 +38,9 @@ body{
     background-repeat: no-repeat;
     background-position: 50% 0;
     -webkit-animation-name: bg; /* Safari 4.0 - 8.0 */
-    -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 3s; /* Safari 4.0 - 8.0 */
     animation-name: bg;
-    animation-duration: 4s;
+    animation-duration: 3s;
     /*-ms-background-size: cover;
     -o-background-size: cover;
     -moz-background-size: cover;
@@ -130,9 +130,9 @@ body{
     /*text-align: center;
 	vertical-align: center;*/
     -webkit-animation-name: lineOne; /* Safari 4.0 - 8.0 */
-    -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 3s; /* Safari 4.0 - 8.0 */
     animation-name: lineOne;
-    animation-duration: 4s;
+    animation-duration: 3s;
 }
 
 
@@ -203,9 +203,9 @@ body{
     /*text-align: center;
 	vertical-align: center;*/
     -webkit-animation-name: lineTwo; /* Safari 4.0 - 8.0 */
-    -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 3s; /* Safari 4.0 - 8.0 */
     animation-name: lineTwo;
-    animation-duration: 4s;
+    animation-duration: 3s;
 }
 
 
