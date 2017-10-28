@@ -19,13 +19,13 @@
 
 <body>
 
-	<div id="splashScreen">
+	<!-- <div id="splashScreen">
 		<div id="splash">
 			<div id="lineOne"></div>
 			<div id="lineTwo"></div>
 			<h1>Training Records</h1>
 		</div>
-	</div>
+	</div> -->
 
 	<div class="top">
 		<div class="header">
@@ -48,6 +48,14 @@
 	</div>
 
 	<div class="content">
+
+		<div id="splashScreen">
+			<div id="splash">
+				<div id="lineOne"></div>
+				<div id="lineTwo"></div>
+				<h1>Training Records</h1>
+			</div>
+		</div>
 
 		<div id="filterBackground"></div>
 		<div class="leftContentColumn">
