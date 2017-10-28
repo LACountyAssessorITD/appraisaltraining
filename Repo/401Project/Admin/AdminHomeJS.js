@@ -1,5 +1,12 @@
 $(document).ready(function(){
 
+    $(".top, .content, .footer").hide();
+
+    $("#lineOne").on("animationend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd", function() {
+        $(".top, .content, .footer").fadeIn(500);
+        $("#splashScreen").fadeOut(500);
+    });
+
 	getReportType();
 	// This function runs when Admin logs into the page and update dropdown for report types
 	function getReportType () {
@@ -249,9 +256,9 @@ $(document).ready(function(){
 
 
 
-    loadTable("nelson", "yuehhsul@usc.edu", "1234");
-    loadTable("testAdmin", "assessortestpdf@gmail.com", "5678");
-    loadTable("Yining", "yininghu@usc.edu", "91011");
+    // loadTable("nelson", "yuehhsul@usc.edu", "1234");
+    // loadTable("testAdmin", "assessortestpdf@gmail.com", "5678");
+    // loadTable("Yining", "yininghu@usc.edu", "91011");
 
 
 

@@ -5,6 +5,7 @@
 <head>
 	<title>LAC Website</title>
 	<link rel="stylesheet" href="AdminHomeStyle.css">
+	<link rel="stylesheet" href="../CSS/splashStyle.css">
 	<link rel="stylesheet" href="../CSS/DefaultUI.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -18,8 +19,12 @@
 
 <body>
 
-	<div id="splash">
-		<h2>Welcome to LAC</h2>
+	<div id="splashScreen">
+		<div id="splash">
+			<div id="lineOne"></div>
+			<div id="lineTwo"></div>
+			<h1>Training Records</h1>
+		</div>
 	</div>
 
 	<div class="top">
