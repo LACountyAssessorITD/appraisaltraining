@@ -375,6 +375,11 @@ $(document).ready(function(){
         else if(dropDownType==2) {
             year1 = parseInt($(this).closest("tr").find(".fromYear").val());
             year2 = parseInt($(this).closest("tr").find(".toYear").val());
+            //Year validation
+            if(year1>year2) {
+                alert("Invalid range!");
+                return;
+            }
         }
         // var year1 = 2014;
         // var year2;

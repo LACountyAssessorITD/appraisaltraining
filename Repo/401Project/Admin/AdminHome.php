@@ -184,7 +184,7 @@
  -->
 					<div class="dropDownFilter">
 						<button class="dropDownBtn" name="TempCertDate">TempCertDate</button>
-						<div class="DPBCont">
+						<!-- <div class="DPBCont">
 							<div class="fromDateWrap">
 								<div class="tableWrap">
 									<form class="leftInput">
@@ -249,7 +249,7 @@
 								</div>
 							</div>
 							<iframe class="cover" src="about:blank"></iframe>
-						</div>
+						</div> -->
 					</div>
 
 					<div class="dropDownFilter">
@@ -386,6 +386,10 @@
 						<h3 id="previewLabel" class="banLabel">Preview Report</h3>
 					</div>
 					<div class="pdfView">
+						<div id="infoLabelWrap">
+							<h3 id="effectiveLabel" class="infoLabel">Effective as of: <span></span></h3>
+							<h3 id="hoursNeedLabel" class="infoLabel">Hours needed: <span></span></h3>
+						</div>
 						<!-- <embed id="pdfBox" src="../OrderDetails.pdf" width="100%" height="650px"></embed> -->
 						<!-- <a href="singleUserReport.php">Click here to download the PDF</a>. Or -->
 						<!-- <a href="http://get.adobe.com/reader/" target="_blank">click here to install Adobe Reader</a>.</p> -->
