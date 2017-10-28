@@ -13,6 +13,10 @@ $(document).ready(function(){
                 for (var i = 2; i < size; i++) {
 	                var type = results[i];
 	                type = type.replace(".php","");
+                    type = type.replace(/\_/g,' ');
+                    type = type.substring(2,type.length);
+
+                    // type = type.replace("_"," ");
 	                temp += "<option>"+type+"</option>";
                 }
                 // update drop down selections - reportTypeSelect
@@ -165,7 +169,9 @@ $(document).ready(function(){
         });
     }
 
-    function loadTable(name, email, certNo, dropDownType) {
+    var dropDownType = 0;
+
+    function loadTable(name, email, certNo) {
         // Get LDAP Information
         // TO DO
 
@@ -197,10 +203,8 @@ $(document).ready(function(){
             async:false
         });
 
-        var selectHTML = "<select>"+optionHTML+"</select>";
-
-        var selectYearUI = "<label>Year</label>"+selectHTML;
-        var selectRangeUI = "<label>From</label><br>"+selectHTML+"<br><label>To</label><br>"+selectHTML;
+        var selectYearUI = "<label>Year</label><select class='specificYear'>"+optionHTML+"</select>";
+        var selectRangeUI = "<label>From</label><br><select class='fromYear'>"+optionHTML+"</select><br><label>To</label><br><select class='toYear'>"+optionHTML+"</select>";
         var selectUI = "";
 
         if($(dropDownType==1)) {
@@ -225,10 +229,34 @@ $(document).ready(function(){
 
     function loadReportSelection() {
         //dropDownType should be read in from table
-        var dropDownType = 0;
-        var reportTypeName = $("#reportTypeSelect").text();
+        var reportTypeName = $("#reportTypeSelect option:selected").val();
+        alert("jj"+reportTypeName+"jj");
+        // reportTypeName = "Specific Year";
+        //Assign value to dropDownType
+        // dropDownType = 1; //TODO remove hardcode
 
-        return dropDownType;
+        $.ajax({
+            url:"../lib/php/admin/getReportInputType.php",
+            type: "POST",
+            data: {
+                reportType: reportTypeName,
+            },
+            success:function(result){
+                alert("successfully return in loadReportSelection()");
+                // var array = [];
+                // array = result;
+                // dropDownType = result;
+
+                dropDownType = parseInt(result[1]);
+
+                alert(dropDownType + " is dropDownType");
+
+            },
+            error: function(xhr, status, error){
+                alert("Fail to connect to the server when loading report input type");
+            },
+            async:false
+        });
     }
 
 
@@ -236,6 +264,8 @@ $(document).ready(function(){
     loadTable("nelson", "yuehhsul@usc.edu", "1234");
     loadTable("testAdmin", "assessortestpdf@gmail.com", "5678");
     loadTable("Yining", "yininghu@usc.edu", "91011");
+
+
 
     function applyFilter() {
         clearTable();
@@ -295,14 +325,14 @@ $(document).ready(function(){
                     query:query,
                 },
                 success:function(results){
-                    var dropDownType = loadReportSelection();
+                    loadReportSelection();
 
                     for (var i = 0; i < results.length; i ++) {
                         var name = results[i]['FirstName']+" "+results[i]['LastName'];
                         var audit = results[i]['Auditor'];
                         var certNo = results[i]['CertNo'];
                         var email = "someEmail@email.com";
-                        loadTable(name,email,certNo,dropDownType);
+                        loadTable(name,email,certNo);
                         // var trHTML = "<tr>\
                         //                 <td><input type='checkbox' name='selected'></td>\
                         //                 <td class='nameinfo'>"+name+"</td>\
@@ -344,18 +374,30 @@ $(document).ready(function(){
 
         // TO DO: Fill in data
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
-        var report_name = "1_Specific_Year";
-        var year_type = 1;  // # of year inputs
-        var year1 = 2017;
-        var year2;
+        var report_name = $("#reportTypeSelect option:selected").val();
+        // var year_type = 1;  // # of year inputs
 
-        alert("click view " + certNo + " 's "+ report_name );
+        var year1 = 0;
+        var year2 = 0;
+
+        alert($(this).closest("tr").find(".specificYear").val());
+        if(dropDownType==1) {
+            year1 = parseInt($(this).closest("tr").find(".specificYear").val());//$("#reportTypeSelect option:selected").val();
+        }
+        else if(dropDownType==2) {
+            year1 = parseInt($(this).closest("tr").find(".fromYear").val());
+            year2 = parseInt($(this).closest("tr").find(".toYear").val());
+        }
+        // var year1 = 2014;
+        // var year2;
+
+        alert("click view " + certNo + " 's "+ report_name+ " year1:"+year1+" year2:"+year2);
         $.ajax({
             url:"../lib/php/admin/reportCommunicator.php",
             type: "POST",
             data: {
                 certNo:certNo,
-                year_type:year_type,
+                year_type:dropDownType,
                 year1:year1,
                 year2:year2,
             },
@@ -363,7 +405,7 @@ $(document).ready(function(){
                 if (result != "!UNDEFINED") {
                     var parent = $("#pdfBox").parent();
                     // var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
-                    var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' type='/pdf' width='100%' height='800px'>\
+                    var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' type='/pdf' width='100%' height='600px'>\
                                 <embed src='"+"../lib/php/admin/reportType/"+report_name+".php type='application/pdf'></embed>\
                             </object>";
                     $("#pdfBox").remove();

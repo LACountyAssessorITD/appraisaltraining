@@ -13,7 +13,7 @@ if ($type == 1) {
 	$_SESSION['view_year1'] = $year1;
 	$_SESSION['view_year2'] = $year2;
 } else if ($type == 0) {
-	// Do nothings
+	// Do nothing
 } else {
 	echo "!UNDEFINED";
 }
