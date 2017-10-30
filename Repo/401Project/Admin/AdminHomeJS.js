@@ -81,6 +81,7 @@ $(document).ready(function(){
                                 <input type='text' placeholder='Search..' autocomplete='off'>\
                             </form>\
                             <div class='filterContTableBG'></div>\
+                            <button class='resetBtn'>Reset Search</button>\
                             <table class='filterContTable'>\
                                 <col width='20'>\
                                 <thead>\
@@ -718,6 +719,34 @@ $(document).ready(function(){
 
     // $("#filterApplyBtn").click(applyFilter);
     $("#filterApplyBtn").on("click", applyFilter);
+
+
+
+    $(".resetBtn").on("click",function() {
+        $(this).closest(".DPBCont").find("input[name='selected']").each(function() {
+            $(this).prop("checked",false);
+        });
+
+        $(this).closest(".DPBCont").find("li").each(function() {
+            $(this).remove();
+        });
+
+        $(this).closest(".dropDownFilter").find(".dropDownBtn").css("background-color","white");
+    });
+
+    $("#resetAllBtn").on("click",function() {
+        var filterList = $(this).next(".filterListCol");
+        filterList.find("input[name='selected']").each(function() {
+            $(this).prop("checked",false);
+        });
+
+        filterList.find("li").each(function() {
+            $(this).remove();
+        });
+
+        filterList.find(".dropDownBtn").css("background-color","white");
+    });
+
 });
 
 

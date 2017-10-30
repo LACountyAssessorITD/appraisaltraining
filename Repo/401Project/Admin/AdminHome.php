@@ -58,6 +58,7 @@
 				<h3 id="filterLabel" class="banLabel">Filters</h3>
 			</div>
 
+			<button id="resetAllBtn">Reset All Filters</button>
 
 			<div class="filterListCol" id="accordion">
 

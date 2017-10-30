@@ -169,6 +169,18 @@
 	cursor: pointer;
 }
 
+.resetBtn {
+	background: none;
+	border: none;
+	color: blue;
+}
+
+#resetAllBtn {
+	background: none;
+	border: none;
+	color: blue;
+	font-size: 1.5vw;
+}
 
 .testWrap {
 	width: 100%;
