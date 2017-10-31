@@ -3,6 +3,10 @@
 	// updated by James Tseng and Mian Lu
 	// last edit October 2017
 
+	ini_set('memory_limit', '-1'); // TOT PLAYING WITH FIRE...
+
+
+
 	// TOT remember to add code to close filestream for excel files! and close $conn!
 	// mianlu: NOTE: if(true){ } blocks are used to foster code snippit folding with Sublime functionalities.
 
@@ -64,7 +68,7 @@
 			CourseLocation nvarchar(50),		-- from dbo.Details(Location)
 			CourseGrade nvarchar(50),			-- from dbo.Details(Grade)
 			CourseHours float,					-- from dbo.Details(HoursEarned)
-			EndDate datetime2(0),				-- from dbo.Details(EndDate)
+			EndDate date,				-- from dbo.Details(EndDate) ( TOT: datetime2(0) )
 			-- primary key (CertNo, CourseYear, CourseName), -- if ItemNumber correctly implemented, switch to it! CertNo should be foreign key
 		)";
 		// 5. create table 4 CarryoverLimits
@@ -306,6 +310,7 @@
 		$excelObj_Details		= $excelReader_Details->load(PATH_XLSX_DETAILS);
 		$details				= $excelObj_Details->getActiveSheet();
 		//////////////////// lazy-reading READY ////////////////////
+		echo "===== Details.xlsx excel object allocation (aka lazy-reading) success! =====<br />";
 		$row_count = (int)2;
 		while ( $row_count <= $details->getHighestRow() ) { // read until the last line
 			$CertNo				= $details->getCell('C'.$row_count)->getValue();
@@ -329,3 +334,10 @@
 	/* // block comment starter
 	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
 ?>
+
+
+
+
+
+
+// 128M: Allowed memory size of 134217728 bytes exhausted (tried to allocate 4096 bytes)
