@@ -424,18 +424,21 @@ $(document).ready(function(){
     });
 
 
+    //Filter Input change filters subset of dropdown options
     $(".leftInput input").on("change keyup paste click", function(){
       input = $(this);
       filterText = input.val().toUpperCase();
-      filterTable = $(this).parent().next().next("table");
+      filterTable = $(this).closest(".tableWrap").find(".filterContTable");
 
       filterTable.children("tbody").children("tr").each(function() {
           cols = $(this).children("td").eq(1);
           cols.each(function() {
             if ($(this)[0].innerHTML.toUpperCase().indexOf(filterText) > -1) {
-              $(this).parent().show();
+              // $(this).parent().show();
+              $(this).closest("tr").show();
             } else {
-              $(this).parent().hide();
+              // $(this).parent().hide();
+              $(this).closest("tr").hide();
             }
           });
       });
@@ -723,9 +726,11 @@ $(document).ready(function(){
 
 
     $(".resetBtn").on("click",function() {
-        $(this).closest(".DPBCont").find("input[name='selected']").each(function() {
+        $(this).closest(".DPBCont").find("input[name='selected'], input[name='selectAll']").each(function() {
             $(this).prop("checked",false);
         });
+
+        $(this).closest(".DPBCont").find("input[name='selectAll']").closest("td").next("td")[0].innerHTML = "Select All";
 
         $(this).closest(".DPBCont").find("li").each(function() {
             $(this).remove();
@@ -736,8 +741,12 @@ $(document).ready(function(){
 
     $("#resetAllBtn").on("click",function() {
         var filterList = $(this).next(".filterListCol");
-        filterList.find("input[name='selected']").each(function() {
+        filterList.find("input[name='selected'], input[name='selectAll']").each(function() {
             $(this).prop("checked",false);
+        });
+
+        filterList.find("input[name='selectAll']").each(function() {
+            $(this).closest("td").next("td")[0].innerHTML = "Select All";
         });
 
         filterList.find("li").each(function() {

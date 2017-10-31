@@ -44,7 +44,7 @@
 		<nav class="navigationBar">
 			<a id="homeTab" href="#"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
 			<a id="uploadTab" href="AdminUpload.php"><i class="fa fa-upload" aria-hidden="true"></i> Update</a>
-			<a id="uploadTab" href="AdminFAQ.html"><i class="fa fa-question-circle-o" aria-hidden="true"></i> FAQs</a>
+			<a id="uploadTab" href="AdminFAQ.php"><i class="fa fa-question-circle-o" aria-hidden="true"></i> FAQs</a>
 			<a id="issueTab" href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> <strong>Support</strong></a>
 		</nav>
 	</div>
@@ -456,14 +456,15 @@
 		</div>
 	</div>
 
-	<div class="footer">
+	<?php include '../commonPHP/Footer.php'; ?>
+	<!-- <div class="footer">
 		<p class="links">
 			<span id="contactUs"><a href="#">Support</a></span>
 			<span id="Disclaimer"><a href="#">Disclaimer</a></span>
 			<span id="FAQs"><a href="#">FAQs</a><span></span>
 		</p>
 		<p>2017 - Present &copy; Los Angeles County Office of the Assessor</p>
-	</div>
+	</div> -->
 
 </body>
 

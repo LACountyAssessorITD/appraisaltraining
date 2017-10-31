@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html>
@@ -75,14 +76,15 @@
 
 	</div>
 
-	<div class="footer">
+	<?php include '../commonPHP/Footer.php'; ?>
+	<!-- <div class="footer">
 		<p class="links">
 			<span id="contactUs"><a href="#">Contact Us</a></span>
 			<span id="Disclaimer"><a href="#">Disclaimer</a></span>
 			<span id="FAQs"><a href="#">FAQs</a><span></span>
 		</p>
 		<p>2017 - Present © Los Angeles County Office of the Assessor</p>
-	</div>
+	</div> -->
 </body>
 
 </html>

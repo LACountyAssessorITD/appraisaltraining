@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html>
@@ -26,7 +27,7 @@
 		</div>
 
 		<nav class="navigationBar">
-			<a id="homeTab" href="UserHome.html"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+			<a id="homeTab" href="UserHome.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
 			<a id="FAQTab" href="#"><i class="fa fa-question-circle-o" aria-hidden="true"></i> FAQs</a>
 			<a id="issueTab" href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> <strong>Support</strong></a>
 		</nav>
@@ -49,7 +50,7 @@
 							<br><br>
 							For a range of years, select “Range of Years” and specify the time range you would like to view. “From Year” will begin from Jan 1st of that year, and “To Year” will end on Dec 31st of that year. Click “Generate Report” to view your reports.
 							<br><br>
-						</p>					
+						</p>
 					</div>
 				</div>
 
@@ -65,7 +66,7 @@
 							For one year, select “Specific Year” and then choose the fiscal year you would like to view, and click “Generate Report”.
 							<br>
 							For a range of years, select “Range of Years” and specify the time range you would like to view. “From Year” will begin from Jan 1st of that year, and “To Year” will end on Dec 31st of that year. Click “Generate Report” to view your reports.
-						</p>					
+						</p>
 					</div>
 				</div>
 
@@ -73,14 +74,7 @@
 
 	</div>
 
-	<div class="footer">
-		<p class="links">
-			<span id="contactUs"><a href="#">Contact Us</a></span>
-			<span id="Disclaimer"><a href="#">Disclaimer</a></span>
-			<span id="FAQs"><a href="#">FAQs</a><span></span>
-		</p>
-		<p>2017 - Present © Los Angeles County Office of the Assessor</p>
-	</div>
+	<?php include '../commonPHP/Footer.php'; ?>
 </body>
 
 </html>

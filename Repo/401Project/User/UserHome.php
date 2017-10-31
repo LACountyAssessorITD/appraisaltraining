@@ -1,4 +1,4 @@
-
+<?php session_start(); ?>
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -28,7 +28,7 @@
 
 		<nav class="navigationBar">
 			<a id="homeTab" href="#"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
-			<a id="FAQTab" href="UserFAQ.html"><i class="fa fa-question-circle-o" aria-hidden="true"></i> FAQs</a>
+			<a id="FAQTab" href="UserFAQ.php"><i class="fa fa-question-circle-o" aria-hidden="true"></i> FAQs</a>
 			<a id="issueTab" href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> <strong>Support</strong></a>
 		</nav>
 	</div>
@@ -92,14 +92,7 @@
 
 	</div>
 
-	<div class="footer">
-		<p class="links">
-			<span id="contactUs"><a href="#">Contact Us</a></span>
-			<span id="Disclaimer"><a href="#">Disclaimer</a></span>
-			<span id="FAQs"><a href="#">FAQs</a><span></span>
-		</p>
-		<p>2017 - Present © Los Angeles County Office of the Assessor</p>
-	</div>
+	<?php include '../commonPHP/Footer.php'; ?>
 
 </body>
 
