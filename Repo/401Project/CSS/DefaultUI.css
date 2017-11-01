@@ -1,8 +1,8 @@
 * {
 	box-sizing: border-box;
-	font-family: "Times New Roman";
-	text-transform: uppercase;
-	font-variant: small-caps;
+	font-family: "Calibri";
+	/*text-transform: uppercase;*/
+	/*font-variant: small-caps;*/
 }
 
 body{
@@ -255,4 +255,20 @@ button, select {
 	color: white;
 	margin: 50px;
 	margin-top: 30px;
+}
+
+.toolTipParent, .toolTip {
+	cursor: pointer;
+}
+
+.toolTip {
+	display: none;
+	position: absolute;
+	width: 350px;
+	background-color: black;
+	color: white;
+	border-radius: 7px;
+	text-align: center;
+	padding: 10px 0;
+	z-index: 1;
 }

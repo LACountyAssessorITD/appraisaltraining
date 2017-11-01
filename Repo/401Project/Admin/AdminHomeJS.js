@@ -95,8 +95,14 @@ $(document).ready(function(){
             var i;
             var htmlStr = '';
             for(i=0;i<result_array.length;i++) {
-                htmlStr += "<tr><td><input type='checkbox' name='selected'></td>\
+                if((result_array[i]+"").toUpperCase()=="NULL") {
+                    htmlStr += "<tr><td><input type='checkbox' name='selected'></td>\
+                            <td>None</td></tr>";
+                }
+                else {
+                    htmlStr += "<tr><td><input type='checkbox' name='selected'></td>\
                             <td>"+result_array[i]+"</td></tr>";
+                }
             }
 
             var DPBContHtml_bottom = "</tbody>\
@@ -114,47 +120,6 @@ $(document).ready(function(){
             thisObj.append(DPBContHtml);
         });
     }
-
-    // function appendHTMLFilterDropDown(thisObj,result_array) {
-    //     var DPBContHtml_top = "<div class='DPBCont'>\
-    //                             <div class='tableWrap'>\
-    //                                 <form class='leftInput'>\
-    //                                     <input type='text' placeholder='Search..'' autocomplete='off'></form>\
-    //                                 <div class='filterContTableBG'></div>\
-    //                                 <table class='filterContTable'>\
-    //                                     <col width='20'>\
-    //                                     <thead>\
-    //                                         <tr>\
-    //                                             <td><input type='checkbox' name='selectAll'></td>\
-    //                                             <td>Select All</td>\
-    //                                         </tr>\
-    //                                     </thead>\
-    //                                     <tbody>\
-    //                                         <tr>";
-
-    //     var DPBContHtml_bottom = "\
-    //                                         </tr>\
-    //                                     </tbody>\
-    //                                 </table>\
-    //                             </div>\
-    //                             <div class='filterDisplayList'>\
-    //                                 <label>Selections:</label>\
-    //                                 <ul></ul>\
-    //                             </div>\
-    //                             <iframe class='cover' src='about:blank'></iframe>\
-    //                         </div>";
-
-    //     $(this).append(DPBContHtml_top);
-
-    //     var i;
-    //     for(i=0;i<result_array.length;i++) {
-    //         var htmlStr = "<td><input type='checkbox' name='selected'></td>\
-    //                     <td>"+result_array[i]+"</td>";
-    //         $(this).append(htmlStr);
-    //     }
-
-    //     $(this).append(DPBContHtml_bottom);
-    // }
 
 
     function getFilterNameAndType(filter_name, filter_type) {
@@ -282,6 +247,10 @@ $(document).ready(function(){
                 var listHtml = list[0].innerHTML;
                 list.children("li").each(function() {
                     liStr = $(this)[0].innerHTML;
+                    //If li is "none" change back to null
+                    if(liStr.toUpperCase()=="NONE") {
+                        liStr = "null";
+                    }
                     if (filter_name == "Name") {
                         var n = liStr.split(" ,  ");
                         var ln = n[0];
@@ -684,7 +653,14 @@ $(document).ready(function(){
     }
 
     $("#sendEmailSelectedBtn").on("click", function() {
-        if(confirm("Send email to the selected people?")==0) {
+        var numSelected = 0;
+         $("#overviewTable").find(".emailInfo").each(function() {
+            var checkbox = $(this).closest("tr").find("input[name='selected']");
+            if(checkbox.is(":checked")) {
+                numSelected+=1;
+            }
+        });
+        if(confirm("Send emails to the selected "+numSelected+" people?")==0) {
             alert("pressed cancel");
             return;
         }
@@ -755,6 +731,15 @@ $(document).ready(function(){
 
         filterList.find(".dropDownBtn").css("background-color","white");
     });
+
+
+
+    $(".toolTipParent").hover(function() {
+        $(this).find(".toolTip").show();
+    }, function() {
+        $(this).find(".toolTip").hide();
+    });
+
 
 });
 

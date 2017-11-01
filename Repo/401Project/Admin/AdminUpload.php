@@ -71,56 +71,56 @@
 
 		<div class="upload">
 			<h1 id="UploadTitle">Update</h1>
-			<h3>Select File to Upload</h3>
-			<form action="../lib/php/admin/AdminUploadPHP.php" method="post" enctype="multipart/form-data" id="uploadForm" target="myFrame">
-    			<input type="file" name="fileToUpload" id="fileToUpload">
-    			<div class="clearRow">
-		    		<button id="chooseFileBtn">Choose File</button>
-		    	</div>
-		    	<p id="chosenFileLabel">File Chosen:</p>
-		    	<p id="chosenFileName">None</p>
-			    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
-			</form>
-
-
-			<div class="uploadStatus">
-				<h2>Upload Status</h2>
-				<h2 id="uploadStatusResult"></h2>
+			<div id="chooseFileDiv">
+				<h3>Select File to Upload</h3>
+				<form action="../lib/php/admin/AdminUploadPHP.php" method="post" enctype="multipart/form-data" id="uploadForm" target="myFrame">
+	    			<input type="file" name="fileToUpload" id="fileToUpload">
+	    			<div class="clearRow">
+			    		<button id="chooseFileBtn">Choose File</button>
+			    	</div>
+			    	<p id="chosenFileLabel">File Chosen:</p>
+			    	<p id="chosenFileName">None</p>
+				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
+				</form>
 			</div>
 
-			<div class="errorDisplay">
-				<div class="clearRow">
-					<label>Error Log:</label>
+			<div id="statusDiv">
+				<div class="uploadStatus">
+					<h2>Upload Status</h2>
+					<h2 id="uploadStatusResult"></h2>
 				</div>
-				<iframe name="myFrame"></iframe>
+
+				<div class="errorDisplay">
+					<div class="clearRow">
+						<label>Error Log:</label>
+					</div>
+					<iframe name="myFrame"></iframe>
+				</div>
 			</div>
 
 		</div>
 
 		<div class="restore">
 			<h3>Restore Previous</h3>
-			<div class="accordionCont">
-				<div id="restoreTableDiv">
-					<?php
-						if ($handle = opendir("D:/temp/")) {
-						echo "<table>";
-					    while (false !== ($entry = readdir($handle))) {
-					        if ($entry != "." && $entry != "..") {
-					        	echo "<tr>";
-					            echo "<td>"."$entry"."</td>";
-					            echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
-					            echo "</tr>";
-					        }
-					    }
-					    closedir($handle);
-					    echo "</table>";
-						}
+			<div id="restoreTableDiv">
+				<?php
+					if ($handle = opendir("D:/temp/")) {
+					echo "<table>";
+				    while (false !== ($entry = readdir($handle))) {
+				        if ($entry != "." && $entry != "..") {
+				        	echo "<tr>";
+				            echo "<td>"."$entry"."</td>";
+				            echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
+				            echo "</tr>";
+				        }
+				    }
+				    closedir($handle);
+				    echo "</table>";
+					}
 
-					?>
-				</div>
+				?>
 			</div>
 		</div>
-		<!-- </div> -->
 
 	</div>
 

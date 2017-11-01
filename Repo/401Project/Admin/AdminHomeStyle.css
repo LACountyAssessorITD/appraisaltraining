@@ -435,11 +435,11 @@
 #emailDiv textarea {
 	padding: 12px;
 	font-size: 1.3vw;
-	font-variant: small-caps;
+	/*font-variant: small-caps;*/
 
-	font-family: "Times New Roman";
-	text-transform: none;
-	font-variant: normal;
+	/*font-family: "Times New Roman";*/
+	/*text-transform: none;
+	font-variant: normal;*/
 }
 
 #emailDiv p {
@@ -452,11 +452,13 @@
 #emailSubjectTA {
 	width: 50%;
 	font-weight: bold;
+	overflow: hidden;
 }
 
 #emailContentTA {
 	width: 100%;
 	height: 300px;
+	overflow: auto;
 }
 
 #sendEmailBtnDiv {

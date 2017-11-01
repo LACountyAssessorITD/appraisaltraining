@@ -50,14 +50,22 @@ iframe {
 }
 
 
-
-
 .upload, .restore {
 	position: relative;
 	margin: 10px auto;
 	/*padding: 40px;*/
 	width: 100%;
 	text-align: center;
+}
+
+#chooseFileDiv {
+	width: 50%;
+	float:left;
+}
+
+#statusDiv {
+	width:50%;
+	float:left;
 }
 
 #UploadTitle {
@@ -99,7 +107,7 @@ iframe {
 
 
 #submitNewBtn {
-	width: 20%;
+	width: 50%;
 	margin: auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
@@ -109,7 +117,7 @@ iframe {
 	border-radius: 10px;
 	border-width: 0;
 
-	font-family: "Times New Roman";
+	/*font-family: "Times New Roman";*/
 	font-size: 1.2vw;
 	box-shadow: 7px 7px 10px rgba(20, 20, 20, 0.4);
 	overflow: auto;
@@ -156,9 +164,10 @@ iframe {
 }
 
 #restoreTableDiv {
-	width: 80%;
+	width: 50%;
+	text-align: center;
+	margin: 20px auto;
     border-collapse: collapse; /* Collapse borders */
-    width: 100%; /* Full-width */
     border: 1px solid #ddd; /* Add a grey border */
     font-size: 1vw; /* Increase font-size */
 }

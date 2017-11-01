@@ -59,6 +59,7 @@
 			</div>
 
 			<button id="resetAllBtn">Reset All Filters</button>
+			<p class="toolTipParent">Hover please<span class="toolTip">Hello</span></p>
 
 			<div class="filterListCol" id="accordion">
 
@@ -188,7 +189,7 @@
 					</div>
  -->
 					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="TempCertDate">TempCertDate</button>
+						<button class="dropDownBtn" name="TempCertDate">Temporary Certification Date</button>
 						<!-- <div class="DPBCont">
 							<div class="fromDateWrap">
 								<div class="tableWrap">
@@ -258,11 +259,11 @@
 					</div>
 
 					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="PermCertDate">PermCertDate</button>
+						<button class="dropDownBtn" name="PermCertDate">Permanent Certification Date</button>
 					</div>
 
 					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="AdvCertDate">AdvCertDate</button>
+						<button class="dropDownBtn" name="AdvCertDate">Advanced Certification Date</button>
 					</div>
 
 					<div class="dropDownFilter">
@@ -423,7 +424,7 @@
 					<textarea id="emailContentTA" placeholder="Email content..."></textarea>
 					<div id="sendEmailBtnDiv">
 						<button id="sendEmailSelectedBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Selected</button>
-						<button id="sendEmailAllBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send All</button>
+						<!-- <button id="sendEmailAllBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send All</button> -->
 					</div>
 				</div>
 
