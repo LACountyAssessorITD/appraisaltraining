@@ -3,7 +3,9 @@ $(document).ready(function(){
     //$.when(getReportType()).done(generateReport);
 
     var report_info=[];  // array of objects that contain report information definded in database
-    var dropDownType = 0;
+    var download_dropDownType = -1;
+    var download_year1 = -1;
+    var download_year2 = -1; // For downloading
 
     function getDropDownType(name) {
         for (var i = 0; i < report_info.length; i++)
@@ -161,6 +163,10 @@ $(document).ready(function(){
 
 
     $("#genReportBtn").click(generateReport);
+
+    $("#Download").click(function(){
+        alert("testing");
+    });
 
 
 
