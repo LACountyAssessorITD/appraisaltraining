@@ -1,12 +1,11 @@
 <?php
 /*
-This Code dynamically generate individual PDF (Specific Year Report)
+This Code dynamically generate individual PDF (Completed Course Summary Report)
 @ Yining Huang
 */
 
-include_once "../constants.php";
-include_once "../session.php";
-//session_start();
+include_once "../../constants.php";
+include_once "../../session.php";
 include_once "pdfTemplate_completedCourse.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */

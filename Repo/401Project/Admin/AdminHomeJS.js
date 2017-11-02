@@ -180,7 +180,7 @@ $(document).ready(function(){
 
             },
             error: function(xhr, status, error){
-                alert("Fail to connect to the server when trying to fetch available years");
+                alert("Fail to connect to the server when trying to fetch available years for "+certNo);
                 return;
             },
             async:false

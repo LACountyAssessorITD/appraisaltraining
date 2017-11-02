@@ -4,7 +4,7 @@ This Code draw out individual PDF (Annual Totals Summary)
 @ Yining Huang
 */
 
-require('../FPDF/fpdf.php');
+require('../../FPDF/fpdf.php');
 class myPDF extends FPDF {
     private $isSummaryPage = TRUE;
     private $lastName = "";
@@ -16,7 +16,7 @@ class myPDF extends FPDF {
         if ($this->isSummaryPage == TRUE) { // if on summary page
             if ($this->PageNo() == 1) { // if on cover page, add logo
                  // Add logo
-                $this->Image('../../img/Logo.gif',10,8,-270);
+                $this->Image('../../../img/Logo.gif',10,8,-270);
 
                 // Add Titles
                 $this->SetFont('Arial','B',12);

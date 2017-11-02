@@ -4,9 +4,8 @@ This Code dynamically generate individual PDF (Annual Totals Summary)
 @ Yining Huang
 */
 
-include_once "../constants.php";
-include_once "../session.php";
-//session_start();
+include_once "../../constants.php";
+include_once "../../session.php";
 include_once "pdfTemplate_annualTotals.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
