@@ -3,7 +3,7 @@ echo "<div class='top'>
 		<div class='header'>
 			<div class='Welcome'>
 				<label>Welcome, </label>
-				<label>".$_SESSION['FN']."</label>
+				<label>name</label>
 			</div>
 			<h1><strong>Training Record</strong></h1>
 			<hr>
