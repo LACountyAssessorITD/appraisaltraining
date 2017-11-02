@@ -8,16 +8,16 @@ $(document).ready(function(){
     });
 
 
-    var report_info[];  // array of objects that contain report information definded in database
+    var report_info=[];  // array of objects that contain report information definded in database
     function getDropDownType(name) {
-        for (var i = 0; i < report_info.length; i++) 
-            if (report[0] == name) 
-                return report[1];
+        for (var i = 0; i < report_info.length; i++)
+            if (report_info[i][0] == name)
+                return report_info[i][1];
     }
     function getReportFileName(name) {
-        for (var i = 0; i < report_info.length; i++) 
-            if (report[0] == name) 
-                return report[2];
+        for (var i = 0; i < report_info.length; i++)
+            if (report_info[i][0] == name)
+                return report_info[i][2];
     }
 
 	getReportType();
@@ -342,7 +342,7 @@ $(document).ready(function(){
         var year1 = 0;
         var year2 = 0;
 
-        alert($(this).closest("tr").find(".specificYear").val());
+        //alert($(this).closest("tr").find(".specificYear").val());
         if(dropDownType==1) {
             year1 = parseInt($(this).closest("tr").find(".specificYear").val());//$("#reportTypeSelect option:selected").val();
         }
@@ -358,7 +358,7 @@ $(document).ready(function(){
         // var year1 = 2014;
         // var year2;
 
-        alert("click view " + certNo + " 's "+ + " year1:"+year1+" year2:"+year2);
+        alert("click view " + certNo + " 's "+ " year1:"+year1+" year2:"+year2);
         $.ajax({
             url:"../lib/php/admin/reportCommunicator.php",
             type: "POST",
@@ -372,8 +372,8 @@ $(document).ready(function(){
                 if (result != "!UNDEFINED") {
                     var parent = $("#pdfBox").parent();
                     // var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
-                    var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' type='/pdf' width='100%' height='600px'>\
-                                <embed src='"+"../lib/php/admin/reportType/"+report_file_name+".php type='application/pdf'></embed>\
+                    var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/reportType/"+report_file_name+"' type='/pdf' width='100%' height='600px'>\
+                                <embed src='"+"../lib/php/admin/reportType/"+report_file_name+"' type='application/pdf'></embed>\
                             </object>";
                     $("#pdfBox").remove();
                     parent.append(newElement);
