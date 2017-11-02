@@ -3,7 +3,8 @@ $(document).ready(function(){
     //$.when(getReportType()).done(generateReport);
 
     var report_info=[];  // array of objects that contain report information definded in database
-    var download_dropDownType = -1;
+    var download_reportType = "";
+    var download_year0 = -1;
     var download_year1 = -1;
     var download_year2 = -1; // For downloading
 
@@ -126,8 +127,11 @@ $(document).ready(function(){
                 var newElement = "<embed id='pdfBox' src='"+"../lib/php/usr/"+file_name+"' width='100%' height='800px'></embed>";
                 $("embed#pdfBox").remove();
                 parent.append(newElement);
-                // Change Download Button Source
 
+                download_reportType = yearTypeStr;
+                download_year0 = specificYearInt;
+                download_year1 = fromYearInt;
+                download_year2 = toYearInt;
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when generaeting the report");
@@ -165,7 +169,25 @@ $(document).ready(function(){
     $("#genReportBtn").click(generateReport);
 
     $("#Download").click(function(){
-        alert("testing");
+        if (download_dropDownType == "") {
+            alert("Please generate a report to download.");
+            return;
+        }
+        else {
+            var file_name = getReportFileName()
+            $.ajax({
+                url:"../lib/php/usr/"+file_name,
+                type: "POST",
+                data: {
+                    download:true,
+                },
+                success:function(){
+                },
+                error: function(xhr, status, error){
+                    alert("Fail to connect to the server when generaeting the report");
+                }
+            });
+        }
     });
 
 
