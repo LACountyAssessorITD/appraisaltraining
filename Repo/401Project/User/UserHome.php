@@ -46,9 +46,7 @@
 				<label>Select Report Time Range</label>
 				<div class="yearType">
 					<select id="yearTypeSelect">
-						<option>Specific Year</option>
-						<option>Annual Totals</option>
-						<option>Completed Course</option>
+						<option>!ERROR</option>
 					</select>
 				</div>
 

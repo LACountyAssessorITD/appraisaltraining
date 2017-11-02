@@ -2,6 +2,50 @@ $(document).ready(function(){
 
     $.when(getFiscalYears()).done(generateReport);
 
+    var report_info=[];  // array of objects that contain report information definded in database
+    var dropDownType = 0;
+
+    function getDropDownType(name) {
+        for (var i = 0; i < report_info.length; i++)
+            if (report_info[i][0] == name)
+                return report_info[i][1];
+    }
+    function getReportFileName(name) {
+        for (var i = 0; i < report_info.length; i++)
+            if (report_info[i][0] == name)
+                return report_info[i][2];
+    }
+
+    getReportType();
+    // This function runs when Admin logs into the page and update dropdown for report types
+    function getReportType () {
+        $.ajax({
+            url:"../lib/php/usr/getReportType.php",
+            type: "POST",
+            dataType: "json",
+            success:function(results){
+                var size = results.length;
+                var temp;
+                for (var i = 0; i < size; i++) {
+                    var report = results[i];
+                    report_info.push(report);
+                    var type = report[0];
+                    temp += "<option>"+type+"</option>";
+                }
+                // update drop down selections - reportTypeSelect
+                var parent = $("select#yearTypeSelect").parent();
+                var newElement = '<select id="yearTypeSelect">'+temp+'</select>';
+                $("select#yearTypeSelect").remove();
+                parent.append(newElement);
+
+                getFiscalYears();
+            },
+            error: function(xhr, status, error){
+                alert("Fail to connect to the server when trying to retrieve report types");
+            }
+        });
+    }
+
     // Run as user enter the page, update years selections in drop downs
     function getFiscalYears () {
         return $.ajax({
