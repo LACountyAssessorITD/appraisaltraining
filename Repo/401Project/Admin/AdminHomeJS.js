@@ -7,6 +7,19 @@ $(document).ready(function(){
         $("#splashScreen").fadeOut(500);
     });
 
+
+    var report_info[];  // array of objects that contain report information definded in database
+    function getDropDownType(name) {
+        for (var i = 0; i < report_info.length; i++) 
+            if (report[0] == name) 
+                return report[1];
+    }
+    function getReportFileName(name) {
+        for (var i = 0; i < report_info.length; i++) 
+            if (report[0] == name) 
+                return report[2];
+    }
+
 	getReportType();
 	// This function runs when Admin logs into the page and update dropdown for report types
 	function getReportType () {
@@ -17,13 +30,10 @@ $(document).ready(function(){
             success:function(results){
                 var size = results.length;
                 var temp;
-                for (var i = 2; i < size; i++) {
-	                var type = results[i];
-	                type = type.replace(".php","");
-                    type = type.replace(/\_/g,' ');
-                    type = type.substring(2,type.length);
-
-                    // type = type.replace("_"," ");
+                for (var i = 0; i < size; i++) {
+	                var report = results[i];
+                    report_info.push(report);
+                    var type = report[0];
 	                temp += "<option>"+type+"</option>";
                 }
                 // update drop down selections - reportTypeSelect
@@ -203,21 +213,7 @@ $(document).ready(function(){
     function loadReportSelection() {
         //dropDownType should be read in from table
         var reportTypeName = $("#reportTypeSelect option:selected").val();
-
-        $.ajax({
-            url:"../lib/php/admin/getReportInputType.php",
-            type: "POST",
-            data: {
-                reportType: reportTypeName,
-            },
-            success:function(result){
-                dropDownType = parseInt(result[1]);
-            },
-            error: function(xhr, status, error){
-                alert("Fail to connect to the server when loading report input type");
-            },
-            async:false
-        });
+        dropDownType = getDropDownType(reportTypeName);
     }
 
 
@@ -340,6 +336,7 @@ $(document).ready(function(){
         // TO DO: Fill in data
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
         var report_name = $("#reportTypeSelect option:selected").val();
+        var report_file_name = getReportFileName(report_name);
         // var year_type = 1;  // # of year inputs
 
         var year1 = 0;
@@ -361,7 +358,7 @@ $(document).ready(function(){
         // var year1 = 2014;
         // var year2;
 
-        alert("click view " + certNo + " 's "+ report_name+ " year1:"+year1+" year2:"+year2);
+        alert("click view " + certNo + " 's "+ + " year1:"+year1+" year2:"+year2);
         $.ajax({
             url:"../lib/php/admin/reportCommunicator.php",
             type: "POST",
@@ -376,7 +373,7 @@ $(document).ready(function(){
                     var parent = $("#pdfBox").parent();
                     // var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
                     var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' type='/pdf' width='100%' height='600px'>\
-                                <embed src='"+"../lib/php/admin/reportType/"+report_name+".php type='application/pdf'></embed>\
+                                <embed src='"+"../lib/php/admin/reportType/"+report_file_name+".php type='application/pdf'></embed>\
                             </object>";
                     $("#pdfBox").remove();
                     parent.append(newElement);
