@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    $.when(getReportType()).done(generateReport);
+    //$.when(getReportType()).done(generateReport);
 
     var report_info=[];  // array of objects that contain report information definded in database
     var dropDownType = 0;
@@ -16,7 +16,7 @@ $(document).ready(function(){
                 return report_info[i][2];
     }
 
-    //getReportType();
+    getReportType();
     // This function runs when Admin logs into the page and update dropdown for report types
     function getReportType() {
         $.ajax({
@@ -39,10 +39,12 @@ $(document).ready(function(){
                 parent.append(newElement);
 
                 getFiscalYears();
+                generateReport()
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when trying to retrieve report types");
-            }
+            },
+            async:false
         });
     }
 
@@ -81,7 +83,8 @@ $(document).ready(function(){
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when trying to fetch available years");
-            }
+            },
+            async:false
         });
     }
 
@@ -100,31 +103,35 @@ $(document).ready(function(){
         //Get selected report type
         var yearTypeStr = $("#yearTypeSelect").val();
         var yearTypeKey = getDropDownType(yearTypeStr);
-        if (yearTypeStr.toUpperCase()=="Specific Year".toUpperCase()) {
-            yearTypeKey = "specific";
-            $.ajax({
-                url:"../lib/php/usr/reportCommunicator.php",
-                type: "POST",
-                data: {
-                    yearTypeKey:yearTypeKey, // # of year input
-                    specificYearInt:specificYearInt,
-                    toYearInt:toYearInt,
-                    fromYearInt:fromYearInt,
-                },
-                success:function(){
-                    var parent = $("embed#pdfBox").parent();
-                    var file_name = getReportFileName(yearTypeStr);
-                    var newElement = "<embed id='pdfBox' src='"+"../lib/php/usr/"+file_name+"' width='100%' height='800px'></embed>";
-                    $("embed#pdfBox").remove();
-                    parent.append(newElement);
-                    // Change Download Button Source
-
-                },
-                error: function(xhr, status, error){
-                    alert("Fail to connect to the server when generaeting the report");
-                }
-            });
+        if (yearTypeKey == 2) {
+            if (toYearInt < fromYearInt) {
+                alert("Invalid year range!");
+                return;
+            }
         }
+        $.ajax({
+            url:"../lib/php/usr/reportCommunicator.php",
+            type: "POST",
+            data: {
+                yearTypeKey:yearTypeKey, // # of year input
+                specificYearInt:specificYearInt,
+                toYearInt:toYearInt,
+                fromYearInt:fromYearInt,
+            },
+            success:function(){
+                var parent = $("embed#pdfBox").parent();
+                var file_name = getReportFileName(yearTypeStr);
+                var newElement = "<embed id='pdfBox' src='"+"../lib/php/usr/"+file_name+"' width='100%' height='800px'></embed>";
+                $("embed#pdfBox").remove();
+                parent.append(newElement);
+                // Change Download Button Source
+
+            },
+            error: function(xhr, status, error){
+                alert("Fail to connect to the server when generaeting the report");
+            }
+        });
+
 
     }
 
@@ -145,7 +152,7 @@ $(document).ready(function(){
             $(".filterListCol p, .dropDownFilter").show();
             $("#specificYearLabel, #specificYearDiv").hide();
         }
-        else if (num == 3) {
+        else if (num == 0) {
             $("#specificYearLabel, #specificYearDiv").hide();
             $("#fromYearLabel, #toYearLabel").hide();
             $("#fromYearDiv, #toYearDiv").hide();
