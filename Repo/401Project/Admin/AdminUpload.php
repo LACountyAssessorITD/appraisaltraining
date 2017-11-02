@@ -39,7 +39,7 @@
 </head>
 
 <body>
-	<div class="top">
+	<!-- <div class="top">
 		<div class="header">
 			<div class="Welcome">
 				<label>Welcome, </label>
@@ -57,7 +57,9 @@
 			<a id="uploadTab" href="AdminFAQ.php"><i class="fa fa-question-circle-o" aria-hidden="true"></i> FAQs</a>
 			<a id="issueTab" href="#"><i class="fa fa-life-ring" aria-hidden="true"></i> <strong>Support</strong></a>
 		</nav>
-	</div>
+	</div> -->
+
+	<?php include "../commonPHP/Top.php"; ?>
 
 	<div class="content">
 
