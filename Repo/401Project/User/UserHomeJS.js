@@ -150,10 +150,14 @@ $(document).ready(function(){
 
     //Hiding subset of filters from result of changing result type selection
     $("#yearTypeSelect").change(function () {
-        var str = "";
-        $( "#yearTypeSelect option:selected" ).each(function() {
-            str = $( this ).text();
-        });
+        var str = $( "#yearTypeSelect option:selected" ).text();
+
+        for(var i=0;i<report_info.length;i++) {
+            if(str.toUpperCase()==report_info[i][0].toUpperCase()) {
+                $("#reportDescription").find("p")[0].innerHTML = report_info[i][3];
+            }
+        }
+
         var num = getDropDownType(str);
         if (num == 1) {
             $(".filterListCol p, .dropDownFilter").show();

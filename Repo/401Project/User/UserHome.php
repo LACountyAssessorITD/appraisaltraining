@@ -27,25 +27,30 @@ session_start();
 			</div>
 
 			<div class="filterListCol">
-				<label>Select Report Time Range</label>
+				<label>Select Report Type</label>
 				<div class="yearType">
-					<select id="yearTypeSelect">
-					</select>
+					<select id="yearTypeSelect"></select>
 				</div>
 
-				<p id="fromYearLabel">From Year:</p>
-				<div class="dropDownFilter" id="fromYearDiv">
-					<select id="fromYearSelect"></select>
+				<div id="reportDescription">
+					<p></p>
 				</div>
 
-				<p id="toYearLabel">To Year:</p>
-				<div class="dropDownFilter" id="toYearDiv">
-					<select id="toYearSelect"></select>
-				</div>
+				<div id="yearDropDowns">
+					<p id="fromYearLabel">From Year:</p>
+					<div class="dropDownFilter" id="fromYearDiv">
+						<select id="fromYearSelect"></select>
+					</div>
 
-				<p id="specificYearLabel">Specific Year:</p>
-				<div class="dropDownFilter" id="specificYearDiv">
-					<select id="specificYearSelect"></select>
+					<p id="toYearLabel">To Year:</p>
+					<div class="dropDownFilter" id="toYearDiv">
+						<select id="toYearSelect"></select>
+					</div>
+
+					<p id="specificYearLabel">Specific Year:</p>
+					<div class="dropDownFilter" id="specificYearDiv">
+						<select id="specificYearSelect"></select>
+					</div>
 				</div>
 
 				<div id="genReportDiv"><button id="genReportBtn">Generate Report</button></div>
@@ -55,8 +60,8 @@ session_start();
 				<div>
 					<h3 id="optionLabel" class="banLabel">Options</h3>
 				</div>
-				<a href="../lib/php/usr/downloadCommunicator.php" target="_blank">
-					<button id="Download">Download</button>
+				<a id="downloadLink" href="../lib/php/usr/downloadCommunicator.php" target="_blank">
+					<button id="Download"><i class="fa fa-download" aria-hidden="true"></i> Download</button>
 				</a>
 				<!-- <button id="Print">Print</button> -->
 			</div>
@@ -68,7 +73,7 @@ session_start();
 				<h3 id="previewLabel" class="banLabel">Preview Report</h3>
 			</div>
 			<div class="pdfView">
-				<embed id="pdfBox" src="../Non Disclosure Agreement.pdf" width="100%" height="800px"></embed>
+				<embed id="pdfBox" src="../LACLogo.pdf" width="100%" height="800px"></embed>
 			</div>
 		</div>
 
