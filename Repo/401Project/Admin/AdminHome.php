@@ -406,12 +406,10 @@
 
 			<div class="filterOverview">
 				<h3 id="overviewLabel" class="banLabel">Filter Overview</h3>
-				<div id="reportType" class="toolTipParent">
+				<div id="reportType">
 					<div id="reportTypeLabel"><label >Select Report Type</label></div>
 					<select id="reportTypeSelect"></select>
-					<i class='fa fa-question-circle-o' aria-hidden='true'><span class="toolTip">Hellooooasdhhasidonada
-					asdnaklsdnadknasd
-				asdnaklsdnadn</span></i>
+					<i class='fa fa-question-circle-o toolTipParent' aria-hidden='true'><span class="toolTip"></span></i>
 
 				</div>
 				<div id="overviewTableDiv">

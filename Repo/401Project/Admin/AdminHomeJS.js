@@ -40,13 +40,13 @@ $(document).ready(function(){
                     var type = report[0];
 	                temp += "<option>"+type+"</option>";
                 }
-                temp+="<option>!ERROR</option>";
                 // update drop down selections - reportTypeSelect
                 // var parent = $("select#reportTypeSelect").parent();
                 // var newElement = "<select id='reportTypeSelect'>'+temp+'</select><i class='fa fa-question-circle-o' aria-hidden='true'>';
                 // $("select#reportTypeSelect").remove();
                 // parent.append(newElement);
                 $("#reportTypeSelect").append(temp);
+                $("#reportType").find(".toolTip")[0].innerHTML = report_info[0][3];
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when trying to retrieve report types");
@@ -283,7 +283,7 @@ $(document).ready(function(){
             query += orStr;
         });
 
-        alert("Now the SQL Query is :" +query);
+        // alert("Now the SQL Query is :" +query);
         $.ajax({
                 url:"../lib/php/admin/applyFilters.php",
                 type: "POST",
@@ -318,7 +318,7 @@ $(document).ready(function(){
                         // var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + audit + "</td></tr>";
                         // $("#overviewTable tbody").append(markup);
                     }
-                    alert("size of returned results is "+results.length);
+                    // alert("size of returned results is "+results.length);
                     //console.log(escape(results));
                 },
                 error: function(xhr, status, error){
@@ -469,28 +469,42 @@ $(document).ready(function(){
     });
 
     //Hiding subset of filters from result of changing result type selection
-    $( "#reportTypeSelect" ).change(function () {
-        $(".dropDownFilter").show();
-        $(".pFiltersLabel").show();
-        var str = "";
-        $( "#reportTypeSelect option:selected" ).each(function() {
-            str += $( this ).text();
-        });
-        if (str.toUpperCase()=="Type1".toUpperCase()) {
-            $("#employeeID_div").hide();
-        }
-        else if (str.toUpperCase()=="Type2".toUpperCase()) {
-            $("#firstName_div").hide();
-            $("#lastName_div").hide();
-        }
-        else if (str.toUpperCase()=="Type3".toUpperCase()) {
-            $("#employeeFiltersLabel").hide();
-            $(".employeeFilters").hide();
-        }
-        else {
+    // $( "#reportTypeSelect" ).change(function () {
+    //     $(".dropDownFilter").show();
+    //     $(".pFiltersLabel").show();
+    //     var str = "";
+    //     $( "#reportTypeSelect option:selected" ).each(function() {
+    //         str += $( this ).text();
+    //     });
+    //     if (str.toUpperCase()=="Type1".toUpperCase()) {
+    //         $("#employeeID_div").hide();
+    //     }
+    //     else if (str.toUpperCase()=="Type2".toUpperCase()) {
+    //         $("#firstName_div").hide();
+    //         $("#lastName_div").hide();
+    //     }
+    //     else if (str.toUpperCase()=="Type3".toUpperCase()) {
+    //         $("#employeeFiltersLabel").hide();
+    //         $(".employeeFilters").hide();
+    //     }
+    //     else {
 
+    //     }
+    // }).change();
+
+    $("#reportTypeSelect").on("change",function() {
+        applyFilter();
+        // $( "#reportTypeSelect option:selected" ).each(function() {
+        //     str = $( this ).text();
+        // });
+        var str = $("#reportTypeSelect option:selected").text();
+        // alert(str);
+        for(var i=0;i<report_info.length;i++) {
+            if(str.toUpperCase()==report_info[i][0].toUpperCase()) {
+                $("#reportType").find(".toolTip")[0].innerHTML = report_info[i][3];
+            }
         }
-    }).change();
+    });
 
     /*Filters: on input checkbox checked, add to right side list
     			on uncheck, remove from right side list*/
