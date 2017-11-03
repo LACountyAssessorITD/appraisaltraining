@@ -29,7 +29,7 @@
 		<iframe class="cover"></iframe>
 	</div>
 
-	<?php include "../common/Top.php"; ?>
+	<?php include "../common/AdminTop.php"; ?>
 
 	<div class="content">
 
@@ -44,192 +44,16 @@
 
 			<div class="filterListCol" id="accordion">
 
-
-				<!-- <p class="pFiltersLabel">Employee</p>
-
-				<div class="employeeFilters" name="[New_Employee]">
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CertNo">Certification Number</button>
-					</div>
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="FirstName">First Name</button>
-					</div>
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="LastName">Last Name</button>
-					</div>
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CurrentStatus">Current Status</button>
-					</div>
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="Auditor">Auditor</button>
-					</div>
-				</div> -->
-
-
 				<p class="pFiltersLabel">Employee Info</p>
 
 				<div class="employeeFilters" name="[New_Employee]">
 
-					<!-- <div class="dropDownFilter">
-						<button class="dropDownBtn" name="CertNo">Certification Number</button>
-					</div> -->
-
-					<!-- <div class="dropDownFilter">
-						<button class="dropDownBtn">EmployeeID</button>
-						<div class="DPBCont">
-							<div class="tableWrap">
-								<form class="leftInput">
-									<input type="text" placeholder="Search.." autocomplete="off">
-								</form>
-								<div class="filterContTableBG"></div>
-								<table class="filterContTable">
-									<col width="20">
-									<thead>
-										<tr>
-											<td><input type="checkbox" name="selectAll"></td>
-											<td>Select All</td>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td><input type="checkbox" name="selected"></td>
-											<td>12345</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name="selected"></td>
-											<td>22145</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name="selected"></td>
-											<td>134245</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="filterDisplayList">
-								<label>Selections:</label>
-								<ul></ul>
-							</div>
-							<iframe class="cover" src="about:blank"></iframe>
-						</div>
-					</div> -->
-
-<!-- 					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="FirstName">First Name</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="MiddleName">Middle Name</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="LastName">Last Name</button>
-					</div> -->
-
 					<div class="dropDownFilter">
 						<button class="dropDownBtn" name="Name">Full Name</button>
 					</div>
-<!--
-					<div class="dropDownFilter">
-						<button class="dropDownBtn">Title</button>
-					</div>
 
-					<div class="dropDownFilter">
-						<button class="dropDownBtn">Item</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn">Pay Location</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn">Region/Area</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn">Office/District</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn">Manager(s)</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn">Phone Number</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn">Email Address</button>
-					</div>
- -->
 					<div class="dropDownFilter">
 						<button class="dropDownBtn" name="TempCertDate">Temporary Certification Date</button>
-						<!-- <div class="DPBCont">
-							<div class="fromDateWrap">
-								<div class="tableWrap">
-									<form class="leftInput">
-										<input type="text" placeholder="Search.." autocomplete="off">
-									</form>
-									<div class="filterContTableBG"></div>
-									<table class="filterContTable">
-										<col width="20">
-										<thead>
-											<tr>
-												<td><input type="checkbox" name="selectAll"></td>
-												<td>Select All</td>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td><input type="checkbox" name="selected"></td>
-												<td>12345</td>
-											</tr>
-											<tr>
-												<td><input type="checkbox" name="selected"></td>
-												<td>22145</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-								<div class="filterDisplayList">
-									<label>Selections:</label>
-									<ul></ul>
-								</div>
-							</div>
-
-							<div class="toDateWrap">
-								<div class="tableWrap">
-									<form class="leftInput">
-										<input type="text" placeholder="Search.." autocomplete="off">
-									</form>
-									<div class="filterContTableBG"></div>
-									<table class="filterContTable">
-										<col width="20">
-										<thead>
-											<tr>
-												<td><input type="checkbox" name="selectAll"></td>
-												<td>Select All</td>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td><input type="checkbox" name="selected"></td>
-												<td>asd45</td>
-											</tr>
-											<tr>
-												<td><input type="checkbox" name="selected"></td>
-												<td>22145</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-								<div class="filterDisplayList">
-									<label>Selections:</label>
-									<ul></ul>
-								</div>
-							</div>
-							<iframe class="cover" src="about:blank"></iframe>
-						</div> -->
 					</div>
 
 					<div class="dropDownFilter">
@@ -248,105 +72,6 @@
 						<button class="dropDownBtn" name="Auditor">Auditor</button>
 					</div>
 				</div>
-
-
-			<!-- 	<p class="pFiltersLabel">Certification History</p>
-
-				<div class="certHistoryFilters" name="[New_CertHistory]">
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CertNo">Certification Number</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CertYear">Fiscal Year</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CertType">Certification Type</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="Status">Status</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="HoursEarned">Hours Earned</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CurrentYearBalance">Current Year Balance</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="PriorYearBalance">Prior Year Balance</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CarryToYear1">Carry To Year 1</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CarryToYear2">Carry To Year 2</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CarryToYear3">Carry To Year 3</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CarryForwardTotal">Carry Forward Total</button>
-					</div>
-				</div>
-
-
-				<p class="pFiltersLabel">Carry Over Limits</p>
-
-				<div class="carryOverLimitFilters" name="[New_CarryoverLimits]">
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="RequiredHours">Required Hours</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="Year1Limit">Year 1 Limit</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="Year2Limit">Year 2 Limit</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="Year3Limit">Year 3 Limit</button>
-					</div>
-				</div>
-
-
-				<p class="pFiltersLabel">Course Detail</p>
-
-				<div class="courseDetailFilters" name="[New_CourseDetail]">
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="ItemNumber">Item Number</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CourseName">Course Name</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CourseLocation">Course Location</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CourseGrade">Course Grade</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="CourseHoursEarned">Course Hours Earned</button>
-					</div>
-
-					<div class="dropDownFilter">
-						<button class="dropDownBtn" name="EndDate">End Date</button>
-					</div>
-				</div> -->
 
 			</div>
 
@@ -370,11 +95,7 @@
 							<h3 id="effectiveLabel" class="infoLabel">Effective as of: <span></span></h3>
 							<h3 id="hoursNeedLabel" class="infoLabel">Hours needed: <span></span></h3>
 						</div>
-						<!-- <embed id="pdfBox" src="../OrderDetails.pdf" width="100%" height="650px"></embed> -->
-						<!-- <a href="singleUserReport.php">Click here to download the PDF</a>. Or -->
-						<!-- <a href="http://get.adobe.com/reader/" target="_blank">click here to install Adobe Reader</a>.</p> -->
-						<!-- <iframe id="pdfBox" title="PDF in an i-Frame" src="../LACLogo.pdf" frameborder="0" scrolling="auto" width="100%" height="800px"></iframe> -->
-						<!-- <embed id="pdfBox" src="../LACLogo.pdf" width="100%" height="800px"></embed>; -->
+
 						<object id="pdfBox" data="../LACLogo.pdf" type="application/pdf" width="100%" height="600px">
 							<embed src="../LACLogo.pdf" type="application/pdf"></embed>
 						</object>
@@ -382,10 +103,6 @@
 				</div>
 
 				<div class="rightContentColumn">
-					<!-- <div>
-						<h3 id="optionLabel" class="banLabel">Options</h3>
-					</div> -->
-
 					<button id="Download"><i class="fa fa-download" aria-hidden="true"></i> Download</button>
 					<button id="Print"><i class="fa fa-print" aria-hidden="true"></i> Print</button>
 					<button id="EmailAll"><i class="fa fa-envelope" aria-hidden="true"></i> Email</button>
@@ -398,7 +115,6 @@
 					<div id="sendEmailBtnDiv">
 						<div class="toolTipParent">
 							<button id="sendEmailSelectedBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Selected</button><span class="toolTip">Send email to the appraisers selected in the table below</span>
-							<!-- <button id="sendEmailAllBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send All</button> -->
 						</div>
 					</div>
 				</div>
@@ -440,14 +156,6 @@
 	</div>
 
 	<?php include '../common/Footer.php'; ?>
-	<!-- <div class="footer">
-		<p class="links">
-			<span id="contactUs"><a href="#">Support</a></span>
-			<span id="Disclaimer"><a href="#">Disclaimer</a></span>
-			<span id="FAQs"><a href="#">FAQs</a><span></span>
-		</p>
-		<p>2017 - Present &copy; Los Angeles County Office of the Assessor</p>
-	</div> -->
 
 </body>
 

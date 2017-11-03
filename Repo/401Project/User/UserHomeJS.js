@@ -2,6 +2,10 @@ $(document).ready(function(){
 
     //$.when(getReportType()).done(generateReport);
 
+    $("#homeTab").on("click",function(e) {
+        e.preventDefault();
+    });
+
     var report_info=[];  // array of objects that contain report information definded in database
     var download_reportType = "";
     var download_year0 = -1;
