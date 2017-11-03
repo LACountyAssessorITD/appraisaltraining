@@ -1,6 +1,8 @@
 $(document).ready(function(){
 
-  // location.reload();
+  $("#updateTab").on("click",function(e) {
+      e.preventDefault();
+  });
 
 /*--------------------------------------------------------------------------------------------*/
 /*------------------------------Display Accordions--------------------------------------------*/
@@ -101,6 +103,5 @@ $(document).ready(function(){
       // $("#chosenFileName").text("");
     });
 
-    
 
 });

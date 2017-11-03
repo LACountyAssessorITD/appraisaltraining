@@ -35,7 +35,7 @@
 		</div>
 	</div> -->
 
-	<?php include "../commonPHP/Top.php"; ?>
+	<?php include "../common/Top.php"; ?>
 
 	<div class="content">
 

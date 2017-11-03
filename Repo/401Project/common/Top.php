@@ -13,8 +13,8 @@ echo "<div class='top'>
 
 		<nav class='navigationBar'>
 			<a id='homeTab' href='AdminHome.php'><i class='fa fa-home' aria-hidden='true'></i> Home</a>
-			<a id='uploadTab' href='AdminUpload.php'><i class='fa fa-upload' aria-hidden='true'></i> Update</a>
-			<a id='uploadTab' href='AdminFAQ.php'><i class='fa fa-question-circle-o' aria-hidden='true'></i> FAQs</a>
+			<a id='updateTab' href='AdminUpload.php'><i class='fa fa-upload' aria-hidden='true'></i> Update</a>
+			<a id='faqTab' href='AdminFAQ.php'><i class='fa fa-question-circle-o' aria-hidden='true'></i> FAQs</a>
 			<a id='issueTab' href='#'><i class='fa fa-life-ring' aria-hidden='true'></i> <strong>Support</strong></a>
 		</nav>
 	</div>";
