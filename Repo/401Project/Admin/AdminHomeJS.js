@@ -653,17 +653,22 @@ $(document).ready(function(){
 
 
     //Email Alert
-
-    $("#emailDiv").hide();
+    hideAllOptionDiv();
+    function hideAllOptionDiv() {
+        $("#optionTabDiv").children("div").each(function() {
+            $(this).hide();
+        });
+    }
+    
+    // $("#emailDiv").hide();
     $("#EmailAll").on("click", function() {
-    	if($(this).data("clicked")) {
-    		$(this).data("clicked",false);
-    		$("#emailDiv").hide();
-    	}
-    	else {
-	    	$(this).data("clicked",true);
-	    	$("#emailDiv").show();
-    	}
+        hideAllOptionDiv();
+    	$("#emailDiv").show();
+    });
+
+    $("button#Download").on("click", function() {
+        hideAllOptionDiv();
+        $("#downloadDiv").show();
     });
 
     function getEmailContent() {
