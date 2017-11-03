@@ -169,19 +169,20 @@ $(document).ready(function(){
     $("#genReportBtn").click(generateReport);
 
     $("#Download").click(function(){
-        if (download_dropDownType == "") {
+        if (download_reportType == "") {
             alert("Please generate a report to download.");
             return;
         }
         else {
-            var file_name = getReportFileName()
+            var file_name = getReportFileName(download_reportType);
             $.ajax({
                 url:"../lib/php/usr/"+file_name,
                 type: "POST",
                 data: {
                     download:true,
                 },
-                success:function(){
+                success:function(result){
+                    alert(result);
                 },
                 error: function(xhr, status, error){
                     alert("Fail to connect to the server when generaeting the report");

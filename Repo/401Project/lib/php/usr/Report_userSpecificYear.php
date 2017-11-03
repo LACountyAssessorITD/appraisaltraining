@@ -40,7 +40,7 @@ $pdf->generate($conn);
 
 sqlsrv_close($conn);
 if (isset($_POST['download'])) {
-	$pdf->Output('D');
+	$pdf->Output("D");
 }
 else {
 	$pdf->Output('I');
