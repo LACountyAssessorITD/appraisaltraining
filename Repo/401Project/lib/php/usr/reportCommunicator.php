@@ -11,14 +11,17 @@
 	$specific = $_POST['specificYearInt'];
 	$year1 = $_POST['toYearInt'];
 	$year2 = $_POST['fromYearInt'];
+	$_SESSION['download'] = FALSE;
 
 	if ($type == 1) {
 		$_SESSION["specific_year"] = $specific;
+		$_SESSION['report_filename'] = $_POST['file_name'];
 	} else if ($type == 2) {
 		$_SESSION["toYearInt"] = $year1;
 		$_SESSION["fromYearInt"] = $year2;
+		$_SESSION['report_filename'] = $_POST['file_name'];
 	} else if ($type == 0) {
-		// Do nothing
+		$_SESSION['report_filename'] = $_POST['file_name'];
 	} else {
 		echo "!UNDEFINED";
 	}

@@ -7,7 +7,8 @@
 */
 	session_start();
 
-	$flie = $_POST['file_name'];
-	include_once $file;
+	$file = $_SESSION['report_filename'];
+	$_SESSION['download'] = TRUE;
+	include_once "DownloadReport_userSpecificYear.php";
 
 ?>

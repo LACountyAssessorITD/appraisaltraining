@@ -116,6 +116,7 @@ $(document).ready(function(){
                 return;
             }
         }
+        var file_name = getReportFileName(yearTypeStr);
         $.ajax({
             url:"../lib/php/usr/reportCommunicator.php",
             type: "POST",
@@ -124,10 +125,11 @@ $(document).ready(function(){
                 specificYearInt:specificYearInt,
                 toYearInt:toYearInt,
                 fromYearInt:fromYearInt,
+                file_name:file_name,
             },
             success:function(){
                 var parent = $("embed#pdfBox").parent();
-                var file_name = getReportFileName(yearTypeStr);
+
                 var newElement = "<embed id='pdfBox' src='"+"../lib/php/usr/"+file_name+"' width='100%' height='800px'></embed>";
                 $("embed#pdfBox").remove();
                 parent.append(newElement);
@@ -172,29 +174,28 @@ $(document).ready(function(){
 
     $("#genReportBtn").click(generateReport);
 
-    $("#Download").click(function(){
-        if (download_reportType == "") {
-            alert("Please generate a report to download.");
-            return;
-        }
-        else {
-            var file_name = getReportFileName(download_reportType);
-            $.ajax({
-                url:"../lib/php/usr/downloadCommunicator.php"，
-                type: "POST",
-                data: {
-                    download:true,
-                    file_name= file_name
-                },
-                success:function(result){
-                    alert(result);
-                },
-                error: function(xhr, status, error){
-                    alert("Fail to connect to the server when generaeting the report");
-                }
-            });
-        }
-    });
+    // $("#Download").click(function(){
+    //     if (download_reportType == "") {
+    //         alert("Please generate a report to download.");
+    //         return;
+    //     }
+    //     else {
+    //         var file_name = getReportFileName(download_reportType);
+    //         $.ajax({
+    //             url:"../lib/php/usr/downloadCommunicator.php",
+    //             type: "POST",
+    //             data: {
+    //                 download:true,
+    //                 file_name:file_name,
+    //             },
+    //             success:function(){
+    //             },
+    //             error: function(xhr, status, error){
+    //                 alert("Fail to connect to the server when generaeting the report");
+    //             }
+    //         });
+    //     }
+    // });
 
 
 

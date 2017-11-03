@@ -23,7 +23,6 @@ $connectionInfo = array( "UID"=>$uid,
 $conn = sqlsrv_connect( $serverName, $connectionInfo);
 if( $conn === false )
 {
-     echo "Unable to connect.</br>";
      die( print_r( sqlsrv_errors(), true));
 }
 $totalcarryover = 0;
@@ -39,6 +38,5 @@ $pdf->AddPage();
 $pdf->generate($conn);
 
 sqlsrv_close($conn);
-$pdf->Output('I');
-
+$pdf->Output('D');
 ?>

@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -54,8 +56,9 @@
 				<div>
 					<h3 id="optionLabel" class="banLabel">Options</h3>
 				</div>
-
-				<button id="Download">Download</button>
+				<a href="../lib/php/usr/downloadCommunicator.php" target="_blank">
+					<button id="Download">Download</button>
+				</a>
 				<button id="Print">Print</button>
 			</div>
 
