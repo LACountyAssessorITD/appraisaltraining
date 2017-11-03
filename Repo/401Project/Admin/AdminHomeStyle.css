@@ -402,8 +402,8 @@
 	width: 100%;
 }
 
-.rightContentColumn button {
-	float: right;
+.rightContentColumn button, #optionTabDiv button {
+	/*float: right;*/
 	margin: 10px;
 	width: 20%;
 	padding: 15px;
@@ -430,10 +430,6 @@
 	box-shadow: none;
 }
 
-.rightContentColumn button[id="MyReport"]:hover {
-	background-color: rgb(255, 230, 196);
-}
-
 .rightContentColumn button[id="Download"]:hover {
 	background-color: rgb(205, 249, 164);
 }
@@ -447,19 +443,27 @@
 	background-color: rgb(179, 204, 255);
 }
 
+#buttonTabDiv {
+	width: 100%;
+}
+
+#buttonTabDiv button{
+	float: right;
+}
+
+#buttonTabDiv:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
 #emailDiv {
-	/*width: 100%;*/
 	margin: 20px;
 }
 
 #emailDiv textarea {
 	padding: 12px;
 	font-size: 1.3vw;
-	/*font-variant: small-caps;*/
-
-	/*font-family: "Times New Roman";*/
-	/*text-transform: none;
-	font-variant: normal;*/
 }
 
 #emailDiv p {
@@ -509,6 +513,25 @@
 	box-shadow: none;
 }
 
+#downloadDiv {
+	width: 70%;
+	text-align: center;
+	margin: 30px auto;
+}
+
+#downloadDiv button {
+	width: 40%;
+	margin:auto;
+}
+
+#downloadCurrent {
+	/*width: 50%;*/
+	float: left;
+}
+#downloadSelected {
+	float: right;
+}
+
 .viewAndOption:after {
 	content: "";
 	display: table;
@@ -517,7 +540,7 @@
 
 .filterOverview {
 	width: 100%;
-	padding: 10px 20px;
+	padding: 40px 18px;
 	margin-top: 1px;
 	/*margin-bottom: 0;*/
 	overflow: hidden;

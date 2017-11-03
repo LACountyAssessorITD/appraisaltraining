@@ -103,21 +103,31 @@
 				</div>
 
 				<div class="rightContentColumn">
-					<button id="Download"><i class="fa fa-download" aria-hidden="true"></i> Download</button>
-					<button id="Print"><i class="fa fa-print" aria-hidden="true"></i> Print</button>
-					<button id="EmailAll"><i class="fa fa-envelope" aria-hidden="true"></i> Email</button>
-				</div>
-				<div id="emailDiv">
-					<p>Subject</p>
-					<textarea id="emailSubjectTA" placeholder="Email Subject..." rows="1"></textarea>
-					<p>Content</p>
-					<textarea id="emailContentTA" placeholder="Email content..."></textarea>
-					<div id="sendEmailBtnDiv">
-						<div class="toolTipParent">
-							<button id="sendEmailSelectedBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Selected</button><span class="toolTip">Send email to the appraisers selected in the table below</span>
+					<div id="buttonTabDiv">
+						<button id="Download"><i class="fa fa-download" aria-hidden="true"></i> Download</button>
+						<button id="Print"><i class="fa fa-print" aria-hidden="true"></i> Print</button>
+						<button id="EmailAll"><i class="fa fa-envelope" aria-hidden="true"></i> Email</button>
+					</div>
+					<div id="optionTabDiv">
+						<div id="emailDiv">
+							<p>Subject</p>
+							<textarea id="emailSubjectTA" placeholder="Email Subject..." rows="1"></textarea>
+							<p>Content</p>
+							<textarea id="emailContentTA" placeholder="Email content..."></textarea>
+							<div id="sendEmailBtnDiv">
+								<div class="toolTipParent">
+									<button id="sendEmailSelectedBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Selected</button><span class="toolTip">Send email to the appraisers selected in the table below</span>
+								</div>
+							</div>
+						</div>
+						<div id="downloadDiv">
+							<button class="optionBtn" id="downloadCurrent">Download Previewing Report</button>
+							<button class="optionBtn" id="downloadSelected">Download Selected Reports</button>
 						</div>
 					</div>
 				</div>
+				
+				
 
 			</div>
 
