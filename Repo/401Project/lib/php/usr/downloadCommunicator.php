@@ -9,6 +9,6 @@
 
 	$file = $_SESSION['report_filename'];
 	$_SESSION['download'] = TRUE;
-	include_once "DownloadReport_userSpecificYear.php";
+	include_once "Download".$file;
 
 ?>

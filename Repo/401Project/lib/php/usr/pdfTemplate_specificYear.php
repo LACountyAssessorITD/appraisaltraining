@@ -45,11 +45,11 @@ class myPDF extends FPDF {
         $certDate = ""; $status = ""; // active or not
         $specialty = "";
 
-        // Query from [New_CertHistory] table   
-        $certType =""; 
+        // Query from [New_CertHistory] table
+        $certType ="";
         $allowedcarryover=""; $PriorYearBalance; // for Annual Summary Table only
 
-        // Get Names, Certification Date, status and specialty 
+        // Get Names, Certification Date, status and specialty
         // from [New_Employee]
         $tsql = "SELECT * FROM [New_Employee] WHERE CertNo=".(string)$certid;
         $stmt = sqlsrv_query( $conn, $tsql);
@@ -73,12 +73,12 @@ class myPDF extends FPDF {
               $certDate = "NA"; // if not permanet, data shows "NA"
             } else {
               $certDate = date("m/d/Y",strtotime($row['PermCertDate']));
-            }         
+            }
         }
         sqlsrv_free_stmt($stmt);
 
 
-        // Get Certification Type and Allowed carry over 
+        // Get Certification Type and Allowed carry over
         // from [New_CertHistory] table
         $tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid."AND CertYear='".
             (string)$year."-".(string)($year+1)."'";
@@ -91,7 +91,7 @@ class myPDF extends FPDF {
         else {
             $row= sqlsrv_fetch_array($stmt);
             $certType = $row['CertType'];
-            $allowedcarryover= $row['CarryForwardTotal'];   
+            $allowedcarryover= $row['CarryForwardTotal'];
             $PriorYearBalance = $row['PriorYearBalance'];
         }
         sqlsrv_free_stmt($stmt);
@@ -344,7 +344,7 @@ class myPDF extends FPDF {
         $this->Ln(10);
         $this->SetFont('Arial','I',10);
         $this->Cell(260,0,'*Please refer to enclosed pamphlet for computation of excess hours',0,0,'R');
-        
+
 
 // ********************       End of Annual Summary         ********************
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -354,7 +354,7 @@ class myPDF extends FPDF {
         $this->SetY(-18);
         $this->SetFont('Arial','B',11);
         $this->SetLineWidth(0.5);
-        
+
         $year = $GLOBALS['year'];
         if ($GLOBALS['totalcarryover']>=0) {
           $this->Cell(0,5,'TRAINING HOURS REQUIREMENT HAS BEEN MET FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
@@ -362,7 +362,7 @@ class myPDF extends FPDF {
         else {
           $this->Cell(0,5,'TRAINING HOURS REQUIREMENT HAS NOT BEEN MET FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
         }
-        
+
         $this->SetY(-15);
         $this->SetFont('Arial','',8);
         $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'R');
