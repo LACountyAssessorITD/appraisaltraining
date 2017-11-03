@@ -30,7 +30,6 @@ session_start();
 				<label>Select Report Time Range</label>
 				<div class="yearType">
 					<select id="yearTypeSelect">
-						<option>!ERROR</option>
 					</select>
 				</div>
 
@@ -59,7 +58,7 @@ session_start();
 				<a href="../lib/php/usr/downloadCommunicator.php" target="_blank">
 					<button id="Download">Download</button>
 				</a>
-				<button id="Print">Print</button>
+				<!-- <button id="Print">Print</button> -->
 			</div>
 
 		</div>
@@ -75,7 +74,7 @@ session_start();
 
 	</div>
 
-	<?php include '../commonPHP/Footer.php'; ?>
+	<?php include '../common/Footer.php'; ?>
 
 </body>
 

@@ -105,7 +105,7 @@
 				<div class="rightContentColumn">
 					<div id="buttonTabDiv">
 						<button id="Download"><i class="fa fa-download" aria-hidden="true"></i> Download</button>
-						<button id="Print"><i class="fa fa-print" aria-hidden="true"></i> Print</button>
+						<!-- <button id="Print"><i class="fa fa-print" aria-hidden="true"></i> Print</button> -->
 						<button id="EmailAll"><i class="fa fa-envelope" aria-hidden="true"></i> Email</button>
 					</div>
 					<div id="optionTabDiv">
@@ -126,8 +126,8 @@
 						</div>
 					</div>
 				</div>
-				
-				
+
+
 
 			</div>
 

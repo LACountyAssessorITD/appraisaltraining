@@ -659,16 +659,18 @@ $(document).ready(function(){
             $(this).hide();
         });
     }
-    
+
     // $("#emailDiv").hide();
     $("#EmailAll").on("click", function() {
         hideAllOptionDiv();
     	$("#emailDiv").show();
+        setSegActive(1);
     });
 
     $("button#Download").on("click", function() {
         hideAllOptionDiv();
         $("#downloadDiv").show();
+        setSegActive(0);
     });
 
     function getEmailContent() {
@@ -726,6 +728,27 @@ $(document).ready(function(){
     // $("#filterApplyBtn").click(applyFilter);
     $("#filterApplyBtn").on("click", applyFilter);
 
+
+    function setSegActive(seg) {
+        $("#buttonTabDiv").find("button").each(function() {
+            $(this).css({
+                "background-color":"rgba(255,255,255,0)",
+                "color":"white"
+            });
+        });
+        if(seg==0) {
+            $("#Download").css({
+                "background-color":"rgba(255,255,255,1)",
+                "color":"black"
+            });
+        }
+        else {
+            $("#EmailAll").css({
+                "background-color":"rgba(255,255,255,1)",
+                "color":"black"
+            });
+        }
+    }
 
 
     $(".resetBtn").on("click",function() {

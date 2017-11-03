@@ -402,7 +402,7 @@
 	width: 100%;
 }
 
-.rightContentColumn button, #optionTabDiv button {
+/*.rightContentColumn button, */#optionTabDiv button {
 	/*float: right;*/
 	margin: 10px;
 	width: 20%;
@@ -442,7 +442,7 @@
 	/*margin-top: 80px;*/
 	background-color: rgb(179, 204, 255);
 }
-
+/*
 #buttonTabDiv {
 	width: 100%;
 }
@@ -455,6 +455,50 @@
 	content: "";
 	display: table;
 	clear: both;
+}
+
+*/
+
+#buttonTabDiv {
+	margin: 20px auto;
+	width: 60%;
+}
+
+#buttonTabDiv button {
+	width: 50%;
+	background-color: rgba(255,255,255,0);
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    outline: none;
+    border-width: 1px;
+    border-style: solid;
+    border-color: white;
+}
+
+#buttonTabDiv button:not(:last-child) {
+	border-right: none;
+}
+
+#buttonTabDiv button:first-child {
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+#buttonTabDiv button:last-child {
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+#buttonTabDiv button:hover {
+	background-color: grey;
+}
+
+#buttonTabDiv:after {
+    content: "";
+    clear: both;
+    display: table;
 }
 
 #emailDiv {
