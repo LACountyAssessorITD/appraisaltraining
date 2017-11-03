@@ -1,5 +1,9 @@
 $(document).ready(function(){
 
+    $("#homeTab").on("click",function(e) {
+        e.preventDefault();
+    });
+
     $(".top, .content, .footer").hide();
 
     $("#lineOne").on("animationend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd", function() {
@@ -34,7 +38,8 @@ $(document).ready(function(){
 	                var report = results[i];
                     report_info.push(report);
                     var type = report[0];
-	                temp += "<option>"+type+"</option>";
+	                temp += "<option class='toolTipParent'><i class='fa fa-question-circle-o' aria-hidden='true'></i>"+type
+                    +"<span class='toolTip'>"+report[3]+"</span></option>";
                 }
                 // update drop down selections - reportTypeSelect
                 var parent = $("select#reportTypeSelect").parent();
