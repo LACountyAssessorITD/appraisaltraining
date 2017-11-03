@@ -195,7 +195,7 @@
 	font-size: 1vw;
 }
 
-#resetAllBtn {
+.resetAll {
 	background: none;
 	border: none;
 	color: white;

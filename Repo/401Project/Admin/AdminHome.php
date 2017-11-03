@@ -40,7 +40,7 @@
 				<h3 id="filterLabel" class="banLabel">Filters</h3>
 			</div>
 
-			<button id="resetAllBtn"><i class="fa fa-times" aria-hidden="true"></i> Reset All Filters</button>
+			<button class="resetAll" id="resetAllBtn"><i class="fa fa-times" aria-hidden="true"></i> Reset All Filters</button>
 
 			<div class="filterListCol" id="accordion">
 
@@ -413,6 +413,7 @@
 					<i class='fa fa-question-circle-o toolTipParent' aria-hidden='true'><span class="toolTip"></span></i>
 
 				</div>
+				<!-- <button class="resetAll" id="resetAllTable"><i class="fa fa-times" aria-hidden="true"></i> Reset Selections</button> -->
 				<div id="overviewTableDiv">
 					<table id="overviewTable">
 						<thead>

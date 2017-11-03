@@ -181,7 +181,8 @@ iframe {
 }
 
 #restoreTableDiv th {
-	background: rgba(100,100,100,1);
+	background: white;
+	color: black;
 }
 
 #restoreTableDiv td {
