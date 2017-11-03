@@ -135,7 +135,9 @@
     -webkit-appearance: none;
     -moz-appearance: none;
   	appearance: none;
-  	/*background: url('../iconImg/dropdownicon.png') 95% / 5% no-repeat #eee;*/
+  	background: white;
+  	-webkit-background: url('../iconImg/dropdownicon.png') 90% / 5% no-repeat #fff;
+  	-moz-background: url('../iconImg/dropdownicon.png') 90% / 5% no-repeat #fff;
 }
 
 #reportType:after {
