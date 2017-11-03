@@ -395,9 +395,11 @@
 					<textarea id="emailSubjectTA" placeholder="Email Subject..." rows="1"></textarea>
 					<p>Content</p>
 					<textarea id="emailContentTA" placeholder="Email content..."></textarea>
-					<div id="sendEmailBtnDiv" class="toolTipParent">
-						<button id="sendEmailSelectedBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Selected</button><span class="toolTip">Send email to the appraisers selected in the table below</span>
-						<!-- <button id="sendEmailAllBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send All</button> -->
+					<div id="sendEmailBtnDiv">
+						<div class="toolTipParent">
+							<button id="sendEmailSelectedBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Selected</button><span class="toolTip">Send email to the appraisers selected in the table below</span>
+							<!-- <button id="sendEmailAllBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send All</button> -->
+						</div>
 					</div>
 				</div>
 

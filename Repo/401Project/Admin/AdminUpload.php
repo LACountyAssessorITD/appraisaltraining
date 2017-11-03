@@ -105,22 +105,29 @@
 		<div class="restore">
 			<h3>Restore Previous</h3>
 			<div id="restoreTableDiv">
+				<table>
+					<thead>
+						<tr>
+							<th>File</th>
+							<th>Restore</th>
+							<th>Save</th>
+						</tr>
+					</thead>
 				<?php
 					if ($handle = opendir("D:/temp/")) {
-					echo "<table>";
-				    while (false !== ($entry = readdir($handle))) {
-				        if ($entry != "." && $entry != "..") {
-				        	echo "<tr>";
-				            echo "<td>"."$entry"."</td>";
-				            echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
-				            echo "</tr>";
-				        }
-				    }
+					    while (false !== ($entry = readdir($handle))) {
+					        if ($entry != "." && $entry != "..") {
+					        	echo "<tr>";
+					            echo "<td>"."$entry"."</td>";
+					            echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
+					            echo '<td><button class="saveBtn"><i class="fa fa-floppy-o" aria-hidden="true"></i></button></td>';
+					            echo "</tr>";
+					        }
+					    }
 				    closedir($handle);
-				    echo "</table>";
 					}
-
 				?>
+				</table>
 			</div>
 		</div>
 

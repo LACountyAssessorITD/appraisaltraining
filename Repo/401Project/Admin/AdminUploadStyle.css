@@ -164,36 +164,52 @@ iframe {
 }
 
 #restoreTableDiv {
-	width: 50%;
+	width: 70%;
 	text-align: center;
-	margin: 20px auto;
+	margin: auto;
     border-collapse: collapse; /* Collapse borders */
     border: 1px solid #ddd; /* Add a grey border */
     font-size: 1vw; /* Increase font-size */
+    cursor: pointer;
 }
 
 #restoreTableDiv table {
 	width: 100%;
+	background: transparent;
+	color: white;
+	font-size: 1.3vw;
+}
+
+#restoreTableDiv th {
+	background: rgba(100,100,100,1);
 }
 
 #restoreTableDiv td {
-    text-align: left; /* Left-align text */
+    text-align: center; /* Left-align text */
     padding: 12px; /* Add padding */
+	background: transparent;
 }
 
-#restoreTableDiv tr {
+#restoreTableDiv tbody tr {
 	background-color: white;
 	border-bottom: 1px solid #ddd;
-	text-align: left;
+	/*text-align: left;*/
+	background: transparent;
 }
 
-#restoreTableDiv tr:hover {
+#restoreTableDiv tbody tr:hover {
     /* Add a grey background color to the table header and on hover */
     background-color: rgb(220,220,220);
     color: black;
 }
 
-#restoreTableDiv td {
-    text-align: left; /* Left-align text */
-    padding: 12px; /* Add padding */
+.saveBtn {
+	background: none;
+	color:white;
+	border: none;
+	font-size: 1.5vw;
+}
+
+.saveBtn:hover{
+	color:grey;
 }

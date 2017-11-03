@@ -164,7 +164,8 @@
 	margin-top: 5px;
 	margin-bottom: 0px;
 	margin-right: 10px;
-	background-color: rgb(240, 240, 240);
+	/*background-color: rgb(240, 240, 240);*/
+	background-color: white;
 	padding: 8px 12px;
 	border-width: 0;
 	border-top-left-radius: 7px;
@@ -484,8 +485,12 @@
 	width: 100%;
 }
 
-#sendEmailBtnDiv button {
+#sendEmailBtnDiv .toolTipParent {
 	width: 20%;
+}
+
+#sendEmailBtnDiv button {
+	width: 100%;
 	padding: 10px;
 	font-size: 1.1vw;
 	text-align: center;
