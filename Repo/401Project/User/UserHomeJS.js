@@ -180,10 +180,11 @@ $(document).ready(function(){
         else {
             var file_name = getReportFileName(download_reportType);
             $.ajax({
-                url:"../lib/php/usr/"+file_name,
+                url:"../lib/php/usr/downloadCommunicator.php"，
                 type: "POST",
                 data: {
                     download:true,
+                    file_name= file_name
                 },
                 success:function(result){
                     alert(result);
