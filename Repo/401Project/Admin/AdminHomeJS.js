@@ -790,6 +790,17 @@ $(document).ready(function(){
         $(this).find(".toolTip").hide();
     });
 
+    $("#downloadCurrent").on("click",function() {
+
+    });
+
+    $("#downloadSelected").on("click",function() {
+        var idArray = [];
+        $("#overviewTable").find(".certNoInfo").each(function() {
+            idArray.push($(this)[0].innerHTML);
+        });
+    });
+
 
 });
 
