@@ -40,7 +40,7 @@
 				<h3 id="filterLabel" class="banLabel">Filters</h3>
 			</div>
 
-			<button id="resetAllBtn">Reset All Filters</button>
+			<button id="resetAllBtn"><i class="fa fa-times" aria-hidden="true"></i> Reset All Filters</button>
 
 			<div class="filterListCol" id="accordion">
 
@@ -386,7 +386,6 @@
 						<h3 id="optionLabel" class="banLabel">Options</h3>
 					</div> -->
 
-					<button id="MyReport"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> My Report</button>
 					<button id="Download"><i class="fa fa-download" aria-hidden="true"></i> Download</button>
 					<button id="Print"><i class="fa fa-print" aria-hidden="true"></i> Print</button>
 					<button id="EmailAll"><i class="fa fa-envelope" aria-hidden="true"></i> Email</button>
