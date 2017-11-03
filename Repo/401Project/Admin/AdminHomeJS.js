@@ -38,14 +38,15 @@ $(document).ready(function(){
 	                var report = results[i];
                     report_info.push(report);
                     var type = report[0];
-	                temp += "<option class='toolTipParent'><i class='fa fa-question-circle-o' aria-hidden='true'></i>"+type
-                    +"<span class='toolTip'>"+report[3]+"</span></option>";
+	                temp += "<option>"+type+"</option>";
                 }
+                temp+="<option>!ERROR</option>";
                 // update drop down selections - reportTypeSelect
-                var parent = $("select#reportTypeSelect").parent();
-                var newElement = '<select id="reportTypeSelect">'+temp+'</select>';
-                $("select#reportTypeSelect").remove();
-                parent.append(newElement);
+                // var parent = $("select#reportTypeSelect").parent();
+                // var newElement = "<select id='reportTypeSelect'>'+temp+'</select><i class='fa fa-question-circle-o' aria-hidden='true'>';
+                // $("select#reportTypeSelect").remove();
+                // parent.append(newElement);
+                $("#reportTypeSelect").append(temp);
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when trying to retrieve report types");

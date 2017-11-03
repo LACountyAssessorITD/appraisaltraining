@@ -126,7 +126,7 @@
 
 	</div>
 
-	<?php include '../commonPHP/Footer.php'; ?>
+	<?php include '../common/Footer.php'; ?>
 </body>
 
 </html>
