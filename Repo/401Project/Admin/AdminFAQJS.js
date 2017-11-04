@@ -1,10 +1,14 @@
 $(document).ready(function(){
 
+  $("#faqTab").on("click",function(e) {
+      e.preventDefault();
+  });
+
 /*--------------------------------------------------------------------------------------------*/
 /*------------------------------Display Accordions--------------------------------------------*/
 /*--------------------------------------------------------------------------------------------*/
 
-   $.fn.togglepanels = function(){
+  $.fn.togglepanels = function(){
       return this.each(function(){
         $(this).addClass("ui-accordion ui-accordion-icons ui-widget ui-helper-reset")
       .find("p")

@@ -75,7 +75,33 @@
 <div id="progressbar" style="border:1px solid #ccc; border-radius: 5px; "></div>
 <div id = "progressContainer"><div id = "progressBar"></div></div>
 <button type="button" onclick="startsending()" id="button1">Click Here To Start Sending Emails</button>
-<a href="singleUserReport.php" target="_blank">click here to view or download the file</a>
+
+
+
+
+
+
+
+
+
+<a href="communicator.php?download=YES" target="_blank">
+	<button>Download Report</button>
+</a>
+
+
+<form method="post" action="communicator.php" method="post">
+    <input type="hidden" name="download" value="YES" />
+    <input type="submit" value="Go" />
+</form>
+
+
+
+
+
+
+
+
+
 <div id="pdf">
 	<iframe src="pdf.php"  width="1200" height="1000" frameborder="0" scrolling="no">
 		<p>It appears your web browser doesn't support iframes.</p>

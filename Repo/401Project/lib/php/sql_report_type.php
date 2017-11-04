@@ -1,7 +1,8 @@
 <?php
-include_once "../constants.php";
-include_once "../session.php";
+include_once "constants.php";
+include_once "session.php";
 //session_start();
+
 
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -21,20 +22,24 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
+$tsql = "CREATE TABLE ReportType (ReportType varchar(50) NOT NULL,YearInputType int NOT NULL,
+        PhpFileName varchar(100) NOT NULL, Description varchar(255));";
+// $tsql += "INSERT INTO ReportType VALUES ('Specific Year',1, 'Report_userSpecificYear.php',
+//             'Generate report for a specific fiscal year');";
+// $tsql += "INSERT INTO ReportType VALUES ('Completed Courses',2,'Report_userCompletedCourse.php',
+//             'Generate report for all completed courses within a year range');";
+// $tsql += "INSERT INTO ReportType VALUES ('Annual Total Summary',0,'Report_userAnnualTotals.php',
+//             'Generate report for annual total summary based on BOE record');";
 
-$tsql = "SELECT * FROM [ReportType]";
 $stmt = sqlsrv_query( $conn, $tsql);
+
 if( $stmt === false )
 {
      echo "Error in executing query.</br>";
      die( print_r( sqlsrv_errors(), true));
 }
 else {
-    $results = array();
-    while($row = sqlsrv_fetch_array($stmt)){
-        $results[] = $row;
-    }
-    echo json_encode($results);
+    echo "done";
 }
 
 sqlsrv_free_stmt($stmt);

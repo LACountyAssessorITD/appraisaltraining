@@ -1,18 +1,13 @@
 <?php
-	session_start();
 	include_once "constants.php";
 
-	$_SESSION["CERTID"] = 6995;
+	$_SESSION["CERTNO"] = 6995;
 
-	function getCertID() {
-		return $_SESSION['CERTID'];
+	function getCertNo() {
+		return $_SESSION['CERTNO'];
 	}
 	function getEmployeeID() {
 		return $_SESSION['EMPLOYEEID'];
-	}
-
-	function getUserName() {
-		return $_SESSION["username"];
 	}
 
 	function getName() {

@@ -1,3 +1,6 @@
+select {
+	border-radius: 5px;
+}
 .leftContentColumn, .midColumn {
 	position: relative;
 	float: left;
@@ -38,18 +41,21 @@
 	/*padding: 5px 35px 5px 5px;*/
 	margin-bottom: 20px;
 	padding: 0px 20px;
-	font-size: 1.2vw;
+	font-size: 1vw;
 	border: 1px solid #ccc;
  	height: 30px;
     -webkit-appearance: none;
     -moz-appearance: none;
   	appearance: none;
-  	background: url('../iconImg/dropdownicon.png') 90% / 5% no-repeat #eee;
+  	background: white;
+  	-webkit-background: url('../iconImg/dropdownicon.png') 90% / 5% no-repeat #fff;
+  	-moz-background: url('../iconImg/dropdownicon.png') 90% / 5% no-repeat #fff;
+  	/*background: white;*/
 	cursor: pointer;
 }
 
 #yearTypeSelect {
-	width: 80%;
+	width: 100%;
 }
 
 .filterListCol {
@@ -69,16 +75,16 @@
 
 .filterListCol p {
 	margin: 0;
-	width: 50%;
-	float: left;
+	width: 100%;
+	/*float: left;*/
 	color: white;
 	font-size: 1.5vw;
 	/*text-align: center;*/
 }
 
 .dropDownFilter {
-	width: 50%;
-	float: left;
+	width: 100%;
+	/*float: left;*/
 	padding: 5px;
 }
 
@@ -93,7 +99,7 @@
 .dropDownFilter select {
  	border: 1px solid #111;
   	background: transparent;
-  	width: 150px;
+  	width: 60%;
   	padding: 5px 35px 5px 5px;
   	font-size: 1.2vw;
   	border: 1px solid #ccc;
@@ -101,37 +107,30 @@
     -webkit-appearance: none;
     -moz-appearance: none;
   	appearance: none;
-  	background: url('../iconImg/dropdownicon.png') 90% / 10% no-repeat #eee;
-	cursor: pointer;
+  	background: white;
+  	-webkit-background: url('../iconImg/dropdownicon.png') 90% / 5% no-repeat #fff;
+  	-moz-background: url('../iconImg/dropdownicon.png') 90% / 5% no-repeat #fff;
+  	cursor: pointer;
 }
-
-.DPBCont {
-	display: none;
-    position: absolute;
-    background-color: rgb(244, 248, 255);
-    min-width: 160px;
-    box-shadow: 0px 8px 12px 0px rgba(0,0,0,0.4);
-    border-radius: 5px;
-    /*overflow: auto;*/
-}
-
-.DPBCont a{
-	text-align: left;
-	color: black;
-    padding: 14px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.DPBCont a:hover {
-	background-color: rgb(200, 217, 247);
-}
-
 
 .dropDownFilter select:after {
 	content: "";
 	clear: both;
 	display: table;
+}
+
+#reportDescription {
+	width:100%;
+	/*font-size: 1vw;*/
+}
+
+#reportDescription p{
+	font-size: 1vw;
+}
+
+#yearDropDowns {
+	width:100%;
+	margin: 20px auto;
 }
 
 #genReportDiv {
@@ -146,9 +145,8 @@
 	border-radius: 7px;
 	border-width: 0;
 	text-align: center;
-	font-family: "Times New Roman";
 	font-size: 1.2vw;
-	background-color: rgb(240,240,240);
+	background-color: white;
 	box-shadow: 7px 7px 10px rgba(20, 20, 20, 0.4);
 	overflow: hidden;
 	outline: none;
@@ -175,12 +173,11 @@
 .optionContent button {
 	margin: 10px auto;
 	width: 80%;
-	padding: 30px;
+	padding: 20px;
 	display: block;
 	border-radius: 7px;
 	border-width: 0;
-	text-align: right;
-	font-family: "Times New Roman";
+	text-align: center;
 	font-size: 1.2vw;
 	box-shadow: 7px 7px 10px rgba(20, 20, 20, 0.4);
 	overflow: hidden;
@@ -197,28 +194,12 @@
 	box-shadow: none;
 }
 
-.optionContent button[id="Download"] {
-	background-color: rgb(255,255,255);
-	background-image: url('../iconImg/downloadicon.png');
-	background-repeat: no-repeat;
-    background-size: 20px 20px;
-    background-position: 10%;
-}
-
 .optionContent button[id="Download"]:hover {
 	background-color: rgb(205, 249, 164);
 }
 
-.optionContent button[id="Print"] {
-	background-color: rgb(255,255,255);
-	background-image: url('../iconImg/printicon.png');
-	background-repeat: no-repeat;
-    background-size: 20px 20px;
-    background-position: 10%;
-}
-
-.optionContent button[id="Print"]:hover {
-	background-color: rgb(200, 200, 200);
+#downloadLink {
+	text-decoration: none;
 }
 
 .midColumn {

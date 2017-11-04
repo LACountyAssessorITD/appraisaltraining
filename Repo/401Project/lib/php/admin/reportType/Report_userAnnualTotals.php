@@ -1,8 +1,13 @@
 <?php
-include_once "../constants.php";
-include_once "../session.php";
-//session_start();
+/*
+This Code dynamically generate individual PDF (Annual Totals Summary)
+@ Yining Huang
+*/
 
+include_once "../../constants.php";
+include_once "../../session.php";
+include_once "pdfTemplate_annualTotals.php";
+///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
@@ -20,25 +25,17 @@ if( $conn === false )
      echo "Unable to connect.</br>";
      die( print_r( sqlsrv_errors(), true));
 }
+$totalcarryover = 0;
 
+$certid = $_SESSION['view_certNo'];
 
-$tsql = "SELECT * FROM [ReportType]";
-$stmt = sqlsrv_query( $conn, $tsql);
-if( $stmt === false )
-{
-     echo "Error in executing query.</br>";
-     die( print_r( sqlsrv_errors(), true));
-}
-else {
-    $results = array();
-    while($row = sqlsrv_fetch_array($stmt)){
-        $results[] = $row;
-    }
-    echo json_encode($results);
-}
+///////////////////////////////////////////////////////////////////
 
-sqlsrv_free_stmt($stmt);
+$pdf = new myPDF('L','mm','A4');
+$pdf->AliasNbPages();
+$pdf->AddPage();
+$pdf->generate($conn);
+
 sqlsrv_close($conn);
-
-
+$pdf->Output('I');
 ?>

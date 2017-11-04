@@ -1,6 +1,6 @@
 <?php
 /*
-This Code dynamically generate individual PDF
+This Code dynamically generate individual PDF (Specific Year Report)
 @ Yining Huang
 */
 
@@ -13,7 +13,7 @@ include_once "pdfTemplate_specificYear.php";
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-$db = SQL_SERVER_BOEDATABASE;
+$db = SQL_SERVER_LACDATABASE;
 $connectionInfo = array( "UID"=>$uid,
                          "PWD"=>$pwd,
                          "Database"=>$db,
@@ -23,29 +23,20 @@ $connectionInfo = array( "UID"=>$uid,
 $conn = sqlsrv_connect( $serverName, $connectionInfo);
 if( $conn === false )
 {
-     echo "Unable to connect.</br>";
      die( print_r( sqlsrv_errors(), true));
 }
 $totalcarryover = 0;
 
-$certid =  getUserID();
-$yearTypeKey = $_SESSION['yearTypeKey'];
-if ($yearTypeKey == 'specific') {
-	$year =  $_SESSION["specific_year"];
-}
-else {
-	$fromYearInt = $_SESSION["fromYearInt"];
-	$toYearInt = $_SESSION["toYearInt"];
-}
-
+$certid =  getCertNo();
+$year =  $_SESSION["specific_year"];
 
 ///////////////////////////////////////////////////////////////////
 
 $pdf = new myPDF('L','mm','A4');
 $pdf->AliasNbPages();
 $pdf->AddPage();
-$pdf->personInfo($conn);
+$pdf->generate($conn);
 
 sqlsrv_close($conn);
-$pdf->Output('I');
+$pdf->Output('D');
 ?>

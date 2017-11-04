@@ -3,18 +3,13 @@ include_once "../constants.php";
 include_once "../session.php";
 //session_start();
 
-
-//*******************************************************************
-// For Testing purposes, Id here is hard-coded"
-$certid = getUserID();
-
-//*******************************************************************8
+$certid = $_POST['certNo'];
 
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-$db = SQL_SERVER_BOEDATABASE;
+$db = SQL_SERVER_LACDATABASE;
 $connectionInfo = array( "UID"=>$uid,
                          "PWD"=>$pwd,
                          "Database"=>$db,

@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
 This Code dynamically generate individual PDF and send the PDF as attachment to GMAIL
 @ Yining Huang
 */
@@ -15,22 +15,22 @@ session_start();
 include_once "myPDF.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
-$serverName = SQL_SERVER_NAME; 
+$serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
 $db = SQL_SERVER_BOEDATABASE;
-$connectionInfo = array( "UID"=>$uid,  
-                         "PWD"=>$pwd,  
+$connectionInfo = array( "UID"=>$uid,
+                         "PWD"=>$pwd,
                          "Database"=>$db,
              "ReturnDatesAsStrings"=>true);  // convert datetime to string
-             
-/* Connect using SQL Server Authentication. */  
-$conn = sqlsrv_connect( $serverName, $connectionInfo);  
-if( $conn === false )  
-{  
-     echo "Unable to connect.</br>";  
-     die( print_r( sqlsrv_errors(), true));  
-}  
+
+/* Connect using SQL Server Authentication. */
+$conn = sqlsrv_connect( $serverName, $connectionInfo);
+if( $conn === false )
+{
+     echo "Unable to connect.</br>";
+     die( print_r( sqlsrv_errors(), true));
+}
 $totalcarryover = 0;
 
 $certid = $_SESSION["id"];
@@ -43,7 +43,7 @@ $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->personInfo($conn);
 sqlsrv_close($conn);
-$pdf->Output('I');
+$pdf->Output('D');
 
 // $mail = new PHPMailer;
 // $mail->isSMTP();                                // Set mailer to use SMTP

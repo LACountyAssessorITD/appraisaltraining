@@ -6,13 +6,24 @@
 
 */
 	session_start();
-	$_SESSION['yearTypeKey'] = $_POST["yearTypeKey"];
-	if ($_SESSION['yearTypeKey'] =='specific') {	// if the user request to see the specific year's report
-		$_SESSION["specific_year"] = $_POST["specificYearInt"];
-	} else if ($_SESSION['yearTypeKey'] == 'range'){ // IF THE USER REQUEST TO GENERATE REPORT FOR A YEAR RANGE
-		$_SESSION["toYearInt"]  = $_POST["toYearInt"];
-		$_SESSION["fromYearInt"]  = $_POST["fromYearInt"];
-	}
 
+	$type = $_POST['yearTypeKey'];
+	$specific = $_POST['specificYearInt'];
+	$year1 = $_POST['toYearInt'];
+	$year2 = $_POST['fromYearInt'];
+	$_SESSION['download'] = FALSE;
+
+	if ($type == 1) {
+		$_SESSION["specific_year"] = $specific;
+		$_SESSION['report_filename'] = $_POST['file_name'];
+	} else if ($type == 2) {
+		$_SESSION["toYearInt"] = $year1;
+		$_SESSION["fromYearInt"] = $year2;
+		$_SESSION['report_filename'] = $_POST['file_name'];
+	} else if ($type == 0) {
+		$_SESSION['report_filename'] = $_POST['file_name'];
+	} else {
+		echo "!UNDEFINED";
+	}
 
 ?>
