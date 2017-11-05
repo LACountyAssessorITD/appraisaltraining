@@ -1,11 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
 <?php
 	// for LA County Assessor's Office - Appraisal Training Record Tracking System use only!
 	// updated by James Tseng and Mian Lu
 	// last edit October 2017
 
-	ini_set('memory_limit', '-1'); // TOT PLAYING WITH FIRE...
-
-
+	ini_set('memory_limit', '512M'); // TOT optimize more?
 
 	// TOT remember to add code to close filestream for excel files! and close $conn!
 	// mianlu: NOTE: if(true){ } blocks are used to foster code snippit folding with Sublime functionalities.
@@ -68,7 +72,7 @@
 			CourseLocation nvarchar(50),		-- from dbo.Details(Location)
 			CourseGrade nvarchar(50),			-- from dbo.Details(Grade)
 			CourseHours float,					-- from dbo.Details(HoursEarned)
-			EndDate date,				-- from dbo.Details(EndDate) ( TOT: datetime2(0) )
+			EndDate datetime2(0),				-- from dbo.Details(EndDate) ( TOT: datetime2(0) )
 			-- primary key (CertNo, CourseYear, CourseName), -- if ItemNumber correctly implemented, switch to it! CertNo should be foreign key
 		)";
 		// 5. create table 4 CarryoverLimits
@@ -141,9 +145,9 @@
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 			$create_temp = "CREATE TABLE dbo.New_Temp (
 				CertNo float,						--dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
-				TempCertDate date,			--dbo.AnnualReq
-				PermCertDate date,			--dbo.AnnualReq
-				AdvCertDate date,			--dbo.AnnualReq
+				TempCertDate datetime2(0),			--dbo.AnnualReq
+				PermCertDate datetime2(0),			--dbo.AnnualReq
+				AdvCertDate datetime2(0),			--dbo.AnnualReq
 			)";
 			$srvr_stmt = sqlsrv_query( $conn, $create_temp );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
@@ -320,11 +324,20 @@
 			$CourseLocation		= $details->getCell('J'.$row_count)->getValue();
 			$CourseGrade		= $details->getCell('K'.$row_count)->getValue();
 			$CourseHours		= $details->getCell('L'.$row_count)->getValue();
-			$EndDate			= $details->getCell('H'.$row_count)->getValue();
+
+			// $EndDate			= $details->getCell('H'.$row_count)->getValue();
+
+			// EndDate
+			$EndDateCell		= $details->getCell('H'.$row_count);
+			$EndDate			= $EndDateCell->getValue();
+			if($EndDate == NULL) echo "NOTE: appraiser ".$CertNo." has NULL EndDate in course \"".$CourseName."\" at \"".$CourseLocation."\" !<br/>";
+			// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
+			else if(PHPExcel_Shared_Date::isDateTime($EndDateCell)) $EndDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($EndDate));
+
+
 			$params = array($CertNo, $CourseYear, $CourseName, $CourseLocation, $CourseGrade, $CourseHours, $EndDate);
 			$stmt = sqlsrv_query( $conn, $srvr_query, $params);
 			if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
-			echo "success for row ".
 			$row_count ++;
 		}
 		unset($excelObj_Details); //////////////////// lazy-reading END
@@ -333,11 +346,11 @@
 
 	/* // block comment starter
 	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
+	// 128M: Fatal error: Allowed memory size of 134217728 bytes exhausted (tried to allocate 4096 bytes)
+	// 256M: Fatal error: Allowed memory size of 268435456 bytes exhausted (tried to allocate 1576960 bytes)
+	// 512M: works just fine for now!
+
 ?>
 
-
-
-
-
-
-// 128M: Allowed memory size of 134217728 bytes exhausted (tried to allocate 4096 bytes)
+</body>
+</html>
