@@ -330,7 +330,7 @@
 			// EndDate
 			$EndDateCell		= $details->getCell('H'.$row_count);
 			$EndDate			= $EndDateCell->getValue();
-			if($EndDate == NULL) echo "NOTE: appraiser ".$CertNo." has NULL EndDate in course \"".$CourseName."\" at \"".$CourseLocation."\" !<br/>";
+			if($EndDate == NULL) ;// echo "NOTE: appraiser ".$CertNo." has NULL EndDate in course \"".$CourseName."\" at \"".$CourseLocation."\" !<br/>";
 			// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
 			else if(PHPExcel_Shared_Date::isDateTime($EndDateCell)) $EndDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($EndDate));
 
