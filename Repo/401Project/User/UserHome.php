@@ -1,5 +1,7 @@
 <?php
 session_start();
+include_once "../lib/php/session.php";;
+redirect();
 ?>
 <!DOCTYPE html>
 <!DOCTYPE html>

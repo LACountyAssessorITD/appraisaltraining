@@ -14,18 +14,28 @@
 		return $_SESSION["displayname"];
 	}
 
-	function checkForActiveSession() {
-		if (!userLoggedIn()) {
-			header("Location: " . LOGIN_URL);
-		}
-	}
-
-	function userLoggedIn() {
+	function ifUserLoggedIn() {
 		return $_SESSION["logged_in"];
 	}
 
 	function checkRole() {
 		return $_SESSION["ROLE"];
+	}
+
+
+	function redirect() {
+		if (ifUserLoggedIn() == true) {
+			if (checkRole() == 1) {
+				header("Location: " . ADMIN_HOME_PAGE_URL);
+			} else if (checkRole() == 0) {
+				header("Location: " . USER_HOME_PAGE_URL);
+			} else {
+				header("Location: " . ERROR_URL);
+			}
+
+		} else {
+			header("Location: " . LOGIN_URL);
+		}
 	}
 
 

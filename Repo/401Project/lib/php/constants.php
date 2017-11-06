@@ -6,8 +6,8 @@
 		// SQL Server Name
 		define("SQL_SERVER_NAME", "Assessor");
 		// File Paths
-		define("USER_HOME_PAGE_URL", "../../User/UserHome.html");
-		define("ADMIN_HOME_PAGE_URL", "../../Admin/AdminHome.html");
+		define("USER_HOME_PAGE_URL", "../../User/UserHome.php");
+		define("ADMIN_HOME_PAGE_URL", "../../Admin/AdminHome.php");
 		define("LOGIN_URL", "../../index.php");
 		define("ERROR_URL", "../../error.php");
 		// Importing From These XLSX Paths
