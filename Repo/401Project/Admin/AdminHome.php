@@ -121,7 +121,9 @@
 							</div>
 						</div>
 						<div id="downloadDiv">
-							<button class="optionBtn" id="downloadCurrent">Download Previewing Report</button>
+							<a id="downloadLink" href="../lib/php/admin/report/downloadCommunicator.php" target="_blank">
+								<button class="optionBtn" id="downloadCurrent"><i class="fa fa-download" aria-hidden="true"></i>Download Previewing Report</button>
+							</a>
 							<button class="optionBtn" id="downloadSelected">Download Selected Reports</button>
 						</div>
 					</div>

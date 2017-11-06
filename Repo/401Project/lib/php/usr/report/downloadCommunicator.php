@@ -1,7 +1,6 @@
 <?php
-/*	This code is used to handle user's request for generating reports
-	Handle ajax from web page -> identify requested report type -> pass around the needed info
-
+/*	This code is used to handle user's request for downloading reports
+	Called from UserHome.php, download button
 	@ Yining Huang
 
 */

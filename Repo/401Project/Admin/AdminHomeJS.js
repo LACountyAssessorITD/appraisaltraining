@@ -366,8 +366,6 @@ $(document).ready(function(){
                 return;
             }
         }
-        // var year1 = 2014;
-        // var year2;
 
         alert("click view " + certNo + " 's "+ " year1:"+year1+" year2:"+year2);
         $.ajax({
@@ -378,6 +376,7 @@ $(document).ready(function(){
                 year_type:dropDownType,
                 year1:year1,
                 year2:year2,
+                report_file_name:report_file_name,
             },
             success:function(result){
                 if (result != "!UNDEFINED") {
