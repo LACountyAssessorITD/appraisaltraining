@@ -2,13 +2,13 @@
 	// IMPORTANT: toggle T/F for line below, when switching between Azure and LAC Server!
 	define("ON_AZURE", True);
 
-	define("PREFIX", "http://");
+	define("PREFIX", "http://localhost/");
 	define("DIR", "appraisaltraining/Repo/401Project/");
 
 	if(ON_AZURE) {
 		// SQL Server Name
 		define("SQL_SERVER_NAME", "Assessor");
-		
+
 		// Importing From These XLSX Paths
 		define("PATH_XLSX_ANNUALREQ",	"C:/inetpub/wwwroot/appraisaltraining/Repo/401Project/lib/php/admin/JT_ML_AdminUploadDatabase/original_xlsx_files/AnnualReq Los Angeles.xlsx");
 		define("PATH_XLSX_SUMMARY",		"C:/inetpub/wwwroot/appraisaltraining/Repo/401Project/lib/php/admin/JT_ML_AdminUploadDatabase/original_xlsx_files/Summary Los Angeles.xlsx");
