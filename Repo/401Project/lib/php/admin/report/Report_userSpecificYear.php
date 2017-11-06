@@ -37,9 +37,6 @@ $pdf = new myPDF('L','mm','A4');
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->generate($conn);
-$pdf->AliasNbPages();
-$pdf->AddPage();
-$pdf->generate($conn);
 sqlsrv_close($conn);
 $pdf->Output('I');
 ?>
