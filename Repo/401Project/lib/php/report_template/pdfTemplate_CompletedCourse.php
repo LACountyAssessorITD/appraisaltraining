@@ -4,11 +4,11 @@ This Code draw out the individual PDF (Specific Year Report)
 @ Yining Huang
 */
 
-require('../FPDF/fpdf.php');
+require('../../FPDF/fpdf.php');
 class myPDF extends FPDF {
     function header() {
         // Add logo
-        $this->Image('../../img/Logo.gif',10,8,-270);
+        $this->Image('../../../img/Logo.gif',10,8,-270);
 
         // Add Titles
         $this->SetFont('Arial','B',12);
@@ -35,7 +35,7 @@ class myPDF extends FPDF {
     function generate($conn){
         $certid = $GLOBALS['certid'];
         $year = $GLOBALS["toYearInt"];
-         
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // ********************       Start of Personal Information          ********************
 
@@ -44,11 +44,11 @@ class myPDF extends FPDF {
         $certDate = ""; $status = ""; // active or not
         $specialty = "";
 
-        // Query from [New_CertHistory] table   
-        $certType =""; 
+        // Query from [New_CertHistory] table
+        $certType ="";
         $allowedcarryover=""; $PriorYearBalance; // for Annual Summary Table only
 
-        // Get Names, Certification Date, status and specialty 
+        // Get Names, Certification Date, status and specialty
         // from [New_Employee]
         $tsql = "SELECT * FROM [New_Employee] WHERE CertNo=".(string)$certid;
         $stmt = sqlsrv_query( $conn, $tsql);
@@ -72,12 +72,12 @@ class myPDF extends FPDF {
               $certDate = "NA"; // if not permanet, data shows "NA"
             } else {
               $certDate = date("m/d/Y",strtotime($row['PermCertDate']));
-            }         
+            }
         }
         sqlsrv_free_stmt($stmt);
 
 
-        // Get Certification Type and Allowed carry over 
+        // Get Certification Type and Allowed carry over
         // from [New_CertHistory] table
         $tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid."AND CertYear='".
             (string)$year."-".(string)($year+1)."'";
@@ -90,7 +90,7 @@ class myPDF extends FPDF {
         else {
             $row= sqlsrv_fetch_array($stmt);
             $certType = $row['CertType'];
-            $allowedcarryover= $row['CarryForwardTotal'];   
+            $allowedcarryover= $row['CarryForwardTotal'];
             $PriorYearBalance = $row['PriorYearBalance'];
         }
         sqlsrv_free_stmt($stmt);
@@ -161,7 +161,7 @@ class myPDF extends FPDF {
         $year2 = $GLOBALS["toYearInt"];
         $this->Cell(263,0,(string)$year1."-".(string)($year2),0,0,'R');
         $this->Ln(5);
-        
+
         $this->Cell(0,0,'DATE');
         $this->Ln();
         $this->Cell(30);
@@ -188,7 +188,7 @@ class myPDF extends FPDF {
         $tsql = "SELECT * FROM [New_CourseDetail] WHERE CertNo=".(string)$certid."
             AND EndDate BETWEEN ".$time_start." AND ".$time_end."
             AND".$year_across;
-        
+
         $stmt = sqlsrv_query( $conn, $tsql);
         if( $stmt === false )
         {
