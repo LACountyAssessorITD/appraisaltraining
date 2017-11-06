@@ -9,6 +9,6 @@
 
 	$file = $_SESSION['report_filename'];
 	$_SESSION['download'] = TRUE;
-	require_once "report/Download".$file;
+	require_once "Download".$file;
 
 ?>

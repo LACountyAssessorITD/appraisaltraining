@@ -4,10 +4,10 @@ This Code dynamically generate individual PDF (Specific Year Report)
 @ Yining Huang
 */
 
-require_once "../constants.php";
-require_once "../session.php";
+require_once "../../constants.php";
+require_once "../../session.php";
 //session_start();
-require_once "../report_template/pdfTemplate_specificYear.php";
+require_once "../../report_template/pdfTemplate_specificYear.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;

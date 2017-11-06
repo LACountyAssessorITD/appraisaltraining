@@ -383,8 +383,8 @@ $(document).ready(function(){
                 if (result != "!UNDEFINED") {
                     var parent = $("#pdfBox").parent();
                     // var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
-                    var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/reportType/"+report_file_name+"' type='/pdf' width='100%' height='600px'>\
-                                <embed src='"+"../lib/php/admin/reportType/"+report_file_name+"' type='application/pdf'></embed>\
+                    var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/report/"+report_file_name+"' type='/pdf' width='100%' height='600px'>\
+                                <embed src='"+"../lib/php/admin/report/"+report_file_name+"' type='application/pdf'></embed>\
                             </object>";
                     $("#pdfBox").remove();
                     parent.append(newElement);

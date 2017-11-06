@@ -60,7 +60,7 @@ session_start();
 				<div>
 					<h3 id="optionLabel" class="banLabel">Options</h3>
 				</div>
-				<a id="downloadLink" href="../lib/php/usr/downloadCommunicator.php" target="_blank">
+				<a id="downloadLink" href="../lib/php/usr/report/downloadCommunicator.php" target="_blank">
 					<button id="Download"><i class="fa fa-download" aria-hidden="true"></i> Download</button>
 				</a>
 				<!-- <button id="Print">Print</button> -->
