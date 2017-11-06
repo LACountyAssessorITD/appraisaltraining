@@ -2,14 +2,14 @@
 	// IMPORTANT: toggle T/F for line below, when switching between Azure and LAC Server!
 	define("ON_AZURE", True);
 
+	//define("PREFIX", "http://");
+	define("PREFIX", "");
+	define("DIR", "C:/inetpub/wwwroot/appraisaltraining/Repo/401Project/");
+
 	if(ON_AZURE) {
 		// SQL Server Name
 		define("SQL_SERVER_NAME", "Assessor");
-		// File Paths
-		define("USER_HOME_PAGE_URL", "../../User/UserHome.php");
-		define("ADMIN_HOME_PAGE_URL", "../../Admin/AdminHome.php");
-		define("LOGIN_URL", "../../index.php");
-		define("ERROR_URL", "../../error.php");
+		
 		// Importing From These XLSX Paths
 		define("PATH_XLSX_ANNUALREQ",	"C:/inetpub/wwwroot/appraisaltraining/Repo/401Project/lib/php/admin/JT_ML_AdminUploadDatabase/original_xlsx_files/AnnualReq Los Angeles.xlsx");
 		define("PATH_XLSX_SUMMARY",		"C:/inetpub/wwwroot/appraisaltraining/Repo/401Project/lib/php/admin/JT_ML_AdminUploadDatabase/original_xlsx_files/Summary Los Angeles.xlsx");
@@ -19,6 +19,12 @@
 		// SQL Server Name
 		define("SQL_SERVER_NAME", "HTRAINDATADEV-V");
 	}
+
+	// File Paths
+	define("USER_HOME_PAGE_URL", PREFIX.DIR."User/UserHome.php");
+	define("ADMIN_HOME_PAGE_URL", PREFIX.DIR."Admin/AdminHome.php");
+	define("LOGIN_URL", PREFIX.DIR."index.php");
+	define("ERROR_URL", PREFIX.DIR."error.php");
 
 	// Common SQL Server Credentials/DatabaseNames
 	define("SQL_SERVER_USERNAME", "superadmin");
