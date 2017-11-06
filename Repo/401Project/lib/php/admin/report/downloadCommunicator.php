@@ -1,6 +1,5 @@
 <?php
-/*	This code is used to handle user's request for generating reports
-	Handle ajax from web page -> identify requested report type -> pass around the needed info
+/*	This code is used to handle admin's request for downloading reports
 
 	@ Yining Huang
 
@@ -8,7 +7,7 @@
 	session_start();
 
 	$file = $_SESSION['view_report_filename'];
-	$_SESSION['download'] = TRUE;
+	//$_SESSION['download'] = TRUE;
 	require_once "Download".$file;
 
 ?>

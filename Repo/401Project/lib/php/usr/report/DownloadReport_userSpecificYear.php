@@ -38,5 +38,6 @@ $pdf->AddPage();
 $pdf->generate($conn);
 
 sqlsrv_close($conn);
-$pdf->Output('D');
+$name = (string)$certid."_".$year."_AnnualTraining.pdf";
+$pdf->Output($name,'D');
 ?>

@@ -40,5 +40,6 @@ $pdf->AddPage();
 $pdf->generate($conn);
 
 sqlsrv_close($conn);
-$pdf->Output('D');
+$name = (string)$certid."_".$fromYearInt."_".$toYearInt."_CompletedCourseSummary.pdf";
+$pdf->Output($name,'D');
 ?>
