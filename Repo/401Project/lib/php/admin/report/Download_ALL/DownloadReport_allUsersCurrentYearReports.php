@@ -28,16 +28,18 @@ if( $conn === false )
 }
 
 $totalcarryover = 0;
+$certid = -1;
 $all_id=array(7292,10226,3664);
 $year = 2017;
 
 ///////////////////////////////////////////////////////////////////
 
 $pdf = new myPDF('L','mm','A4');
-for ($i=0; $i < $all_id.size(); $i ++) {
+for ($i=0; $i < count($all_id); $i ++) {
+	$certid = $all_id[$i];
 	$pdf->AliasNbPages();
 	$pdf->AddPage();
-	$pdf->generate($conn,$all_id[$i]);
+	$pdf->generate($conn);
 }
 sqlsrv_close($conn);
 $name = "LACounty".$year."_AnnualTraining.pdf";
