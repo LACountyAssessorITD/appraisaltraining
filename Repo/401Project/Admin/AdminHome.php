@@ -120,11 +120,13 @@
 								</div>
 							</div>
 						</div>
-						<div id="downloadDiv"><!-- "../lib/php/admin/report/downloadCommunicator.php" -->
-							<a id="downloadLink" href="../lib/php/admin/report/Download_ALL/DownloadReport_allUsersCurrentYearReports.php" target="_blank">
+						<div id="downloadDiv"><!--  -->
+							<a id="downloadLink" href="../lib/php/admin/report/downloadCommunicator.php" target="_blank">
 								<button class="optionBtn" id="downloadCurrent"><i class="fa fa-download" aria-hidden="true"></i>Download Previewing Report</button>
 							</a>
-							<button class="optionBtn" id="downloadSelected">Download Selected Reports</button>
+							<a id="downloadLink" href="../lib/php/admin/report/Download_ALL/DownloadReport_allUsersCurrentYearReports.php" target="_blank">
+								<button class="optionBtn" id="downloadSelected"><i class="fa fa-download" aria-hidden="true"></i>Download County Current Year Report</button>
+							</a>
 						</div>
 					</div>
 				</div>

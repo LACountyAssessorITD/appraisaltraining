@@ -41,10 +41,12 @@ if( $stmt === false )
 else {
     $row= sqlsrv_fetch_array($stmt);
     $year = $row[0];
+    $year = substr($year,0,4);
+    $year = (int)$year;
 }
 sqlsrv_free_stmt($stmt);
 
-$all_id[];
+$all_id;
 
 $tsql = "SELECT DISTINCT [CertNo] FROM [New_Employee]";
 $stmt = sqlsrv_query( $conn, $tsql);
@@ -60,9 +62,6 @@ else {
 }
 sqlsrv_free_stmt($stmt);
 
-
-
-$all_id=array(7292,10226,3664);
 
 
 ///////////////////////////////////////////////////////////////////
