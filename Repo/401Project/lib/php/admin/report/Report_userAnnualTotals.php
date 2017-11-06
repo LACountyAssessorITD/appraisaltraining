@@ -1,12 +1,12 @@
 <?php
 /*
-This Code dynamically generate individual PDF (Specific Year Report)
+This Code dynamically generate individual PDF (Annual Totals Summary)
 @ Yining Huang
 */
 
 include_once "../../constants.php";
 include_once "../../session.php";
-include_once "pdfTemplate_specificYear.php";
+include_once "../../report_template/pdfTemplate_annualTotals.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -28,7 +28,6 @@ if( $conn === false )
 $totalcarryover = 0;
 
 $certid = $_SESSION['view_certNo'];
-$year = $_SESSION['view_year1'];
 
 ///////////////////////////////////////////////////////////////////
 

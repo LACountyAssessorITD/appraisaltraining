@@ -4,10 +4,10 @@ This Code dynamically generate individual PDF (Specific Year Report)
 @ Yining Huang
 */
 
-include_once "../constants.php";
-include_once "../session.php";
-//session_start();
-include_once "pdfTemplate_specificYear.php";
+include_once "../../constants.php";
+include_once "../../session.php";
+session_start();
+include_once "../../report_template/pdfTemplate_completedCourse.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -23,12 +23,14 @@ $connectionInfo = array( "UID"=>$uid,
 $conn = sqlsrv_connect( $serverName, $connectionInfo);
 if( $conn === false )
 {
+     echo "Unable to connect.</br>";
      die( print_r( sqlsrv_errors(), true));
 }
 $totalcarryover = 0;
 
 $certid =  getCertNo();
-$year =  $_SESSION["specific_year"];
+$fromYearInt = $_SESSION["fromYearInt"];
+$toYearInt = $_SESSION["toYearInt"];
 
 ///////////////////////////////////////////////////////////////////
 
@@ -38,5 +40,5 @@ $pdf->AddPage();
 $pdf->generate($conn);
 
 sqlsrv_close($conn);
-$pdf->Output('D');
+$pdf->Output('I');
 ?>

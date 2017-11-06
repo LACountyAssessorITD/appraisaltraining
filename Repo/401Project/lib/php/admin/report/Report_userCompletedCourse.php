@@ -6,7 +6,7 @@ This Code dynamically generate individual PDF (Completed Course Summary Report)
 
 include_once "../../constants.php";
 include_once "../../session.php";
-include_once "pdfTemplate_completedCourse.php";
+include_once "../../report_template/pdfTemplate_completedCourse.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;

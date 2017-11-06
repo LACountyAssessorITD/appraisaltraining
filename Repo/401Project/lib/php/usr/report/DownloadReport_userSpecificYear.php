@@ -1,12 +1,13 @@
 <?php
 /*
-This Code dynamically generate individual PDF (Annual Totals Summary)
+This Code dynamically generate individual PDF (Specific Year Report)
 @ Yining Huang
 */
 
 include_once "../../constants.php";
 include_once "../../session.php";
-include_once "pdfTemplate_annualTotals.php";
+//session_start();
+include_once "../../report_template/pdfTemplate_specificYear.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -22,12 +23,12 @@ $connectionInfo = array( "UID"=>$uid,
 $conn = sqlsrv_connect( $serverName, $connectionInfo);
 if( $conn === false )
 {
-     echo "Unable to connect.</br>";
      die( print_r( sqlsrv_errors(), true));
 }
 $totalcarryover = 0;
 
-$certid = $_SESSION['view_certNo'];
+$certid =  getCertNo();
+$year =  $_SESSION["specific_year"];
 
 ///////////////////////////////////////////////////////////////////
 
@@ -37,5 +38,5 @@ $pdf->AddPage();
 $pdf->generate($conn);
 
 sqlsrv_close($conn);
-$pdf->Output('I');
+$pdf->Output('D');
 ?>
