@@ -31,11 +31,9 @@ class myPDF extends FPDF {
         $this->Line(10, 30,$width-10,30); // Line one Cross
     }
 
-    function generate($conn){
-        $year;
-        $certid = $GLOBALS['certid'];
+    function generate($conn,$id){
+        $certid = $id;
         $year = $GLOBALS['year'];
-
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // ********************       Start of Personal Information          ********************
@@ -158,7 +156,6 @@ class myPDF extends FPDF {
         $this->SetTextColor(0,0,0);
         $this->Ln(22);
 
-        $year = $GLOBALS['year'];
         $this->Cell(263,0,(string)$year."-".(string)($year+1),0,0,'R');
         $this->Ln(5);
 
