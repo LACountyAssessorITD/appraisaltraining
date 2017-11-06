@@ -2,9 +2,8 @@
 	// IMPORTANT: toggle T/F for line below, when switching between Azure and LAC Server!
 	define("ON_AZURE", True);
 
-	//define("PREFIX", "http://");
-	define("PREFIX", "");
-	define("DIR", "C:/inetpub/wwwroot/appraisaltraining/Repo/401Project/");
+	define("PREFIX", "http://");
+	define("DIR", "appraisaltraining/Repo/401Project/");
 
 	if(ON_AZURE) {
 		// SQL Server Name
