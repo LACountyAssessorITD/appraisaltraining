@@ -72,7 +72,7 @@
 			CourseLocation nvarchar(50),		-- from dbo.Details(Location)
 			CourseGrade nvarchar(50),			-- from dbo.Details(Grade)
 			CourseHours float,					-- from dbo.Details(HoursEarned)
-			EndDate datetime2(0),				-- from dbo.Details(EndDate) ( TOT: datetime2(0) )
+			EndDate datetime2(0),				-- from dbo.Details(EndDate)
 			-- primary key (CertNo, CourseYear, CourseName), -- if ItemNumber correctly implemented, switch to it! CertNo should be foreign key
 		)";
 		// 5. create table 4 CarryoverLimits
@@ -185,7 +185,7 @@
 				if($AdvCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in AdvCertDate!<br/>";
 				else if(PHPExcel_Shared_Date::isDateTime($AdvCell)) $AdvCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($AdvCertDate));
 				// inserting operation
-				$params 		= array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate); // TOTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+				$params 		= array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate);
 				$stmt 			= sqlsrv_query( $conn, $srvr_query, $params);
 				if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
 				$row_count ++;
@@ -245,7 +245,7 @@
 				// then Temp2 (which contains all distinct rows from Temp) would contain multiple rows with the same CertNo but different
 				// 3 dates, which is an error in BOE data. This integer counter would detect it.
 				$errorcheck_counter = (int)0;
-				$stmt = sqlsrv_query($conn, $Select_Temp2_Dates); // TOT
+				$stmt = sqlsrv_query($conn, $Select_Temp2_Dates);
 				if( $stmt === false ) die( print_r(sqlsrv_errors(), true) ); // TOT generic 2-line-template for executing SQL Server query
 				while( $temp_row = sqlsrv_fetch_object( $stmt )) { // $temp_row should have 3 columns
 					$errorcheck_counter ++;
@@ -260,6 +260,15 @@
 				$row_count ++;
 			}
 			unset($excelObj_Summary); //////////////////// lazy-reading END
+		}
+		// TrickyWork Pt.6: clean up - drop Temp and Temp2
+		if(true) {
+			$drop_T		= "IF OBJECT_ID('dbo.New_Temp', 'U') IS NOT NULL DROP TABLE dbo.New_Temp";
+			$srvr_stmt	= sqlsrv_query( $conn, $drop_T );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+			$drop_T2	= "IF OBJECT_ID('dbo.New_Temp2', 'U') IS NOT NULL DROP TABLE dbo.New_Temp2";
+			$srvr_stmt	= sqlsrv_query( $conn, $drop_T2 );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		}
 		echo "===== Summary into Employee finished, ".($row_count-2)." rows inserted. =====<br />";
 		// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
@@ -301,7 +310,7 @@
 		}
 		unset($excelObj_AnnualReq); //////////////////// lazy-reading END
 		echo "===== AnnualReq into CertHistory finished, ".($row_count-2)." rows inserted. =====<br />";
-	}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
+	}  // AnnualReq -> CertHistory: DONE
 
 	// 3. Details -> CourseDetail: START
 	if(true) {
@@ -314,7 +323,6 @@
 		$excelObj_Details		= $excelReader_Details->load(PATH_XLSX_DETAILS);
 		$details				= $excelObj_Details->getActiveSheet();
 		//////////////////// lazy-reading READY ////////////////////
-		echo "===== Details.xlsx excel object allocation (aka lazy-reading) success! =====<br />";
 		$row_count = (int)2;
 		while ( $row_count <= $details->getHighestRow() ) { // read until the last line
 			$CertNo				= $details->getCell('C'.$row_count)->getValue();
@@ -324,17 +332,12 @@
 			$CourseLocation		= $details->getCell('J'.$row_count)->getValue();
 			$CourseGrade		= $details->getCell('K'.$row_count)->getValue();
 			$CourseHours		= $details->getCell('L'.$row_count)->getValue();
-
-			// $EndDate			= $details->getCell('H'.$row_count)->getValue();
-
-			// EndDate
+			// EndDate logic
 			$EndDateCell		= $details->getCell('H'.$row_count);
 			$EndDate			= $EndDateCell->getValue();
 			if($EndDate == NULL) ;// echo "NOTE: appraiser ".$CertNo." has NULL EndDate in course \"".$CourseName."\" at \"".$CourseLocation."\" !<br/>";
 			// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
 			else if(PHPExcel_Shared_Date::isDateTime($EndDateCell)) $EndDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($EndDate));
-
-
 			$params = array($CertNo, $CourseYear, $CourseName, $CourseLocation, $CourseGrade, $CourseHours, $EndDate);
 			$stmt = sqlsrv_query( $conn, $srvr_query, $params);
 			if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
@@ -342,7 +345,7 @@
 		}
 		unset($excelObj_Details); //////////////////// lazy-reading END
 		echo "===== Details into CourseDetail finished, ".($row_count-2)." rows inserted. =====<br />";
-	}
+	}  // Details -> CourseDetail: DONE
 
 	/* // block comment starter
 	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
