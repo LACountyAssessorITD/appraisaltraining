@@ -23,17 +23,17 @@
 	}
 
 	function ifAppraiser() {
-		if (getCertNo() != 0) 
+		if (getCertNo() != 0)
 			return true;
 		else return false;
 	}
 
 
 	function redirect() {
-		if (ifUserLoggedIn() == true) {
-			if (checkRole() == 1) {
+		if ($_SESSION["logged_in"] == true) {
+			if ($_SESSION["ROLE"] == 1) {
 				header("Location: " . ADMIN_HOME_PAGE_URL);
-			} else if (checkRole() == 0) {
+			} else if ($_SESSION["ROLE"] == 0) {
 				header("Location: " . USER_HOME_PAGE_URL);
 			} else {
 				$_SESSION["logged_in"] = false;

@@ -10,10 +10,10 @@
 
 #pdfBox {
     position: relative;
-    z-index: 1;
+    z-index: 1000;
 }
 
-.leftContentColumn, .rightContentColumn, .midColumn {
+.leftContentColumn, .rightContent, .rightContentColumn, .midColumn {
 	position: relative;
 	float: left;
 	padding-right: 18px;
@@ -31,6 +31,7 @@
 	float: left;
 	padding: 0;
 	margin: 0;
+	z-index: 1000;
 }
 
 .viewAndOption:after {
@@ -63,7 +64,7 @@
 	position: relative;
 	overflow: auto;
 	z-index: 2;
-	padding: 0;
+	/*padding: 0;*/
 }
 
 .filterListCol {
@@ -361,10 +362,13 @@
 	width: 100%;
 	opacity: 1;
 	z-index: -1;
+	/*background-color: green;*/
+	padding: 0;
 }
 
 .midColumn h2 {
 	padding: 0;
+	margin: 0;
 	text-align: center;
 	font-size: 1.2em;
 }
@@ -504,7 +508,12 @@
 }
 
 #emailDiv {
-	margin: 20px;
+	margin-bottom: 20px;
+	/*margin: 20px;*/
+	padding: 20px;
+	border-width: 2px;
+	border-style: solid;
+	border-color: white;
 }
 
 #emailDiv textarea {
@@ -586,7 +595,7 @@
 
 .filterOverview {
 	width: 100%;
-	padding: 40px 18px;
+	/*padding: 40px 18px;*/
 	margin-top: 1px;
 	/*margin-bottom: 0;*/
 	overflow: hidden;

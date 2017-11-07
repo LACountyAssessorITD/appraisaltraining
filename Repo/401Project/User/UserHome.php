@@ -1,7 +1,8 @@
 <?php
 session_start();
-include_once "../lib/php/session.php";;
-//redirect();
+include_once "../lib/php/session.php";
+if ($_SESSION['ROLE'] != 0)
+redirect();
 ?>
 <!DOCTYPE html>
 <!DOCTYPE html>

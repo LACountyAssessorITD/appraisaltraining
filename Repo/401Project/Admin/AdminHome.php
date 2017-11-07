@@ -1,6 +1,7 @@
-<?php session_start(); 
-include_once "../lib/php/session.php";;
-//redirect();
+<?php session_start();
+include_once "../lib/php/session.php";
+if ($_SESSION['ROLE'] != 1)
+redirect();
 ?>
 <!DOCTYPE html>
 <!DOCTYPE html>
@@ -87,6 +88,37 @@ include_once "../lib/php/session.php";;
 
 		<div class="rightContent">
 
+			<div class="filterOverview">
+				<h3 id="overviewLabel" class="banLabel">Filter Overview</h3>
+				<div id="reportType">
+					<div id="reportTypeLabel"><label >Select Report Type</label></div>
+					<select id="reportTypeSelect"></select>
+					<i class='fa fa-question-circle-o toolTipParent' aria-hidden='true'><span class="toolTip"></span></i>
+
+				</div>
+				<!-- <button class="resetAll" id="resetAllTable"><i class="fa fa-times" aria-hidden="true"></i> Reset Selections</button> -->
+				<div id="overviewTableDiv">
+					<table id="overviewTable">
+						<thead>
+				            <tr>
+				                <th width="5%">Select</th>
+				                <th width="20%">Name</th>
+				                <th width="25%">Email</th>
+				                <th width="15%">CertNo</th>
+				                <th width="20%">Year</th>
+				                <th width="15%">View</th>
+				            </tr>
+				        </thead>
+				        <tbody>
+				        	<tr id="overviewSelectAll">
+				        		<td><input type='checkbox' name='tableSelectAll'></td>
+				        		<td colspan="5">Select All</td>
+				        	</tr>
+				        </tbody>
+					</table>
+				</div>
+			</div>
+
 			<div class="viewAndOption">
 
 				<div class="midColumn">
@@ -100,6 +132,9 @@ include_once "../lib/php/session.php";;
 						</div>
 
 						<object id="pdfBox" data="../LACLogo.pdf" type="application/pdf" width="100%" height="600px">
+							<p>It appears you don't have Adobe Reader or PDF support in this web browser.
+							<a href="singleUserReport.php">Click here to download the PDF</a>. Or
+							<a href="http://get.adobe.com/reader/" target="_blank">click here to install Adobe Reader</a>.</p>
 							<embed src="../LACLogo.pdf" type="application/pdf"></embed>
 						</object>
 					</div>
@@ -138,36 +173,6 @@ include_once "../lib/php/session.php";;
 
 			</div>
 
-			<div class="filterOverview">
-				<h3 id="overviewLabel" class="banLabel">Filter Overview</h3>
-				<div id="reportType">
-					<div id="reportTypeLabel"><label >Select Report Type</label></div>
-					<select id="reportTypeSelect"></select>
-					<i class='fa fa-question-circle-o toolTipParent' aria-hidden='true'><span class="toolTip"></span></i>
-
-				</div>
-				<!-- <button class="resetAll" id="resetAllTable"><i class="fa fa-times" aria-hidden="true"></i> Reset Selections</button> -->
-				<div id="overviewTableDiv">
-					<table id="overviewTable">
-						<thead>
-				            <tr>
-				                <th width="5%">Select</th>
-				                <th width="20%">Name</th>
-				                <th width="25%">Email</th>
-				                <th width="15%">CertNo</th>
-				                <th width="20%">Year</th>
-				                <th width="15%">View</th>
-				            </tr>
-				        </thead>
-				        <tbody>
-				        	<tr id="overviewSelectAll">
-				        		<td><input type='checkbox' name='tableSelectAll'></td>
-				        		<td colspan="5">Select All</td>
-				        	</tr>
-				        </tbody>
-					</table>
-				</div>
-			</div>
 
 		</div>
 	</div>
