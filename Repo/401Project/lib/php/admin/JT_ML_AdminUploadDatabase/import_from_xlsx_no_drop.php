@@ -36,21 +36,22 @@
 		// $drop_COL	= "IF OBJECT_ID('dbo.New_CarryoverLimits', 'U') IS NOT NULL DROP TABLE dbo.New_CarryoverLimits";
 		// $drop_EX		= "IF OBJECT_ID('dbo.New_EmployeeID_Xref', 'U') IS NOT NULL DROP TABLE dbo.New_EmployeeID_Xref";
 		// $drop_E		= "IF OBJECT_ID('dbo.New_Employee', 'U') IS NOT NULL DROP TABLE dbo.New_Employee";
-		$rename_CH	= "IF OBJECT_ID('dbo.New_CertHistory', 'U') IS NOT NULL sp_rename 'dbo.New_CertHistory', 'dbo.Prev_CertHistory'";
-		$rename_CH	= "IF OBJECT_ID('dbo.New_CourseDetail', 'U') IS NOT NULL sp_rename 'dbo.New_CourseDetail', 'dbo.Prev_CourseDetail'";
-		$rename_CH	= "IF OBJECT_ID('dbo.New_CarryoverLimits', 'U') IS NOT NULL sp_rename 'dbo.New_CarryoverLimits', 'dbo.Prev_CarryoverLimits'";
-		$rename_CH	= "IF OBJECT_ID('dbo.New_EmployeeID_Xref', 'U') IS NOT NULL sp_rename 'dbo.New_EmployeeID_Xref', 'dbo.Prev_EmployeeID_Xref'";
-		$rename_CH	= "IF OBJECT_ID('dbo.New_Employee', 'U') IS NOT NULL sp_rename 'dbo.New_Employee', 'dbo.Prev_Employee'";
+		$rename_CH	= "sp_rename 'dbo.New_CertHistory', 'Prev_CertHistory'";
+		$rename_CD	= "sp_rename 'dbo.New_CourseDetail', 'Prev_CourseDetail'";
+		$rename_COL	= "sp_rename 'dbo.New_CarryoverLimits', 'Prev_CarryoverLimits'";
+		$rename_EX	= "sp_rename 'dbo.New_EmployeeID_Xref', 'Prev_EmployeeID_Xref'";
+		$rename_E	= "sp_rename 'dbo.New_Employee', 'Prev_Employee'";
 		// 2. run the above queries
 		$srvr_stmt = sqlsrv_query( $conn, $rename_CH );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		$srvr_stmt = sqlsrv_query( $conn, $rename_CD );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		$srvr_stmt = sqlsrv_query( $conn, $rename_COL );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		$srvr_stmt = sqlsrv_query( $conn, $rename_EX );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		$srvr_stmt = sqlsrv_query( $conn, $rename_E );
+		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		// 3. create table 3 Employee (DO THIS FIRST! CertNo need to be a foreign key for all other tables!)
 		$create_E = "CREATE TABLE dbo.New_Employee (
 			CertNo float,						--dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
