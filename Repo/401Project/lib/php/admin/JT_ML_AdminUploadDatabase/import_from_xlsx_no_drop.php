@@ -36,11 +36,11 @@
 		// $drop_COL	= "IF OBJECT_ID('dbo.New_CarryoverLimits', 'U') IS NOT NULL DROP TABLE dbo.New_CarryoverLimits";
 		// $drop_EX		= "IF OBJECT_ID('dbo.New_EmployeeID_Xref', 'U') IS NOT NULL DROP TABLE dbo.New_EmployeeID_Xref";
 		// $drop_E		= "IF OBJECT_ID('dbo.New_Employee', 'U') IS NOT NULL DROP TABLE dbo.New_Employee";
-		$rename_CH	= "IF OBJECT_ID('dbo.New_CertHistory', 'U') IS NOT NULL RENAME TABLE dbo.New_CertHistory TO dbo.Prev_CertHistory";
-		$rename_CD	= "IF OBJECT_ID('dbo.New_CourseDetail', 'U') IS NOT NULL RENAME TABLE dbo.New_CourseDetail TO dbo.Prev_CourseDetail";
-		$rename_COL	= "IF OBJECT_ID('dbo.New_CarryoverLimits', 'U') IS NOT NULL RENAME TABLE dbo.New_CarryoverLimits TO dbo.Prev_CarryoverLimits";
-		$rename_EX	= "IF OBJECT_ID('dbo.New_EmployeeID_Xref', 'U') IS NOT NULL RENAME TABLE dbo.New_EmployeeID_Xref TO dbo.Prev_EmployeeID_Xref";
-		$rename_E	= "IF OBJECT_ID('dbo.New_Employee', 'U') IS NOT NULL RENAME TABLE dbo.New_Employee TO dbo.Prev_Employee";
+		$rename_CH	= "IF OBJECT_ID('dbo.New_CertHistory', 'U') IS NOT NULL sp_rename 'dbo.New_CertHistory', 'dbo.Prev_CertHistory'";
+		$rename_CH	= "IF OBJECT_ID('dbo.New_CourseDetail', 'U') IS NOT NULL sp_rename 'dbo.New_CourseDetail', 'dbo.Prev_CourseDetail'";
+		$rename_CH	= "IF OBJECT_ID('dbo.New_CarryoverLimits', 'U') IS NOT NULL sp_rename 'dbo.New_CarryoverLimits', 'dbo.Prev_CarryoverLimits'";
+		$rename_CH	= "IF OBJECT_ID('dbo.New_EmployeeID_Xref', 'U') IS NOT NULL sp_rename 'dbo.New_EmployeeID_Xref', 'dbo.Prev_EmployeeID_Xref'";
+		$rename_CH	= "IF OBJECT_ID('dbo.New_Employee', 'U') IS NOT NULL sp_rename 'dbo.New_Employee', 'dbo.Prev_Employee'";
 		// 2. run the above queries
 		$srvr_stmt = sqlsrv_query( $conn, $rename_CH );
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
