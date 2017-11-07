@@ -165,8 +165,6 @@ div[class="message"] {
 	<div class="login">
 		<form action="LDAP/login.php" method="post" enctype="multipart/form-data">
 			<div class="formDiv">
-				<input class="inputField" type="text" placeholder="FirstName" name="username"><br>
-				<input class="inputField" type="text" placeholder="LastName" name="password"><br>
 				<input class="inputField" type="text" placeholder="Username" name="username"><br>
 				<input class="inputField" type="password" placeholder="Password" name="password"><br>
 			</div>

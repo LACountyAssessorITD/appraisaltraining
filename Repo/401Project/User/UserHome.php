@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once "../lib/php/session.php";;
-redirect();
+//redirect();
 ?>
 <!DOCTYPE html>
 <!DOCTYPE html>
