@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php session_start(); 
+include_once "../lib/php/session.php";;
+redirect();
+?>
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en-US">

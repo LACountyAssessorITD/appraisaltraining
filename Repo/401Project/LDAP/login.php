@@ -3,7 +3,6 @@ include_once "authenticate.php";
 include_once "../lib/php/constants.php";
 session_start();
 
-
 	$ldapusername = "laassessor"."\\".$_POST["username"];
 	$_SESSION['USERNAME']=$_POST["username"];
 	$ldappassword = $_POST["password"];
@@ -13,12 +12,10 @@ session_start();
 		$_SESSION["logged_in"] = FALSE;
 		header("Location: " . LOGIN_URL);
 	} else {
-		// Get display name from LDAP
-		// Get Employee ID from LDAP
+		// if authencate successfully, get relative info
 		$server = LDAP_SERVER_NAME;
 		$ldap = ldap_connect($server);
 		$user_name=$_POST["username"];
-		$_SESSION['EMPLOYEEID']=$user_name;
 		if ($ldap) {
 			ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
 			ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
@@ -31,10 +28,10 @@ session_start();
 				$info = ldap_get_entries($ldap, $result);
 				if($info["count"] > 0) {
 					for ($i=0; $i<$info["count"]; $i++) {
-						 $_SESSION['NAME']=$info[$i]["displayname"][0];
-						 $_SESSION['EMAIL']=$info[$i]["mail"][0];
-						 $_SESSION['MANAGER']=$info[$i]["manager"][0];
-						 $_SESSION['FIRSTNAME']=$info[$i]["givenname"][0];
+						$_SESSION['NAME']=$info[$i]["displayname"][0];
+						$_SESSION['EMAIL']=$info[$i]["mail"][0];
+						$_SESSION['MANAGER']=$info[$i]["manager"][0];
+						$_SESSION['FIRSTNAME']=$info[$i]["givenname"][0];
 
 					 	$serverName = SQL_SERVER_NAME;
 						$uid = SQL_SERVER_USERNAME;
@@ -51,7 +48,7 @@ session_start();
 						     echo "Unable to connect.</br>";
 						     die( print_r( sqlsrv_errors(), true));
 						}
-						$tsql = "SELECT * FROM [XREF] WHERE EmpNo=".$employeeid;
+						$tsql = "SELECT * FROM [EmployeeID_Xref] WHERE EmployeeID=".(int)$employeeid;
 						$stmt = sqlsrv_query( $conn, $tsql);
 						if( $stmt === false )
 						{
@@ -63,18 +60,22 @@ session_start();
 							sqlsrv_free_stmt($stmt);
 							sqlsrv_close($conn);
 						 	if($rows > 0) { // if exists in the appraiser databse
-						 		$_SESSION["logged_in"] = TRUE;
-						 		$_SESSION["CERTNO"] = $row['CertNo'];
-						 		if ($row['Role'] == admin) {
-									$_SESSION["ROLE"] = "admin";
+						 		$_SESSION["logged_in"] = true;
+						 		$_SESSION["CERTNO"] = $rows['CertNo'];
+						 		$_SESSION["ROLE"] = $rows['Role'];
+						 		$_SESSION['EMPLOYEEID'] = $employeeid;
+						 		if ($_SESSION["ROLE"] == 1) {
 									header("Location: " . ADMIN_HOME_PAGE_URL);
-								} else { // if appraiser who are not admin
+								} else if ($_SESSION["ROLE"] == 0) {
 									header("Location: " . USER_HOME_PAGE_URL);
+								} else {
+									$_SESSION["logged_in"] = false;
+									header("Location: " . ERROR_URL);
 								}
 							}
 							else {	 // if not an appraiser or admin
-								$_SESSION["logged_in"] = FALSE;
-								header("Location: " . ERROR_PAGE_URL);
+								$_SESSION["logged_in"] = false;
+								header("Location: " . LOGIN_URL);
 							}
 						}
 					}

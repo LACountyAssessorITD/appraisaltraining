@@ -22,6 +22,12 @@
 		return $_SESSION["ROLE"];
 	}
 
+	function ifAppraiser() {
+		if (getCertNo() != 0) 
+			return true;
+		else return false;
+	}
+
 
 	function redirect() {
 		if (ifUserLoggedIn() == true) {
@@ -30,6 +36,7 @@
 			} else if (checkRole() == 0) {
 				header("Location: " . USER_HOME_PAGE_URL);
 			} else {
+				$_SESSION["logged_in"] = false;
 				header("Location: " . ERROR_URL);
 			}
 

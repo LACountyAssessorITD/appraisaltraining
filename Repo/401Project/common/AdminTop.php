@@ -3,7 +3,8 @@ echo "<div class='top'>
 		<div class='header'>
 			<div class='Welcome'>
 				<label>Welcome, </label>
-				<label>".$_SESSION['FN']."</label>
+				<label>".$_SESSION['FIRSTNAME']."</label>
+				<a href='../LDAP/logout.php' class='btn btn-danger square-btn-adjust'>Logout</a> 
 			</div>
 			<h1><strong>Training Record</strong></h1>
 			<hr>
