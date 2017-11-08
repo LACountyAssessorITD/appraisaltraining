@@ -61,10 +61,10 @@ button, select {
     transform: translate(-50%, -50%);
 }*/
 
-.header h1, .header h3 {
+.header h1, .header h3, .header h4 {
 	position: relative;
 	text-align: center;
-	margin: 100px auto;
+	margin: 30px auto;
 	color: white;
 
 	/*position: absolute;
@@ -75,25 +75,24 @@ button, select {
 
 .header h1 {
 	font-size: 2.8vw;
-	/*padding-top: 10px;*/
-	/*padding-left: 120px;*/
-	/*padding-right: 120px;*/
 	padding-bottom: 0px;
-	/*margin-top: 30px;*/
-	/*margin: 20px auto;*/
+	margin-top: 100px;
 	margin-bottom: 0px;
-	/*z-index: 2;*/
 }
 
 .header h3 {
 	font-size: 1.2vw;
 	margin-top: 0px;
 	padding-top: 0px;
-	/*margin-bottom: 20px;*/
-	/*z-index: 2;*/
-	/*padding-
-	bottom: 20px;*/
+	/*margin*/
 }
+
+.header h4 {
+	font-size: 1.3vw;
+	margin-top: 10px;
+	margin-bottom: 100px;
+}
+
 
 .Welcome {
 	/*margin:20px;

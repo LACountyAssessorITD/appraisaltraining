@@ -4,11 +4,13 @@ echo "<div class='top'>
 			<div class='Welcome'>
 				<label>Welcome, </label>
 				<label>".$_SESSION['FIRSTNAME']."</label>
-				<a href='../LDAP/logout.php' class='btn btn-danger square-btn-adjust'>Logout</a> 
+				<a href='../LDAP/logout.php' class='btn btn-danger square-btn-adjust'>Logout</a>
 			</div>
 			<h1><strong>Training Record</strong></h1>
 			<hr>
 			<h3><strong>Los Angeles County Office of the Assessor</strong></h3>
+			<br>
+			<h4 id='effectiveLabel'>Data effective as of: <span></span></h4>
 			<img src='../BGimg/Logo.png' alt='Logo' width='130px' height='130px'>
 		</div>
 
