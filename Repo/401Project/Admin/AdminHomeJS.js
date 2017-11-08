@@ -347,7 +347,7 @@ $(document).ready(function(){
         });
 
         if(query=="") {
-            alert("No filters selected");
+            // alert("No filters selected");
             return;
         }
 
@@ -460,6 +460,8 @@ $(document).ready(function(){
                 alert("Fail to connect to the server when generaeting the report");
             }
         });
+
+        $("#downloadCurrent").show();
     });
 
 
@@ -559,12 +561,29 @@ $(document).ready(function(){
     //     }
     // }).change();
 
+
+    checkTypeForDownload();
+    function checkTypeForDownload() {
+        var str = $("#reportTypeSelect option:selected").text();
+
+        if(str.toUpperCase()!="Annual Training Reports".toUpperCase()) {
+            $("#downloadSelected").hide();
+        }
+    }
+
     $("#reportTypeSelect").on("change",function() {
         applyFilter();
         // $( "#reportTypeSelect option:selected" ).each(function() {
         //     str = $( this ).text();
         // });
         var str = $("#reportTypeSelect option:selected").text();
+
+        if(str.toUpperCase()!="Annual Training Reports".toUpperCase()) {
+            $("#downloadSelected").hide();
+        }
+        else {
+            $("#downloadSelected").show();
+        }
         // alert(str);
         for(var i=0;i<report_info.length;i++) {
             if(str.toUpperCase()==report_info[i][0].toUpperCase()) {
@@ -788,7 +807,15 @@ $(document).ready(function(){
     });
 
     // $("#filterApplyBtn").click(applyFilter);
-    $("#filterApplyBtn").on("click", applyFilter);
+    $("#filterApplyBtn").on("click", function() {
+        $(this).find("button")[0].innerHTML = "Loading...";
+        setTimeout(function(){
+            applyFilter();
+            $("#filterApplyBtn").find("button")[0].innerHTML = "Apply Filter";
+        },0);
+        // applyFilter();
+        // $(this).children()[0].innerHTML = "Apply Filter";
+    });
 
 
     function setSegActive(seg) {
@@ -852,9 +879,7 @@ $(document).ready(function(){
         $(this).find(".toolTip").hide();
     });
 
-    $("#downloadCurrent").on("click",function() {
-
-    });
+    $("#downloadCurrent").hide();
 
     $("#downloadSelected").on("click",function() {
         var idArray = [];

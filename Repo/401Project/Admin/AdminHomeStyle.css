@@ -10,7 +10,8 @@
 
 #pdfBox {
     position: relative;
-    z-index: 1000;
+    /*z-index: 1000;*/
+    padding-top:10px;
 }
 
 .leftContentColumn, .rightContent, .rightContentColumn, .midColumn {
@@ -111,7 +112,7 @@
 	font-size: 1.5vw;
 }
 
-#reportType i {
+#reportType .toolTipParent {
 	width:10%;
 	/*float:left;*/
 	color: white;
@@ -122,6 +123,10 @@
 	font-size: 1.2vw;
 }
 
+#reportType a{
+	width:40;
+}
+
 #reportTypeSelect {
 	width: 50%;
 	/*float: left;*/
@@ -130,6 +135,7 @@
 	/*padding: 5px 35px 5px 5px;*/
 	/*margin-bottom: 20px;*/
 	padding: 0px 20px;
+	padding-right:0;
 	font-size: 1.2vw;
 	border: 1px solid #ccc;
  	height: 30px;
@@ -374,21 +380,24 @@
 
 #infoLabelWrap {
 	width:100%;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 .infoLabel {
-	width:50%;
+	width:33%;
 	float: left;
 	text-align: left;
 	color: white;
 	font-size: 1.5vw;
+	margin: 0;
 }
 
 .pdfView {
 	/*padding-right: 12px;
 	padding-bottom: 12px;
 	padding-left: 12px;*/
-	margin-top: 5px;
+	/*margin-top: 5px;*/
 	overflow: auto;
 	z-index: -1;
 }
@@ -568,12 +577,31 @@
 	margin:auto;
 }
 
-#downloadCurrent {
-	/*width: 50%;*/
-	float: left;
-}
-#downloadSelected {
+.downloadBtn {
 	float: right;
+	/*padding: 10px;*/
+	font-size: 1.1vw;
+	text-align: center;
+	background-color: white;
+	border-width: 0;
+	border-radius: 5px;
+	outline: none;
+	width:30%;
+	height: 30px;
+}
+
+#downloadSelected {
+	/*width: 30%;*/
+}
+
+#downloadCurrent {
+	/*width: 33%;*/
+	/*padding: 10px;
+	margin:auto;*/
+}
+
+.downloadBtn i{
+	color:black;
 }
 
 .viewAndOption:after {
@@ -585,7 +613,7 @@
 .filterOverview {
 	width: 100%;
 	/*padding: 40px 18px;*/
-	margin-top: 1px;
+	/*margin-top: 1px;*/
 	/*margin-bottom: 0;*/
 	overflow: hidden;
 }

@@ -223,11 +223,11 @@ button, select {
 
 .banLabel {
 	/*display: none;*/
-	margin:0;
-	width: 100%;
-	padding: 10px 10px;
-	font-size: 1.5vw;
-	background-color: rgb(17, 27, 40);
+	margin:10px auto;
+	width: 60%;
+	padding: 3px 10px;
+	font-size: 1.8vw;
+	/*background-color: rgb(17, 27, 40);*/
 	color: white;
 	border-width: 0px;
 	/*border-radius: 4px;*/
@@ -237,6 +237,9 @@ button, select {
 	margin-top: 0;
 	margin-bottom: 0;
 	opacity: 1;
+	border-bottom-width: 2px;
+	border-color:white;
+	border-style:solid;
 }
 
 .footer {

@@ -47,7 +47,7 @@ include_once "../lib/php/session.php";
 
 			<div class="filterListCol" id="accordion">
 
-				<p class="pFiltersLabel">Employee Info</p>
+				<!-- <p class="pFiltersLabel">Employee Info</p> -->
 
 				<div class="employeeFilters" name="[New_Employee]">
 
@@ -74,9 +74,7 @@ include_once "../lib/php/session.php";
 					<div class="dropDownFilter">
 						<button class="dropDownBtn" name="Auditor">Auditor</button>
 					</div>
-				</div>
 
-				<div class="employeeFilters" name="">
 					<div class="dropDownFilter">
 						<button class="dropDownBtn" name="">Employment Status</button>
 						<div class='DPBCont'>
@@ -196,6 +194,10 @@ include_once "../lib/php/session.php";
 					</div>
 				</div>
 
+				<!-- <div class="employeeFilters" name="">
+
+				</div> -->
+
 			</div>
 
 
@@ -213,7 +215,11 @@ include_once "../lib/php/session.php";
 					<div id="reportTypeLabel"><label >Select Report Type</label></div>
 					<select id="reportTypeSelect"></select>
 					<i class='fa fa-question-circle-o toolTipParent' aria-hidden='true'><span class="toolTip"></span></i>
-
+					<a id="downloadLink" href="../lib/php/admin/report/Download_ALL/DownloadReport_allUsersCurrentYearReports.php" target="_blank">
+						<button class="downloadBtn" id="downloadSelected">
+							<i class="fa fa-download" aria-hidden="true"></i> Download All Current Year Report
+						</button>
+					</a>
 				</div>
 				<!-- <button class="resetAll" id="resetAllTable"><i class="fa fa-times" aria-hidden="true"></i> Reset Selections</button> -->
 				<div id="overviewTableDiv">
@@ -246,8 +252,13 @@ include_once "../lib/php/session.php";
 					</div>
 					<div class="pdfView">
 						<div id="infoLabelWrap">
-							<h3 id="effectiveLabel" class="infoLabel">Effective as of: <span></span></h3>
+							<!-- <h3 id="effectiveLabel" class="infoLabel">Effective as of: <span></span></h3> -->
 							<h3 id="hoursNeedLabel" class="infoLabel">Hours needed: <span></span></h3>
+							<a id="downloadLink" href="../lib/php/admin/report/downloadCommunicator.php" target="_blank">
+								<button class="downloadBtn" id="downloadCurrent">
+									<i class="fa fa-download" aria-hidden="true"></i> Download Previewing Report
+								</button>
+							</a>
 						</div>
 
 						<object id="pdfBox" data="../LACLogo.pdf" type="application/pdf" width="100%" height="600px">
@@ -276,14 +287,6 @@ include_once "../lib/php/session.php";
 									<button id="sendEmailSelectedBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Selected</button><span class="toolTip">Send email to the appraisers selected in the table below</span>
 								</div>
 							</div>
-						</div>
-						<div id="downloadDiv"><!--  -->
-							<a id="downloadLink" href="../lib/php/admin/report/downloadCommunicator.php" target="_blank">
-								<button class="optionBtn" id="downloadCurrent"><i class="fa fa-download" aria-hidden="true"></i>Download Previewing Report</button>
-							</a>
-							<a id="downloadLink" href="../lib/php/admin/report/Download_ALL/DownloadReport_allUsersCurrentYearReports.php" target="_blank">
-								<button class="optionBtn" id="downloadSelected"><i class="fa fa-download" aria-hidden="true"></i>Download County Current Year Report</button>
-							</a>
 						</div>
 					</div>
 				</div>
