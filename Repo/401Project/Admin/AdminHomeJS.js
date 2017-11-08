@@ -733,25 +733,17 @@ $(document).ready(function(){
     });
 
 
-    //Email Alert
-    hideAllOptionDiv();
-    function hideAllOptionDiv() {
-        $("#optionTabDiv").children("div").each(function() {
-            $(this).hide();
-        });
-    }
-
-    // $("#emailDiv").hide();
+    $("#emailDiv").hide();
     $("#EmailAll").on("click", function() {
-        hideAllOptionDiv();
-    	$("#emailDiv").show();
-        setSegActive(1);
-    });
+        if($(this).data("clicked")) {
+            $(this).data("clicked",false);
+            $("#emailDiv").hide();
+        }
+        else {
+            $(this).data("clicked",true);
+            $("#emailDiv").show();
+        }
 
-    $("button#Download").on("click", function() {
-        hideAllOptionDiv();
-        $("#downloadDiv").show();
-        setSegActive(0);
     });
 
     function getEmailContent() {
