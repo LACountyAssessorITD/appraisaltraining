@@ -1,7 +1,6 @@
 <?php session_start();
 include_once "../lib/php/session.php";
-if ($_SESSION['ROLE'] != 1)
-redirect();
+// redirect_onAdminPage();
 ?>
 <!DOCTYPE html>
 <!DOCTYPE html>

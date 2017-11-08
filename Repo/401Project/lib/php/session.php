@@ -29,21 +29,33 @@
 	}
 
 
-	function redirect() {
+	function redirect_onAdminPage() {
 		if ($_SESSION["logged_in"] == true) {
 			if ($_SESSION["ROLE"] == 1) {
-				header("Location: " . ADMIN_HOME_PAGE_URL);
+				//header("Location: " . ADMIN_HOME_PAGE_URL);
 			} else if ($_SESSION["ROLE"] == 0) {
 				header("Location: " . USER_HOME_PAGE_URL);
 			} else {
 				$_SESSION["logged_in"] = false;
 				header("Location: " . ERROR_URL);
 			}
-
 		} else {
 			header("Location: " . LOGIN_URL);
 		}
 	}
-
+	function redirect_onUserPage() {
+		if ($_SESSION["logged_in"] == true) {
+			if ($_SESSION["ROLE"] == 1) {
+				header("Location: " . ADMIN_HOME_PAGE_URL);
+			} else if ($_SESSION["ROLE"] == 0) {
+				// header("Location: " . USER_HOME_PAGE_URL);
+			} else {
+				$_SESSION["logged_in"] = false;
+				header("Location: " . ERROR_URL);
+			}
+		} else {
+			header("Location: " . LOGIN_URL);
+		}
+	}
 
 ?>

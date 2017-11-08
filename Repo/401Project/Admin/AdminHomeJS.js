@@ -250,9 +250,7 @@ $(document).ready(function(){
                 list.children("li").each(function() {
                     liStr = $(this)[0].innerHTML;
                     //If li is "none" change back to null
-                    if(liStr.toUpperCase()=="NONE") {
-                        liStr = "null";
-                    }
+                    //liStr = liStr.replace("None","NULL");
                     if (filter_name == "Name") {
                         var n = liStr.split(" ,  ");
                         var ln = n[0];
@@ -262,7 +260,10 @@ $(document).ready(function(){
                         orStr += ("([FirstName]='"+fn+"'");
                         orStr += (" AND [LastName]='"+ln+"')");
                     } else {
-                        orStr += ("["+filter_name +"]='"+liStr+"'");        //!!!!!!!!!!!!!!!!!!!!!
+                        if (liStr == "None")
+                            orStr += ("["+filter_name +"] IS NULL");
+                        else
+                            orStr += ("["+filter_name +"]='"+liStr+"'");        //!!!!!!!!!!!!!!!!!!!!!
                     }
                     //Remove each li once appended in the Or string
                     $(this).remove();
