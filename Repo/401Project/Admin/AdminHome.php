@@ -76,6 +76,126 @@ include_once "../lib/php/session.php";
 					</div>
 				</div>
 
+				<div class="employeeFilters" name="">
+					<div class="dropDownFilter">
+						<button class="dropDownBtn" name="">Employment Status</button>
+						<div class='DPBCont'>
+	                        <div class='tableWrap'>
+	                            <form class='leftInput'>
+	                                <input type='text' placeholder='Search..' autocomplete='off'>
+	                            </form>
+	                            <div class='filterContTableBG'></div>
+	                            <button class='resetBtn'><i class='fa fa-times' aria-hidden='true'></i> Reset Search</button>
+	                            <table class='filterContTable'>
+	                                <col width='20'>
+	                                <thead>
+	                                    <tr>
+	                                        <td><input type='checkbox' name='selectAll'></td>
+	                                        <td>Select All</td>
+	                                    </tr>
+	                                </thead>
+	                                <tbody>
+	                                	<tr>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>Active</td>
+                            			</tr>
+                            			<tr>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>Leave</td>
+                            			</tr>
+                            			<tr>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>Terminated</td>
+                            			</tr>
+                            			<tr>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>Retired</td>
+                            			</tr>
+	                                </tbody>
+	                            </table>
+	                        </div>
+	                        <div class='filterDisplayList'>
+	                            <label>Selections:</label>
+	                            <ul></ul>
+	                        </div>
+	                        <iframe class='cover' src='about:blank'></iframe>
+	                    </div>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn" name="">Hours Short</button>
+						<div class='DPBCont'>
+	                        <div class='tableWrap'>
+	                            <form class='leftInput'>
+	                                <input type='text' placeholder='Search..' autocomplete='off'>
+	                            </form>
+	                            <div class='filterContTableBG'></div>
+	                            <button class='resetBtn'><i class='fa fa-times' aria-hidden='true'></i> Reset Search</button>
+	                            <table class='filterContTable'>
+	                                <col width='20'>
+	                                <thead>
+	                                    <tr>
+	                                        <td><input type='checkbox' name='selectAll'></td>
+	                                        <td>Select All</td>
+	                                    </tr>
+	                                </thead>
+	                                <tbody>
+	                                	<tr>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>0</td>
+                            			</tr>
+                            			<tr>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>1-5</td>
+                            			</tr>
+                            			<tr>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>6-10</td>
+                            			</tr>
+                            			<tr>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>11-15</td>
+                            			</tr>
+                            			<tr>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>>15</td>
+                            			</tr>
+	                                </tbody>
+	                            </table>
+	                        </div>
+	                        <div class='filterDisplayList'>
+	                            <label>Selections:</label>
+	                            <ul></ul>
+	                        </div>
+	                        <iframe class='cover' src='about:blank'></iframe>
+	                    </div>
+					</div>
+
+					<div class="dropDownFilter">
+						<button class="dropDownBtn" name="">Advanced Certification Progress</button>
+						<div class='DPBCont'>
+	                            <table class='filterContTable'>
+	                                <thead></thead>
+	                                <tbody>
+	                                	<tr>
+	                                		<td>Email</td>
+	                                		<td>someemail@email.com</td>
+                            			</tr>
+                            			<tr>
+	                                		<td>CertNo</td>
+	                                		<td class='certNoInfo'></td>
+                            			</tr>
+                            			<tr>
+	                                		<td>Status</td>
+	                                		<td>Active</td>
+                            			</tr>
+	                                </tbody>
+	                            </table>
+	                        <iframe class='cover' src='about:blank'></iframe>
+	                    </div>
+					</div>
+				</div>
+
 			</div>
 
 
@@ -100,19 +220,19 @@ include_once "../lib/php/session.php";
 					<table id="overviewTable">
 						<thead>
 				            <tr>
-				                <th width="5%">Select</th>
+				                <th width="5%"><input type='checkbox' name='tableSelectAll'></th>
 				                <th width="20%">Name</th>
 				                <th width="25%">Email</th>
-				                <th width="15%">CertNo</th>
+				                <th width="15%">Hours Short</th>
 				                <th width="20%">Year</th>
 				                <th width="15%">View</th>
 				            </tr>
 				        </thead>
 				        <tbody>
-				        	<tr id="overviewSelectAll">
+				        	<!-- <tr id="overviewSelectAll">
 				        		<td><input type='checkbox' name='tableSelectAll'></td>
 				        		<td colspan="5">Select All</td>
-				        	</tr>
+				        	</tr> -->
 				        </tbody>
 					</table>
 				</div>

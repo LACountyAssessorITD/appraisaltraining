@@ -203,18 +203,80 @@ $(document).ready(function(){
             selectUI = selectRangeUI;
         }
 
+        // var trHTML = "<tr>\
+        //                 <td><input type='checkbox' name='selected'></td>\
+        //                 <td class='nameinfo'>"+name+"</td>\
+        //                 <td class='emailInfo'>"+email+"</td>\
+        //                 <td class='certNoInfo'>"+certNo+"</td>\
+        //                 <td class='yearSelect'>"+selectUI+"</td>\
+        //                 <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
+        //             </tr>";
+
         var trHTML = "<tr>\
                         <td><input type='checkbox' name='selected'></td>\
                         <td class='nameinfo'>"+name+"</td>\
-                        <td class='emailInfo'>"+email+"</td>\
+                        <td class='emailInfo'>";
+        // var infoHTML = "<button class='dropDownBtn'>Info</button>\
+        //                 <div class='DPBCont'>\
+        //                         <table class='filterContTable'>\
+        //                             <thead></thead>\
+        //                             <tbody>\
+        //                                 <tr>\
+        //                                     <td>Email</td>\
+        //                                     <td>someemail@email.com</td>\
+        //                                 </tr>\
+        //                                 <tr>\
+        //                                     <td>CertNo</td>\
+        //                                     <td class='certNoInfo'></td>\
+        //                                 </tr>\
+        //                                 <tr>\
+        //                                     <td>Status</td>\
+        //                                     <td>Active</td>\
+        //                                 </tr>\
+        //                             </tbody>\
+        //                         </table>\
+        //                     <iframe class='cover' src='about:blank'></iframe>\
+        //                 </div>";
+        var infoHTML = "<button class='infoHoverBtn'>Info</button>\
+                        <div class='infoHoverDPBCont'>\
+                            <ul>\
+                                <li>Email: someemail@email.com</li>\
+                                <li>CertNo: "+certNo+"</li>\
+                                <li>Status: Active</li>\
+                            </ul>\
+                            <iframe class='cover' src='about:blank'></iframe>\
+                        </div>";
+        var trSecondHTML = "</td>\
                         <td class='certNoInfo'>"+certNo+"</td>\
                         <td class='yearSelect'>"+selectUI+"</td>\
                         <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
                     </tr>";
 
-        $("#overviewTable tbody").append(trHTML);
+        var toAppend = trHTML+infoHTML+trSecondHTML;
+
+        $("#overviewTable tbody").append(toAppend);
     }
 
+    // $(document).on("hover",".infoHoverBtn", function() {
+    //     $(this).next(".DPBCont").show();
+    // }, function(){
+    //     $(this).next(".DPBCont").hide();
+    // });
+
+    $(document).on({
+        mouseenter: function() {
+            $(this).next(".infoHoverDPBCont").show();
+        },
+        mouseleave: function() {
+            $(this).next(".infoHoverDPBCont").hide();
+        }
+    }, ".infoHoverBtn");
+
+    // $(".infoHoverBtn").hover(function() {
+    //     $(this).next(".DPBCont").show();
+    // }, function(){
+    //     $(this).next(".DPBCont").hide();
+    // });
 
     function loadReportSelection() {
         //dropDownType should be read in from table
@@ -552,16 +614,16 @@ $(document).ready(function(){
 
     $("#overviewTable").on("click", "input[name='tableSelectAll']",function() {
         // $("#homeTab").text($(this).prop("tagName"));
-        var tbody = $(this).closest("tbody");
-        var selectAllLabel = $(this).parent().next();
+        var tbody = $(this).closest("thead").next("tbody");
+        // var selectAllLabel = $(this).parent().next();
         if($(this).is(":checked")){
-            selectAllLabel[0].innerHTML = "Deselect All";
+            // selectAllLabel[0].innerHTML = "Deselect All";
             tbody.find('input[name="selected"]' && 'input:visible').each(function(){
                 $(this).prop("checked",true);
             });
         }
         else {
-            selectAllLabel[0].innerHTML = "Select All";
+            // selectAllLabel[0].innerHTML = "Select All";
             tbody.find('input[name="selected"]' && 'input:visible').each(function(){
                 $(this).prop("checked",false);
             });
