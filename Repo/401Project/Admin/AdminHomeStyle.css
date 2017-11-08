@@ -394,20 +394,18 @@
 }
 
 .pdfView {
-	/*padding-right: 12px;
-	padding-bottom: 12px;
-	padding-left: 12px;*/
-	/*margin-top: 5px;*/
 	width: 100%;
 	overflow: auto;
-	/*z-index: -1;*/
+	margin-bottom:20px;
 }
 
 .rightContentColumn {
 	width: 100%;
+	margin:0;
+	padding:0;
 }
 
-/*.rightContentColumn button, */#optionTabDiv button {
+#optionTabDiv button {
 	/*float: right;*/
 	margin: 10px;
 	width: 20%;
@@ -427,83 +425,22 @@
 	opacity: 1;
 }
 
-.rightContentColumn button:hover {
-	width: 18%;
-}
-
-.rightContentColumn button:active {
-	box-shadow: none;
-}
-
-.rightContentColumn button[id="Download"]:hover {
-	background-color: rgb(205, 249, 164);
-}
-
-.rightContentColumn button[id="Print"]:hover {
-	background-color: rgb(200, 200, 200);
-}
-
-.rightContentColumn button[id="EmailAll"]:hover {
-	/*margin-top: 80px;*/
-	background-color: rgb(179, 204, 255);
-}
-/*
-#buttonTabDiv {
-	width: 100%;
-}
-
-#buttonTabDiv button{
-	float: right;
-}
-
-#buttonTabDiv:after {
-	content: "";
-	display: table;
-	clear: both;
-}
-
-*/
-
-#buttonTabDiv {
+#EmailAll {
 	margin: 20px auto;
-	width: 60%;
-}
-
-#buttonTabDiv button {
-	width: 50%;
+	width: 30%;
 	background-color: rgba(255,255,255,0);
-    color: white; /* White text */
-    padding: 10px 24px; /* Some padding */
-    cursor: pointer; /* Pointer/hand icon */
-    float: left; /* Float the buttons side by side */
+    color: white;
+    padding: 10px 24px;
+    cursor: pointer;
     outline: none;
     border-width: 1px;
     border-style: solid;
     border-color: white;
+    border-radius: 5px;
 }
 
-#buttonTabDiv button:not(:last-child) {
-	border-right: none;
-}
-
-#buttonTabDiv button:first-child {
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;
-}
-
-#buttonTabDiv button:last-child {
-	border-top-right-radius: 5px;
-	border-bottom-right-radius: 5px;
-}
-
-#buttonTabDiv button:hover {
+#EmailAll:hover {
 	background-color: grey;
-}
-
-#buttonTabDiv:after {
-    content: "";
-    clear: both;
-    display: table;
 }
 
 #emailDiv {
@@ -557,6 +494,9 @@
 	border-radius: 5px;
 	outline: none;
 	box-shadow: 7px 7px 10px rgba(20, 20, 20, 0.4);
+	margin:0;
+	margin-top:5px;
+	margin-bottom:10px;
 }
 
 #sendEmailBtnDiv button:hover {
@@ -617,6 +557,7 @@
 	/*margin-top: 1px;*/
 	/*margin-bottom: 0;*/
 	overflow: hidden;
+	margin:0;
 }
 
 #overviewTableDiv {
