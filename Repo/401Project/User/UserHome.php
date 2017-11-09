@@ -73,6 +73,7 @@ include_once "../lib/php/session.php";
 		<div class="midColumn">
 			<div>
 				<h3 id="previewLabel" class="banLabel">Preview Report</h3>
+				<h3 id="hoursNeedLabel" class="infoLabel">Hours needed: <span></span></h3>
 			</div>
 			<div class="pdfView">
 				<embed id="pdfBox" src="../LACLogo.pdf" width="100%" height="800px"></embed>

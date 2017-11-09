@@ -143,10 +143,31 @@ $(document).ready(function(){
                 alert("Fail to connect to the server when generaeting the report");
             }
         });
-
-
     }
 
+    function getCurrentBalance () {
+        $.ajax({
+            url:"../lib/php/usr/getCurrentBalance.php",
+            type: "POST",
+            dataType: "json",
+            success:function(result){
+                var balance = result;
+                var info;
+                if (balance >= 0 ) {
+                    info = "Requirement has been met (Extra: " + balance + " Hours)";
+                } else {        // balance < 0
+                    info = balance;
+                }
+
+                // Update info to the div
+                document.getElementById('hoursNeedLabel').innerHTML = 'Hours needed: '+info;
+            },
+            error: function(xhr, status, error){
+                alert("Fail to connect to the server when trying to fetch current balance");
+            },
+            async:false
+        });
+    }
 
     //Hiding subset of filters from result of changing result type selection
     $("#yearTypeSelect").change(function () {
