@@ -1,9 +1,14 @@
 $(document).ready(function(){
 
-    //$.when(getReportType()).done(generateReport);
-
     $("#homeTab").on("click",function(e) {
         e.preventDefault();
+    });
+
+    $(".top, .content, .footer").hide();
+
+    $("#lineOne").on("animationend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd", function() {
+        $(".top, .content, .footer").fadeIn(500);
+        $("#splashScreen").fadeOut(500);
     });
 
     var report_info=[];  // array of objects that contain report information definded in database

@@ -4,11 +4,11 @@ include_once "../lib/php/session.php";
 // redirect_onUserPage();
 ?>
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en-US">
 <head>
 	<title>LAC Website</title>
 	<link rel="stylesheet" href="UserHomeStyle.css">
+	<link rel="stylesheet" href="../CSS/splashStyle.css">
 	<link rel="stylesheet" href="../CSS/DefaultUI.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -16,6 +16,16 @@ include_once "../lib/php/session.php";
 </head>
 
 <body>
+
+	<div id="splashScreen">
+		<div id="splash">
+			<div id="lineOne"></div>
+			<div id="lineTwo"></div>
+			<h1>Training Records</h1>
+		</div>
+		<img src="../BGimg/Logo.png" alt="Logo" width="130px" height="130px">
+		<iframe class="cover"></iframe>
+	</div>
 
 	<?php include "../common/UserTop.php"; ?>
 

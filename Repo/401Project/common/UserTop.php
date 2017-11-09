@@ -9,6 +9,8 @@ echo "<div class='top'>
 				<h1><strong>Training Record</strong></h1>
 				<hr>
 				<h3><strong>Los Angeles County Office of the Assessor</strong></h3>
+				<br>
+				<h4 id='effectiveLabel'>Data effective as of: <span></span></h4>
 			</div>
 			<img src='../BGimg/Logo.png' alt='Logo' width='130px' height='130px'>
 		</div>
