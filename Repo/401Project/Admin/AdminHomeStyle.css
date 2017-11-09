@@ -564,6 +564,7 @@
 	margin: 10px 0;
 	max-height: 500px;
     overflow: scroll;
+    position: relative;
 }
 
 #overviewTable {
@@ -573,7 +574,7 @@
     border: 1px solid #ddd; /* Add a grey border */
     font-size: 1vw; /* Increase font-size */
     text-align: center;
-    position: relative;
+    /*position: relative;*/
 }
 
 #overviewTable thead > tr{
@@ -600,8 +601,14 @@
     color: black;
 }
 
-#overviewSelectAll td{
-	/*background-color: rgb(165,165,165);*/
+.emailInfo {
+	position: relative;
+}
+
+.infoHoverBtn {
+	background: none;
+	color: black;
+	border: none;
 }
 
 .infoHoverDPBCont {
@@ -615,7 +622,13 @@
     border-radius: 5px;
     overflow: auto;
     max-height: 500px;
-    width: 25%;
+    width: 100%;
+    left:60%;
+    bottom:0;
+}
+
+.infoHoverDPBCont ul {
+	text-decoration: none;
 }
 
 .viewReportBtn {

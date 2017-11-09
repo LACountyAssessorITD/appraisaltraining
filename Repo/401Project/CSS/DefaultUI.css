@@ -15,6 +15,11 @@ button, select {
 	cursor: pointer;
 }
 
+select {
+	padding-right:0;
+	padding-left: 20px;
+}
+
 .top {
 	position: relative;
 	background: linear-gradient(to left,rgba(0, 41, 124, 1), rgba(237, 243, 255,0.5));

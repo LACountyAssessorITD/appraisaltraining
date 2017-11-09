@@ -228,7 +228,7 @@ include_once "../lib/php/session.php";
 				            <tr>
 				                <th width="5%"><input type='checkbox' name='tableSelectAll'></th>
 				                <th width="20%">Name</th>
-				                <th width="25%">Email</th>
+				                <th width="25%">Info</th>
 				                <th width="15%">Hours Short</th>
 				                <th width="20%">Year</th>
 				                <th width="15%">View</th>

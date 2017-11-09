@@ -237,7 +237,7 @@ $(document).ready(function(){
         //                         </table>\
         //                     <iframe class='cover' src='about:blank'></iframe>\
         //                 </div>";
-        var infoHTML = "<button class='infoHoverBtn'>Info</button>\
+        var infoHTML = "<button class='infoHoverBtn'><i class='fa fa-user' aria-hidden='true'></i> Info</button>\
                         <div class='infoHoverDPBCont'>\
                             <ul>\
                                 <li>Email: someemail@email.com</li>\
