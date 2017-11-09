@@ -23,9 +23,7 @@ if( $conn === false )
 
 $certid = getCertNo();
 
-$tsql = "SELECT CurrentYearBalance, MAX(CertYear) 
-        FROM [New_CertHistory] 
-        WHERE CertNo=".(string)$certid;
+$tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid." Order By [CertYear]";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
@@ -34,7 +32,7 @@ if( $stmt === false )
 }
 else {
     $row= sqlsrv_fetch_array($stmt);
-    $balance = $row[0];
+    $balance = $row['CurrentYearBalance'];
     echo (int)$balance;
 }
 
