@@ -192,8 +192,8 @@ $(document).ready(function(){
             async:false
         });
 
-        var selectYearUI = "<label>Year</label><select class='specificYear'>"+optionHTML+"</select>";
-        var selectRangeUI = "<label>From</label><br><select class='fromYear'>"+optionHTML+"</select><br><label>To</label><br><select class='toYear'>"+optionHTML+"</select>";
+        var selectYearUI = "<label>Year </label><select class='specificYear'>"+optionHTML+"</select>";
+        var selectRangeUI = "<label>From </label><br><select class='fromYear'>"+optionHTML+"</select><br><label>To </label><br><select class='toYear'>"+optionHTML+"</select>";
         var selectUI = "";
 
         if(dropDownType == 1) {
@@ -266,9 +266,11 @@ $(document).ready(function(){
     $(document).on({
         mouseenter: function() {
             $(this).next(".infoHoverDPBCont").show();
+            $(this).css("color","blue");
         },
         mouseleave: function() {
             $(this).next(".infoHoverDPBCont").hide();
+            $(this).css("color","black");
         }
     }, ".infoHoverBtn");
 

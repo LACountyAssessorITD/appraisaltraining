@@ -625,10 +625,14 @@
     width: 100%;
     left:60%;
     bottom:0;
+    padding: 10px 10px;
 }
 
 .infoHoverDPBCont ul {
-	text-decoration: none;
+	list-style-type: none;
+	text-align:left;
+	margin:0;
+	padding:0;
 }
 
 .viewReportBtn {
