@@ -11,7 +11,7 @@
 
 	ini_set('memory_limit', '512M'); // TOT optimize more?
 
-	// TOT remember to add code to close filestream for excel files! and close $conn!
+	// TOT remember to close $conn!
 	// mianlu: NOTE: if(true){ } blocks are used to foster code snippit folding with Sublime functionalities.
 
 	// put include_once statements here:
@@ -28,7 +28,7 @@
 			die( print_r( sqlsrv_errors(), true));
 		}
 
-		$current_db_query = "SELECT DbName FROM DbTable WHERE IsCurrent = 1";
+		$current_db_query = "SELECT DbName FROM DbTable WHERE IsCurrent = 0";
 		$srvr_stmt = sqlsrv_query( $conn, $current_db_query );
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		$CurrentDatabase = (string)"";
@@ -37,7 +37,11 @@
 			$error_checker ++;
 			$CurrentDatabase = $temp_row;
 		}
-		if($error_checker != 1) die("ERROR in METADATA DATABASE! Please ask development team to troubleshoot! Exactly 1 entry in Metadata Table should contain IsCurrent = 1");
+		sqlsrv_close($conn); // close connection to Metadata Database
+		unset($conn);
+		if($error_checker != 1) die("ERROR in METADATA DATABASE! Please ask development team to troubleshoot! Exactly 1 entry in Metadata Table should contain IsCurrent = 1 and Exactly 1 entry should contain IsCurrent = 0");
+
+		// open connection to the non-current database so that if sth bad occurs during import, roll-back to previous database!
 		$connectionInfo = array( "Database"=>$CurrentDatabase, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
 		$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
 		if( $conn ) echo "SQL Server connection to CURRENT DATABASE established.<br />";
@@ -368,6 +372,34 @@
 		unset($excelObj_Details); //////////////////// lazy-reading END
 		echo "===== Details into CourseDetail finished, ".($row_count-2)." rows inserted. =====<br />";
 	}  // Details -> CourseDetail: DONE
+
+	sqlsrv_close($conn); // close connection to the new Current Database
+	unset($conn);
+
+	// now, since import operation finished without error, update Metadata Database to point to the new Current Database
+	if(true) {
+		$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
+		$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
+		if( $conn ) echo "SQL Server connection to METADATA DATABASE established.<br />";
+		else {
+			echo "SQL Server connection to METADATA DATABASE could not be established.<br />";
+			die( print_r( sqlsrv_errors(), true));
+		}
+		$update_current_db_query_pt_1 = "INSERT INTO DbTable (DbName, IsCurrent) SELECT DbName, 2 FROM DbTable WHERE IsCurrent = 1"; // previous "current database" gets IsCurrent = 2
+		$update_current_db_query_pt_2 = "INSERT INTO DbTable (DbName, IsCurrent) SELECT DbName, 1 FROM DbTable WHERE IsCurrent = 0"; // new "current database", gets IsCurrent = 1
+		$update_current_db_query_pt_3 = "INSERT INTO DbTable (DbName, IsCurrent) SELECT DbName, 0 FROM DbTable WHERE IsCurrent = 2"; // previous "current database", gets IsCurrent = 0
+		$srvr_stmt = sqlsrv_query( $conn, $update_current_db_query_pt_1 );
+		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		$srvr_stmt = sqlsrv_query( $conn, $update_current_db_query_pt_2 );
+		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		$srvr_stmt = sqlsrv_query( $conn, $update_current_db_query_pt_3 );
+		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		echo "Switching the old CURRENT DATABASE to the new CURRENT DATABASE done!<br />";
+		sqlsrv_close($conn); // close connection to Metadata Database
+		unset($conn);
+
+	}
+
 
 	/* // block comment starter
 	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
