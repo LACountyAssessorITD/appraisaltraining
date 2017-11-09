@@ -23,7 +23,7 @@ if( $conn === false )
 
 $certid = getCertNo();
 
-$tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid." Order By [CertYear]";
+$tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid." Order By [CertYear] DESC";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
