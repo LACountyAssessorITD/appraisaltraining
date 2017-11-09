@@ -150,7 +150,6 @@ $(document).ready(function(){
         $.ajax({
             url:"../lib/php/usr/getCurrentBalance.php",
             type: "POST",
-            dataType: "json",
             success:function(result){
                 var balance = result;
                 var info;
