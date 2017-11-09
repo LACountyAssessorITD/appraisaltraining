@@ -75,7 +75,7 @@ include_once "../lib/php/session.php";
 						<button class="dropDownBtn" name="Auditor">Auditor</button>
 					</div>
 
-					<div class="dropDownFilter">
+					<div class="dropDownFilter no_db">
 						<button class="dropDownBtn" name="">Employment Status</button>
 						<div class='DPBCont'>
 	                        <div class='tableWrap'>
@@ -120,7 +120,7 @@ include_once "../lib/php/session.php";
 	                    </div>
 					</div>
 
-					<div class="dropDownFilter">
+					<div class="dropDownFilter no_db">
 						<button class="dropDownBtn" name="">Hours Short</button>
 						<div class='DPBCont'>
 	                        <div class='tableWrap'>
@@ -169,34 +169,55 @@ include_once "../lib/php/session.php";
 	                    </div>
 					</div>
 
-					<div class="dropDownFilter">
+					<div class="dropDownFilter no_db">
 						<button class="dropDownBtn" name="">Advanced Certification Progress</button>
 						<div class='DPBCont'>
+	                        <div class='tableWrap'>
+	                            <form class='leftInput'>
+	                                <input type='text' placeholder='Search..' autocomplete='off'>
+	                            </form>
+	                            <div class='filterContTableBG'></div>
+	                            <button class='resetBtn'><i class='fa fa-times' aria-hidden='true'></i> Reset Search</button>
 	                            <table class='filterContTable'>
-	                                <thead></thead>
+	                                <col width='20'>
+	                                <thead>
+	                                    <tr>
+	                                        <td><input type='checkbox' name='selectAll'></td>
+	                                        <td>Select All</td>
+	                                    </tr>
+	                                </thead>
 	                                <tbody>
 	                                	<tr>
-	                                		<td>Email</td>
-	                                		<td>someemail@email.com</td>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>0</td>
                             			</tr>
                             			<tr>
-	                                		<td>CertNo</td>
-	                                		<td class='certNoInfo'></td>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>1-5</td>
                             			</tr>
                             			<tr>
-	                                		<td>Status</td>
-	                                		<td>Active</td>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>6-10</td>
+                            			</tr>
+                            			<tr>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>11-15</td>
+                            			</tr>
+                            			<tr>
+	                                		<td><input type='checkbox' name='selected'></td>
+                            				<td>>15</td>
                             			</tr>
 	                                </tbody>
 	                            </table>
+	                        </div>
+	                        <div class='filterDisplayList'>
+	                            <label>Selections:</label>
+	                            <ul></ul>
+	                        </div>
 	                        <iframe class='cover' src='about:blank'></iframe>
 	                    </div>
 					</div>
 				</div>
-
-				<!-- <div class="employeeFilters" name="">
-
-				</div> -->
 
 			</div>
 
@@ -210,7 +231,7 @@ include_once "../lib/php/session.php";
 		<div class="rightContent">
 
 			<div class="filterOverview">
-				<h3 id="overviewLabel" class="banLabel">Filter Overview</h3>
+				<h3 id="overviewLabel" class="banLabel">Filtered Results</h3>
 				<div id="reportType">
 					<div id="reportTypeLabel"><label >Select Report Type</label></div>
 					<select id="reportTypeSelect"></select>
@@ -253,7 +274,7 @@ include_once "../lib/php/session.php";
 							<textarea id="emailContentTA" placeholder="Email content..."></textarea>
 							<div id="sendEmailBtnDiv">
 								<div class="toolTipParent">
-									<button id="sendEmailSelectedBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Selected</button><span class="toolTip">Send email to the appraisers selected in the table below</span>
+									<button id="sendEmailSelectedBtn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send Selected</button><span class="toolTip">Send email to the appraisers selected in the Result Table</span>
 								</div>
 							</div>
 						</div>

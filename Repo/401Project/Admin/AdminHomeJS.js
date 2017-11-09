@@ -62,6 +62,9 @@ $(document).ready(function(){
 
     function loadFilterOptions() {
         $(".dropDownFilter").each(function() {
+            // if ($(this).hasClass("no_db")) {
+            //     return;
+            // }
             var filter_name = $(this).children(".dropDownBtn").attr("name");
             var filter_type = $(this).parent().attr("name");
             var result_array = [];
@@ -740,10 +743,22 @@ $(document).ready(function(){
         if($(this).data("clicked")) {
             $(this).data("clicked",false);
             $("#emailDiv").hide();
+            $("#EmailAll").css( {
+                "border-bottom-left-radius": "5px",
+                "border-bottom-right-radius": "5px",
+                "border-bottom-width": "1px",
+                "border-style": "solid",
+                "border-color": "white"
+            });
         }
         else {
             $(this).data("clicked",true);
             $("#emailDiv").show();
+            $("#EmailAll").css( {
+                "border-bottom-left-radius": "0",
+                "border-bottom-right-radius": "0",
+                "border-bottom": "none"
+            });
         }
 
     });
