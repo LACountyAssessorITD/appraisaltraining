@@ -156,7 +156,8 @@ $(document).ready(function(){
                 if (balance >= 0 ) {
                     info = "Requirement has been met (Extra: " + balance + " Hours)";
                 } else {        // balance < 0
-                    info = balance;
+                    balance *= -1;
+                    info = balance + " hours";
                 }
 
                 // Update info to the div
