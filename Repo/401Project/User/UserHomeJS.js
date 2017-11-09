@@ -47,6 +47,7 @@ $(document).ready(function(){
 
                 getFiscalYears();
                 generateReport()
+                getCurrentBalance();
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when trying to retrieve report types");
