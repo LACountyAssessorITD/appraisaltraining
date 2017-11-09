@@ -18,12 +18,31 @@
 	include_once "../../constants.php";
 
 	////////////////////////////////// Step I: Mian's sql server - open connection //////////////////////////////////
+	// open connectio to metadata table which tells me which among the 2 tables shall I connect to next!
 	if(true) {
-		$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
+		$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
 		$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
-		if( $conn ) echo "SQL Server connection established.<br />";
+		if( $conn ) echo "SQL Server connection to METADATA DATABASE established.<br />";
 		else {
-			echo "SQL Server connection could not be established.<br />";
+			echo "SQL Server connection to METADATA DATABASE could not be established.<br />";
+			die( print_r( sqlsrv_errors(), true));
+		}
+
+		$current_db_query = "SELECT DbName FROM DbTable WHERE IsCurrent = 1";
+		$srvr_stmt = sqlsrv_query( $conn, $current_db_query );
+		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		$CurrentDatabase = (string)"";
+		$error_checker = (int) 0;
+		while( $temp_row = sqlsrv_fetch_object( $srvr_stmt )) {
+			$error_checker ++;
+			$CurrentDatabase = $temp_row;
+		}
+		if($error_checker != 1) die("ERROR in METADATA DATABASE! Please ask development team to troubleshoot! Exactly 1 entry in Metadata Table should contain IsCurrent = 1");
+		$connectionInfo = array( "Database"=>$CurrentDatabase, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
+		$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
+		if( $conn ) echo "SQL Server connection to CURRENT DATABASE established.<br />";
+		else {
+			echo "SQL Server connection to CURRENT DATABASE could not be established.<br />";
 			die( print_r( sqlsrv_errors(), true));
 		}
 	}
@@ -31,16 +50,16 @@
 	////////////////////////////////// Step II: Mian's sql server - create 5 empty tables //////////////////////////////////
 	if(true) {
 		// 1. create queries to drop existing tables with same names that we're gonna create
-		// $drop_CH		= "IF OBJECT_ID('dbo.New_CertHistory', 'U') IS NOT NULL DROP TABLE dbo.New_CertHistory";
-		// $drop_CD		= "IF OBJECT_ID('dbo.New_CourseDetail', 'U') IS NOT NULL DROP TABLE dbo.New_CourseDetail";
-		// $drop_COL	= "IF OBJECT_ID('dbo.New_CarryoverLimits', 'U') IS NOT NULL DROP TABLE dbo.New_CarryoverLimits";
-		// $drop_EX		= "IF OBJECT_ID('dbo.New_EmployeeID_Xref', 'U') IS NOT NULL DROP TABLE dbo.New_EmployeeID_Xref";
-		// $drop_E		= "IF OBJECT_ID('dbo.New_Employee', 'U') IS NOT NULL DROP TABLE dbo.New_Employee";
-		$rename_CH	= "sp_rename 'dbo.New_CertHistory', 'Prev_CertHistory'";
-		$rename_CD	= "sp_rename 'dbo.New_CourseDetail', 'Prev_CourseDetail'";
-		$rename_COL	= "sp_rename 'dbo.New_CarryoverLimits', 'Prev_CarryoverLimits'";
-		$rename_EX	= "sp_rename 'dbo.New_EmployeeID_Xref', 'Prev_EmployeeID_Xref'";
-		$rename_E	= "sp_rename 'dbo.New_Employee', 'Prev_Employee'";
+		$drop_CH	= "IF OBJECT_ID('dbo.CertHistory', 'U') IS NOT NULL DROP TABLE dbo.CertHistory";
+		$drop_CD	= "IF OBJECT_ID('dbo.CourseDetail', 'U') IS NOT NULL DROP TABLE dbo.CourseDetail";
+		$drop_COL	= "IF OBJECT_ID('dbo.CarryoverLimits', 'U') IS NOT NULL DROP TABLE dbo.CarryoverLimits";
+		$drop_EX	= "IF OBJECT_ID('dbo.EmployeeID_Xref', 'U') IS NOT NULL DROP TABLE dbo.EmployeeID_Xref";
+		$drop_E		= "IF OBJECT_ID('dbo.Employee', 'U') IS NOT NULL DROP TABLE dbo.Employee";
+		// $rename_CH	= "sp_rename 'dbo.CertHistory', 'Prev_CertHistory'";
+		// $rename_CD	= "sp_rename 'dbo.CourseDetail', 'Prev_CourseDetail'";
+		// $rename_COL	= "sp_rename 'dbo.CarryoverLimits', 'Prev_CarryoverLimits'";
+		// $rename_EX	= "sp_rename 'dbo.EmployeeID_Xref', 'Prev_EmployeeID_Xref'";
+		// $rename_E	= "sp_rename 'dbo.Employee', 'Prev_Employee'";
 		// 2. run the above queries
 		$srvr_stmt = sqlsrv_query( $conn, $rename_CH );
 		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
@@ -53,7 +72,7 @@
 		$srvr_stmt = sqlsrv_query( $conn, $rename_E );
 		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		// 3. create table 3 Employee (DO THIS FIRST! CertNo need to be a foreign key for all other tables!)
-		$create_E = "CREATE TABLE dbo.New_Employee (
+		$create_E = "CREATE TABLE dbo.Employee (
 			CertNo float,						--dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
 			FirstName nvarchar(50),				--dbo.Summary
 			MiddleName nvarchar(50),			--dbo.Summary
@@ -70,8 +89,8 @@
 			primary key (CertNo), -- CertNo should be foreign key
 		)";
 		// 4. create table 1 CourseDetail
-		$create_CD = "CREATE TABLE dbo.New_CourseDetail (
-			CertNo float references dbo.New_Employee(CertNo), -- foreign key from Employee
+		$create_CD = "CREATE TABLE dbo.CourseDetail (
+			CertNo float references dbo.Employee(CertNo), -- foreign key from Employee
 			CourseYear nvarchar(10),			-- from dbo.Details(FiscalYear)
 			ItemNumber float,					-- undefined, maybe an index for all possible courses, if so then new table all_courses needed
 			CourseName nvarchar(100),			-- from dbo.tbl: Course Title + dbo.Details(Course)
@@ -82,8 +101,8 @@
 			-- primary key (CertNo, CourseYear, CourseName), -- if ItemNumber correctly implemented, switch to it! CertNo should be foreign key
 		)";
 		// 5. create table 4 CarryoverLimits
-		$create_COL = "CREATE TABLE dbo.New_CarryoverLimits (
-			[Status] nvarchar(50),				-- primary key from dbo.New_CertHistory, referenced in CertHistory(Status)
+		$create_COL = "CREATE TABLE dbo.CarryoverLimits (
+			[Status] nvarchar(50),				-- primary key from dbo.CertHistory, referenced in CertHistory(Status)
 			RequiredHours float,				-- undefined
 			Year1Limit float,					-- undefined
 			Year2Limit float,					-- undefined
@@ -91,11 +110,11 @@
 			-- primary key ([Status]),
 		)";
 		// 6. create table 2 CertHistory
-		$create_CH = "CREATE TABLE dbo.New_CertHistory (
-			CertNo float references dbo.New_Employee(CertNo), -- foreign key from Employee
+		$create_CH = "CREATE TABLE dbo.CertHistory (
+			CertNo float references dbo.Employee(CertNo), -- foreign key from Employee
 			CertYear nvarchar(10),				-- from dbo.AnnualReq
 			CertType nvarchar(50),				-- from dbo.AnnualReq
-			-- [Status] nvarchar(50) references dbo.New_CarryoverLimits([Status]),				-- from dbo.AnnualReq
+			-- [Status] nvarchar(50) references dbo.CarryoverLimits([Status]),				-- from dbo.AnnualReq
 			[Status] nvarchar(50),				-- from dbo.AnnualReq
 			HoursEarned float,					-- from dbo.AnnualReq
 			RequiredHours float,
@@ -108,8 +127,8 @@
 			constraint PK_CERTNO_CERTYEAR primary key (CertNo, CertYear), -- CertNo should be foreign key
 		)";
 		// 7. create table 5 EmployeeID_Xref
-		$create_EX = "CREATE TABLE dbo.New_EmployeeID_Xref (
-			CertNo float references dbo.New_Employee(CertNo),
+		$create_EX = "CREATE TABLE dbo.EmployeeID_Xref (
+			CertNo float references dbo.Employee(CertNo),
 			EmployeeID float,
 			primary key (CertNo),
 			unique (EmployeeID),
@@ -146,10 +165,10 @@
 		// insert into Employee row by row from Summary, while querying Temp2 for the 3 dates
 		// TrickyWork Pt.1: create table Temp
 		if(true) {
-			$drop_temp	= "IF OBJECT_ID('dbo.New_Temp', 'U') IS NOT NULL DROP TABLE dbo.New_Temp";
+			$drop_temp	= "IF OBJECT_ID('dbo.Temp', 'U') IS NOT NULL DROP TABLE dbo.Temp";
 			$srvr_stmt = sqlsrv_query( $conn, $drop_temp );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-			$create_temp = "CREATE TABLE dbo.New_Temp (
+			$create_temp = "CREATE TABLE dbo.Temp (
 				CertNo float,						--dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
 				TempCertDate datetime2(0),			--dbo.AnnualReq
 				PermCertDate datetime2(0),			--dbo.AnnualReq
@@ -160,7 +179,7 @@
 		}
 		// TrickyWork Pt.2: populate Temp
 		if(true) {
-			$srvr_query = "INSERT INTO New_Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate)";
+			$srvr_query = "INSERT INTO Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate)";
 			$srvr_query .= " VALUES (?,?,?,?)";
 			//////////////////// lazy-reading INIT ////////////////////
 			$excelReader_AnnualReq	= PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq	->setReadDataOnly(true);
@@ -172,7 +191,7 @@
 				// select distinct CertID rows from AnnualReq
 				$CertNo			= $annualreq->getCell('D'.$row_count)->getValue();
 				// 3 tricky dates
-				// one weird bug: getCell and getValue naively would result in today's date being inserted into New_Temp! which would mess
+				// one weird bug: getCell and getValue naively would result in today's date being inserted into Temp! which would mess
 				// up everything from this point onwards in php code execution!
 				// TempCertDate
 				$TempCell		= $annualreq->getCell('G'.$row_count);
@@ -200,10 +219,10 @@
 		}
 		// TrickyWork Pt.3: create table Temp2
 		if(true) {
-			$drop_temp2 = "IF OBJECT_ID('dbo.New_Temp2', 'U') IS NOT NULL DROP TABLE dbo.New_Temp2";
+			$drop_temp2 = "IF OBJECT_ID('dbo.Temp2', 'U') IS NOT NULL DROP TABLE dbo.Temp2";
 			$srvr_stmt = sqlsrv_query( $conn, $drop_temp2 );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-			$create_temp2 = "CREATE TABLE dbo.New_Temp2 (
+			$create_temp2 = "CREATE TABLE dbo.Temp2 (
 				CertNo float,
 				TempCertDate datetime2(0),
 				PermCertDate datetime2(0),
@@ -214,8 +233,8 @@
 		}
 		// TrickyWork Pt.4: populate Temp2
 		if(true) {
-			$select_query = "SELECT DISTINCT * FROM New_Temp ORDER BY CertNo";
-			$insert_query = "INSERT INTO New_Temp2 (CertNo, TempCertDate, PermCertDate, AdvCertDate) VALUES (?,?,?,?)";
+			$select_query = "SELECT DISTINCT * FROM Temp ORDER BY CertNo";
+			$insert_query = "INSERT INTO Temp2 (CertNo, TempCertDate, PermCertDate, AdvCertDate) VALUES (?,?,?,?)";
 			// BLOCK looping thru query selected lines and manipulate data fetched!
 			if(($result = sqlsrv_query($conn, $select_query)) !== false){
 				while( $temp_row = sqlsrv_fetch_object( $result )) {
@@ -242,7 +261,7 @@
 				$FirstName	= $summary->getCell('E'.$row_count)->getValue();
 				$Auditor	= $summary->getCell('H'.$row_count)->getValue();
 				// echo $row_count."\t".$LastName."\t".$FirstName."\t".(int)$CertNo."\t".$Auditor."<br />"; // debug
-				$Select_Temp2_Dates = "SELECT TempCertDate, PermCertDate, AdvCertDate FROM New_Temp2";
+				$Select_Temp2_Dates = "SELECT TempCertDate, PermCertDate, AdvCertDate FROM Temp2";
 				$Select_Temp2_Dates .= " WHERE CertNo = ";
 				$Select_Temp2_Dates .= $CertNo;
 				// use a counter to check for conflicting dates across Temp2:
@@ -259,7 +278,7 @@
 					$params = array($CertNo, $LastName, $MiddleName, $FirstName, $Auditor, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate);
 				}
 				if($errorcheck_counter != 1) echo "ERROR: defective data from annualreq.xlsx! conflicting 3-date tuples";
-				$Summary_to_Employee = "INSERT INTO New_Employee (CertNo, LastName, MiddleName, FirstName, Auditor,
+				$Summary_to_Employee = "INSERT INTO Employee (CertNo, LastName, MiddleName, FirstName, Auditor,
 																  TempCertDate, PermCertDate, AdvCertDate)
 																  VALUES (?,?,?,?,?,?,?,?)";
 				if( $stmt = sqlsrv_query( $conn, $Summary_to_Employee, $params) === false ) die( print_r(sqlsrv_errors(), true) );
@@ -273,7 +292,7 @@
 
 	// 2. AnnualReq -> CertHistory: START
 	if(true) {
-		$srvr_query = "INSERT INTO New_CertHistory (CertNo, CertYear, CertType, Status, HoursEarned, RequiredHours,
+		$srvr_query = "INSERT INTO CertHistory (CertNo, CertYear, CertType, Status, HoursEarned, RequiredHours,
 		CurrentYearBalance, PriorYearBalance, CarryToYear1,
 		CarryToYear2, CarryToYear3, CarryForwardTotal)";
 		$srvr_query .= " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -311,7 +330,7 @@
 
 	// 3. Details -> CourseDetail: START
 	if(true) {
-		$srvr_query = "INSERT INTO New_CourseDetail (CertNo, CourseYear, --ItemNumber,
+		$srvr_query = "INSERT INTO CourseDetail (CertNo, CourseYear, --ItemNumber,
 													CourseName, CourseLocation, CourseGrade, CourseHours, EndDate)";
 		$srvr_query .= " VALUES (?,?,?,?,?,?,?)";
 		echo "===== Start inserting Details into CourseDetail =====<br />";

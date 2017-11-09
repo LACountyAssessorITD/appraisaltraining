@@ -36,6 +36,9 @@
 	define("SQL_SERVER_BOEDATABASE", "BOE");
 	define("SQL_SERVER_LACDATABASE", "temporary_5_table");
 	// define("SQL_SERVER_LACDATABASE_ML_DEVELOPMENT", "ml_development");
+	define("SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00", "ml_development_no_drop_00"); // TOT add this db in SQL server!
+	define("SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01", "ml_development_no_drop_01"); // TOT add this db in SQL server!
+	define("SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02", "ml_development_no_drop_02"); // TOT add this db in SQL server!
 
 	// LDAP Info
 	define("LDAP_SERVER_NAME", "ldap://laassessor.co.la.ca.us");
