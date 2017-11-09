@@ -161,7 +161,7 @@ $(document).ready(function(){
                 }
 
                 // Update info to the div
-                document.getElementById('hoursNeedLabel').innerHTML = 'Hours needed: '+info;
+                document.getElementById('hoursNeededLabel').innerHTML = 'Hours needed: '+info;
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when trying to fetch current balance");

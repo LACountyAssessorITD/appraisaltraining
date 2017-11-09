@@ -61,10 +61,12 @@ $(document).ready(function(){
     }
 
     function loadFilterOptions() {
+        // alert("atload1");
         $(".dropDownFilter").each(function() {
-            // if ($(this).hasClass("no_db")) {
-            //     return;
-            // }
+            // alert("atload2");
+            if ($(this).hasClass("no_db")) {
+                return true;
+            }
             var filter_name = $(this).children(".dropDownBtn").attr("name");
             var filter_type = $(this).parent().attr("name");
             var result_array = [];
@@ -138,6 +140,8 @@ $(document).ready(function(){
 
             thisObj.append(DPBContHtml);
         });
+        setTimeout(checkTypeForDownload,0);
+        // checkTypeForDownload();
     }
 
 
@@ -306,6 +310,9 @@ $(document).ready(function(){
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
         var filterNum = 0;
         $(".dropDownFilter").each(function() {
+            if($(this).hasClass("no_db")) {
+                return true;
+            }
             var filterDisplayList = $(this).find(".filterDisplayList");
             var filter_name = $(this).children(".dropDownBtn").attr("name");
             var list = filterDisplayList.children("ul");
@@ -567,10 +574,10 @@ $(document).ready(function(){
     // }).change();
 
 
-    checkTypeForDownload();
     function checkTypeForDownload() {
+        // alert("checkdownload");
         var str = $("#reportTypeSelect option:selected").text();
-
+        // alert(str);
         if(str.toUpperCase()!="Annual Training Reports".toUpperCase()) {
             $("#downloadSelected").hide();
         }
@@ -890,12 +897,12 @@ $(document).ready(function(){
 
     $("#downloadCurrent").hide();
 
-    $("#downloadSelected").on("click",function() {
-        var idArray = [];
-        $("#overviewTable").find(".certNoInfo").each(function() {
-            idArray.push($(this)[0].innerHTML);
-        });
-    });
+    // $("#downloadSelected").on("click",function() {
+    //     var idArray = [];
+    //     $("#overviewTable").find(".certNoInfo").each(function() {
+    //         idArray.push($(this)[0].innerHTML);
+    //     });
+    // });
 
 
 });

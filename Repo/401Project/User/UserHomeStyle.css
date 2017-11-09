@@ -209,7 +209,6 @@ select {
 	width: 75%;
 	opacity: 1;
 	z-index: 4;
-	pad
 }
 
 .midColumn h2 {
@@ -229,4 +228,8 @@ select {
 
 #pdfBox {
 	/*box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.4);*/
+}
+
+#hoursNeededLabel {
+	color: white;
 }
