@@ -145,25 +145,25 @@ $(document).ready(function(){
     }
 
 
-    function getFilterNameAndType(filter_name, filter_type) {
-        // send request to retrieve distinctive rows
-         $.ajax({
-            url:"../lib/php/admin/getFilters.php",
-            type: "POST",
-            dataType: "text",
-            data: {
-                filter_name:filter_name,
-                filter_type:filter_type
-            },
-            success:function(results){
-                return JSON.parse(results);
-            },
-            error: function(xhr, status, error){
-                alert("Fail to connect to the server when trying to retrieve filters");
-                alert(status);
-            }
-        });
-    }
+    // function getFilterNameAndType(filter_name, filter_type) {
+    //     // send request to retrieve distinctive rows
+    //      $.ajax({
+    //         url:"../lib/php/admin/getFilters.php",
+    //         type: "POST",
+    //         dataType: "text",
+    //         data: {
+    //             filter_name:filter_name,
+    //             filter_type:filter_type
+    //         },
+    //         success:function(results){
+    //             return JSON.parse(results);
+    //         },
+    //         error: function(xhr, status, error){
+    //             alert("Fail to connect to the server when trying to retrieve filters");
+    //             alert(status);
+    //         }
+    //     });
+    // }
 
     var dropDownType = 0;
 
@@ -294,19 +294,9 @@ $(document).ready(function(){
     }
 
 
-
-    // loadTable("nelson", "yuehhsul@usc.edu", "1234");
-    // loadTable("testAdmin", "assessortestpdf@gmail.com", "5678");
-    // loadTable("Yining", "yininghu@usc.edu", "91011");
-
-
-
     function applyFilter() {
         clearTable();
-        // Get report type that admin selected
-
-
-        // generate SQL query clause
+       // generate SQL query clause
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
         var filterNum = 0;
         $(".dropDownFilter").each(function() {
