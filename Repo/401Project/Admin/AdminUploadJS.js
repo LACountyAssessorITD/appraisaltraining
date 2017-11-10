@@ -134,5 +134,16 @@ $(document).ready(function(){
       // $("#chosenFileName").text("");
     });
 
+    $(".editRowBtn").on("click", function() {
+      if($(this).data("clicked")) {
+        $(this).data("clicked",false);
+        $(this).next(".editRowDiv").hide();
+      }
+      else {
+        $(this).data("clicked",true);
+        $(this).next(".editRowDiv").show();
+      }
+    });
+
 
 });

@@ -264,12 +264,41 @@ iframe {
     color: black;
 }
 
+#xrefTable input {
+	width: auto;
+	height: auto;
+	margin: 0;
+	top: 0;
+	bottom: 0;
+}
+
 .editRowBtn {
 	background: none;
 	border: none;
+	outline: none;
 }
 
 .editRowBtn i{
 	font-size: 1.5vw;
 	/*padding: 10px;*/
 }
+
+.editRowDiv {
+	display: none;
+    /*position: relative;*/
+    background-color: rgb(244, 248, 255);
+    /*width: 100%;*/
+    opacity: 1;
+    box-shadow: 0px 8px 12px 0px rgba(0,0,0,0.4);
+    z-index: 5;
+    border-radius: 5px;
+    overflow: auto;
+    max-height: 500px;
+    width: 100%;
+    left:0;
+    bottom:0;
+    padding: 10px 10px;
+}
+
+
+

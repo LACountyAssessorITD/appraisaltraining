@@ -117,24 +117,46 @@
 
 		<div class="xrefDiv">
 			<div id="xrefTableDiv">
-				<table>
+				<table id="xrefTable">
 					<thead>
 						<tr>
-							<th>EmployeeID</th>
-							<th>CertNo</th>
-							<th>Edit</th>
+							<th width="20%">EmployeeID</th>
+							<th width="20%">CertNo</th>
+							<th width="60%">Edit</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>12345</td>
 							<td>23456</td>
-							<td><button class='editRowBtn'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+							<td>
+								<button class='editRowBtn'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+								<div class="editRowDiv">
+									<label>EmployeeID</label>
+									<input type="text" name="EmployeeIDInput">
+									<br>
+									<label>CertNo</label>
+									<input type="text" name="CertNoInput">
+									<br>
+									<button>Confirm Edit</button>
+								</div>
+							</td>
 						</tr>
 						<tr>
 							<td>12345</td>
 							<td>23456</td>
-							<td><button class='editRowBtn'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+							<td>
+								<button class='editRowBtn'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+								<div class="editRowDiv">
+									<label>EmployeeID</label>
+									<input type="text" name="EmployeeIDInput">
+									<br>
+									<label>CertNo</label>
+									<input type="text" name="CertNoInput">
+									<br>
+									<button>Confirm Edit</button>
+								</div>
+							</td>
 						</tr>
 					</tbody>
 				</table>	
