@@ -11,7 +11,6 @@ $(document).ready(function(){
         $("#splashScreen").fadeOut(500);
     });
 
-
     var report_info=[];  // array of objects that contain report information definded in database
     function getDropDownType(name) {
         for (var i = 0; i < report_info.length; i++)

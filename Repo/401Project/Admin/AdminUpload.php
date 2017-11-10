@@ -90,7 +90,6 @@
 					<thead>
 						<tr>
 							<th>File</th>
-							<th>Restore</th>
 							<th>Save</th>
 						</tr>
 					</thead>
@@ -100,8 +99,11 @@
 					        if ($entry != "." && $entry != "..") {
 					        	echo "<tr>";
 					            echo "<td>"."$entry"."</td>";
-					            echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
-					            echo '<td><button class="saveBtn"><i class="fa fa-floppy-o" aria-hidden="true"></i></button></td>';
+					            // echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
+					            // echo '<td><button class="saveBtn"><i class="fa fa-floppy-o" aria-hidden="true"></i></button></td>';
+					            echo '<td><a id="downloadLink" href="../lib/php/admin/report/downloadCommunicator.php" target="_blank">
+											<button class="saveBtn"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+										</a></td>';
 					            echo "</tr>";
 					        }
 					    }
