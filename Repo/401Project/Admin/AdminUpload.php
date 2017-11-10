@@ -47,7 +47,7 @@
 
 		<div class="buttonGroup">
 			<button id="uploadSegCtrl">Upload</button>
-			<button id="restoreSegCtrl">Restore</button>
+			<button id="restoreSegCtrl">History</button>
 		</div>
 
 		<!-- <div class="selectCont" id="accordion"> -->
@@ -84,7 +84,7 @@
 		</div>
 
 		<div class="restore">
-			<h3>Restore Previous</h3>
+			<h3>Past Files</h3>
 			<div id="restoreTableDiv">
 				<table>
 					<thead>
