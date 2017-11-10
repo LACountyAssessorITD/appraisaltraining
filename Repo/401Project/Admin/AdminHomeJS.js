@@ -294,19 +294,9 @@ $(document).ready(function(){
     }
 
 
-
-    // loadTable("nelson", "yuehhsul@usc.edu", "1234");
-    // loadTable("testAdmin", "assessortestpdf@gmail.com", "5678");
-    // loadTable("Yining", "yininghu@usc.edu", "91011");
-
-
-
     function applyFilter() {
         clearTable();
-        // Get report type that admin selected
-
-
-        // generate SQL query clause
+       // generate SQL query clause
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
         var filterNum = 0;
         $(".dropDownFilter").each(function() {
