@@ -11,6 +11,19 @@ $(document).ready(function(){
         $("#splashScreen").fadeOut(500);
     });
 
+    loadDefaultPDF();
+
+    function loadDefaultPDF() {
+        var parent = $(".pdfView");
+        var newElement = "<object id='pdfBox' data='../LACLogo.pdf' type='application/pdf' width='100%' height='600px'>\
+                            <p>It appears you don't have Adobe Reader or PDF support in this web browser.\
+                            <a href='singleUserReport.php'>Click here to download the PDF</a>. Or\
+                            <a href='http://get.adobe.com/reader/' target='_blank'>click here to install Adobe Reader</a>.</p>\
+                            <embed src='../LACLogo.pdf' type='application/pdf'>\
+                        </object>";
+        parent.append(newElement);
+    }
+
     var report_info=[];  // array of objects that contain report information definded in database
     function getDropDownType(name) {
         for (var i = 0; i < report_info.length; i++)
@@ -49,8 +62,10 @@ $(document).ready(function(){
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when trying to retrieve report types");
-            }
+            },
+            async: false
         });
+        checkTypeForDownload();
     }
 
     loadFilterOptions();
@@ -139,7 +154,7 @@ $(document).ready(function(){
 
             thisObj.append(DPBContHtml);
         });
-        setTimeout(checkTypeForDownload,0);
+        // setTimeout(checkTypeForDownload,0);
         // checkTypeForDownload();
     }
 
@@ -165,6 +180,8 @@ $(document).ready(function(){
     // }
 
     var dropDownType = 0;
+
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608");
 
     function loadTable(name, email, certNo) {
         // Get LDAP Information
@@ -221,39 +238,18 @@ $(document).ready(function(){
         var trHTML = "<tr>\
                         <td><input type='checkbox' name='selected'></td>\
                         <td class='nameinfo'>"+name+"</td>\
-                        <td class='emailInfo'>";
-        // var infoHTML = "<button class='dropDownBtn'>Info</button>\
-        //                 <div class='DPBCont'>\
-        //                         <table class='filterContTable'>\
-        //                             <thead></thead>\
-        //                             <tbody>\
-        //                                 <tr>\
-        //                                     <td>Email</td>\
-        //                                     <td>someemail@email.com</td>\
-        //                                 </tr>\
-        //                                 <tr>\
-        //                                     <td>CertNo</td>\
-        //                                     <td class='certNoInfo'></td>\
-        //                                 </tr>\
-        //                                 <tr>\
-        //                                     <td>Status</td>\
-        //                                     <td>Active</td>\
-        //                                 </tr>\
-        //                             </tbody>\
-        //                         </table>\
-        //                     <iframe class='cover' src='about:blank'></iframe>\
-        //                 </div>";
+                        <td class='infoInfo'>";
         var infoHTML = "<button class='infoHoverBtn'><i class='fa fa-user' aria-hidden='true'></i> Info</button>\
                         <div class='infoHoverDPBCont'>\
                             <ul>\
-                                <li>Email: someemail@email.com</li>\
+                                <li class='emailLi'>Email: "+email+"</li>\
                                 <li>CertNo: "+certNo+"</li>\
                                 <li>Status: Active</li>\
                             </ul>\
                             <iframe class='cover' src='about:blank'></iframe>\
                         </div>";
         var trSecondHTML = "</td>\
-                        <td class='certNoInfo'>"+certNo+"</td>\
+                        <td class='hoursShortInfo'>12</td>\
                         <td class='yearSelect'>"+selectUI+"</td>\
                         <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
                     </tr>";
@@ -445,7 +441,6 @@ $(document).ready(function(){
             success:function(result){
                 if (result != "!UNDEFINED") {
                     var parent = $("#pdfBox").parent();
-                    // var newElement = "<iframe id='pdfBox' src='"+"../lib/php/admin/reportType/1_Specific_Year.php"+"' frameborder='0' scrolling='auto' width='100%' height='800px'></iframe>";
                     var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/report/"+report_file_name+"' type='/pdf' width='100%' height='600px'>\
                                 <embed src='"+"../lib/php/admin/report/"+report_file_name+"' type='application/pdf'></embed>\
                             </object>";
@@ -769,7 +764,7 @@ $(document).ready(function(){
 
     $("#sendEmailSelectedBtn").on("click", function() {
         var numSelected = 0;
-         $("#overviewTable").find(".emailInfo").each(function() {
+         $("#overviewTable").find(".infoInfo").each(function() {
             var checkbox = $(this).closest("tr").find("input[name='selected']");
             if(checkbox.is(":checked")) {
                 numSelected+=1;
@@ -781,7 +776,7 @@ $(document).ready(function(){
         }
     	var subject = getEmailSubject();
         var content = getEmailContent();
-        $("#overviewTable").find(".emailInfo").each(function() {
+        $("#overviewTable").find(".emailLi").each(function() {
             var checkbox = $(this).closest("tr").find("input[name='selected']");
             if(checkbox.is(":checked")) {
                 var address = $(this)[0].innerHTML;

@@ -34,6 +34,19 @@ $mail->Body 	 = $mail->Body."\r\nBest Regards,\r\n\r\nAdmin";
 // $mail->AddAddress('assessortestpdf@gmail.com');
 $mail->AddAddress($address);
 //$mail->addStringAttachment($pdf->Output("S",'Report_'.$certid.'.pdf'), 'Report_'.$certid.'.pdf', $encoding = 'base64', $type = 'application/pdf');
+
+// $success = mail($address,$mail->Subject,$mail->Body);
+
+// if(!$success) {
+//    echo "fail";
+//    $error_msg = error_get_last()['message'];
+//    echo $error_msg;
+// }
+// else{
+//    echo "success";
+// }
+// sleep(1);
+
 if(!$mail->send()) {
    echo "fail";
 }

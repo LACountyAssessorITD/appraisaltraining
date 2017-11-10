@@ -298,12 +298,12 @@ include_once "../lib/php/session.php";
 							</a>
 						</div>
 
-						<object id="pdfBox" data="../LACLogo.pdf" type="application/pdf" width="100%" height="600px">
+						<!-- <object id="pdfBox" data="../LACLogo.pdf" type="application/pdf" width="100%" height="600px">
 							<p>It appears you don't have Adobe Reader or PDF support in this web browser.
 							<a href="singleUserReport.php">Click here to download the PDF</a>. Or
 							<a href="http://get.adobe.com/reader/" target="_blank">click here to install Adobe Reader</a>.</p>
-							<embed src="../LACLogo.pdf" type="application/pdf"><!-- </embed> -->
-						</object>
+							<embed src="../LACLogo.pdf" type="application/pdf">
+						</object> -->
 					</div>
 				</div>
 
