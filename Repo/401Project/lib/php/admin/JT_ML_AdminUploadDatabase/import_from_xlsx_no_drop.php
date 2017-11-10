@@ -35,8 +35,9 @@
 		$error_checker = (int) 0;
 		while( $temp_row = sqlsrv_fetch_object( $srvr_stmt )) {
 			$error_checker ++;
-			$CurrentDatabase = $temp_row;
+			$CurrentDatabase = $temp_row->DbName;
 		}
+		$CurrentDatabase = (string)$CurrentDatabase;
 		sqlsrv_close($conn); // close connection to Metadata Database
 		unset($conn);
 		if($error_checker != 1) die("ERROR in METADATA DATABASE! Please ask development team to troubleshoot! Exactly 1 entry in Metadata Table should contain IsCurrent = 1 and Exactly 1 entry should contain IsCurrent = 0");
@@ -65,15 +66,15 @@
 		// $rename_EX	= "sp_rename 'dbo.EmployeeID_Xref', 'Prev_EmployeeID_Xref'";
 		// $rename_E	= "sp_rename 'dbo.Employee', 'Prev_Employee'";
 		// 2. run the above queries
-		$srvr_stmt = sqlsrv_query( $conn, $rename_CH );
+		$srvr_stmt = sqlsrv_query( $conn, $drop_CH );
 		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		$srvr_stmt = sqlsrv_query( $conn, $rename_CD );
+		$srvr_stmt = sqlsrv_query( $conn, $drop_CD );
 		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		$srvr_stmt = sqlsrv_query( $conn, $rename_COL );
+		$srvr_stmt = sqlsrv_query( $conn, $drop_COL );
 		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		$srvr_stmt = sqlsrv_query( $conn, $rename_EX );
+		$srvr_stmt = sqlsrv_query( $conn, $drop_EX );
 		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		$srvr_stmt = sqlsrv_query( $conn, $rename_E );
+		$srvr_stmt = sqlsrv_query( $conn, $drop_E );
 		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		// 3. create table 3 Employee (DO THIS FIRST! CertNo need to be a foreign key for all other tables!)
 		$create_E = "CREATE TABLE dbo.Employee (
@@ -332,6 +333,7 @@
 		echo "===== AnnualReq into CertHistory finished, ".($row_count-2)." rows inserted. =====<br />";
 	}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
 
+	/* // block comment starter
 	// 3. Details -> CourseDetail: START
 	if(true) {
 		$srvr_query = "INSERT INTO CourseDetail (CertNo, CourseYear, --ItemNumber,
@@ -372,6 +374,7 @@
 		unset($excelObj_Details); //////////////////// lazy-reading END
 		echo "===== Details into CourseDetail finished, ".($row_count-2)." rows inserted. =====<br />";
 	}  // Details -> CourseDetail: DONE
+	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
 
 	sqlsrv_close($conn); // close connection to the new Current Database
 	unset($conn);
@@ -385,15 +388,20 @@
 			echo "SQL Server connection to METADATA DATABASE could not be established.<br />";
 			die( print_r( sqlsrv_errors(), true));
 		}
-		$update_current_db_query_pt_1 = "INSERT INTO DbTable (DbName, IsCurrent) SELECT DbName, 2 FROM DbTable WHERE IsCurrent = 1"; // previous "current database" gets IsCurrent = 2
-		$update_current_db_query_pt_2 = "INSERT INTO DbTable (DbName, IsCurrent) SELECT DbName, 1 FROM DbTable WHERE IsCurrent = 0"; // new "current database", gets IsCurrent = 1
-		$update_current_db_query_pt_3 = "INSERT INTO DbTable (DbName, IsCurrent) SELECT DbName, 0 FROM DbTable WHERE IsCurrent = 2"; // previous "current database", gets IsCurrent = 0
-		$srvr_stmt = sqlsrv_query( $conn, $update_current_db_query_pt_1 );
+		// $update_current_db_query_pt_1 = "INSERT INTO DbTable (DbName, IsCurrent) SELECT DbName, 2 FROM DbTable WHERE IsCurrent = 1"; // previous "current database" gets IsCurrent = 2
+		// $update_current_db_query_pt_2 = "INSERT INTO DbTable (DbName, IsCurrent) SELECT DbName, 1 FROM DbTable WHERE IsCurrent = 0"; // new "current database", gets IsCurrent = 1
+		// $update_current_db_query_pt_3 = "INSERT INTO DbTable (DbName, IsCurrent) SELECT DbName, 0 FROM DbTable WHERE IsCurrent = 2"; // previous "current database", gets IsCurrent = 0
+		// $srvr_stmt = sqlsrv_query( $conn, $update_current_db_query_pt_1 );
+		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		// $srvr_stmt = sqlsrv_query( $conn, $update_current_db_query_pt_2 );
+		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		// $srvr_stmt = sqlsrv_query( $conn, $update_current_db_query_pt_3 );
+		// if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+
+		$update_current_db_query = "UPDATE DbTable SET IsCurrent = 1 - IsCurrent"; // previous "current database", gets IsCurrent = 0
+		$srvr_stmt = sqlsrv_query( $conn, $update_current_db_query );
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		$srvr_stmt = sqlsrv_query( $conn, $update_current_db_query_pt_2 );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		$srvr_stmt = sqlsrv_query( $conn, $update_current_db_query_pt_3 );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+
 		echo "Switching the old CURRENT DATABASE to the new CURRENT DATABASE done!<br />";
 		sqlsrv_close($conn); // close connection to Metadata Database
 		unset($conn);
