@@ -23,6 +23,7 @@ iframe {
     border-width: 1px;
     border-style: solid;
     border-color: white;
+    border-radius: 0;
 }
 
 .buttonGroup button:not(:last-child) {
