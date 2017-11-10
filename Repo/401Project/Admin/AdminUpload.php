@@ -48,6 +48,7 @@
 		<div class="buttonGroup">
 			<button id="uploadSegCtrl">Upload</button>
 			<button id="restoreSegCtrl">History</button>
+			<button id="xrefSegCtrl">Xref</button>
 		</div>
 
 		<!-- <div class="selectCont" id="accordion"> -->
@@ -111,6 +112,32 @@
 					}
 				?>
 				</table>
+			</div>
+		</div>
+
+		<div class="xrefDiv">
+			<div id="xrefTableDiv">
+				<table>
+					<thead>
+						<tr>
+							<th>EmployeeID</th>
+							<th>CertNo</th>
+							<th>Edit</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>12345</td>
+							<td>23456</td>
+							<td><button class='editRowBtn'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+						</tr>
+						<tr>
+							<td>12345</td>
+							<td>23456</td>
+							<td><button class='editRowBtn'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+						</tr>
+					</tbody>
+				</table>	
 			</div>
 		</div>
 

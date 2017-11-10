@@ -242,6 +242,15 @@ include_once "../lib/php/session.php";
 					</a>
 				</div>
 				<!-- <button class="resetAll" id="resetAllTable"><i class="fa fa-times" aria-hidden="true"></i> Reset Selections</button> -->
+				<div id="hoursShortDiv">
+					<label>Hours Short:
+						<input type='checkbox'><span> 0</span>
+						<input type='checkbox'><span> 1-5</span>
+						<input type='checkbox'><span> 6-10</span>
+						<input type='checkbox'><span> 11-15</span>
+						<input type='checkbox'><span> >15</span>
+					</label>
+				</div>
 				<div id="overviewTableDiv">
 					<table id="overviewTable">
 						<thead>

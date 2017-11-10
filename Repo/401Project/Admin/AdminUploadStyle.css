@@ -9,11 +9,11 @@ iframe {
 
 .buttonGroup {
 	margin: 20px auto;
-	width: 30%;
+	width: 50%;
 }
 
 .buttonGroup button {
-	width: 50%;
+	width: 33%;
 	background-color: rgba(255,255,255,0);
     color: white; /* White text */
     padding: 10px 24px; /* Some padding */
@@ -166,7 +166,7 @@ iframe {
 #restoreTableDiv {
 	width: 70%;
 	text-align: center;
-	margin: auto;
+	margin: 30px auto;
     border-collapse: collapse; /* Collapse borders */
     border: 1px solid #ddd; /* Add a grey border */
     font-size: 1vw; /* Increase font-size */
@@ -213,4 +213,63 @@ iframe {
 
 .saveBtn:hover{
 	color:grey;
+}
+
+/*#xrefTableDiv {
+	text-align: center;
+	margin: 20px auto;
+	position: relative;
+}*/
+
+#xrefTableDiv {
+	width: 70%;
+	height: 700px;
+	text-align: center;
+	margin: 30px auto;
+    border-collapse: collapse; /* Collapse borders */
+    border: 1px solid #ddd; /* Add a grey border */
+    font-size: 1vw; /* Increase font-size */
+    overflow: auto;
+    cursor: pointer;
+}
+
+#xrefTableDiv table {
+	width: 100%;
+	background: transparent;
+	color: white;
+	font-size: 1.3vw;
+}
+
+#xrefTableDiv th {
+	background: white;
+	color: black;
+}
+
+#xrefTableDiv td {
+    text-align: center; /* Left-align text */
+    padding: 12px; /* Add padding */
+	background: transparent;
+}
+
+#xrefTableDiv tbody tr {
+	background-color: white;
+	border-bottom: 1px solid #ddd;
+	/*text-align: left;*/
+	background: transparent;
+}
+
+#xrefTableDiv tbody tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: rgb(220,220,220);
+    color: black;
+}
+
+.editRowBtn {
+	background: none;
+	border: none;
+}
+
+.editRowBtn i{
+	font-size: 1.5vw;
+	/*padding: 10px;*/
 }

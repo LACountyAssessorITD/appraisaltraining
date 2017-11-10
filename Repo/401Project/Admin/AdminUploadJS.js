@@ -49,18 +49,28 @@ $(document).ready(function(){
     // function submitForm() {
     //     $.ajax({url:"AdminUploadPHP.php"});
     // }
-    $(".restore").hide();
+
+    function hideAllSeg() {
+        $(".upload").hide();
+        $(".restore").hide();
+        $(".xrefDiv").hide()
+    }
+
+    hideAllSeg();
+    $(".upload").show();
     setSegActive(0);
     $("#uploadSegCtrl").on("click", function() {
+        hideAllSeg();
         $(".upload").show();
-        $(".restore").hide();
+        // $(".restore").hide();
         setSegActive(0);
         // $(".upload").show("slide",{direction: "left"});
         // $(".restore").hide("slide",{direction: "right"});
     });
 
     $("#restoreSegCtrl").on("click", function() {
-        $(".upload").hide();
+        hideAllSeg();
+        // $(".upload").hide();
         $(".restore").show();
         setSegActive(1);
         // $("#restoreSegCtrl").css("color","black");
@@ -68,25 +78,46 @@ $(document).ready(function(){
      //   $(".restore").show("slide", {direction: "right"});
     });
 
+    $("#xrefSegCtrl").on("click", function() {
+        hideAllSeg();
+        // $(".upload").hide();
+        $(".xrefDiv").show();
+        setSegActive(2);
+        // $("#restoreSegCtrl").css("color","black");
+     //   $(".upload").hide("slide", {direction: "left"});
+     //   $(".restore").show("slide", {direction: "right"});
+    });
+
     function setSegActive(seg) {
+
       if(seg==0) {
         $("#uploadSegCtrl").css({
             "background-color":"rgba(255,255,255,1",
             "color":"black"
           });
+        $("#restoreSegCtrl, #xrefSegCtrl").css({
+            "background-color":"rgba(255,255,255,0",
+            "color":"white"
+          });
+      }
+      else if(seg==1){
         $("#restoreSegCtrl").css({
+            "background-color":"rgba(255,255,255,1",
+            "color":"black"
+          });
+        $("#uploadSegCtrl, #xrefSegCtrl").css({
             "background-color":"rgba(255,255,255,0",
             "color":"white"
           });
       }
       else {
-        $("#uploadSegCtrl").css({
-            "background-color":"rgba(255,255,255,0",
-            "color":"white"
-          });
-        $("#restoreSegCtrl").css({
+        $("#xrefSegCtrl").css({
             "background-color":"rgba(255,255,255,1",
             "color":"black"
+          });
+        $("#restoreSegCtrl, #uploadSegCtrl").css({
+            "background-color":"rgba(255,255,255,0",
+            "color":"white"
           });
       }
     }
