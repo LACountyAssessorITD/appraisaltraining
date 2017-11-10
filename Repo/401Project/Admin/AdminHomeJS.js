@@ -145,25 +145,25 @@ $(document).ready(function(){
     }
 
 
-    function getFilterNameAndType(filter_name, filter_type) {
-        // send request to retrieve distinctive rows
-         $.ajax({
-            url:"../lib/php/admin/getFilters.php",
-            type: "POST",
-            dataType: "text",
-            data: {
-                filter_name:filter_name,
-                filter_type:filter_type
-            },
-            success:function(results){
-                return JSON.parse(results);
-            },
-            error: function(xhr, status, error){
-                alert("Fail to connect to the server when trying to retrieve filters");
-                alert(status);
-            }
-        });
-    }
+    // function getFilterNameAndType(filter_name, filter_type) {
+    //     // send request to retrieve distinctive rows
+    //      $.ajax({
+    //         url:"../lib/php/admin/getFilters.php",
+    //         type: "POST",
+    //         dataType: "text",
+    //         data: {
+    //             filter_name:filter_name,
+    //             filter_type:filter_type
+    //         },
+    //         success:function(results){
+    //             return JSON.parse(results);
+    //         },
+    //         error: function(xhr, status, error){
+    //             alert("Fail to connect to the server when trying to retrieve filters");
+    //             alert(status);
+    //         }
+    //     });
+    // }
 
     var dropDownType = 0;
 
