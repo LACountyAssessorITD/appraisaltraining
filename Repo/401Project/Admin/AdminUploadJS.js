@@ -134,6 +134,7 @@ $(document).ready(function(){
       // $("#chosenFileName").text("");
     });
 
+    //Expand or collapse edit xrefDiv
     $(document).on("click",".editRowBtn", function() {
     // $(".editRowBtn").on("click", function() {
       if($(this).data("clicked")) {
@@ -146,6 +147,7 @@ $(document).ready(function(){
       }
     });
 
+    //Confirm update of row
     $(document).on("click",".confirmEditBtn", function() {
     // $(".confirmEditBtn").on("click",function() {
       var employeeIDStr = $(this).closest("div").find("input[name='EmployeeIDInput']").val();
@@ -160,6 +162,7 @@ $(document).ready(function(){
       $(this).closest(".editRowDiv").hide();
     });
 
+    //Delete Row
     $(document).on("click",".deleteRowBtn", function() {
     // $(".deleteRowBtn").on("click", function() {
       if(confirm("Delete this row?")==0) {
@@ -169,6 +172,7 @@ $(document).ready(function(){
       $(this).closest("tr").remove();
     });
 
+    //Insert Row
     $(".insertRowBtn").on("click",function() {
       var employeeIDNew = $(this).closest("#insertNewRowDiv").find("input[name='InsertEmployeeIDInput']").val();
       var certNoNew = $(this).closest("#insertNewRowDiv").find("input[name='InsertCertNoInput']").val();
@@ -181,6 +185,8 @@ $(document).ready(function(){
       insertRow(employeeIDNew, certNoNew);
 
     });
+
+
 
     insertRow(121212, 232323);
     insertRow(342342, 132435);
@@ -205,5 +211,13 @@ $(document).ready(function(){
                     </tr>";
       $("#xrefTable").append(markup);
     }
+
+    $("input[name='EmployeeIDInput'], input[name='CertNoInput'],input[name='InsertEmployeeIDInput'],\
+      input[name='InsertCertNoInput']").on("keypress keyup blur",function (event) {    
+       $(this).val($(this).val().replace(/[^\d].+/, ""));
+        if ((event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    });
 
 });
