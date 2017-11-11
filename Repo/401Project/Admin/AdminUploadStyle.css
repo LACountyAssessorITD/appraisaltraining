@@ -288,7 +288,6 @@ iframe {
 	display: none;
     /*position: relative;*/
     background-color: rgb(244, 248, 255);
-    /*width: 100%;*/
     opacity: 1;
     box-shadow: 0px 8px 12px 0px rgba(0,0,0,0.4);
     z-index: 5;
@@ -299,6 +298,25 @@ iframe {
     left:0;
     bottom:0;
     padding: 10px 10px;
+    color: black;
+}
+
+.deleteRowBtn {
+	font-size: 1.5vw;
+	background: none;
+	color: red;
+	border: none;
+	outline: none;
+}
+
+#insertNewRowDiv {
+	width: 70%;
+	text-align: center;
+	margin: 30px auto;
+    border-collapse: collapse; /* Collapse borders */
+    font-size: 1.2vw; /* Increase font-size */
+    overflow: auto;
+    cursor: pointer;
 }
 
 

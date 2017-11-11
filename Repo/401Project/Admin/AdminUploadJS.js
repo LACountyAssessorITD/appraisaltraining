@@ -134,7 +134,8 @@ $(document).ready(function(){
       // $("#chosenFileName").text("");
     });
 
-    $(".editRowBtn").on("click", function() {
+    $(document).on("click",".editRowBtn", function() {
+    // $(".editRowBtn").on("click", function() {
       if($(this).data("clicked")) {
         $(this).data("clicked",false);
         $(this).next(".editRowDiv").hide();
@@ -145,5 +146,64 @@ $(document).ready(function(){
       }
     });
 
+    $(document).on("click",".confirmEditBtn", function() {
+    // $(".confirmEditBtn").on("click",function() {
+      var employeeIDStr = $(this).closest("div").find("input[name='EmployeeIDInput']").val();
+      var certNoStr = $(this).closest("div").find("input[name='CertNoInput']").val();
+      if(confirm("Update Employee ID with "+employeeIDStr+" and CertNo with "+certNoStr+"?")==0) {
+        alert("pressed cancel");
+        return;
+      }
+      $(this).closest("tr").find(".EmployeeIDData")[0].innerHTML = employeeIDStr;
+      $(this).closest("tr").find(".CertNoData")[0].innerHTML = certNoStr;
+      $(this).closest("td").find(".editRowBtn").data("clicked",false);
+      $(this).closest(".editRowDiv").hide();
+    });
+
+    $(document).on("click",".deleteRowBtn", function() {
+    // $(".deleteRowBtn").on("click", function() {
+      if(confirm("Delete this row?")==0) {
+        alert("pressed cancel");
+        return;
+      }
+      $(this).closest("tr").remove();
+    });
+
+    $(".insertRowBtn").on("click",function() {
+      var employeeIDNew = $(this).closest("#insertNewRowDiv").find("input[name='InsertEmployeeIDInput']").val();
+      var certNoNew = $(this).closest("#insertNewRowDiv").find("input[name='InsertCertNoInput']").val();
+
+      if(confirm("Insert this new row with Employee ID: "+employeeIDNew+" and CertNo: "+certNoNew+"?")==0) {
+        alert("pressed cancel");
+        return;
+      }
+
+      insertRow(employeeIDNew, certNoNew);
+
+    });
+
+    insertRow(121212, 232323);
+    insertRow(342342, 132435);
+
+    function insertRow(employeeIDNew, certNoNew) {
+      var markup = "<tr>\
+                      <td class='EmployeeIDData'>"+employeeIDNew+"</td>\
+                      <td class='CertNoData'>"+certNoNew+"</td>\
+                      <td>\
+                        <button class='editRowBtn'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button>\
+                        <div class='editRowDiv'>\
+                          <label>EmployeeID</label>\
+                          <input type='text' name='EmployeeIDInput' value='"+employeeIDNew+"'>\
+                          <br>\
+                          <label>CertNo</label>\
+                          <input type='text' name='CertNoInput' value='"+certNoNew+"'>\
+                          <br>\
+                          <button class='confirmEditBtn'>Confirm Edit</button>\
+                        </div>\
+                      </td>\
+                      <td><button class='deleteRowBtn'><i class='fa fa-times' aria-hidden='true'></i></button></td>\
+                    </tr>";
+      $("#xrefTable").append(markup);
+    }
 
 });

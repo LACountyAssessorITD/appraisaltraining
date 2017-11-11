@@ -122,13 +122,14 @@
 						<tr>
 							<th width="20%">EmployeeID</th>
 							<th width="20%">CertNo</th>
-							<th width="60%">Edit</th>
+							<th width="55%">Edit</th>
+							<th width="5%"></th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>12345</td>
-							<td>23456</td>
+						<!-- <tr>
+							<td class="EmployeeIDData">12345</td>
+							<td class="CertNoData">23456</td>
 							<td>
 								<button class='editRowBtn'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 								<div class="editRowDiv">
@@ -138,13 +139,14 @@
 									<label>CertNo</label>
 									<input type="text" name="CertNoInput">
 									<br>
-									<button>Confirm Edit</button>
+									<button class="confirmEditBtn">Confirm Edit</button>
 								</div>
 							</td>
+							<td><button class="deleteRowBtn"><i class="fa fa-times" aria-hidden="true"></i></button></td>
 						</tr>
 						<tr>
-							<td>12345</td>
-							<td>23456</td>
+							<td class="EmployeeIDData">12345</td>
+							<td class="CertNoData">23456</td>
 							<td>
 								<button class='editRowBtn'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 								<div class="editRowDiv">
@@ -154,13 +156,23 @@
 									<label>CertNo</label>
 									<input type="text" name="CertNoInput">
 									<br>
-									<button>Confirm Edit</button>
+									<button class="confirmEditBtn">Confirm Edit</button>
 								</div>
 							</td>
-						</tr>
+							<td><button class="deleteRowBtn"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+						</tr> -->
 					</tbody>
-				</table>	
+				</table>
+
 			</div>
+
+			<div id="insertNewRowDiv">
+				<label>EmployeeID:</label>
+				<input type="text" name="InsertEmployeeIDInput">
+				<label>CertNo:</label>
+				<input type="text" name="InsertCertNoInput">
+				<button class="insertRowBtn">Insert Row</button>
+			</div>	
 		</div>
 
 	</div>
