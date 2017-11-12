@@ -252,7 +252,7 @@ $(document).ready(function(){
         var infoHTML = "<button class='infoHoverBtn'><i class='fa fa-user' aria-hidden='true'></i> Info</button>\
                         <div class='infoHoverDPBCont'>\
                             <ul>\
-                                <li class='emailLi'>Email: "+email+"</li>\
+                                <li class='emailLi'>Email: "+"123@gmail.com"+"</li>\
                                 <li>CertNo: "+certNo+"</li>\
                                 <li>Status: Active</li>\
                             </ul>\
