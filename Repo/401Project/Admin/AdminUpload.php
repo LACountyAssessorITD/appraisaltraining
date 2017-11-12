@@ -171,7 +171,7 @@
 				<input type="text" name="InsertEmployeeIDInput">
 				<label>CertNo:</label>
 				<input type="text" name="InsertCertNoInput">
-				<button class="insertRowBtn">Insert Row</button>
+				<button class="insertRowBtn"><span class="spaceSpan"></span>Insert Row</button>
 			</div>	
 		</div>
 

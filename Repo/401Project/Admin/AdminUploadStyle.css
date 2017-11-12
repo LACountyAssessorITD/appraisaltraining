@@ -317,6 +317,16 @@ iframe {
     font-size: 1.2vw; /* Increase font-size */
     overflow: auto;
     cursor: pointer;
+    color: white;
+}
+
+.insertRowBtn {
+	height: 100%;
+	margin:0;
+}
+
+.spaceSpan {
+	width: 10px;
 }
 
 
