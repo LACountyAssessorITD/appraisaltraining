@@ -68,6 +68,21 @@ $(document).ready(function(){
         checkTypeForDownload();
     }
 
+    getCurrentFiscalYear();
+    function getCurrentFiscalYear() {
+        $.ajax({
+            url:"../lib/php/admin/getCurrentFiscalYear.php",
+            type: "POST",
+            success:function(results){
+                alert(results);
+            },
+            error: function(xhr, status, error){
+                alert("Fail to connect to the server when trying to retrieve current year");
+            },
+            async: false
+        });
+    }
+
     loadFilterOptions();
 
     function count() {
@@ -158,26 +173,6 @@ $(document).ready(function(){
         // checkTypeForDownload();
     }
 
-
-    // function getFilterNameAndType(filter_name, filter_type) {
-    //     // send request to retrieve distinctive rows
-    //      $.ajax({
-    //         url:"../lib/php/admin/getFilters.php",
-    //         type: "POST",
-    //         dataType: "text",
-    //         data: {
-    //             filter_name:filter_name,
-    //             filter_type:filter_type
-    //         },
-    //         success:function(results){
-    //             return JSON.parse(results);
-    //         },
-    //         error: function(xhr, status, error){
-    //             alert("Fail to connect to the server when trying to retrieve filters");
-    //             alert(status);
-    //         }
-    //     });
-    // }
 
     var dropDownType = 0;
 
@@ -310,6 +305,7 @@ $(document).ready(function(){
             }
             var filterDisplayList = $(this).find(".filterDisplayList");
             var filter_name = $(this).children(".dropDownBtn").attr("name");
+            var filter_type = $(this).parent().attr("name");
             var list = filterDisplayList.children("ul");
             var orStr = "";                             //!!!!!!!!!!!!!!!!!
             if(list[0].innerHTML != "") {

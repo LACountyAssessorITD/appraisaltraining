@@ -29,22 +29,22 @@ if( $conn === false )
 
 $totalcarryover = 0;
 $certid = -1;
-$year = -1;
+$year = $_SESSION['current_fiscal_year'];
 
-$tsql = "SELECT MAX(CertYear) FROM [New_CertHistory]";
-$stmt = sqlsrv_query( $conn, $tsql);
-if( $stmt === false )
-{
-     echo "Error in executing query68.</br>";
-     die( print_r( sqlsrv_errors(), true));
-}
-else {
-    $row= sqlsrv_fetch_array($stmt);
-    $year = $row[0];
-    $year = substr($year,0,4);
-    $year = (int)$year;
-}
-sqlsrv_free_stmt($stmt);
+// $tsql = "SELECT MAX(CertYear) FROM [New_CertHistory]";
+// $stmt = sqlsrv_query( $conn, $tsql);
+// if( $stmt === false )
+// {
+//      echo "Error in executing query68.</br>";
+//      die( print_r( sqlsrv_errors(), true));
+// }
+// else {
+//     $row= sqlsrv_fetch_array($stmt);
+//     $year = $row[0];
+//     $year = substr($year,0,4);
+//     $year = (int)$year;
+// }
+// sqlsrv_free_stmt($stmt);
 
 $all_id;
 

@@ -1,11 +1,12 @@
 <?php
+/*
+This Code dynamically generate individual PDF (Specific Year Report)
+@ Yining Huang
+*/
+
 include_once "../constants.php";
 include_once "../session.php";
-//session_start();
-
-$filter_name = $_POST['filter_name'];
-$filter_table = $_POST['filter_type'];
-
+///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
@@ -24,32 +25,24 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-if ($filter_name == "Name") {
-    $tsql = "SELECT FirstName,LastName FROM ".$filter_table;
-}
-else {
-    $tsql = "SELECT DISTINCT ".$filter_name." FROM ".$filter_table;
-}
+$year = -1;
+
+$tsql = "SELECT MAX(CertYear) FROM [New_CertHistory]";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
-     echo "Error in executing query.</br>";
+     echo "Error in executing query68.</br>";
      die( print_r( sqlsrv_errors(), true));
 }
 else {
-	$filter = array();
-    while($row = sqlsrv_fetch_array($stmt)){
-        if ($filter_name == "Name") {
-            $filter[] = $row["LastName"]." ,  ".$row["FirstName"];
-        }
-        else {
-            $filter[] = $row[$filter_name];
-        }
-
-    }
-    echo json_encode($filter);
+    $row= sqlsrv_fetch_array($stmt);
+    $year = $row[0];
+    $year = substr($year,0,4);
+    $year = (int)$year;
+    sqlsrv_free_stmt($stmt);
+    sqlsrv_close($conn);
+    $_SESSION['current_fiscal_year'] = $year;
+    echo $year;
 }
-sqlsrv_free_stmt($stmt);
-sqlsrv_close($conn);
 
 ?>
