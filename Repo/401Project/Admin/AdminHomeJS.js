@@ -328,13 +328,13 @@ $(document).ready(function(){
                         var fn = n[1];
                         ln = ln.replace("'", "''");
                         fn = fn.replace("'", "''");
-                        orStr += ("([New_Employee].[FirstName]='"+fn+"'");
-                        orStr += (" AND [New_Employee].[LastName]='"+ln+"')");
+                        orStr += ("("+filter_type+".[FirstName]='"+fn+"'");
+                        orStr += (" AND "+filter_type+".[LastName]='"+ln+"')");
                     } else {
                         if (liStr == "None")
-                            orStr += ("["+filter_name +"] IS NULL");
+                            orStr += (filter_type+".["+filter_name +"] IS NULL");
                         else
-                            orStr += ("["+filter_name +"]='"+liStr+"'");        //!!!!!!!!!!!!!!!!!!!!!
+                            orStr += (filter_type+".["+filter_name +"]='"+liStr+"'");        //!!!!!!!!!!!!!!!!!!!!!
                     }
                     //Remove each li once appended in the Or string
                     $(this).remove();
@@ -356,7 +356,7 @@ $(document).ready(function(){
             query = " AND " + query;
         }
 
-        //alert("Now the SQL Query is :" +query);
+        alert("Now the SQL Query is :\n" +query);
         $.ajax({
                 url:"../lib/php/admin/applyFilters.php",
                 type: "POST",
