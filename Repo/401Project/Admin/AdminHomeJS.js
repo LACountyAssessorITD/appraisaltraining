@@ -322,8 +322,8 @@ $(document).ready(function(){
                         var fn = n[1];
                         ln = ln.replace("'", "''");
                         fn = fn.replace("'", "''");
-                        orStr += ("([FirstName]='"+fn+"'");
-                        orStr += (" AND [LastName]='"+ln+"')");
+                        orStr += ("([New_Employee].[FirstName]='"+fn+"'");
+                        orStr += (" AND [New_Employee].[LastName]='"+ln+"')");
                     } else {
                         if (liStr == "None")
                             orStr += ("["+filter_name +"] IS NULL");

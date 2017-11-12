@@ -34,7 +34,7 @@ SELECT [New_Employee].CertNo, [New_Employee].FirstName, [New_Employee].LastName,
   INNER JOIN [New_CertHistory] 
 	ON [New_Employee].CertNo = [New_CertHistory].CertNo
   WHERE ([New_CertHistory].CertYear = '".2017-2018."')".
-  	$query;
+  	" AND ".$query;
 
 $stmt = sqlsrv_query($conn, $tsql);
 if( $stmt === false ) {
