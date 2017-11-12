@@ -962,7 +962,6 @@ $(document).ready(function(){
         });
     }
 
-    $("#overviewTable tbody").sortable();
 
     function sortTable(f,n){
         var rows = $('#overviewTable tbody  tr').get();
@@ -1008,7 +1007,12 @@ $(document).ready(function(){
         sortTable(f_hour,numCol);
     });
 
-
+    if(navigator.userAgent.indexOf('MSIE')) {
+        alert("hey ie");
+    } else {
+        alert("hey not ie");
+        $("#overviewTable tbody").sortable();
+    }
 });
 
 
