@@ -600,6 +600,14 @@
 	background-color: rgb(185,185,185);
 }
 
+#overviewTable thead button{
+	/*padding: 10px;*/
+	background: none;
+	border:none;
+	font-size: 1.2vw;
+	outline: none;
+}
+
 #overviewTable td {
     text-align: center; /* Left-align text */
     vertical-align: middle;
@@ -686,3 +694,5 @@
 #hoursShortDiv input {
 	cursor: pointer;
 }
+
+

@@ -320,9 +320,9 @@ include_once "../lib/php/session.php";
 						<thead>
 				            <tr>
 				                <th width="5%"><input type='checkbox' name='tableSelectAll'></th>
-				                <th width="20%">Name</th>
+				                <th width="20%">Name <button id="nameSort"><i class="fa fa-sort" aria-hidden="true"></i></button></th>
 				                <th width="25%">Info</th>
-				                <th width="15%">Hours Short</th>
+				                <th width="15%">Hours Short <button id="hoursSort"><i class="fa fa-sort" aria-hidden="true"></i></button></th>
 				                <th width="20%">Year</th>
 				                <th width="15%">View</th>
 				            </tr>

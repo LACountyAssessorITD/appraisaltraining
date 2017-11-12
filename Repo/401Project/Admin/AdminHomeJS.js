@@ -181,22 +181,17 @@ $(document).ready(function(){
 
     var dropDownType = 0;
 
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 7);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 1);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 13);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 2);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 0);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 3);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 16);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 10);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 70);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 13);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 2);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 0);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 3);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 16);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 10);
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 70);
+    loadTable("qNelson", "assessortestpdf@gmail.com", "0608", 7);
+    loadTable("bNelson", "assessortestpdf@gmail.com", "0608", 1);
+    loadTable("sNelson", "assessortestpdf@gmail.com", "0608", 13);
+    loadTable("dNelson", "assessortestpdf@gmail.com", "0608", 2);
+    loadTable("jNelson", "assessortestpdf@gmail.com", "0608", 0);
+    loadTable("aNelson", "assessortestpdf@gmail.com", "0608", 3);
+    loadTable("xNelson", "assessortestpdf@gmail.com", "0608", 16);
+    loadTable("wNelson", "assessortestpdf@gmail.com", "0608", 10);
+    loadTable("oNelson", "assessortestpdf@gmail.com", "0608", 70);
+    loadTable("qNelson", "assessortestpdf@gmail.com", "0608", 13);
+    loadTable("kNelson", "assessortestpdf@gmail.com", "0608", 2);
 
     function loadTable(name, email, certNo, hours) {
         // Get LDAP Information
@@ -968,6 +963,49 @@ $(document).ready(function(){
     }
 
     $("#overviewTable tbody").sortable();
+
+    function sortTable(f,n){
+        var rows = $('#overviewTable tbody  tr').get();
+
+        rows.sort(function(a, b) {
+            var A = getVal(a);
+            var B = getVal(b);
+
+            if(A > B) {
+                return -1*f;
+            }
+            if(A < B) {
+                return 1*f;
+            }
+            return 0;
+        });
+
+        function getVal(elm){
+            var v = $(elm).children('td').eq(n).text().toUpperCase();
+            if($.isNumeric(v)){
+                v = parseInt(v,10);
+            }
+            return v;
+        }
+
+        $.each(rows, function(index, row) {
+            $('#overviewTable').children('tbody').append(row);
+        });
+    }
+
+    var f_name = 1;
+    var f_hour = 1;
+
+    $("#nameSort").on("click",function() {
+        f_name *= -1;
+        sortTable(f_name,1);
+    });
+
+    $("#hoursSort").on("click",function() {
+        f_hour *= -1;
+        sortTable(f_hour,3);
+    });
+
 
 });
 
