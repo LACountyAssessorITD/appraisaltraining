@@ -10,6 +10,7 @@
 		define("DIR", "appraisaltraining/Repo/401Project/");
 		// SQL Server Name
 		define("SQL_SERVER_NAME", "Assessor");
+		define("SQL_SERVER_LACDATABASE", "temporary_5_table"); // ""
 	}
 	else {
 		// git repo file path
