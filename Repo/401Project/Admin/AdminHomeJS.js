@@ -997,13 +997,15 @@ $(document).ready(function(){
     var f_hour = 1;
 
     $("#nameSort").on("click",function() {
+        var numCol = $(this).closest("tr").children().index($(this).closest("th"));
         f_name *= -1;
-        sortTable(f_name,1);
+        sortTable(f_name,numCol);
     });
 
     $("#hoursSort").on("click",function() {
+        var numCol = $(this).closest("tr").children().index($(this).closest("th"));
         f_hour *= -1;
-        sortTable(f_hour,3);
+        sortTable(f_hour,numCol);
     });
 
 
