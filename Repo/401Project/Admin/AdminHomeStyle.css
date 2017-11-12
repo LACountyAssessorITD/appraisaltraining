@@ -590,6 +590,7 @@
     font-size: 1vw; /* Increase font-size */
     text-align: center;
     table-layout: fixed;
+    cursor: pointer;
     /*position: relative;*/
 }
 
@@ -669,6 +670,7 @@
 #hoursShortDiv {
 	color: white;
 	font-size: 1.3vw;
+	cursor: pointer;
 }
 
 #hoursShortDiv label {
@@ -678,4 +680,9 @@
   -ms-user-select:none;
   -o-user-select:none;
   user-select:none;
+  cursor: pointer;
+}
+
+#hoursShortDiv input {
+	cursor: pointer;
 }
