@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    var current_fiscal_year = -1;
 
     $("#homeTab").on("click",function(e) {
         e.preventDefault();
@@ -74,7 +75,7 @@ $(document).ready(function(){
             url:"../lib/php/admin/getCurrentFiscalYear.php",
             type: "POST",
             success:function(results){
-                alert(results);
+                current_fiscal_year = results;
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when trying to retrieve current year");
@@ -339,12 +340,6 @@ $(document).ready(function(){
                 });
                 list.append(listHtml);  //reappend original list
                 orStr += ")";
-                // if(filterNum!=0) {
-                //     query += (orStr+ " AND ");  //the rest in the query statement !!!!!!!!!!!!!!!!
-                // }
-                // else {
-                //     query += (""+orStr+"");    //First in the query statement !!!!!!!!!!!!!!!!!!!!!
-                // }
             }
             query += orStr;
         });
@@ -352,19 +347,21 @@ $(document).ready(function(){
         if(query=="") {
             // alert("No filters selected");
             return;
+        }  else {
+            query = " AND " + query;
         }
 
-        alert("Now the SQL Query is :" +query);
+        //alert("Now the SQL Query is :" +query);
         $.ajax({
                 url:"../lib/php/admin/applyFilters.php",
                 type: "POST",
                 dataType: "json",
                 data: {
                     query:query,
+                    current_fiscal_year:current_fiscal_year,
                 },
                 success:function(results){
                     loadReportSelection();
-
                     for (var i = 0; i < results.length; i ++) {
                         var name = results[i]['FirstName']+" "+results[i]['LastName'];
                         var audit = results[i]['Auditor'];

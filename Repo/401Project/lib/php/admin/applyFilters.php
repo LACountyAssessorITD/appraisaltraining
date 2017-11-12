@@ -3,6 +3,7 @@ include_once "../constants.php";
 include_once "../session.php";
 
 $query = $_POST['query'];
+$year = $_POST['current_fiscal_year'];
 
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -22,9 +23,7 @@ if( $conn === false ) {
 }
 // $tsql = "SELECT * FROM [New_Employee]"." WHERE ".(string)$query; // This is where hardcoded!!!!!!
 
-if ($query != "") {
-	$query = " AND (".$query.")";
-}
+$year_string = (string)$year . "-" . (string)($year+1);
 
 $tsql = "
 SELECT [New_Employee].CertNo, [New_Employee].FirstName, [New_Employee].LastName, [New_EmployeeID_Xref].EmployeeID, [New_CertHistory].CurrentYearBalance
@@ -33,8 +32,7 @@ SELECT [New_Employee].CertNo, [New_Employee].FirstName, [New_Employee].LastName,
 	ON [New_Employee].CertNo = [New_EmployeeID_Xref].CertNo
   INNER JOIN [New_CertHistory]
 	ON [New_Employee].CertNo = [New_CertHistory].CertNo
-  WHERE ([New_CertHistory].CertYear = '"."2017-2018')";
-  	//" AND ".$query;
+  WHERE ([New_CertHistory].CertYear = '".$year_string."')".$query;
 
 $stmt = sqlsrv_query($conn, $tsql);
 if( $stmt === false ) {
