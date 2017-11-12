@@ -29,12 +29,12 @@ if ($query != "") {
 $tsql = "
 SELECT [New_Employee].CertNo, [New_Employee].FirstName, [New_Employee].LastName, [New_EmployeeID_Xref].EmployeeID, [New_CertHistory].CurrentYearBalance
   FROM [New_Employee]
-  INNER JOIN [New_EmployeeID_Xref] 
+  INNER JOIN [New_EmployeeID_Xref]
 	ON [New_Employee].CertNo = [New_EmployeeID_Xref].CertNo
-  INNER JOIN [New_CertHistory] 
+  INNER JOIN [New_CertHistory]
 	ON [New_Employee].CertNo = [New_CertHistory].CertNo
-  WHERE ([New_CertHistory].CertYear = '".2017-2018."')".
-  	" AND ".$query;
+  WHERE ([New_CertHistory].CertYear = '"."2017-2018')";
+  	//" AND ".$query;
 
 $stmt = sqlsrv_query($conn, $tsql);
 if( $stmt === false ) {
