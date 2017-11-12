@@ -6,6 +6,7 @@ This Code dynamically generate individual PDF (Specific Year Report)
 
 include_once "../constants.php";
 include_once "../session.php";
+session_start();
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
