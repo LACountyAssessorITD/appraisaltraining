@@ -1007,12 +1007,9 @@ $(document).ready(function(){
         sortTable(f_hour,numCol);
     });
 
-    if(navigator.userAgent.indexOf('MSIE')) {
-        alert("hey ie");
-    } else {
-        alert("hey not ie");
-        $("#overviewTable tbody").sortable();
-    }
+    //Make the overviewTable rows draggable, NOT supported in IE! hence commented out
+    //$("#overviewTable tbody").sortable();
+
 });
 
 
