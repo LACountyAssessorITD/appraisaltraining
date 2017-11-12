@@ -189,14 +189,18 @@ $(document).ready(function(){
     loadTable("qNelson", "assessortestpdf@gmail.com", "0608", 13);
     loadTable("kNelson", "assessortestpdf@gmail.com", "0608", 2);
 
-    function loadTable(name, email, certNo, hours) {
+    function loadTable(name,certNo,empNo,balance) {
         // Get LDAP Information
         // TO DO
 
 
-        // Get available fiscal years for current user
-        // TO DO
-
+        // Change balance to hours short
+        if (balance >= 0) {
+            // Requirement met
+            balance = 0;
+        } else {
+            balance = balance * (-1);
+        }
 
         var optionHTML = "";
         $.ajax({
@@ -255,7 +259,7 @@ $(document).ready(function(){
                             <iframe class='cover' src='about:blank'></iframe>\
                         </div>";
         var trSecondHTML = "</td>\
-                        <td class='hoursShortInfo'>"+hours+"</td>\
+                        <td class='hoursShortInfo'>"+balance+"</td>\
                         <td class='yearSelect'>"+selectUI+"</td>\
                         <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
                     </tr>";
@@ -364,10 +368,11 @@ $(document).ready(function(){
                     loadReportSelection();
                     for (var i = 0; i < results.length; i ++) {
                         var name = results[i]['FirstName']+" "+results[i]['LastName'];
-                        var audit = results[i]['Auditor'];
+                        //var audit = results[i]['Auditor'];
                         var certNo = results[i]['CertNo'];
-                        var email = "someEmail@email.com";
-                        loadTable(name,email,certNo);
+                        var empNo = results[i]['EmployeeID'];
+                        var balance = results[i]['CurrentYearBalance'];
+                        loadTable(name,certNo,empNo,balance);
                         // var trHTML = "<tr>\
                         //                 <td><input type='checkbox' name='selected'></td>\
                         //                 <td class='nameinfo'>"+name+"</td>\
