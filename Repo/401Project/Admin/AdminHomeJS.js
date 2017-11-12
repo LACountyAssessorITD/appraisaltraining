@@ -190,6 +190,13 @@ $(document).ready(function(){
     loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 16);
     loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 10);
     loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 70);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 13);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 2);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 0);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 3);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 16);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 10);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 70);
 
     function loadTable(name, email, certNo, hours) {
         // Get LDAP Information
@@ -960,6 +967,7 @@ $(document).ready(function(){
         });
     }
 
+    $("#overviewTable tbody").sortable();
 
 });
 

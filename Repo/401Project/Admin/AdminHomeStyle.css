@@ -589,6 +589,7 @@
     border: 1px solid #ddd; /* Add a grey border */
     font-size: 1vw; /* Increase font-size */
     text-align: center;
+    table-layout: fixed;
     /*position: relative;*/
 }
 
@@ -608,6 +609,10 @@
 	background-color: white;
 	border-bottom: 1px solid #ddd;
 	text-align: center;
+}
+
+#overviewTable tbody {
+	overflow: auto;
 }
 
 #overviewTable tbody > tr:hover {
