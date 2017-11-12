@@ -181,9 +181,24 @@ $(document).ready(function(){
 
     var dropDownType = 0;
 
-    loadTable("Nelson", "assessortestpdf@gmail.com", "0608");
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 7);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 1);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 13);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 2);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 0);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 3);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 16);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 10);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 70);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 13);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 2);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 0);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 3);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 16);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 10);
+    loadTable("Nelson", "assessortestpdf@gmail.com", "0608", 70);
 
-    function loadTable(name, email, certNo) {
+    function loadTable(name, email, certNo, hours) {
         // Get LDAP Information
         // TO DO
 
@@ -249,7 +264,7 @@ $(document).ready(function(){
                             <iframe class='cover' src='about:blank'></iframe>\
                         </div>";
         var trSecondHTML = "</td>\
-                        <td class='hoursShortInfo'>12</td>\
+                        <td class='hoursShortInfo'>"+hours+"</td>\
                         <td class='yearSelect'>"+selectUI+"</td>\
                         <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
                     </tr>";
@@ -808,11 +823,11 @@ $(document).ready(function(){
 
     // $("#filterApplyBtn").click(applyFilter);
     $("#filterApplyBtn").on("click", function() {
-        $(this).find("button")[0].innerHTML = "Loading...";
+        $(this).find("button")[0].innerHTML = "<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i> Loading...";
         setTimeout(function(){
             applyFilter();
             $("#filterApplyBtn").find("button")[0].innerHTML = "Apply Filter";
-        },0);
+        },4000);
         // applyFilter();
         // $(this).children()[0].innerHTML = "Apply Filter";
     });
@@ -888,6 +903,71 @@ $(document).ready(function(){
     //     });
     // });
 
+    $("#hoursShortDiv").find("input").each(function() {
+        $(this).prop("checked",true);
+    });
+
+    $("#hoursShortDiv input[name='zero']").on("click", function() {
+        // alert("11");
+        var checked = false;
+        if($(this).is(":checked")){
+            checked = true;
+        }
+        filterRange(0,0,checked);
+    });
+
+    $("#hoursShortDiv input[name='one']").on("click", function() {
+        // alert("11");
+        var checked = false;
+        if($(this).is(":checked")){
+            checked = true;
+        }
+        filterRange(1,5,checked);
+    });
+
+    $("#hoursShortDiv input[name='six']").on("click", function() {
+        // alert("11");
+        var checked = false;
+        if($(this).is(":checked")){
+            checked = true;
+        }
+        filterRange(6,10,checked);
+    });
+
+    $("#hoursShortDiv input[name='eleven']").on("click", function() {
+        // alert("11");
+        var checked = false;
+        if($(this).is(":checked")){
+            checked = true;
+        }
+        filterRange(11,15,checked);
+    });
+
+    $("#hoursShortDiv input[name='sixteen']").on("click", function() {
+        // alert("11");
+        var checked = false;
+        if($(this).is(":checked")){
+            checked = true;
+        }
+        filterRange(16,999,checked);
+    });
+
+    function filterRange(start,end,show) {
+        $("#overviewTable").find(".hoursShortInfo").each(function() {
+            var hours = parseInt($(this)[0].innerHTML);
+            if(hours>=start && hours<=end) {
+                if(show) {
+                    $(this).closest("tr").show();
+                }
+                else {
+                    $(this).closest("tr").find("input").prop("checked",false);
+                    $(this).closest("tr").hide();
+                }
+            }
+        });
+    }
+
+    $("#overviewTable tbody").sortable();
 
 });
 

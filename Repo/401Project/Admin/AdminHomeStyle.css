@@ -344,6 +344,10 @@
 	cursor: pointer;
 }
 
+#filterApplyBtn i{
+	font-size: 1.1vw;
+}
+
 #filterApplyBtn button:hover {
 	/*background-color: lightgrey;*/
 	width: 100%;
@@ -585,6 +589,8 @@
     border: 1px solid #ddd; /* Add a grey border */
     font-size: 1vw; /* Increase font-size */
     text-align: center;
+    table-layout: fixed;
+    cursor: pointer;
     /*position: relative;*/
 }
 
@@ -604,6 +610,10 @@
 	background-color: white;
 	border-bottom: 1px solid #ddd;
 	text-align: center;
+}
+
+#overviewTable tbody {
+	overflow: auto;
 }
 
 #overviewTable tbody > tr:hover {
@@ -655,4 +665,24 @@
 	outline: none;
 	border:none;
 	/*margin:auto;*/
+}
+
+#hoursShortDiv {
+	color: white;
+	font-size: 1.3vw;
+	cursor: pointer;
+}
+
+#hoursShortDiv label {
+  -webkit-user-select:none;
+  /*-khtml-user-select:none;*/
+  -moz-user-select:none;
+  -ms-user-select:none;
+  -o-user-select:none;
+  user-select:none;
+  cursor: pointer;
+}
+
+#hoursShortDiv input {
+	cursor: pointer;
 }

@@ -184,6 +184,9 @@ $(document).ready(function(){
 
       insertRow(employeeIDNew, certNoNew);
 
+      $(this).closest("#insertNewRowDiv").find("input[name='InsertEmployeeIDInput']").val("");
+      $(this).closest("#insertNewRowDiv").find("input[name='InsertCertNoInput']").val("");
+
     });
 
 
@@ -212,6 +215,7 @@ $(document).ready(function(){
       $("#xrefTable").append(markup);
     }
 
+    //Numerical input check
     $("input[name='EmployeeIDInput'], input[name='CertNoInput'],input[name='InsertEmployeeIDInput'],\
       input[name='InsertCertNoInput']").on("keypress keyup blur",function (event) {    
        $(this).val($(this).val().replace(/[^\d].+/, ""));

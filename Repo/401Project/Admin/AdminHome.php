@@ -9,9 +9,13 @@ include_once "../lib/php/session.php";
 	<link rel="stylesheet" href="AdminHomeStyle.css">
 	<link rel="stylesheet" href="../CSS/splashStyle.css">
 	<link rel="stylesheet" href="../CSS/DefaultUI.css">
+  	<link rel="stylesheet" href="font-awesome-animation.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
   	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -223,7 +227,7 @@ include_once "../lib/php/session.php";
 						<button class="dropDownBtn" name="Status">Employment Status</button>
 					</div>
 
-					<div class="dropDownFilter no_db">
+					<!-- <div class="dropDownFilter no_db">
 						<button class="dropDownBtn" name="">Hours Short</button>
 						<div class='DPBCont'>
 	                        <div class='tableWrap'>
@@ -270,7 +274,7 @@ include_once "../lib/php/session.php";
 	                        </div>
 	                        <iframe class='cover' src='about:blank'></iframe>
 	                    </div> 
-	                </div>
+	                </div> -->
 
 	                <!--  Flter for advanced certification progess -->\
 	                <!-- TO DO -->
@@ -304,13 +308,12 @@ include_once "../lib/php/session.php";
 				</div>
 				<!-- <button class="resetAll" id="resetAllTable"><i class="fa fa-times" aria-hidden="true"></i> Reset Selections</button> -->
 				<div id="hoursShortDiv">
-					<label>Hours Short:
-						<input type='checkbox'><span> 0</span>
-						<input type='checkbox'><span> 1-5</span>
-						<input type='checkbox'><span> 6-10</span>
-						<input type='checkbox'><span> 11-15</span>
-						<input type='checkbox'><span> >15</span>
-					</label>
+					<label>Hours Short:</label>
+					<label><input type='checkbox' name="zero"><span> 0</span></label>
+					<label><input type='checkbox' name="one"><span> 1-5</span></label>
+					<label><input type='checkbox' name="six"><span> 6-10</span></label>
+					<label><input type='checkbox' name="eleven"><span> 11-15</span></label>
+					<label><input type='checkbox' name="sixteen"><span> >15</span></label>
 				</div>
 				<div id="overviewTableDiv">
 					<table id="overviewTable">
