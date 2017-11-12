@@ -254,7 +254,8 @@ $(document).ready(function(){
                             <ul>\
                                 <li class='emailLi'>Email: "+"123@gmail.com"+"</li>\
                                 <li>CertNo: "+certNo+"</li>\
-                                <li>Status: Active</li>\
+                                <li>EmpNo: "+empNo+"</li>\
+                                <li>Status: xxx</li>\
                             </ul>\
                             <iframe class='cover' src='about:blank'></iframe>\
                         </div>";
