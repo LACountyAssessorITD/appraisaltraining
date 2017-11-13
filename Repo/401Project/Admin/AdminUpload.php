@@ -58,7 +58,7 @@
 			<div id="chooseFileDiv">
 				<h3>Select File to Upload</h3>
 				<form action="../lib/php/admin/AdminUploadPHP.php" method="post" enctype="multipart/form-data" id="uploadForm" target="myFrame">
-	    			<input type="file" name="fileToUpload" id="fileToUpload">
+	    			<input type="file" name="fileToUpload[]" id="fileToUpload" accept=".xlsx" multiple>
 	    			<div class="clearRow">
 			    		<button id="chooseFileBtn">Choose File</button>
 			    	</div>

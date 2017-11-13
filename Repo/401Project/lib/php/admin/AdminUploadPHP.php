@@ -4,9 +4,12 @@
 	@ Yining Huang
 */
 	if(isset($_POST["submit"])) {
-		if ($_FILES["fileToUpload"]["name"] == "") {
-			echo "Please select a file";
-			//return;
+		if  (count($_FILES["fileToUpload"]["name"])==0) {
+			echo "alert('Please select files to upload')";
+			return;
+		} else if (count($_FILES["fileToUpload"]["name"])!=3) {
+			echo "alert('Please select 3 files')";
+			return;
 		}
 	    $target_dir = "D:/temp/";
 	    $FileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
