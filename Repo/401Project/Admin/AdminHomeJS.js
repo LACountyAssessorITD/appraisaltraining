@@ -358,50 +358,50 @@ $(document).ready(function(){
 
         alert("Now the SQL Query is :\n" +query);
         $.ajax({
-                url:"../lib/php/admin/applyFilters.php",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    query:query,
-                    current_fiscal_year:current_fiscal_year,
-                },
-                success:function(results){
-                    alert(results.length);
-                    loadReportSelection();
-                    for (var i = 0; i < results.length; i ++) {
-                        var name = results[i]['FirstName']+" "+results[i]['LastName'];
-                        //var audit = results[i]['Auditor'];
-                        var certNo = results[i]['CertNo'];
-                        var empNo = results[i]['EmployeeID'];
-                        var balance = results[i]['CurrentYearBalance'];
-                        loadTable(name,"123@gmail.com",certNo,empNo,balance);
-                        // var trHTML = "<tr>\
-                        //                 <td><input type='checkbox' name='selected'></td>\
-                        //                 <td class='nameinfo'>"+name+"</td>\
-                        //                 <td class='emailInfo'>"+audit+"</td>\
-                        //                 <td class='certNoInfo'>"+certNo+"</td>\
-                        //                 <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
-                        //             </tr>";
-                        /*
-                    	var parent = $("iframe#pdfBox").parent();
-	                    var newElement = "<iframe id='pdfBox' src='"+"../lib/php/usr/Report_userSpecificYear.php"+"' width='100%' height='800px'></iframe>";
-	                    $("iframe#pdfBox").remove();
-	                    parent.append(newElement);
-                        $("#overviewTable tbody").append(trHTML);
-						*/
+            url:"../lib/php/admin/applyFilters.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+                query:query,
+                current_fiscal_year:current_fiscal_year,
+            },
+            success:function(results){
+                alert(results.length);
+                loadReportSelection();
+                for (var i = 0; i < results.length; i ++) {
+                    var name = results[i]['FirstName']+" "+results[i]['LastName'];
+                    //var audit = results[i]['Auditor'];
+                    var certNo = results[i]['CertNo'];
+                    var empNo = results[i]['EmployeeID'];
+                    var balance = results[i]['CurrentYearBalance'];
+                    loadTable(name,"123@gmail.com",certNo,empNo,balance);
+                    // var trHTML = "<tr>\
+                    //                 <td><input type='checkbox' name='selected'></td>\
+                    //                 <td class='nameinfo'>"+name+"</td>\
+                    //                 <td class='emailInfo'>"+audit+"</td>\
+                    //                 <td class='certNoInfo'>"+certNo+"</td>\
+                    //                 <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
+                    //             </tr>";
+                    /*
+                	var parent = $("iframe#pdfBox").parent();
+                    var newElement = "<iframe id='pdfBox' src='"+"../lib/php/usr/Report_userSpecificYear.php"+"' width='100%' height='800px'></iframe>";
+                    $("iframe#pdfBox").remove();
+                    parent.append(newElement);
+                    $("#overviewTable tbody").append(trHTML);
+					*/
 
-                        // var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + audit + "</td></tr>";
-                        // $("#overviewTable tbody").append(markup);
-                    }
-                    // alert("size of returned results is "+results.length);
-                    //console.log(escape(results));
-                },
-                error: function(xhr, status, error){
-                    alert("Fail to connect to the server when trying to filter");
-                    alert(status + error + xhr);
-                },
-                async:false
-            });
+                    // var markup = "<tr><td><input type='checkbox' name='selected'></td><td>" + name + "</td><td>" + audit + "</td></tr>";
+                    // $("#overviewTable tbody").append(markup);
+                }
+                // alert("size of returned results is "+results.length);
+                //console.log(escape(results));
+            },
+            error: function(xhr, status, error){
+                alert("Fail to connect to the server when trying to filter");
+                alert(status + error + xhr);
+            },
+            async:false
+        });
     }
 
     function clearTable() {
