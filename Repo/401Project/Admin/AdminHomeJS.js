@@ -177,22 +177,36 @@ $(document).ready(function(){
 
     var dropDownType = 0;
 
-    loadTable("qNelson", "nelsonlinyh@gmail.com", "1996", "0608", 7);
-    // loadTable("bNelson", "assessortestpdf@gmail.com", "0608", 1);
-    // loadTable("sNelson", "assessortestpdf@gmail.com", "0608", 13);
-    // loadTable("dNelson", "assessortestpdf@gmail.com", "0608", 2);
-    // loadTable("jNelson", "assessortestpdf@gmail.com", "0608", 0);
-    // loadTable("aNelson", "assessortestpdf@gmail.com", "0608", 3);
-    // loadTable("xNelson", "assessortestpdf@gmail.com", "0608", 16);
-    // loadTable("wNelson", "assessortestpdf@gmail.com", "0608", 10);
-    // loadTable("oNelson", "assessortestpdf@gmail.com", "0608", 70);
-    // loadTable("qNelson", "assessortestpdf@gmail.com", "0608", 13);
-    // loadTable("kNelson", "assessortestpdf@gmail.com", "0608", 2);
+    //loadTable("qNelson", "1996", "0608", 7);
 
-    function loadTable(name,email,certNo,empNo,balance) {
+    function loadTable(name,certNo,empNo,balance) {
         // Get LDAP Information
-        // TO DO
+        // var email = $result["email"];
+        // var manager = $result["manager"];
+        // var phone = $result["phone"];
+        // var department = $result["department"]; 
+        // var title = $result["title"];
 
+        // $.ajax({
+        //     url:"../LDAP/getLdapInfo.php",
+        //     type: "POST",
+        //     dataType: "json",
+        //     data: {
+        //         empNo:empNo,
+        //     },
+        //     success:function(results){
+                
+        //     },
+        //     error: function(xhr, status, error){
+        //     },
+        //     async:false
+        // });
+
+        var email = "test@gmail.com";
+        var manager = "Yining Huang";
+        var phone = "123-123-0123";
+        var department = "Best Department";
+        var title = "CEO LOL";
 
         // Change balance to hours short
         if (balance >= 0) {
@@ -252,10 +266,14 @@ $(document).ready(function(){
         var infoHTML = "<button class='infoHoverBtn'><i class='fa fa-user' aria-hidden='true'></i> Info</button>\
                         <div class='infoHoverDPBCont'>\
                             <ul>\
-                                <li class='emailLi'>Email: <span class='emailInfo'>"+email+"</span></li>\
                                 <li class='certNoLi'>CertNo: <span class='certNoInfo'>"+certNo+"</span></li>\
                                 <li class='empNoInfo'>EmpNo: "+empNo+"</li>\
                                 <li>Status: xxx</li>\
+                                <li class='emailLi'>Email: <span class='emailInfo'>"+email+"</span></li>\
+                                <li class='phonenumberLi'>Phone: "+phone+"</li>\
+                                <li class='titleLi'>Title: "+title+"</li>\
+                                <li class='departmentLi'>Department: "+department+"</li>\
+                                <li class='managerLi'>Manager: "+manager+"</li>\
                             </ul>\
                             <iframe class='cover' src='about:blank'></iframe>\
                         </div>";
@@ -377,7 +395,7 @@ $(document).ready(function(){
                     var certNo = results[i]['CertNo'];
                     var empNo = results[i]['EmployeeID'];
                     var balance = results[i]['CurrentYearBalance'];
-                    loadTable(name,"123@gmail.com",certNo,empNo,balance);
+                    loadTable(name,certNo,empNo,balance);
                     // var trHTML = "<tr>\
                     //                 <td><input type='checkbox' name='selected'></td>\
                     //                 <td class='nameinfo'>"+name+"</td>\

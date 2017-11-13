@@ -46,13 +46,13 @@ session_start();
 			$result  = Array();
 			if($info["count"] > 0) {
 				for ($i=0; $i<$info["count"]; $i++) {
-					 $result[] = $info[$i]["displayname"][0];
-					 $result[] = $info[$i]["mail"][0];
-					 $result[] = (string)$info[$i]["manager"][0];
-					 $result[] = $info[$i]["givenname"][0];
-					 $result[] = $info[$i]["telephoneNumber"][0];	 // phone number
-					 $result[] = $info[$i]["department"][0];	// pay location
-					 $result[] = getTitleString((int)$info[$i]["title"][0]);// title
+					 $result["name"] = $info[$i]["displayname"][0];
+					 $result["email"] = $info[$i]["mail"][0];
+					 $result["manager"] = (string)$info[$i]["manager"][0];
+					 $result["firstname"] = $info[$i]["givenname"][0];
+					 $result["phone"] = $info[$i]["telephoneNumber"][0];	 // phone number
+					 $result["department"] = $info[$i]["department"][0];	// pay location
+					 $result["title"] = getTitleString((int)$info[$i]["title"][0]);// title
 
 				}
 				echo json_encode($result);
