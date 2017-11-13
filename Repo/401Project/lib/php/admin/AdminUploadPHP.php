@@ -4,15 +4,18 @@
 	@ Yining Huang
 */
 	if(isset($_POST["submit"])) {
-		if  (count($_FILES["fileToUpload"]["name"])==0) {
-			echo "alert('Please select files to upload')";
+
+		$files = $_FILES["fileToUpload"];
+		if  (count($files["name"])==0) {
+			echo "Please select files to upload";
 			return;
-		} else if (count($_FILES["fileToUpload"]["name"])!=3) {
-			echo "alert('Please select 3 files')";
+		} else if (count($files["name"])!=3) {
+			echo "Please select 3 files";
 			return;
 		}
+
 	    $target_dir = "D:/temp/";
-	    $FileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
+	    $FileType = pathinfo($files["name"][0],PATHINFO_EXTENSION);
 	    $File_name = basename("BOE".'_'.time().'.'.$FileType);
 	    $target_file = $target_dir . $File_name;
 	    $uploadOk = 1;
