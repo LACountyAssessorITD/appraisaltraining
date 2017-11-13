@@ -195,12 +195,13 @@ $(document).ready(function(){
           type: "POST",
           dataType: "json",
           success:function(results){
-              for (var i = 0 ; i < results.length(); i ++) {
-                insertRow(results['EmployeeID'], results['CertNo']);
+
+              for (var i = 0 ; i < results.length; i ++) {
+                insertRow(results[i]['EmployeeID'], results[i]['CertNo']);
               }
           },
           error: function(xhr, status, error){
-              //alert("Fail to connect to the server when trying to retrieve report types");
+              alert("Fail to connect to the server when trying to retrieve report types");
           },
           async: false
       });
@@ -232,7 +233,7 @@ $(document).ready(function(){
 
     //Numerical input check
     $("input[name='EmployeeIDInput'], input[name='CertNoInput'],input[name='InsertEmployeeIDInput'],\
-      input[name='InsertCertNoInput']").on("keypress keyup blur",function (event) {    
+      input[name='InsertCertNoInput']").on("keypress keyup blur",function (event) {
        $(this).val($(this).val().replace(/[^\d].+/, ""));
         if ((event.which < 48 || event.which > 57)) {
             event.preventDefault();
