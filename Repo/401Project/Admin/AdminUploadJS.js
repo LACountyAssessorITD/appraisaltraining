@@ -189,10 +189,25 @@ $(document).ready(function(){
 
     });
 
+    function loadTable() {
+      $.ajax({
+          url:"../lib/php/admin/getXrefTable.php",
+          type: "POST",
+          dataType: "json",
+          success:function(results){
+              for (var i = 0 ; i < results.length(); i ++) {
+                insertRow(results['EmployeeID'], results['CertNo']);
+              }
+          },
+          error: function(xhr, status, error){
+              //alert("Fail to connect to the server when trying to retrieve report types");
+          },
+          async: false
+      });
+    }
 
 
-    insertRow(121212, 232323);
-    insertRow(342342, 132435);
+    loadTable();
 
     function insertRow(employeeIDNew, certNoNew) {
       var markup = "<tr>\
