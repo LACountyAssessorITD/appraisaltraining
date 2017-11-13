@@ -302,6 +302,9 @@ $(document).ready(function(){
 
     function applyFilter() {
         clearTable();
+        $("#hoursShortDiv").find("input").each(function() {
+            $(this).prop("checked",true);
+        });
        // generate SQL query clause
         var query = "";                               //!!!!!!!!!!!!!!!!!!!
         var filterNum = 0;
