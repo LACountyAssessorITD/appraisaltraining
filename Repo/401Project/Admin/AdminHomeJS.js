@@ -177,19 +177,19 @@ $(document).ready(function(){
 
     var dropDownType = 0;
 
-    loadTable("qNelson", "assessortestpdf@gmail.com", "0608", 7);
-    loadTable("bNelson", "assessortestpdf@gmail.com", "0608", 1);
-    loadTable("sNelson", "assessortestpdf@gmail.com", "0608", 13);
-    loadTable("dNelson", "assessortestpdf@gmail.com", "0608", 2);
-    loadTable("jNelson", "assessortestpdf@gmail.com", "0608", 0);
-    loadTable("aNelson", "assessortestpdf@gmail.com", "0608", 3);
-    loadTable("xNelson", "assessortestpdf@gmail.com", "0608", 16);
-    loadTable("wNelson", "assessortestpdf@gmail.com", "0608", 10);
-    loadTable("oNelson", "assessortestpdf@gmail.com", "0608", 70);
-    loadTable("qNelson", "assessortestpdf@gmail.com", "0608", 13);
-    loadTable("kNelson", "assessortestpdf@gmail.com", "0608", 2);
+    loadTable("qNelson", "nelsonlinyh@gmail.com", "1996", "0608", 7);
+    // loadTable("bNelson", "assessortestpdf@gmail.com", "0608", 1);
+    // loadTable("sNelson", "assessortestpdf@gmail.com", "0608", 13);
+    // loadTable("dNelson", "assessortestpdf@gmail.com", "0608", 2);
+    // loadTable("jNelson", "assessortestpdf@gmail.com", "0608", 0);
+    // loadTable("aNelson", "assessortestpdf@gmail.com", "0608", 3);
+    // loadTable("xNelson", "assessortestpdf@gmail.com", "0608", 16);
+    // loadTable("wNelson", "assessortestpdf@gmail.com", "0608", 10);
+    // loadTable("oNelson", "assessortestpdf@gmail.com", "0608", 70);
+    // loadTable("qNelson", "assessortestpdf@gmail.com", "0608", 13);
+    // loadTable("kNelson", "assessortestpdf@gmail.com", "0608", 2);
 
-    function loadTable(name,certNo,empNo,balance) {
+    function loadTable(name,email,certNo,empNo,balance) {
         // Get LDAP Information
         // TO DO
 
@@ -252,9 +252,9 @@ $(document).ready(function(){
         var infoHTML = "<button class='infoHoverBtn'><i class='fa fa-user' aria-hidden='true'></i> Info</button>\
                         <div class='infoHoverDPBCont'>\
                             <ul>\
-                                <li class='emailLi'>Email: "+"123@gmail.com"+"</li>\
-                                <li>CertNo: "+certNo+"</li>\
-                                <li>EmpNo: "+empNo+"</li>\
+                                <li class='emailLi'>Email: <span class='emailInfo'>"+email+"</span></li>\
+                                <li class='certNoLi'>CertNo: <span class='certNoInfo'>"+certNo+"</span></li>\
+                                <li class='empNoInfo'>EmpNo: "+empNo+"</li>\
                                 <li>Status: xxx</li>\
                             </ul>\
                             <iframe class='cover' src='about:blank'></iframe>\
@@ -366,6 +366,7 @@ $(document).ready(function(){
                     current_fiscal_year:current_fiscal_year,
                 },
                 success:function(results){
+                    alert(results.length);
                     loadReportSelection();
                     for (var i = 0; i < results.length; i ++) {
                         var name = results[i]['FirstName']+" "+results[i]['LastName'];
@@ -373,7 +374,7 @@ $(document).ready(function(){
                         var certNo = results[i]['CertNo'];
                         var empNo = results[i]['EmployeeID'];
                         var balance = results[i]['CurrentYearBalance'];
-                        loadTable(name,certNo,empNo,balance);
+                        loadTable(name,"123@gmail.com",certNo,empNo,balance);
                         // var trHTML = "<tr>\
                         //                 <td><input type='checkbox' name='selected'></td>\
                         //                 <td class='nameinfo'>"+name+"</td>\
@@ -412,9 +413,9 @@ $(document).ready(function(){
     }
 
     $(document).on("click",".viewReportBtn", function() {
-
         // TO DO: Fill in data
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
+        alert("certno is "+certNo);
         var report_name = $("#reportTypeSelect option:selected").val();
         var report_file_name = getReportFileName(report_name);
         // var year_type = 1;  // # of year inputs
@@ -785,7 +786,7 @@ $(document).ready(function(){
         }
     	var subject = getEmailSubject();
         var content = getEmailContent();
-        $("#overviewTable").find(".emailLi").each(function() {
+        $("#overviewTable").find(".emailInfo").each(function() {
             var checkbox = $(this).closest("tr").find("input[name='selected']");
             if(checkbox.is(":checked")) {
                 var address = $(this)[0].innerHTML;

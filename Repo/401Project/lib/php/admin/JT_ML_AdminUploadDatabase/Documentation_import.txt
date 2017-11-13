@@ -1,0 +1,10 @@
+Created by Mian Lu on Nov. 10, 2017
+mianlu@usc.edu
+
+Below is the documentation on Appraisal Training Record Tracking System Project - database import part.
+
+1. One-time initial setup procedure:
+	These are the steps necessary to be done before the code could execute normally:
+	(1)	Setup Microsoft SQL Server (2014 is preferred, although later versions should work just fine)
+		HTRAINDATADEV-V
+	(2) Create a database named
