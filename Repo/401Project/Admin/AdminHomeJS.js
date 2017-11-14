@@ -377,7 +377,7 @@ $(document).ready(function(){
             query = " AND " + query;
         }
 
-        alert("Now the SQL Query is :\n" +query);
+        // alert("Now the SQL Query is :\n" +query);
         $.ajax({
             url:"../lib/php/admin/applyFilters.php",
             type: "POST",
@@ -387,7 +387,7 @@ $(document).ready(function(){
                 current_fiscal_year:current_fiscal_year,
             },
             success:function(results){
-                alert(results.length);
+                alert("Result size: " + results.length);
                 loadReportSelection();
                 for (var i = 0; i < results.length; i ++) {
                     var name = results[i]['FirstName']+" "+results[i]['LastName'];

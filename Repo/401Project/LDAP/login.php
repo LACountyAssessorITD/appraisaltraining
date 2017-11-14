@@ -38,7 +38,6 @@ session_start();
 						$manager_name=str_replace('CN=','',strstr($string_for_manager_info,',OU',true));
 						echo "manager_info!!!!!!: ".$manager_name;
 
-
 					 	$serverName = SQL_SERVER_NAME;
 						$uid = SQL_SERVER_USERNAME;
 						$pwd = SQL_SERVER_PASSWORD;
@@ -55,10 +54,10 @@ session_start();
 						     die( print_r( sqlsrv_errors(), true));
 						}
 
-						echo "EmployeeID is: ".$user_name."\n";
+						//echo "EmployeeID is: ".$user_name."\n";
 
 						// $tsql = "SELECT * FROM [New_EmployeeID_Xref] WHERE EmployeeID=".(int)$user_name;
-						$tsql = "SELECT * FROM [New_EmployeeID_Xref] WHERE EmployeeID=".$user_name;
+						$tsql = "SELECT * FROM [New_EmployeeID_Xref] WHERE EmployeeID=".(int)$user_name;
 						// $tsql = "SELECT * FROM [New_EmployeeID_Xref] WHERE EmployeeID = 603253"; // Angel's EmployeeID!
 						// echo "looking in XREF for employeeID: "
 						$stmt = sqlsrv_query( $conn, $tsql);
@@ -68,39 +67,26 @@ session_start();
 						     die( print_r( sqlsrv_errors(), true));
 						}
 						else {
-							// $rows = sqlsrv_num_rows($stmt);
-
-
 							$rows = sqlsrv_fetch_array($stmt);
-
-							// echo "row is: ".$rows."\n";
-
 							sqlsrv_free_stmt($stmt);
 							sqlsrv_close($conn);
-						 	// if($rows > 0) { // if exists in the appraiser databse
 						 	if($rows) { // if exists in the appraiser databse
-
-								// echo "\ni'm here!\n";
-
-
 						 		$_SESSION["logged_in"] = true;
 						 		$_SESSION["CERTNO"] = $rows['CertNo'];
 						 		$_SESSION["ROLE"] = $rows['IsAdmin'];
 						 		$_SESSION['EMPLOYEEID'] = $user_name;
 						 		if ($_SESSION["ROLE"] == 1) {
-									// header("Location: " . ADMIN_HOME_PAGE_URL);
+									header("Location: " . ADMIN_HOME_PAGE_URL);
 								} else if ($_SESSION["ROLE"] == 0) {
 									header("Location: " . USER_HOME_PAGE_URL);
 								} else {
 									$_SESSION["logged_in"] = false;
-									header("Location: " . ERROR_URL);
+									header("Location: " . LOGIN_URL);
 								}
-
-								// */
 							}
 							else {	 // if not an appraiser or admin
 								$_SESSION["logged_in"] = false;
-								header("Location: " . LOGIN_URL);
+								header("Location: " . ERROR_URL);
 							}
 						}
 					}
