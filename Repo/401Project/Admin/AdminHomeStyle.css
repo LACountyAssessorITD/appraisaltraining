@@ -651,17 +651,20 @@
     border-radius: 5px;
     overflow: auto;
     max-height: 500px;
-    width: 100%;
+    width: 150%;
     left:60%;
     bottom:0;
     padding: 10px 10px;
 }
 
 .infoHoverDPBCont ul {
+	width: 50%;
+	float: left;
 	list-style-type: none;
 	text-align:left;
 	margin:0;
 	padding:0;
+	overflow: auto;
 }
 
 .viewReportBtn {
@@ -675,7 +678,13 @@
 	/*margin:auto;*/
 }
 
+#hoursAndTableSizeDiv {
+	width: 100%;
+}
+
 #hoursShortDiv {
+	width: 60%;
+	float: left;
 	color: white;
 	font-size: 1.3vw;
 	cursor: pointer;
@@ -695,4 +704,17 @@
 	cursor: pointer;
 }
 
+#tableSizeDiv {
+	width: 40%;
+	float: right;
+	text-align: right;
+	color: white;
+	font-size: 1.3vw;
+	cursor: pointer;
+}
 
+#hoursAndTableSizeDiv:after {
+	content: "";
+	display: table;
+	clear: both;
+}

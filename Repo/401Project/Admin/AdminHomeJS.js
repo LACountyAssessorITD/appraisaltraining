@@ -86,10 +86,6 @@ $(document).ready(function(){
 
     loadFilterOptions();
 
-    function count() {
-        $("#homeTab").text("hello");
-    }
-
     function loadFilterOptions() {
         // alert("atload1");
         $(".dropDownFilter").each(function() {
@@ -269,11 +265,13 @@ $(document).ready(function(){
                         <td class='infoInfo'>";
         var infoHTML = "<button class='infoHoverBtn'><i class='fa fa-user' aria-hidden='true'></i> Info</button>\
                         <div class='infoHoverDPBCont'>\
-                            <ul>\
+                            <ul class='info_ul_one'>\
                                 <li class='certNoLi'>CertNo: <span class='certNoInfo'>"+certNo+"</span></li>\
                                 <li class='empNoInfo'>EmpNo: "+empNo+"</li>\
                                 <li>Status: xxx</li>\
                                 <li class='emailLi'>Email: <span class='emailInfo'>"+email+"</span></li>\
+                            </ul>\
+                            <ul class='info_ul_two'>\
                                 <li class='phonenumberLi'>Phone: "+phone+"</li>\
                                 <li class='titleLi'>Title: "+title+"</li>\
                                 <li class='departmentLi'>Department: "+department+"</li>\
@@ -392,6 +390,8 @@ $(document).ready(function(){
             },
             success:function(results){
                 alert("Result size: " + results.length);
+                $("#tableSizeSpan")[0].innerHTML = results.length;
+                countAndSetSelected();
                 loadReportSelection();
                 for (var i = 0; i < results.length; i ++) {
                     var name = results[i]['FirstName']+" "+results[i]['LastName'];
@@ -435,6 +435,17 @@ $(document).ready(function(){
             if($(this).attr('id')=="overviewSelectAll") {}
             else{$(this).remove();}
         });
+        $("#selectedSizeSpan")[0].innerHTML = 0;
+    }
+
+    function countAndSetSelected() {
+        var count = 0;
+        $("#overviewTable tbody").find("input").each(function() {
+            if($(this).is(":checked")) {
+                count += 1;
+            }
+        });
+        $("#selectedSizeSpan")[0].innerHTML = count;
     }
 
     $(document).on("click",".viewReportBtn", function() {
@@ -678,6 +689,10 @@ $(document).ready(function(){
                 $(this).prop("checked",false);
             });
         }
+    });
+
+    $("#overviewTable").on("click", "input[name='selected'], input[name='tableSelectAll']", function() {
+        countAndSetSelected();
     });
 
 
@@ -980,7 +995,7 @@ $(document).ready(function(){
                     $(this).closest("tr").show();
                 }
                 else {
-                    $(this).closest("tr").find("input").prop("checked",false);
+                    // $(this).closest("tr").find("input").prop("checked",false);
                     $(this).closest("tr").hide();
                 }
             }

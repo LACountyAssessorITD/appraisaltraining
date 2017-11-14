@@ -87,10 +87,8 @@
 					<div class="dropDownFilter">
 						<button class="dropDownBtn" name="Status">Employment Status</button>
 					</div>
-	                <!--  Flter for advanced certification progess -->\
+	                <!--  Flter for advanced certification progess -->
 	                <!-- TO DO -->
-
-
 
 				</div>
 
@@ -118,13 +116,18 @@
 					</a>
 				</div>
 				<!-- <button class="resetAll" id="resetAllTable"><i class="fa fa-times" aria-hidden="true"></i> Reset Selections</button> -->
-				<div id="hoursShortDiv">
-					<label>Hours Short:</label>
-					<label><input type='checkbox' name="zero"><span> 0</span></label>
-					<label><input type='checkbox' name="one"><span> 1-5</span></label>
-					<label><input type='checkbox' name="six"><span> 6-10</span></label>
-					<label><input type='checkbox' name="eleven"><span> 11-15</span></label>
-					<label><input type='checkbox' name="sixteen"><span> >15</span></label>
+				<div id='hoursAndTableSizeDiv'>
+					<div id="hoursShortDiv">
+						<label>Hours Short:</label>
+						<label><input type='checkbox' name="zero"><span> 0</span></label>
+						<label><input type='checkbox' name="one"><span> 1-5</span></label>
+						<label><input type='checkbox' name="six"><span> 6-10</span></label>
+						<label><input type='checkbox' name="eleven"><span> 11-15</span></label>
+						<label><input type='checkbox' name="sixteen"><span> >15</span></label>
+					</div>
+					<div id="tableSizeDiv">
+						<label>Filtered: <span id="tableSizeSpan">0</span> Selected: <span id="selectedSizeSpan">0</span></label>
+					</div>
 				</div>
 				<div id="overviewTableDiv">
 					<table id="overviewTable">
