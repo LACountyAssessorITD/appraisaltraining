@@ -1,6 +1,6 @@
 <?php session_start();
-include_once "../lib/php/session.php";
- redirect_onAdminPage();
+// include_once "../lib/php/session.php";
+ // redirect_onAdminPage();
 ?>
 <!DOCTYPE html>
 <html lang="en-US">
