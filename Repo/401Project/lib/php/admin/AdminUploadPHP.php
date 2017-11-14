@@ -66,6 +66,15 @@
 	    	} else {
 	    		$message = "file uploaddded";
 	    		echo '<script>alert("File Uploaded!!!!!");</script>';
+	    		echo '<script type="text/javascript">',
+	    		'update_confirm('.$target_file.');',
+	    		'</script>'
+	    		;
+	    		echo '<script>
+	    		if(confirm("Do you want to update the db file now?")){
+	    			alert("Start updating!");
+	    		}
+	    		</script>';
 	    	}
 
 	    	/*
