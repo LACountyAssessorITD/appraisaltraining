@@ -181,11 +181,11 @@ $(document).ready(function(){
 
     function loadTable(name,certNo,empNo,balance) {
         // Get LDAP Information
-        // var email = $result["email"];
-        // var manager = $result["manager"];
-        // var phone = $result["phone"];
-        // var department = $result["department"];
-        // var title = $result["title"];
+        // var email;
+        // var manager;
+        // var phone;
+        // var department;
+        // var title;
 
         // $.ajax({
         //     url:"../LDAP/getLdapInfo.php",
@@ -195,7 +195,11 @@ $(document).ready(function(){
         //         empNo:empNo,
         //     },
         //     success:function(results){
-
+        //         email = $results["email"];
+        //         manager = $results["manager"];
+        //         phone = $results["phone"];
+        //         department = $results["department"];
+        //         title = $results["title"];
         //     },
         //     error: function(xhr, status, error){
         //     },

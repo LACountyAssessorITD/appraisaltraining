@@ -43,7 +43,7 @@ session_start();
 		$result = ldap_search($ldap, $basedn, $filter, $attributes);
 		if (FALSE !== $result) {
 			$info = ldap_get_entries($ldap, $result);
-			$inforesult  = Array();
+			$inforesult  = array();
 			if($info["count"] > 0) {
 				for ($i=0; $i<$info["count"]; $i++) {
 					 $inforesult["name"] = $info[$i]["displayname"][0];
@@ -53,6 +53,7 @@ session_start();
 					 $inforesult["phone"] = $info[$i]["telephoneNumber"][0];	 // phone number
 					 $inforesult["department"] = $info[$i]["department"][0];	// pay location
 					 $inforesult["title"] = getTitleString((int)$info[$i]["title"][0]);// title
+					 ldap_close($ldap);
 				}
 				echo json_encode($result);
 			}

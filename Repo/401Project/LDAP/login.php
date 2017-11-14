@@ -67,6 +67,7 @@ session_start();
 						     die( print_r( sqlsrv_errors(), true));
 						}
 						else {
+							ldap_close($ldap);
 							$rows = sqlsrv_fetch_array($stmt);
 							sqlsrv_free_stmt($stmt);
 							sqlsrv_close($conn);
