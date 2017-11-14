@@ -184,7 +184,7 @@ $(document).ready(function(){
         // var email = $result["email"];
         // var manager = $result["manager"];
         // var phone = $result["phone"];
-        // var department = $result["department"]; 
+        // var department = $result["department"];
         // var title = $result["title"];
 
         // $.ajax({
@@ -195,7 +195,7 @@ $(document).ready(function(){
         //         empNo:empNo,
         //     },
         //     success:function(results){
-                
+
         //     },
         //     error: function(xhr, status, error){
         //     },

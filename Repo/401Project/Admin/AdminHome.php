@@ -1,6 +1,6 @@
 <?php session_start();
 include_once "../lib/php/session.php";
-// redirect_onAdminPage();
+ redirect_onAdminPage();
 ?>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -91,7 +91,7 @@ include_once "../lib/php/session.php";
 	                <!-- TO DO -->
 
 
-	                
+
 				</div>
 
 			</div>

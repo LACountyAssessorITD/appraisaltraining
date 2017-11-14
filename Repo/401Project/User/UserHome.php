@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once "../lib/php/session.php";
-// redirect_onUserPage();
+redirect_onUserPage();
 ?>
 <!DOCTYPE html>
 <html lang="en-US">
