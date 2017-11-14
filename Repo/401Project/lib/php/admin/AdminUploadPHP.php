@@ -27,7 +27,8 @@
 
 		for ($i = 0; $i< count($files["name"]); $i++) {
 			$FileType = pathinfo($files["name"][$i],PATHINFO_EXTENSION);
-			$File_name = basename("[".$i."]"."BOE".'_'.$timestamp.'.'.$FileType);
+			// $File_name = basename("[".$i."]"."BOE".'_'.$timestamp.'.'.$FileType);
+			$File_name = basename($files["name"][$i]);
 			$target_file[] = $target_dir . $File_name;
 	    	// Check if file already exists
 			// if (file_exists($target_file[$i])) {
