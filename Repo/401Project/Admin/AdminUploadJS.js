@@ -205,7 +205,7 @@ $(document).ready(function(){
           dataType: "json",
           success:function(results){
               for (var i = 0 ; i < results.length; i ++) {
-                insertRow(results[i]['EmployeeID'],results[i]['CertNo']);
+                insertRow(results[i]['EmployeeID'],results[i]['CertNo'],results[i]['FirstName'],results[i]['LastName']);
               }
               checkMismatch();
           },
@@ -220,10 +220,10 @@ $(document).ready(function(){
 
     loadTable();
 
-    function insertRow(employeeIDNew, certNoNew) {
+    function insertRow(employeeIDNew, certNoNew,firstName,LastName) {
       //These two should be found based on employeeID and CertNO
       var empName = "name";
-      var certName = "anothername";
+      var certName = firstName + " " + LastName;
       var markup = "<tr>\
                       <td class='EmployeeIDData'>"+employeeIDNew+"</td>\
                       <td class='EmployeeIDName'>"+empName+"</td>\
