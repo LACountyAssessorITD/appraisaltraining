@@ -20,14 +20,6 @@ if( $conn === false )
      echo "Unable to connect.</br>";
      die( print_r( sqlsrv_errors(), true));
 }
-$tsql = "
-SELECT [New_Employee].CertNo,  [New_EmployeeID_Xref].EmployeeID, [New_CertHistory].CurrentYearBalance
-  FROM [New_Employee]
-  INNER JOIN [New_EmployeeID_Xref]
-    ON [New_Employee].CertNo = [New_EmployeeID_Xref].CertNo
-  INNER JOIN [New_CertHistory]
-    ON [New_Employee].CertNo = [New_CertHistory].CertNo
-  WHERE ([New_CertHistory].CertYear = '".$year_string."')".$query;
 
 $tsql = "SELECT [New_Employee].FirstName, [New_Employee].LastName, [New_EmployeeID_Xref].EmployeeID,[New_EmployeeID_Xref].CertNo 
         FROM [New_EmployeeID_Xref]
