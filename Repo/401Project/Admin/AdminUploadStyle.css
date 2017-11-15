@@ -235,17 +235,22 @@ iframe {
 	margin: 20px auto;
 	width: 30%;
 	border-radius: 3px;
-	height: 150px;
+	height: 200px;
 	color: white;
+	padding: 20px auto;
 }
 
 #mismatchListWrap {
+	margin: 10px auto;
 	overflow: auto;
 	height: 100%;
+	padding: 20px auto;
 }
 
 #mismatchDiv ul {
 	list-style-type: none;
+	margin:0;
+	padding: 0;
 	/*overflow: auto;*/
 }
 

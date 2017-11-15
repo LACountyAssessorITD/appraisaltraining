@@ -160,6 +160,7 @@ $(document).ready(function(){
       $(this).closest("tr").find(".CertNoData")[0].innerHTML = certNoStr;
       $(this).closest("td").find(".editRowBtn").data("clicked",false);
       $(this).closest(".editRowDiv").hide();
+      checkMismatch();
     });
 
     //Delete Row
@@ -170,6 +171,7 @@ $(document).ready(function(){
         return;
       }
       $(this).closest("tr").remove();
+      checkMismatch();
     });
 
     //Insert Row
@@ -202,10 +204,10 @@ $(document).ready(function(){
           type: "POST",
           dataType: "json",
           success:function(results){
-
               for (var i = 0 ; i < results.length; i ++) {
                 insertRow(results[i]['EmployeeID'],results[i]['CertNo']);
               }
+              checkMismatch();
           },
           error: function(xhr, status, error){
               alert("Fail to connect to the server when trying to retrieve report types");
@@ -280,7 +282,6 @@ $(document).ready(function(){
     function checkMismatch() {
         $("#mismatchList")[0].innerHTML = "";
         var numMismatch = 0;
-        alert("1");
         $("#xrefTable tbody").find("tr").each(function() {
             var empName = $(this).find(".EmployeeIDName")[0].innerHTML;
             var certName = $(this).find(".CertNoName")[0].innerHTML;
@@ -300,7 +301,6 @@ $(document).ready(function(){
               numMismatch += 1;
             }
         });
-        alert("2");
         $("#mismatchCount")[0].innerHTML = numMismatch;
     }
 
