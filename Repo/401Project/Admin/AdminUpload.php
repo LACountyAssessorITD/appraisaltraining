@@ -119,14 +119,21 @@
 			<form id='xrefSearchBar'>
                 <input type='text' placeholder='Search..' autocomplete='off'>
             </form>
+            <div id="mismatchDiv">
+            	<label>Mismatched Pairs: <span id="mismatchCount">0</span></label>
+            	<div id='mismatchListWrap'>
+	            	<ul id="mismatchList">
+	            	</ul>
+	            </div>
+            </div>
 			<div id="xrefTableDiv">
 				<table id="xrefTable">
 					<thead>
 						<tr>
-							<th width="15%">EmployeeID</th>
-							<th width="15%">Name</th>
-							<th width="15%">CertNo</th>
-							<th width="15%">Name</th>
+							<th width="15%">EmployeeID <button class="numSort"><i class="fa fa-sort" aria-hidden="true"></i></button></th>
+							<th width="15%">Name <button class="nameSort"><i class="fa fa-sort" aria-hidden="true"></i></button></th>
+							<th width="15%">CertNo <button class="numSort"><i class="fa fa-sort" aria-hidden="true"></i></button></th>
+							<th width="15%">Name <button class="nameSort"><i class="fa fa-sort" aria-hidden="true"></i></button></th>
 							<th width="35%">Edit</th>
 							<th width="5%"></th>
 						</tr>

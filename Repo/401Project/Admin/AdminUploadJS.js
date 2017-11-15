@@ -177,12 +177,19 @@ $(document).ready(function(){
       var employeeIDNew = $(this).closest("#insertNewRowDiv").find("input[name='InsertEmployeeIDInput']").val();
       var certNoNew = $(this).closest("#insertNewRowDiv").find("input[name='InsertCertNoInput']").val();
 
+      if(employeeIDNew==""||certNoNew=="") {
+        alert("Both fields should be filled.");
+        return;
+      }
+
       if(confirm("Insert this new row with Employee ID: "+employeeIDNew+" and CertNo: "+certNoNew+"?")==0) {
         alert("pressed cancel");
         return;
       }
 
       insertRow(employeeIDNew, certNoNew);
+
+      checkMismatch();
 
       $(this).closest("#insertNewRowDiv").find("input[name='InsertEmployeeIDInput']").val("");
       $(this).closest("#insertNewRowDiv").find("input[name='InsertCertNoInput']").val("");
@@ -205,6 +212,7 @@ $(document).ready(function(){
           },
           async: false
       });
+      // checkMismatch();
     }
 
 
@@ -212,8 +220,8 @@ $(document).ready(function(){
 
     function insertRow(employeeIDNew, certNoNew) {
       //These two should be found based on employeeID and CertNO
-      var empName = "";
-      var certName = "";
+      var empName = "name";
+      var certName = "anothername";
       var markup = "<tr>\
                       <td class='EmployeeIDData'>"+employeeIDNew+"</td>\
                       <td class='EmployeeIDName'>"+empName+"</td>\
@@ -267,6 +275,78 @@ $(document).ready(function(){
               $(this).closest("tr").show();
             }
         });
+    });
+
+    function checkMismatch() {
+        $("#mismatchList")[0].innerHTML = "";
+        var numMismatch = 0;
+        alert("1");
+        $("#xrefTable tbody").find("tr").each(function() {
+            var empName = $(this).find(".EmployeeIDName")[0].innerHTML;
+            var certName = $(this).find(".CertNoName")[0].innerHTML;
+            // var empName = "name1";
+            // var certName = "name2";
+            if(empName==""||certName=="") {
+              alert("emp or cert name is null");
+              return;
+            }
+            if(empName.toUpperCase()!=certName.toUpperCase()) {
+              var employeeIDNum = $(this).find(".EmployeeIDData")[0].innerHTML;
+              var certNoNum = $(this).find(".CertNoData")[0].innerHTML;
+              // var employeeIDNum = 100;
+              // var certNoNum = 200;
+              var markup = "<li>Employee ID = "+employeeIDNum+", CertNo = "+certNoNum+"</li>";
+              $("#mismatchList").append(markup);
+              numMismatch += 1;
+            }
+        });
+        alert("2");
+        $("#mismatchCount")[0].innerHTML = numMismatch;
+    }
+
+
+    function sortTable(f,n){
+        var rows = $('#xrefTable tbody tr').get();
+
+        rows.sort(function(a, b) {
+            var A = getVal(a);
+            var B = getVal(b);
+
+            if(A > B) {
+                return -1*f;
+            }
+            if(A < B) {
+                return 1*f;
+            }
+            return 0;
+        });
+
+        function getVal(elm){
+            var v = $(elm).children('td').eq(n).text().toUpperCase();
+            if($.isNumeric(v)){
+                v = parseInt(v,10);
+            }
+            return v;
+        }
+
+        $.each(rows, function(index, row) {
+            $('#xrefTable').children('tbody').append(row);
+        });
+    }
+
+    var f_name = 1;
+    var f_hour = 1;
+
+    $(".nameSort").on("click",function() {
+        var numCol = $(this).closest("tr").children().index($(this).closest("th"));
+        f_name *= -1;
+        sortTable(f_name,numCol);
+    });
+
+    $(".numSort").on("click",function() {
+        var numCol = $(this).closest("tr").children().index($(this).closest("th"));
+        f_hour *= -1;
+        sortTable(f_hour,numCol);
     });
 
 });

@@ -230,6 +230,25 @@ iframe {
 	/*height: 10px;*/
 }
 
+#mismatchDiv {
+	text-align: center;
+	margin: 20px auto;
+	width: 30%;
+	border-radius: 3px;
+	height: 150px;
+	color: white;
+}
+
+#mismatchListWrap {
+	overflow: auto;
+	height: 100%;
+}
+
+#mismatchDiv ul {
+	list-style-type: none;
+	/*overflow: auto;*/
+}
+
 #xrefSearchBar input {
 	width: 100%;
 	padding: 5px;
@@ -259,6 +278,7 @@ iframe {
 #xrefTableDiv th {
 	background: white;
 	color: black;
+	height: 30px;
 }
 
 #xrefTableDiv td {
@@ -286,6 +306,12 @@ iframe {
 	margin: 0;
 	top: 0;
 	bottom: 0;
+}
+
+.nameSort, .numSort {
+	background: none;
+	border: none;
+	color: black;
 }
 
 .editRowBtn {
