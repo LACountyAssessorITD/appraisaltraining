@@ -186,10 +186,10 @@
   	overflow: hidden;
 	/*overflow: auto;*/
 
-	background-image: url('../iconImg/dropdownicon.png');
+	/*background-image: url('../iconImg/dropdownicon.png');
 	background-size: 15px 15px;
     background-position: 5%;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;*/
 }
 
 .dropDownBtn, .DPBCont {

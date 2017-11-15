@@ -170,6 +170,15 @@ $(document).ready(function(){
         // checkTypeForDownload();
     }
 
+    addDownArrow();
+
+    function addDownArrow() {
+        var markup = "<span class='dropDownBtnDownArrow' style='margin-left:5px'><i class='fa fa-angle-down' aria-hidden='true'></i></span>"
+        $(".dropDownBtn").each(function() {
+            $(this).append(markup);
+        });
+    }
+
 
     var dropDownType = 0;
 
@@ -741,6 +750,8 @@ $(document).ready(function(){
         $(".DPBCont").each(function() {
             $(this).hide();
             $(this).parent().children(".dropDownBtn").data("clicked",false);
+            $(this).parent().children(".dropDownBtn").find("i").remove();
+            $(this).parent().children(".dropDownBtn").find("span").append("<i class='fa fa-angle-down' aria-hidden='true'></i>");
         });
 
         $(this).data("clicked",clicked);
@@ -748,12 +759,31 @@ $(document).ready(function(){
     	if($(this).data("clicked")) {
     		$(this).data("clicked",false);
     		$(this).next().hide();
+            $(this).parent().children(".dropDownBtn").find("i").remove();
+            $(this).parent().children(".dropDownBtn").find("span").append("<i class='fa fa-angle-down' aria-hidden='true'></i>");
     	}
     	else {
 	    	$(this).data("clicked",true);
 	    	$(this).next().show();
+            $(this).parent().children(".dropDownBtn").find("i").remove();
+            $(this).parent().children(".dropDownBtn").find("span").append("<i class='fa fa-angle-up' aria-hidden='true'></i>");
+
     	}
     });
+
+
+    // $(".dropDownFilter").focusout(function(){
+    //     $(this).find(".dropDownBtn").data("clicked",false);
+    //     $(this).find(".DPBCont").hide();
+    // });
+
+    // $(".dropDownFilter").focusin(function() {
+    //     $(this).find(".dropDownBtn").data("clicked",true);
+    //     $(this).find(".DPBCont").show();
+    // });
+
+
+
 
 
     //Dropdown changes color on selected options
