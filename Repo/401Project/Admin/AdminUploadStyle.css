@@ -222,6 +222,21 @@ iframe {
 	position: relative;
 }*/
 
+#xrefSearchBar {
+	text-align: center;
+	margin: 20px auto;
+	width: 30%;
+	border-radius: 3px;
+	/*height: 10px;*/
+}
+
+#xrefSearchBar input {
+	width: 100%;
+	padding: 5px;
+	font-size: 1vw;
+	border-radius: 5px;
+}
+
 #xrefTableDiv {
 	width: 70%;
 	height: 700px;
@@ -277,6 +292,7 @@ iframe {
 	background: none;
 	border: none;
 	outline: none;
+	width: 100%;
 }
 
 .editRowBtn i{

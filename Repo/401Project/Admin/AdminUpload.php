@@ -116,13 +116,18 @@
 		</div>
 
 		<div class="xrefDiv">
+			<form id='xrefSearchBar'>
+                <input type='text' placeholder='Search..' autocomplete='off'>
+            </form>
 			<div id="xrefTableDiv">
 				<table id="xrefTable">
 					<thead>
 						<tr>
-							<th width="20%">EmployeeID</th>
-							<th width="20%">CertNo</th>
-							<th width="55%">Edit</th>
+							<th width="15%">EmployeeID</th>
+							<th width="15%">Name</th>
+							<th width="15%">CertNo</th>
+							<th width="15%">Name</th>
+							<th width="35%">Edit</th>
 							<th width="5%"></th>
 						</tr>
 					</thead>

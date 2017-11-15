@@ -197,7 +197,7 @@ $(document).ready(function(){
           success:function(results){
 
               for (var i = 0 ; i < results.length; i ++) {
-                insertRow(results[i]['EmployeeID'], results[i]['CertNo']);
+                insertRow(results[i]['EmployeeID'],results[i]['CertNo']);
               }
           },
           error: function(xhr, status, error){
@@ -211,9 +211,14 @@ $(document).ready(function(){
     loadTable();
 
     function insertRow(employeeIDNew, certNoNew) {
+      //These two should be found based on employeeID and CertNO
+      var empName = "";
+      var certName = "";
       var markup = "<tr>\
                       <td class='EmployeeIDData'>"+employeeIDNew+"</td>\
+                      <td class='EmployeeIDName'>"+empName+"</td>\
                       <td class='CertNoData'>"+certNoNew+"</td>\
+                      <td class='CertNoName'>"+certName+"</td>\
                       <td>\
                         <button class='editRowBtn'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button>\
                         <div class='editRowDiv'>\
@@ -238,6 +243,30 @@ $(document).ready(function(){
         if ((event.which < 48 || event.which > 57)) {
             event.preventDefault();
         }
+    });
+
+
+    $("#xrefSearchBar input").on("change keyup paste click", function(){
+        input = $(this);
+        filterText = input.val().toUpperCase();
+        filterTable = $("#xrefTable");
+
+        filterTable.children("tbody").children("tr").each(function() {
+            var found = false;
+            $(this).find("td").each(function() {
+              if ($(this)[0].innerHTML.toUpperCase().indexOf(filterText) > -1) {
+                // $(this).parent().show();
+                found = true;
+              }
+            });
+
+            if(found==false) {
+              $(this).closest("tr").hide();
+            }
+            else {
+              $(this).closest("tr").show();
+            }
+        });
     });
 
 });
