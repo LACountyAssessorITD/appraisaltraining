@@ -13,6 +13,10 @@ $connectionInfo = array( "UID"=>$uid,
                          "Database"=>$db,
              "ReturnDatesAsStrings"=>true);  // convert datetime to string
 
+ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
+error_reporting(-1);
+
 /* Connect using SQL Server Authentication. */
 $conn = sqlsrv_connect( $serverName, $connectionInfo);
 if( $conn === false )
@@ -20,7 +24,7 @@ if( $conn === false )
      echo "Unable to connect.</br>";
      die( print_r( sqlsrv_errors(), true));
 }
-
+$tsql = $query;
 $tsql = "SELECT [New_Employee].FirstName, [New_Employee].LastName, [New_EmployeeID_Xref].EmployeeID,[New_EmployeeID_Xref].CertNo 
         FROM [New_EmployeeID_Xref]
         INNER JOIN [New_Employee]

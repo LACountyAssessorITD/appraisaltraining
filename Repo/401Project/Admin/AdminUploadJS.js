@@ -210,7 +210,7 @@ $(document).ready(function(){
               checkMismatch();
           },
           error: function(xhr, status, error){
-              alert("Fail to connect to the server when trying to load xref table");
+              alert("Fail to connect to the server when trying to load xref table" + xhr + status + error);
           },
           async: false
       });
