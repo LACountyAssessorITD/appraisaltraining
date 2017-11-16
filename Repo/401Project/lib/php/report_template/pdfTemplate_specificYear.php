@@ -1,4 +1,4 @@
-<?php
+ <?php
 /*
 This Code draw out the individual PDF (Specific Year Report)
 @ Yining Huang
@@ -51,7 +51,10 @@ class myPDF extends FPDF {
 
         // Get Names, Certification Date, status and specialty
         // from [New_Employee]
-        $tsql = "SELECT * FROM [New_Employee] WHERE CertNo=".(string)$certid;
+        $tsql = "SELECT * FROM [New_Employee] 
+                INNER JOIN [New_CertHistory]
+                    ON [New_CertHistory].CertNo = [New_Employee].CertNo
+                WHERE CertNo=".(string)$certid." AND [New_CertHistory].CertYear='".(string)$year."-".(string)($year+1)."'";
         $stmt = sqlsrv_query( $conn, $tsql);
         if( $stmt === false )
         {
@@ -74,27 +77,30 @@ class myPDF extends FPDF {
             } else {
               $certDate = date("m/d/Y",strtotime($row['PermCertDate']));
             }
+            $certType = $row['CertType'];
+            $allowedcarryover= $row['CarryForwardTotal'];
+            $PriorYearBalance = $row['PriorYearBalance'];
         }
         sqlsrv_free_stmt($stmt);
 
 
         // Get Certification Type and Allowed carry over
         // from [New_CertHistory] table
-        $tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid."AND CertYear='".
-            (string)$year."-".(string)($year+1)."'";
-        $stmt = sqlsrv_query( $conn, $tsql);
-        if( $stmt === false )
-        {
-             echo "Error in executing query98.</br>";
-             die( print_r( sqlsrv_errors(), true));
-        }
-        else {
-            $row= sqlsrv_fetch_array($stmt);
-            $certType = $row['CertType'];
-            $allowedcarryover= $row['CarryForwardTotal'];
-            $PriorYearBalance = $row['PriorYearBalance'];
-        }
-        sqlsrv_free_stmt($stmt);
+        // $tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid."AND CertYear='".
+        //     (string)$year."-".(string)($year+1)."'";
+        // $stmt = sqlsrv_query( $conn, $tsql);
+        // if( $stmt === false )
+        // {
+        //      echo "Error in executing query98.</br>";
+        //      die( print_r( sqlsrv_errors(), true));
+        // }
+        // else {
+        //     $row= sqlsrv_fetch_array($stmt);
+        //     $certType = $row['CertType'];
+        //     $allowedcarryover= $row['CarryForwardTotal'];
+        //     $PriorYearBalance = $row['PriorYearBalance'];
+        // }
+        // sqlsrv_free_stmt($stmt);
 
         // Fill in data for personal information
         $this->SetFont('Arial','B',12);
