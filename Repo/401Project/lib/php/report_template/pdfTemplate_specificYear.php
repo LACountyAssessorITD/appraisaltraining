@@ -335,7 +335,7 @@ class myPDF extends FPDF {
         $this->SetLineWidth(0.5);
 
         $year = $GLOBALS['year'];
-        if ($GLOBALS['allowedcarryover']>0) {
+        if ($GLOBALS['allowedcarryover']>=0) {
           $this->Cell(0,5,'TRAINING HOURS REQUIREMENT HAS BEEN MET FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
         }
         else {
