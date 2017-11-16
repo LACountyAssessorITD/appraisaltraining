@@ -20,13 +20,17 @@
 	////////////////////////////////// Step I: Mian's sql server - open connection //////////////////////////////////
 	// open connectio to metadata table which tells me which among the 2 tables shall I connect to next!
 	if(true) {
-		$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
+		// step 1 - connect to SQL Server
+		// $connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
+		$connectionInfo = array( "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
 		$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
-		if( $conn ) echo "SQL Server connection to METADATA DATABASE established.<br />";
+		if( $conn ) echo "SQL Server connection to " + SQL_SERVER_USERNAME + " established.<br />";
 		else {
-			echo "SQL Server connection to METADATA DATABASE could not be established.<br />";
+			echo "SQL Server connection to " + SQL_SERVER_USERNAME + " cannot be established.<br />";
 			die( print_r( sqlsrv_errors(), true));
 		}
+		// step 2 - create metadata database
+		$create_metadata = "IF (db_id(N'" + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00 + "') IS NULL) CREATE DATABASE " + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00
 
 		$current_db_query = "SELECT DbName FROM DbTable WHERE IsCurrent = 0";
 		$srvr_stmt = sqlsrv_query( $conn, $current_db_query );
