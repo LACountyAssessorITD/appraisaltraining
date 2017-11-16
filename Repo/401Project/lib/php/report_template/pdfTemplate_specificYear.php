@@ -311,7 +311,6 @@ class myPDF extends FPDF {
         $this->Cell(236.8,0,'Total Carry Over Hours:',0,0,'R');
         $this->ln(0);
         $totalcarryover = $hoursEarned+$PriorYearBalance-$RequiredHours;
-        $GLOBALS['totalcarryover'] = $totalcarryover;
         $this->Cell(260,0,$totalcarryover,0,0,'R');
 
         $this->Ln(6);
@@ -319,6 +318,7 @@ class myPDF extends FPDF {
         $this->Cell(236.8,0,'Allowed Carry Over Hours for Next FY*:',0,0,'R');
         $this->ln(0);
         $this->Cell(260,0,$allowedcarryover,0,0,'R');
+        $GLOBALS['allowedcarryover'] = $allowedcarryover;
 
         $this->Ln(10);
         $this->SetFont('Arial','I',10);
@@ -335,11 +335,11 @@ class myPDF extends FPDF {
         $this->SetLineWidth(0.5);
 
         $year = $GLOBALS['year'];
-        if ($GLOBALS['carryforwardtotal']>0) {
+        if ($GLOBALS['allowedcarryover']>0) {
           $this->Cell(0,5,'TRAINING HOURS REQUIREMENT HAS BEEN MET FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
         }
         else {
-          $this->Cell(0,5, $GLOBALS['carryforwardtotal'].' HOURS TO COMPLETE TRAINING HOURS REQUIREMENT FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
+          $this->Cell(0,5, $GLOBALS['allowedcarryover']*(-1).' HOURS TO COMPLETE TRAINING HOURS REQUIREMENT FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
         }
 
         $this->SetY(-15);
