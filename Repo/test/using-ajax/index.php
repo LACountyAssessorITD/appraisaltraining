@@ -37,7 +37,6 @@ session_start();
           $("#message").html(data.message);
           // If the process is completed, we should stop the checking process.
           if (data.percent == 100) {
-            alert('done!');
             window.clearInterval(timer);
             timer = window.setInterval(completed, 1000);
           }

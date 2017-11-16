@@ -5,7 +5,7 @@ session_start();
 // We have to make sure there is no garbage left here.
 // Failed process will leave the file undeleted.
 // So, we need to delete the file that older than 2 days.
-$files = glob("D:/t/*");
+$files = glob("tmp/*");
 $now   = time();
 
 foreach ($files as $file) {
@@ -33,9 +33,8 @@ for($i=1; $i<=$total; $i++){
 
   // Write the progress into file and serialize the PHP array into JSON format.
   // The file name is the session id.
-  file_put_contents("D:/t/" . session_id() . ".txt", json_encode($arr_content));
+  file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
 
   // Sleep one second so we can see the delay
   sleep(1);
 }
-?>
