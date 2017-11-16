@@ -1,41 +1,48 @@
 $(document).ready(function(){
 
-  $("#updateTab").on("click",function(e) {
-      e.preventDefault();
-  });
+    $("#updateTab").on("click",function(e) {
+        e.preventDefault();
+    });
 
-/*--------------------------------------------------------------------------------------------*/
-/*------------------------------Display Accordions--------------------------------------------*/
-/*--------------------------------------------------------------------------------------------*/
 
-   $.fn.togglepanels = function(){
-      return this.each(function(){
-        $(this).addClass("ui-accordion ui-accordion-icons ui-widget ui-helper-reset")
-      .find("p")
-        .addClass("ui-accordion-header ui-helper-reset ui-state-default ui-corner-top ui-corner-bottom")
-        .hover(function() {
-          $(this).toggleClass("ui-state-hover");
-        })
-        .prepend('<span class="ui-icon ui-icon-triangle-1-e"></span>')
-        .click(function() {
-          $(this)
-            .toggleClass("ui-accordion-header-active ui-state-active ui-state-default ui-corner-bottom")
-            .find("> .ui-icon").toggleClass("ui-icon-triangle-1-e ui-icon-triangle-1-s").end()
-            .next().slideToggle();
-          return false;
-        })
-        .next()
-          .addClass("ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom")
-          .hide();
-      });
-    };
+    $("#effDateBtn").on("click",function() {
+        // if($("#yearEffInput").val()=="" || $("#monthEffInput").val()=="" || $("#dayEffInput").val()=="") {
+        //     alert("All date fields should be filled");
+        // }
+        // var year = parseInt($("#yearEffInput").val());
+        // var month = parseInt($("#monthEffInput").val());
+        // var day = parseInt($("#dayEffInput").val());
 
-    // $("#accordion").togglepanels();
+        var validDate = checkValidDate();
 
-/*--------------------------------------------------------------------------------------------*/
-/*------------------------------Display Accordions END----------------------------------------*/
-/*--------------------------------------------------------------------------------------------*/
+        if(validDate) {
+            if(confirm("Update effective date to "+month+"/"+day+"/"+year+"?")) {
+                alert("date updated");
+            }
+            else {
+                alert("cancelled");
+            }
+        }
 
+    });
+
+    function checkValidDate(year, month, day) {
+        if($("#yearEffInput").val()=="" || $("#monthEffInput").val()=="" || $("#dayEffInput").val()=="") {
+            alert("All date fields should be filled");
+        }
+        var year = parseInt($("#yearEffInput").val());
+        var month = parseInt($("#monthEffInput").val());
+        var day = parseInt($("#dayEffInput").val());
+
+        var date = new Date(year,month-1,day);
+        if(date.getFullYear()==year && (date.getMonth()+1)==month && date.getDate()==day) {
+            return true;
+        }
+        else {
+            alert("invalid date");
+            return false;
+        }
+    }
 
     $("#uploadForm").each(function() {
     	$(this)[0].reset();
@@ -132,6 +139,10 @@ $(document).ready(function(){
 
     $("#submitNewBtn").on("click",function() {
       // $("#chosenFileName").text("");
+      alert("clicked");
+      if(!checkValidDate()) {
+        return false;
+      }
     });
 
     //Expand or collapse edit xrefDiv
@@ -220,9 +231,26 @@ $(document).ready(function(){
 
     loadTable();
 
-    function insertRow(employeeIDNew, certNoNew,firstName,LastName) {
+    function insertRow(employeeIDNew, certNoNew, firstName, LastName) {
       //These two should be found based on employeeID and CertNO
       var empName = "name";
+      // $.ajax({
+      //       url:"../LDAP/getLdapInfo.php",
+      //       type: "POST",
+      //       dataType: "json",
+      //       data: {
+      //           empNo:empNo,
+      //       },
+      //       success:function(results){
+      //           // alert(results[1]);
+      //           empName = results[0];
+      //       },
+      //       error: function(xhr, status, error){
+      //           // alert(empNo);
+      //           // alert(error);
+      //       },
+      //       async:false
+      //   });
       var certName = firstName + " " + LastName;
       var markup = "<tr>\
                       <td class='EmployeeIDData'>"+employeeIDNew+"</td>\

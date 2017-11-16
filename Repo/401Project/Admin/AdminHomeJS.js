@@ -186,36 +186,37 @@ $(document).ready(function(){
 
     function loadTable(name,certNo,empNo,balance) {
         // Get LDAP Information
-        // var email;
-        // var manager;
-        // var phone;
-        // var department;
-        // var title;
-
-        // $.ajax({
-        //     url:"../LDAP/getLdapInfo.php",
-        //     type: "POST",
-        //     dataType: "json",
-        //     data: {
-        //         empNo:empNo,
-        //     },
-        //     success:function(results){
-        //         email = $results["email"];
-        //         manager = $results["manager"];
-        //         phone = $results["phone"];
-        //         department = $results["department"];
-        //         title = $results["title"];
-        //     },
-        //     error: function(xhr, status, error){
-        //     },
-        //     async:false
-        // });
-
         var email = "test@gmail.com";
         var manager = "Yining Huang";
         var phone = "123-123-0123";
         var department = "Best Department";
         var title = "CEO LOL";
+
+        $.ajax({
+            url:"../LDAP/getLdapInfo.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+                empNo:empNo,
+            },
+            success:function(results){
+                // alert(results[1]);
+                alert(results[2]);
+                email = results[1];
+                // alert(email);
+                manager = results[2];
+                phone = results[4];
+                department = results[5];
+                title = results[6];
+            },
+            error: function(xhr, status, error){
+                alert(empNo);
+                alert(error);
+            },
+            async:false
+        });
+
+
 
         // Change balance to hours short
         if (balance >= 0) {
@@ -270,7 +271,6 @@ $(document).ready(function(){
 
         var trHTML = "<tr>\
                         <td><input type='checkbox' name='selected'></td>\
-                        <td class='nameinfo'>"+name+"</td>\
                         <td class='infoInfo'>";
         var infoHTML = "<button class='infoHoverBtn'><i class='fa fa-user' aria-hidden='true'></i> Info</button>\
                         <div class='infoHoverDPBCont'>\
@@ -289,6 +289,7 @@ $(document).ready(function(){
                             <iframe class='cover' src='about:blank'></iframe>\
                         </div>";
         var trSecondHTML = "</td>\
+                        <td class='nameinfo'>"+name+"</td>\
                         <td class='hoursShortInfo'>"+balance+"</td>\
                         <td class='yearSelect'>"+selectUI+"</td>\
                         <td><button class='viewReportBtn'><i class='fa fa-eye' aria-hidden='true'> View</i></button></td>\
@@ -299,22 +300,28 @@ $(document).ready(function(){
         $("#overviewTable tbody").append(toAppend);
     }
 
-    // $(document).on("hover",".infoHoverBtn", function() {
-    //     $(this).next(".DPBCont").show();
-    // }, function(){
-    //     $(this).next(".DPBCont").hide();
-    // });
-
-    $(document).on({
-        mouseenter: function() {
-            $(this).next(".infoHoverDPBCont").show();
-            $(this).css("color","blue");
-        },
-        mouseleave: function() {
+    $(document).on("click",".infoHoverBtn", function() {
+        if($(this).data("clicked")) {
             $(this).next(".infoHoverDPBCont").hide();
-            $(this).css("color","black");
+            $(this).data("clicked",false);
         }
-    }, ".infoHoverBtn");
+        else {
+            $(this).next(".infoHoverDPBCont").show();
+            $(this).data("clicked",true);
+        }
+    });
+
+    // $(document).on({
+    //     mouseenter: function() {
+    //         $(this).next(".infoHoverDPBCont").show();
+    //         $(this).css("color","blue");
+    //     },
+    //     mouseleave: function() {
+    //         $(this).next(".infoHoverDPBCont").hide();
+    //         $(this).css("color","black");
+    //     }
+    // }, ".infoHoverBtn");
+
 
     // $(".infoHoverBtn").hover(function() {
     //     $(this).next(".DPBCont").show();

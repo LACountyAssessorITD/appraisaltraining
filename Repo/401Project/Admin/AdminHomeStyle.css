@@ -596,7 +596,7 @@
 
 #overviewTable thead > tr{
 	/*padding: 10px;*/
-	height: 50px;
+	height: 80px;
 	background-color: rgb(185,185,185);
 }
 
@@ -651,7 +651,7 @@
     border-radius: 5px;
     overflow: auto;
     max-height: 500px;
-    width: 150%;
+    width: 1600%;
     left:60%;
     bottom:0;
     padding: 10px 10px;

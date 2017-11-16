@@ -1,35 +1,12 @@
 <?php
 include_once "../lib/php/constants.php";
+include_once "authenticate.php";
 session_start();
-	function getTitleString($num) {
-		// Appraiser 1962
-		// Principal Appraiser 1970
-		// Appraiser Specilist 1965
-		// Supervising appraiser 1968
-		// Appraiser Assistant 1958
-		// Appraiser Trainee 1960
-		// Chief Appraiser 1974
-		if ($num == 1962) {
-			return "Appraiser";
-		} else if ($num == 1970) {
-			return "Principal Appraiser";
-		} else if ($num == 1965) {
-			return "Appraiser Specilist";
-		} else if ($num == 1968) {
-			return "Supervising Appraiser";
-		} else if ($num == 1958) {
-			return "Appraiser Assistant";
-		} else if ($num == 1960) {
-			return "Appraiser Trainee";
-		} else if ($num == 1974) {
-			return "Chief Appraiser ";
-		} else {
-			return "Non-Appraiser";
-		}
-	}
-	$look_up_username = $_POST['empNo'];
-	$ldapusername = $_SESSION['USERNAME'];
+
+	$look_up_username = "0".(string)$_POST['empNo'];
+	$ldapusername = "laassessor"."\\".$_SESSION['USERNAME'];
 	$ldappassword = $_SESSION['password'];
+
 	$server = LDAP_SERVER_NAME;
 	$ldap = ldap_connect($server);
 	if ($ldap) {
@@ -41,25 +18,34 @@ session_start();
 		$attributes = array("displayname", "samaccountname", "mail", "manager","givenname",
 							"telephoneNumber","department","title");
 		$result = ldap_search($ldap, $basedn, $filter, $attributes);
+
 		if (FALSE !== $result) {
 			$info = ldap_get_entries($ldap, $result);
 			$inforesult  = array();
 			if($info["count"] > 0) {
 				for ($i=0; $i<$info["count"]; $i++) {
-					 $inforesult["name"] = $info[$i]["displayname"][0];
-					 $inforesult["email"] = $info[$i]["mail"][0];
-					 $inforesult["manager"] = (string)$info[$i]["manager"][0];
-					 $inforesult["firstname"] = $info[$i]["givenname"][0];
-					 $inforesult["phone"] = $info[$i]["telephoneNumber"][0];	 // phone number
-					 $inforesult["department"] = $info[$i]["department"][0];	// pay location
-					 $inforesult["title"] = getTitleString((int)$info[$i]["title"][0]);// title
-					 ldap_close($ldap);
+					$inforesult[] = $info[$i]["displayname"][0];
+					$inforesult[] =$info[$i]["mail"][0];
+					$inforesult[] =$info[$i]["manager"][0];
+					$inforesult[] =$info[$i]["givenname"][0];
+					$inforesult[] = $info[$i]["telephonenumber"][0];	 // phone number
+					$inforesult[] = $info[$i]["department"][0];	// pay location
+					 // $inforesult["name"] = $info[$i]["displayname"][0];
+					 // $inforesult["email"] = $info[$i]["mail"][0];
+					 // $inforesult["manager"] = $info[$i]["manager"][0];
+					 // $inforesult["firstname"] = $info[$i]["givenname"][0];
+					 // $inforesult["phone"] = $info[$i]["telephoneNumber"][0];	 // phone number
+					 // $inforesult["department"] = $info[$i]["department"][0];	// pay location
+					 // $inforesult[] =getTitleString((int)$info[$i]["title"][0]);// title
+					$inforesult[] =$info[$i]["title"][0];// title
+
 				}
-				echo json_encode($result);
+				echo json_encode($inforesult);
 			}
 			else {
 				echo "error when try to connect LDAP";
 			}
+			 ldap_close($ldap);
 		}
 	}
 
