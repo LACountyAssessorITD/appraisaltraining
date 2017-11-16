@@ -46,11 +46,15 @@ session_start();
         }
       });
     }
-
+request = $.ajax({url: "process.php"});
+      // Refresh the progress bar every 1 second.
+      timer = window.setInterval(refreshProgress, 1000);
+    
     function completed() {
       $("#message").html("Completed");
       window.clearInterval(timer);
     }
+
 
     function stop() {
       request.abort();
@@ -59,9 +63,9 @@ session_start();
     // When the document is ready
     $(document).ready(function(){
       // Trigger the process in web server.
-      request = $.ajax({url: "process.php"});
-      // Refresh the progress bar every 1 second.
-      timer = window.setInterval(refreshProgress, 1000);
+      // request = $.ajax({url: "process.php"});
+      // // Refresh the progress bar every 1 second.
+      // timer = window.setInterval(refreshProgress, 1000);
     });
   </script>
 </body>
