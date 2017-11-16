@@ -8,8 +8,35 @@ $(document).ready(function(){
     $.datepicker.setDefaults(
       $.extend( $.datepicker.regional[ '' ] )
     );
-    $( '#datepicker' ).datepicker();
+    // $( '#datepicker' ).datepicker();
+    $("#datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showAnim: "fadeIn",
+            yearRange: 'c-30:c+30',
+            showButtonPanel: true,
+            
+            /* fix buggy IE focus functionality */
+            fixFocusIE: false,
+            
+            /* blur needed to correctly handle placeholder text */
+            onSelect: function(dateText, inst) {
+                  this.fixFocusIE = true;
+                  $(this).blur().change().focus();
+            },
+            onClose: function(dateText, inst) {
+                  this.fixFocusIE = true;
+                  this.focus();
+            },
+            beforeShow: function(input, inst) {
+                  var result = $.browser.msie ? !this.fixFocusIE : true;
+                  this.fixFocusIE = false;
+                  return result;
+            }
+      });
   });
+
+
 
 /*--------------------------------------------------------------------------------------------*/
 /*------------------------------Display Accordions--------------------------------------------*/
