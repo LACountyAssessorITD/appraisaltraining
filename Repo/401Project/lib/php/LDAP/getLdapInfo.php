@@ -26,8 +26,9 @@ session_start();
 				for ($i=0; $i<$info["count"]; $i++) {
 					$inforesult[] = $info[$i]["displayname"][0];
 					$inforesult[] =$info[$i]["mail"][0];
-					$inforesult[] =$info[$i]["manager"][0];
-					$inforesult[] =$info[$i]["givenname"][0];
+					$managerArr = explode(",", (string)$info[$i]["manager"][0], 3);
+					$inforesult[] = (string)$managerArr[0]." ".(string)$managerArr[1];
+					$inforesult[] = $info[$i]["givenname"][0];
 					$inforesult[] = $info[$i]["telephonenumber"][0];	 // phone number
 					$inforesult[] = $info[$i]["department"][0];	// pay location
 					$inforesult[] =$info[$i]["title"][0];// title

@@ -200,7 +200,28 @@ $(document).ready(function(){
         return;
       }
 
-      insertRow(employeeIDNew, certNoNew);
+      var fName = "";
+      var lName = "";
+      $.ajax({
+          url:"../lib/php/admin/getXrefTable.php",
+          type: "POST",
+          dataType: "json",
+          success:function(results){
+              for (var i = 0 ; i < results.length; i ++) {
+                if(results[i]['CertNo']==employeeIDNew) {
+                  fName = results[i]['FirstName'];
+                  lName = results[i]['LastName'];
+                  break;
+                }
+              }
+          },
+          error: function(xhr, status, error){
+              alert("Fail to connect to the server when trying to load xref table");
+          },
+          async: false
+      });
+
+      insertRow(employeeIDNew, certNoNew, fName, lName);
 
       checkMismatch();
 
@@ -233,6 +254,7 @@ $(document).ready(function(){
 
     function insertRow(employeeIDNew, certNoNew, firstName, LastName) {
       //These two should be found based on employeeID and CertNO
+      
       var empName = "name";
       // $.ajax({
       //       url:"../LDAP/getLdapInfo.php",
@@ -252,6 +274,7 @@ $(document).ready(function(){
       //       async:false
       //   });
       var certName = firstName + " " + LastName;
+
       var markup = "<tr>\
                       <td class='EmployeeIDData'>"+employeeIDNew+"</td>\
                       <td class='EmployeeIDName'>"+empName+"</td>\

@@ -180,6 +180,13 @@ $(document).ready(function(){
     }
 
 
+    function parseLDAPManager(manager) {
+        var splitOne = manager.split('=');
+        var splitTwo = splitOne.split('/,');
+        return splitTwo[0]+" "+splitTwo[1];
+    }
+
+
     var dropDownType = 0;
 
     //loadTable("qNelson", "1996", "0608", 7);
@@ -204,7 +211,7 @@ $(document).ready(function(){
                 alert(results[2]);
                 email = results[1];
                 // alert(email);
-                manager = results[2];
+                manager = parseLDAPManager(results[2]);
                 phone = results[4];
                 department = results[5];
                 title = results[6];
