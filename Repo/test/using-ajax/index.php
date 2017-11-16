@@ -22,8 +22,10 @@ session_start();
 <body>
   <div id="progress"></div>
   <div id="message"></div>
+  <button onclick="stop()"> Stop </button>
   <script>
     var timer;
+    var request;
 
     // The function to refresh the progress bar.
     function refreshProgress() {
@@ -50,10 +52,14 @@ session_start();
       window.clearInterval(timer);
     }
 
+    function stop() {
+      request.abort();
+    }
+
     // When the document is ready
     $(document).ready(function(){
       // Trigger the process in web server.
-      $.ajax({url: "process.php"});
+      request = $.ajax({url: "process.php"});
       // Refresh the progress bar every 1 second.
       timer = window.setInterval(refreshProgress, 1000);
     });
