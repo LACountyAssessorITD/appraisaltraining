@@ -26,6 +26,23 @@ $(document).ready(function(){
 
     });
 
+    getCurrDate();
+
+    function getCurrDate() {
+      var currDate = new Date();
+      var d = currDate.getDate();
+      var m = currDate.getMonth()+1;
+    //   (month<10 ? '0' : '') + month + '/' +
+    // (day<10 ? '0' : '') + day;
+    //   if(m>12) {
+    //     m = 1;
+    //   }
+      var y = currDate.getFullYear();
+      $("#yearEffInput").val(y);
+      $("#monthEffInput").val((m<10 ? '0' : '') + m);
+      $("#dayEffInput").val((d<10 ? '0' : '') + d);
+    }
+
     function checkValidDate(year, month, day) {
         if($("#yearEffInput").val()=="" || $("#monthEffInput").val()=="" || $("#dayEffInput").val()=="") {
             alert("All date fields should be filled");
@@ -135,6 +152,17 @@ $(document).ready(function(){
 
     $(document).on("change","#fileToUpload",function() {
       $("#chosenFileName").text($("#fileToUpload").val());
+    });
+
+    $("#effDateBtn").hide();
+
+    $(document).on("change","#chosenFileName",function() {
+      if($("#chosenFileName").val().toUpperCase()=="none".toUpperCase()) {
+        $("#effDateBtn").hide();
+      }
+      else {
+        $("#effDateBtn").show();
+      }
     });
 
     $("#submitNewBtn").on("click",function() {
