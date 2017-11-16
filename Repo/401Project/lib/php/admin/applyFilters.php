@@ -26,7 +26,7 @@ if( $conn === false ) {
 $year_string = (string)$year . "-" . (string)($year+1);
 
 $tsql = "
-SELECT [New_Employee].CertNo, [New_Employee].FirstName, [New_Employee].LastName, [New_EmployeeID_Xref].EmployeeID, [New_CertHistory].CurrentYearBalance
+SELECT [New_Employee].CertNo, [New_Employee].FirstName, [New_Employee].LastName, [New_EmployeeID_Xref].EmployeeID, [New_CertHistory].CarryForwardTotal 
   FROM [New_Employee]
   INNER JOIN [New_EmployeeID_Xref]
 	ON [New_Employee].CertNo = [New_EmployeeID_Xref].CertNo

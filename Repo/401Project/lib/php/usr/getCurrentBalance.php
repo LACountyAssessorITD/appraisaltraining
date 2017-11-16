@@ -32,7 +32,7 @@ if( $stmt === false )
 }
 else {
     $row= sqlsrv_fetch_array($stmt);
-    $balance = $row['CurrentYearBalance'];
+    $balance = $row['CarryForwardTotal'];
     echo (int)$balance;
 }
 
