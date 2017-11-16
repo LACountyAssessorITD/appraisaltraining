@@ -40,6 +40,8 @@ class myPDF extends FPDF {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // ********************       Start of Personal Information          ********************
+        // Get LDAP Info
+        // TO DO
 
         // Query from [New_Employee] table
         $lastName = ""; $firstName = "";
@@ -48,7 +50,6 @@ class myPDF extends FPDF {
 
         // Query from [New_CertHistory] table
         $certType =""; $RequiredHours;
-        // $allowedcarryover="";
         $PriorYearBalance;
         $hoursEarned;
 
