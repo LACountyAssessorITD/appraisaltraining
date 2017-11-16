@@ -7,13 +7,9 @@
 	<link rel="stylesheet" href="AdminUploadStyle.css">
 	<link rel="stylesheet" href="../CSS/DefaultUI.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  	<link rel="stylesheet" href="/resources/demos/style.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  	<!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 	<script src="AdminUploadJS.js"></script>
 	<script type="text/javascript">
 
@@ -41,14 +37,6 @@
 		    }
 		}
 	</script>
-	<script>
-		$(function(){
-		    $.datepicker.setDefaults(
-		      $.extend( $.datepicker.regional[ '' ] )
-		    );
-		    $( '#datepicker' ).datepicker();
-		});
-	</script>
 </head>
 
 <body>
@@ -65,11 +53,6 @@
 
 		<!-- <div class="selectCont" id="accordion"> -->
 
-		<!-- <div id="datePickerDiv"> -->
-			<p>Date: <input type="text" id="datepicker"></p>
-		<!-- </div> -->
-
-
 		<div class="upload">
 			<h1 id="UploadTitle">Update</h1>
 			<div id="chooseFileDiv">
@@ -83,6 +66,11 @@
 			    	<p id="chosenFileName">None</p>
 				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 				</form>
+
+				<label>Date: </label><input type='text' placeholder='yyyy' autocomplete='off' id="yearEffInput">
+                <input type='text' placeholder='mm' autocomplete='off' id="monthEffInput">
+            	<input type='text' placeholder='dd' autocomplete='off' id="dayEffInput">
+	            <button id="effDateBtn">Submit</button>
 			</div>
 
 			<div id="statusDiv">

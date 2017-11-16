@@ -1,8 +1,8 @@
 $(document).ready(function(){
 
-  // $("#faqTab").on("click",function(e) {
-  //     e.preventDefault();
-  // });
+  $("#faqTab").on("click",function(e) {
+      e.preventDefault();
+  });
 
   // $(function(){
   //       $.datepicker.setDefaults(

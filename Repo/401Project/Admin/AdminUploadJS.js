@@ -1,75 +1,33 @@
 $(document).ready(function(){
 
-  $("#updateTab").on("click",function(e) {
-      e.preventDefault();
-  });
+    $("#updateTab").on("click",function(e) {
+        e.preventDefault();
+    });
 
-  $(function(){
-    $.datepicker.setDefaults(
-      $.extend( $.datepicker.regional[ '' ] )
-    );
-    // $( '#datepicker' ).datepicker();
-    $("#datepicker").datepicker({
-            changeMonth: true,
-            changeYear: true,
-            showAnim: "fadeIn",
-            yearRange: 'c-30:c+30',
-            showButtonPanel: true,
-            
-            /* fix buggy IE focus functionality */
-            fixFocusIE: false,
-            
-            /* blur needed to correctly handle placeholder text */
-            onSelect: function(dateText, inst) {
-                  this.fixFocusIE = true;
-                  $(this).blur().change().focus();
-            },
-            onClose: function(dateText, inst) {
-                  this.fixFocusIE = true;
-                  this.focus();
-            },
-            beforeShow: function(input, inst) {
-                  var result = $.browser.msie ? !this.fixFocusIE : true;
-                  this.fixFocusIE = false;
-                  return result;
+
+    $("#effDateBtn").on("click",function() {
+        if($("#yearEffInput").val()=="" || $("#monthEffInput").val()=="" || $("#dayEffInput").val()=="") {
+            alert("All date fields should be filled");
+        }
+        var year = parseInt($("#yearEffInput").val());
+        var month = parseInt($("#monthEffInput").val());
+        var day = parseInt($("#dayEffInput").val());
+
+        // var isLeapYear = (year%4==0)
+        var date = new Date(year,month-1,day);
+        // var date = "";
+        if(date.getFullYear()==year && (date.getMonth()+1)==month && date.getDate()==day) {
+            if(confirm("Update effective date to "+month+"/"+day+"/"+year+"?")) {
+                alert("date updated");
             }
-      });
-  });
-
-
-
-/*--------------------------------------------------------------------------------------------*/
-/*------------------------------Display Accordions--------------------------------------------*/
-/*--------------------------------------------------------------------------------------------*/
-
-   $.fn.togglepanels = function(){
-      return this.each(function(){
-        $(this).addClass("ui-accordion ui-accordion-icons ui-widget ui-helper-reset")
-      .find("p")
-        .addClass("ui-accordion-header ui-helper-reset ui-state-default ui-corner-top ui-corner-bottom")
-        .hover(function() {
-          $(this).toggleClass("ui-state-hover");
-        })
-        .prepend('<span class="ui-icon ui-icon-triangle-1-e"></span>')
-        .click(function() {
-          $(this)
-            .toggleClass("ui-accordion-header-active ui-state-active ui-state-default ui-corner-bottom")
-            .find("> .ui-icon").toggleClass("ui-icon-triangle-1-e ui-icon-triangle-1-s").end()
-            .next().slideToggle();
-          return false;
-        })
-        .next()
-          .addClass("ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom")
-          .hide();
-      });
-    };
-
-    // $("#accordion").togglepanels();
-
-/*--------------------------------------------------------------------------------------------*/
-/*------------------------------Display Accordions END----------------------------------------*/
-/*--------------------------------------------------------------------------------------------*/
-
+            else {
+                alert("cancelled");
+            }
+        }
+        else {
+          alert("invalid date");
+        }
+    });
 
     $("#uploadForm").each(function() {
     	$(this)[0].reset();
