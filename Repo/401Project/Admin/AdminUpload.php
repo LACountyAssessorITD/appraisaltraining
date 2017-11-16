@@ -65,6 +65,9 @@
 
 		<!-- <div class="selectCont" id="accordion"> -->
 
+		<!-- <div id="datePickerDiv"> -->
+			<p>Date: <input type="text" id="datepicker"></p>
+		<!-- </div> -->
 
 
 		<div class="upload">
@@ -80,9 +83,6 @@
 			    	<p id="chosenFileName">None</p>
 				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 				</form>
-				<div id="datePickerDiv" style="z-index: 1000">
-					<p>Date: <input type="text" id="datepicker"></p>
-				</div>
 			</div>
 
 			<div id="statusDiv">
