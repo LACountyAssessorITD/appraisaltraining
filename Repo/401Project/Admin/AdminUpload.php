@@ -7,11 +7,16 @@
 	<link rel="stylesheet" href="AdminUploadStyle.css">
 	<link rel="stylesheet" href="../CSS/DefaultUI.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link type="text/css" href="css/ui-lightness/jquery-ui-1.9.1.custom.min.css" rel="stylesheet" />
+	<script src="js/jquery-1.8.2.js" type="text/javascript"></script>
+	<script src="js/jquery-ui-1.9.1.custom.min.js" type="text/javascript"></script>
+	<script src="js/i18n/jquery-ui-i18n.min.js" type="text/javascript"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="AdminUploadJS.js"></script>
 	<script type="text/javascript">
+
 		function restore_db(db) {
 			alert(db + "clicked");
 		}
@@ -36,6 +41,14 @@
 		    }
 		}
 	</script>
+	<script>
+		$(function(){
+		    $.datepicker.setDefaults(
+		      $.extend( $.datepicker.regional[ '' ] )
+		    );
+		    $( '#datepicker' ).datepicker();
+		});
+	</script>
 </head>
 
 <body>
@@ -44,7 +57,6 @@
 
 	<div class="content">
 
-
 		<div class="buttonGroup">
 			<button id="uploadSegCtrl">Upload</button>
 			<button id="restoreSegCtrl">History</button>
@@ -52,6 +64,8 @@
 		</div>
 
 		<!-- <div class="selectCont" id="accordion"> -->
+
+
 
 		<div class="upload">
 			<h1 id="UploadTitle">Update</h1>
@@ -85,6 +99,9 @@
 		</div>
 
 		<div class="restore">
+			<div id="datePickerDiv" style="z-index: 1000">
+				<p>Date: <input type="text" id="datepicker"></p>
+			</div>
 			<h3>Past Files</h3>
 			<div id="restoreTableDiv">
 				<table>
