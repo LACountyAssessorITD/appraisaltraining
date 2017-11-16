@@ -113,17 +113,16 @@ class myPDF extends FPDF {
         $this->Ln();
         $this->Cell(250,0,'Item:',0,0,'C');
         $this->Ln();
-        $this->Cell(265,0,'PayLocation:',0,0,'C');
-        $this->Ln();
         $this->Cell(249.5,0,'Certificate Date:',0,0,'R');
         $this->Cell(0,0,$certDate,0,0,'R');
 
         $this->Ln(5);
-        $this->Cell(0,0,'Specialty:');
-        $this->Ln(0);
-        $this->Cell(375,0,$specialty,0,0,'C');
-
+        $this->Cell(0,0,'Specialty: '.$specialty);
         $this->Ln();
+        //$this->Cell(30,0,$specialty,0,0,'C');
+        $this->Cell(265,0,'PayLocation:',0,0,'C');
+        $this->Ln();
+
         $this->Cell(250,0,'Certificate Type:',0,0,'R');
         $this->Cell(0,0,$certType,0,0,'R');
 
