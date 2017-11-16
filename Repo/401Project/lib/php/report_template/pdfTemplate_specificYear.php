@@ -168,10 +168,7 @@ class myPDF extends FPDF {
         $EndDate = ""; $Course = ""; $HoursEarned = "";
         $TotalHoursEarned = 0;
 
-        $time_start = "'".(string)$year."/1/1'";
-        $time_end = "'".(string)$year."/12/31'";
         $tsql = "SELECT * FROM [New_CourseDetail] WHERE CertNo=".(string)$certid."
-                AND EndDate BETWEEN ".$time_start." AND ".$time_end."
                 AND CourseYear='".(string)$year."-".(string)($year+1)."'";
 
         $stmt = sqlsrv_query( $conn, $tsql);
@@ -254,9 +251,6 @@ class myPDF extends FPDF {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // ********************       Start of Annual Summary         ********************
-
-        // Query from [New_CarryoverLimits]
-        $RequiredHours;
 
         // Add Annual Training Hours Summary
         $y=$this -> getY(); // Height of Current Page
