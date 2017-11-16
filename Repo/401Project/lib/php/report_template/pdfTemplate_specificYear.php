@@ -6,6 +6,7 @@ This Code draw out the individual PDF (Specific Year Report)
 
 require('../../FPDF/fpdf.php');
 class myPDF extends FPDF {
+    public $allowedcarryover;
     function header() {
         // Add logo
         $this->Image('../../../img/Logo.gif',10,8,-270);
@@ -47,7 +48,8 @@ class myPDF extends FPDF {
 
         // Query from [New_CertHistory] table
         $certType =""; $RequiredHours;
-        $allowedcarryover=""; $PriorYearBalance;
+        // $allowedcarryover="";
+        $PriorYearBalance;
         $hoursEarned;
 
         // Get Names, Certification Date, status and specialty
@@ -120,7 +122,7 @@ class myPDF extends FPDF {
         $this->Cell(0,0,'Specialty: '.$specialty);
         $this->Ln();
         //$this->Cell(30,0,$specialty,0,0,'C');
-        $this->Cell(265,0,'PayLocation:',0,0,'C');
+        $this->Cell(264.5,0,'Pay Location:',0,0,'C');
         $this->Ln();
 
         $this->Cell(250,0,'Certificate Type:',0,0,'R');
@@ -147,7 +149,7 @@ class myPDF extends FPDF {
         // Add Titles
         $this->SetFont('Arial','B',11);
         $this->SetTextColor(0,0,0);
-        $this->Ln(22);
+        $this->Ln(15);
 
         $year = $GLOBALS['year'];
         $this->Cell(263,0,(string)$year."-".(string)($year+1),0,0,'R');
@@ -158,8 +160,12 @@ class myPDF extends FPDF {
         $this->Cell(30);
         $this->Cell(0,0,'COURSE TITLE');
         $this->Ln();
-        $this->Cell(0,0,'SOURCE',0,0,'C');
-        $this->Ln();
+        /*
+        Notice: the Source of the Course is not added
+                to the current version of report
+        */
+        // $this->Cell(0,0,'SOURCE',0,0,'C');
+        // $this->Ln();
         $this->Cell(260,0,'HOURS',0,0,'R');
         $this->Ln(10);
 
@@ -183,9 +189,10 @@ class myPDF extends FPDF {
                     $this->AddPage();
                     $this->ln(10);
                 }
-                $EndDate = date("m/d/Y",strtotime($row['EndDate']));;
+                $EndDate = date("m/d/Y",strtotime($row['EndDate']));
                 $Course = $row['CourseName'];
-                //$Course = str_replace((string)$year."-".(string)($year+1)." ANNUAL ","",$Course);
+                if ($Course == "No training was completed during this fiscal year")
+                    $EndDate = "N/A";
                 $HoursEarned= $row['CourseHours'];
                 $TotalHoursEarned += $HoursEarned;
                 $this->SetFont('Arial','',11);
@@ -194,21 +201,23 @@ class myPDF extends FPDF {
                 $this->Ln();
                 $this->Cell(30);
 
-                // Swith to next line and add an "-" if the course name is too long
+                // Swith to next line and add an "-" if the course name
+                // is longer than $max_length_of_string
                 $x_begin=$this -> getX();
                 $y_begin=$this -> getY();
                 $x_temp = $x_begin;
                 $y_temp = $y_begin;
-                if ((strlen($Course) <= 37)) {
+                $max_length_of_string = 90;
+                if ((strlen($Course) <= $max_length_of_string)) {
                     $this->Cell(0,0,$Course);
                     $this->Ln();
                 }
                 else {
-                    while (strlen($Course) > 37) {
+                    while (strlen($Course) > $max_length_of_string) {
                         $x_temp = $this -> getX();
                         $y_temp = $this -> getY();
-                        if (strlen($Course) >= 37)
-                            $temp_coursename = substr($Course, 0,37);
+                        if (strlen($Course) >= $max_length_of_string)
+                            $temp_coursename = substr($Course, 0,$max_length_of_string);
                         else
                             $temp_coursename = substr($Course, 0,strlen($Course) );
                         $Course = str_replace($temp_coursename,"",$Course);
@@ -225,7 +234,7 @@ class myPDF extends FPDF {
                 $this->SetXY($x_begin, $y_begin);
                 $this->Ln();
 
-                $this->Cell(0,0,'NA',0,0,'C');  // Source
+                //$this->Cell(0,0,'NA',0,0,'C');  // Source is current commented out
                 $this->Ln();
                 $this->Cell(260,0,$HoursEarned,0,0,'R');
                 $this->SetXY($x_begin,$y_temp);
@@ -238,7 +247,7 @@ class myPDF extends FPDF {
             $this->AddPage();
             $this->ln(10);
         }
-        $this->ln(15);
+        $this->ln(12);
         $this->SetFont('Arial','B',11);
         $this->Cell(240,0,'Total',0,0,'R');
         $this->ln(0);
@@ -251,11 +260,11 @@ class myPDF extends FPDF {
 /////////////////////////////////////////////////////////////////////////////////////////
 // ********************       Start of Annual Summary         ********************
 
-        // Add Annual Training Hours Summary
+        // Add Annual Hours Summary
         $y=$this -> getY(); // Height of Current Page
-        if ($y >= 132) {    // Force Page Break if too low on page
+        if ($y >= 133) {    // Force Page Break if too low on page
             $this->AddPage();
-            $this->ln(20);
+            $this->ln(15);
         }
         $this->ln(10);
         $this->SetFont('Arial','BU',11);
@@ -311,7 +320,7 @@ class myPDF extends FPDF {
         $this->Cell(236.8,0,'Allowed Carry Over Hours for Next FY*:',0,0,'R');
         $this->ln(0);
         $this->Cell(260,0,$allowedcarryover,0,0,'R');
-        $GLOBALS['allowedcarryover'] = $allowedcarryover;
+        // $GLOBALS['allowedcarryover'] = $allowedcarryover;
 
         $this->Ln(10);
         $this->SetFont('Arial','I',10);
@@ -328,11 +337,11 @@ class myPDF extends FPDF {
         $this->SetLineWidth(0.5);
 
         $year = $GLOBALS['year'];
-        if ($GLOBALS['allowedcarryover']>=0) {
+        if ($this->allowedcarryover>=0) {
           $this->Cell(0,5,'TRAINING HOURS REQUIREMENT HAS BEEN MET FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
         }
         else {
-          $this->Cell(0,5, $GLOBALS['allowedcarryover']*(-1).' HOURS TO COMPLETE TRAINING HOURS REQUIREMENT FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
+          $this->Cell(0,5, $this->allowedcarryover*(-1).' HOURS TO COMPLETE TRAINING HOURS REQUIREMENT FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
         }
 
         $this->SetY(-15);
