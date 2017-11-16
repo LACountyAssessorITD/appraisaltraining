@@ -4,12 +4,12 @@ $(document).ready(function(){
   //     e.preventDefault();
   // });
 
-  $(function(){
-        $.datepicker.setDefaults(
-          $.extend( $.datepicker.regional[ '' ] )
-        );
-        $( '#datepicker' ).datepicker();
-      });
+  // $(function(){
+  //       $.datepicker.setDefaults(
+  //         $.extend( $.datepicker.regional[ '' ] )
+  //       );
+  //       $( '#datepicker' ).datepicker();
+  //     });
 
 
 /*--------------------------------------------------------------------------------------------*/
