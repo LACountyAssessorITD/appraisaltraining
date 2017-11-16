@@ -7,11 +7,12 @@
 	<link rel="stylesheet" href="AdminUploadStyle.css">
 	<link rel="stylesheet" href="../CSS/DefaultUI.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="AdminUploadJS.js"></script>
 	<script type="text/javascript">
+
 		function restore_db(db) {
 			alert(db + "clicked");
 		}
@@ -44,7 +45,6 @@
 
 	<div class="content">
 
-
 		<div class="buttonGroup">
 			<button id="uploadSegCtrl">Upload</button>
 			<button id="restoreSegCtrl">History</button>
@@ -66,6 +66,11 @@
 			    	<p id="chosenFileName">None</p>
 				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 				</form>
+
+				<label>Date: </label><input type='text' placeholder='yyyy' autocomplete='off' id="yearEffInput">
+                <input type='text' placeholder='mm' autocomplete='off' id="monthEffInput">
+            	<input type='text' placeholder='dd' autocomplete='off' id="dayEffInput">
+	            <button id="effDateBtn">Submit</button>
 			</div>
 
 			<div id="statusDiv">

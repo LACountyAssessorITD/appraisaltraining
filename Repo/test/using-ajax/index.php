@@ -7,24 +7,8 @@ session_start();
 <head>
   <title>Progress Bar</title>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <style>
-    #progress {
-      width: 500px;
-      border: 1px solid #aaa;
-      height: 20px;
-    }
-    #progress .bar {
-      background-color: #ccc;
-      height: 20px;
-    }
-  </style>
-</head>
-<body>
-  <div id="progress"></div>
-  <div id="message"></div>
-  <script>
+   <script>
     var timer;
-
     // The function to refresh the progress bar.
     function refreshProgress() {
       // We use Ajax again to check the progress by calling the checker script.
@@ -49,14 +33,40 @@ session_start();
       $("#message").html("Completed");
       window.clearInterval(timer);
     }
+    function start() {
+      // Trigger the process in web server.
+       $.ajax({url: "process.php"});
+      // Refresh the progress bar every 1 second.
+      timer = window.setInterval(refreshProgress, 1000);
+    }
+     
 
     // When the document is ready
     $(document).ready(function(){
-      // Trigger the process in web server.
-      $.ajax({url: "process.php"});
-      // Refresh the progress bar every 1 second.
-      timer = window.setInterval(refreshProgress, 1000);
+      // // Trigger the process in web server.
+      // $.ajax({url: "process.php"});
+      // // Refresh the progress bar every 1 second.
+      // timer = window.setInterval(refreshProgress, 1000);
     });
+
+
   </script>
+  <style>
+    #progress {
+      width: 500px;
+      border: 1px solid #aaa;
+      height: 20px;
+    }
+    #progress .bar {
+      background-color: #ccc;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="progress"></div>
+  <div id="message"></div>
+   <button onclick="start()">Start</button>
+
 </body>
 </html>

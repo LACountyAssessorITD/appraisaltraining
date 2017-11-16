@@ -147,7 +147,8 @@ $(document).ready(function(){
             },
             error: function(xhr, status, error){
                 alert("Fail to connect to the server when generaeting the report");
-            }
+            },
+            async:false
         });
     }
 
