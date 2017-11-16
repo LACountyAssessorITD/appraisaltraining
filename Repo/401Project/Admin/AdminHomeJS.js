@@ -193,7 +193,7 @@ $(document).ready(function(){
         var title = "CEO LOL";
 
         $.ajax({
-            url:"../LDAP/getLdapInfo.php",
+            url:"../lib/php/LDAP/getLdapInfo.php",
             type: "POST",
             dataType: "json",
             data: {

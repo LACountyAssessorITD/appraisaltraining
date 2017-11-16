@@ -1,6 +1,6 @@
 <?php
 include_once "authenticate.php";
-include_once "../lib/php/constants.php";
+include_once "../constants.php";
 session_start();
 
 	$ldapusername = "laassessor"."\\".$_POST["username"];

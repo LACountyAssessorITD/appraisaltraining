@@ -163,7 +163,7 @@ div[class="message"] {
 	</div>
 	<br>
 	<div class="login">
-		<form action="LDAP/login.php" method="post" enctype="multipart/form-data">
+		<form action="lib/php/LDAP/login.php" method="post" enctype="multipart/form-data">
 			<div class="formDiv">
 				<input class="inputField" type="text" placeholder="Username" name="username"><br>
 				<input class="inputField" type="password" placeholder="Password" name="password"><br>

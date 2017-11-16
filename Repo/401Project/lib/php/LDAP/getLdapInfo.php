@@ -1,5 +1,5 @@
 <?php
-include_once "../lib/php/constants.php";
+include_once "../constants.php";
 include_once "authenticate.php";
 session_start();
 
@@ -30,13 +30,6 @@ session_start();
 					$inforesult[] =$info[$i]["givenname"][0];
 					$inforesult[] = $info[$i]["telephonenumber"][0];	 // phone number
 					$inforesult[] = $info[$i]["department"][0];	// pay location
-					 // $inforesult["name"] = $info[$i]["displayname"][0];
-					 // $inforesult["email"] = $info[$i]["mail"][0];
-					 // $inforesult["manager"] = $info[$i]["manager"][0];
-					 // $inforesult["firstname"] = $info[$i]["givenname"][0];
-					 // $inforesult["phone"] = $info[$i]["telephoneNumber"][0];	 // phone number
-					 // $inforesult["department"] = $info[$i]["department"][0];	// pay location
-					 // $inforesult[] =getTitleString((int)$info[$i]["title"][0]);// title
 					$inforesult[] =$info[$i]["title"][0];// title
 
 				}
