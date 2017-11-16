@@ -282,6 +282,7 @@ $(document).ready(function(){
         var infoHTML = "<button class='infoHoverBtn'><i class='fa fa-user' aria-hidden='true'></i> Info</button>\
                         <div class='infoHoverDPBCont'>\
                             <ul class='info_ul_one'>\
+                                <li>Name: "+name+"</li>\
                                 <li class='certNoLi'>CertNo: <span class='certNoInfo'>"+certNo+"</span></li>\
                                 <li class='empNoInfo'>EmpNo: "+empNo+"</li>\
                                 <li>Status: xxx</li>\
