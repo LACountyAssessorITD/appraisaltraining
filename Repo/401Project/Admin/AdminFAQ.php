@@ -9,9 +9,21 @@
 	<link rel="stylesheet" href="../CSS/FAQStyle.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link type="text/css" href="css/ui-lightness/jquery-ui-1.9.1.custom.min.css" rel="stylesheet" />
+	<script src="js/jquery-1.8.2.js" type="text/javascript"></script>
+	<script src="js/jquery-ui-1.9.1.custom.min.js" type="text/javascript"></script>
+	<script src="js/i18n/jquery-ui-i18n.min.js" type="text/javascript"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="AdminFAQJS.js"></script>
+	<script type="text/javascript">
+		$(function(){
+		    $.datepicker.setDefaults(
+		      $.extend( $.datepicker.regional[ '' ] )
+		    );
+		    $( '#datepicker' ).datepicker();
+		  });
+	</script>
 </head>
 
 <body>
@@ -19,6 +31,9 @@
 	<?php include "../common/AdminTop.php"; ?>
 
 	<div class="content">
+		<div id="datePickerDiv">
+			<p>Date: <input type="text" id="datepicker"></p>
+		</div>
 
 		<div class="faqContent" id="accordion">
 
