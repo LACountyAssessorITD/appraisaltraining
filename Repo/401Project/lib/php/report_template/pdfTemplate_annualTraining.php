@@ -47,7 +47,6 @@ class myPDF extends FPDF {
         $this->Line(10, 30,$width-10,30); // Line one Cross
 
         // Get Names, Certification Date, status and specialty
-        // from [New_Employee]
         $tsql = "SELECT * FROM [New_Employee]
                 INNER JOIN [New_CertHistory]
                     ON [New_CertHistory].CertNo = [New_Employee].CertNo
