@@ -1,7 +1,7 @@
 <?php
 	include_once "constants.php";
 
-	$_SESSION["CERTNO"] = 6995;
+	$_SESSION["CERTNO"] = 6466;
 
 	function getCertNo() {
 		return $_SESSION['CERTNO'];
