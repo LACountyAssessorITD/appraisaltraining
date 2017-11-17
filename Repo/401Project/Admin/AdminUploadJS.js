@@ -156,7 +156,7 @@ $(document).ready(function(){
 
     $("#effDateBtn").hide();
 
-    $(document).on("change","#chosenFileName",function() {
+    $("#chooseFileBtn").on("click",function() {
       if($("#chosenFileName").val().toUpperCase()=="none".toUpperCase()) {
         $("#effDateBtn").hide();
       }
