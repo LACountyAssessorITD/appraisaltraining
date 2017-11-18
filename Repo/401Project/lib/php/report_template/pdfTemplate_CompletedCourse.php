@@ -61,28 +61,28 @@ class myPDF extends FPDF {
         }
         else {
             $row= sqlsrv_fetch_array($stmt);
-            $this->lastName = $row['LastName'];
-            $this->firstName = $row['FirstName'];
-            $this->status = $row['CurrentStatus'];
-            $this->specialty = $row['Auditor'];
-            if ($this->specialty == "True") {
-              $this->specialty = "Audit";
+            $lastName = $row['LastName'];
+            $firstName = $row['FirstName'];
+            $status = $row['CurrentStatus'];
+            $specialty = $row['Auditor'];
+            if ($specialty == "True") {
+              $=specialty = "Audit";
             } else {
-              $this->specialty = "";
+              $specialty = "";
             }
             if ($row['PermCertDate'] == NULL) {
-              $this->certDate = "NA"; // if not permanet, data shows "NA"
+              $>certDate = "NA"; // if not permanet, data shows "NA"
             } else {
-              $this->certDate = date("m/d/Y",strtotime($row['PermCertDate']));
+              $certDate = date("m/d/Y",strtotime($row['PermCertDate']));
             }
-            $this->certType = $row['CertType'];
+            $certType = $row['CertType'];
         }
         sqlsrv_free_stmt($stmt);
 
         // Fill in data for personal information
         $this->SetFont('Arial','B',12);
         $this->SetTextColor(0,0,0);
-        $this->Cell(500,5,$this->status,0,0,'C');
+        $this->Cell(500,5,$status,0,0,'C');
 
         $this->Ln(10);
         $this->SetFont('Arial','',11);
@@ -91,13 +91,13 @@ class myPDF extends FPDF {
         $this->SetFont('Arial','B',11);
         $this->Ln(0);
         $this->Cell(13);
-        $this->Cell(0,0,$this->lastName.', '.$this->firstName);
+        $this->Cell(0,0,$lastName.', '.$firstName);
         $this->Ln();
         $this->SetFont('Arial','',11);
         $this->Cell(274,0,'Employee Number:',0,0,'C');
         $this->Ln();
         $this->Cell(255,0,'Certificate Number:',0,0,'R');
-        $this->Cell(0,0,$this->certid,0,0,'R');
+        $this->Cell(0,0,$certid,0,0,'R');
 
         $this->Ln(5);
         $this->Cell(0,0,'Title:');
@@ -105,7 +105,7 @@ class myPDF extends FPDF {
         $this->Cell(250,0,'Item:',0,0,'C');
         $this->Ln();
         $this->Cell(249.5,0,'Certificate Date:',0,0,'R');
-        $this->Cell(0,0,$this->certDate,0,0,'R');
+        $this->Cell(0,0,$certDate,0,0,'R');
 
         $this->Ln(5);
         $this->Cell(0,0,'Specialty: '.$this->specialty);
@@ -115,7 +115,7 @@ class myPDF extends FPDF {
         $this->Ln();
 
         $this->Cell(250,0,'Certificate Type:',0,0,'R');
-        $this->Cell(0,0,$this->certType,0,0,'R');
+        $this->Cell(0,0,$certType,0,0,'R');
 
         // Draw a line
         $width=$this -> w; // Width of Current Page
