@@ -212,7 +212,7 @@ select {
 .content {
 	position: relative;
 	/*background: linear-gradient(to right,rgb(67, 102, 173), rgb(255, 255, 255));*/
-	background-color: rgb(67, 102, 173);
+	background-color: #495DC1;
 	padding: 0px;
 	min-height: 600px;
 	/*background: linear-gradient(to right,blue, red);*/
