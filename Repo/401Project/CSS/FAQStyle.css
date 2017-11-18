@@ -1,42 +1,35 @@
-.content p {
-	padding: 8px;
-	width: 30%;
-	margin:20px;
-	font-size: 1.1vw;
-	color: white;
-	/*background-color: rgb(206, 218, 255);*/
-	/*border-width: 0;*/
-	/*border-radius: 10px;*/
-	cursor: pointer;
-}
-
 .faqContent {
+	width: 80%;
+	margin: 20px auto;
 	z-index: 1;
 }
 
-p.pFiltersLabel {
-	width: 80%;
-	margin: 30px auto;
-	margin-bottom: 0;
+.questionButton{
+	text-align: center;
+	width: 30%;
+	height: 30px;
+	margin-top: 10px;
+	margin-left: 30px;
 	font-size: 1.5vw;
-	background-color: rgba(40,40,40);
+	background: none;
 	color: white;
-	/*border-style: inset;*/
-	/*border-width: 2px;*/
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	background-image: url('../iconImg/dropdownicon.png');
-	background-size: 15px 15px;
-    background-position: 98%; 
-    background-repeat: no-repeat;
+	border: none;
 }
 
-.dropDownFilter p{
-	width: 70%;
+.answerDiv {
+	display: none;
+}
+
+.answerDiv p{
+	position: relative;
+	width: 80%;
 	margin: 10px auto;
 	margin-top: 0;
 	font-size: 1.1vw;
 	color: white;
-	/*box-shadow: 2px 8px 10px 0px rgba(0,0,0,0.3);*/
 	overflow: auto;
+}
+
+.downArrowSpan {
+	margin: auto 5px;
 }
