@@ -46,7 +46,7 @@ class myPDF extends FPDF {
         $this->SetDrawColor(162,157,150);
         $this->Line(10, 30,$width-10,30); // Line one Cross
 
-        // Get Names, Certification Date, status and specialty
+        // Get Names, Certification Date, cert type, status and specialty
         $tsql = "SELECT * FROM [New_Employee]
                 INNER JOIN [New_CertHistory]
                     ON [New_CertHistory].CertNo = [New_Employee].CertNo
@@ -92,9 +92,6 @@ class myPDF extends FPDF {
 // ********************       Start of Personal Information          ********************
         // Get LDAP Info
         // TO DO
-
-
-
 
         // Fill in data for personal information
         $this->SetFont('Arial','B',12);

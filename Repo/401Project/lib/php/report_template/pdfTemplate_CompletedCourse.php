@@ -1,6 +1,7 @@
 <?php
 /*
-This Code draw out the individual PDF (Specific Year Report)
+This Code renders the individual PDF (Completed Course Report)
+Given a Cert No. Starting year and End year
 @ Yining Huang
 */
 
@@ -43,14 +44,15 @@ class myPDF extends FPDF {
         $lastName = ""; $firstName = "";
         $certDate = ""; $status = ""; // active or not
         $specialty = "";
-
-        // Query from [New_CertHistory] table
         $certType ="";
-        $allowedcarryover=""; $PriorYearBalance; // for Annual Summary Table only
 
-        // Get Names, Certification Date, status and specialty
-        // from [New_Employee]
-        $tsql = "SELECT * FROM [New_Employee] WHERE CertNo=".(string)$certid;
+        // Get Names, Certification Date, cert type, status and specialty
+        $tsql = "SELECT * FROM [New_Employee]
+                INNER JOIN [New_CertHistory]
+                    ON [New_CertHistory].CertNo = [New_Employee].CertNo
+                WHERE [New_Employee].CertNo=".(string)certid.
+                    " ORDER BY [New_CertHistory].CertYear DESC";
+        $conn = $GLOBALS['conn'];
         $stmt = sqlsrv_query( $conn, $tsql);
         if( $stmt === false )
         {
@@ -59,46 +61,28 @@ class myPDF extends FPDF {
         }
         else {
             $row= sqlsrv_fetch_array($stmt);
-            $lastName = $row['LastName'];
-            $firstName = $row['FirstName'];
-            $status = $row['CurrentStatus'];
-            $specialty = $row['Auditor'];
-            if ($specialty == "True") {
-              $specialty = "Audit";
+            $this->lastName = $row['LastName'];
+            $this->firstName = $row['FirstName'];
+            $this->status = $row['CurrentStatus'];
+            $this->specialty = $row['Auditor'];
+            if ($this->specialty == "True") {
+              $this->specialty = "Audit";
             } else {
-              $specialty = "";
+              $this->specialty = "";
             }
             if ($row['PermCertDate'] == NULL) {
-              $certDate = "NA"; // if not permanet, data shows "NA"
+              $this->certDate = "NA"; // if not permanet, data shows "NA"
             } else {
-              $certDate = date("m/d/Y",strtotime($row['PermCertDate']));
+              $this->certDate = date("m/d/Y",strtotime($row['PermCertDate']));
             }
-        }
-        sqlsrv_free_stmt($stmt);
-
-
-        // Get Certification Type and Allowed carry over
-        // from [New_CertHistory] table
-        $tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid."AND CertYear='".
-            (string)$year."-".(string)($year+1)."'";
-        $stmt = sqlsrv_query( $conn, $tsql);
-        if( $stmt === false )
-        {
-             echo "Error in executing query98.</br>";
-             die( print_r( sqlsrv_errors(), true));
-        }
-        else {
-            $row= sqlsrv_fetch_array($stmt);
-            $certType = $row['CertType'];
-            $allowedcarryover= $row['CarryForwardTotal'];
-            $PriorYearBalance = $row['PriorYearBalance'];
+            $this->certType = $row['CertType'];
         }
         sqlsrv_free_stmt($stmt);
 
         // Fill in data for personal information
         $this->SetFont('Arial','B',12);
         $this->SetTextColor(0,0,0);
-        $this->Cell(500,5,$status,0,0,'C');
+        $this->Cell(500,5,$this->status,0,0,'C');
 
         $this->Ln(10);
         $this->SetFont('Arial','',11);
@@ -107,32 +91,31 @@ class myPDF extends FPDF {
         $this->SetFont('Arial','B',11);
         $this->Ln(0);
         $this->Cell(13);
-        $this->Cell(0,0,$lastName.', '.$firstName);
+        $this->Cell(0,0,$this->lastName.', '.$this->firstName);
         $this->Ln();
         $this->SetFont('Arial','',11);
         $this->Cell(274,0,'Employee Number:',0,0,'C');
         $this->Ln();
         $this->Cell(255,0,'Certificate Number:',0,0,'R');
-        $this->Cell(0,0,$certid,0,0,'R');
+        $this->Cell(0,0,$this->certid,0,0,'R');
 
         $this->Ln(5);
         $this->Cell(0,0,'Title:');
         $this->Ln();
         $this->Cell(250,0,'Item:',0,0,'C');
         $this->Ln();
-        $this->Cell(338.5,0,'PayLocation:',0,0,'C');
-        $this->Ln();
         $this->Cell(249.5,0,'Certificate Date:',0,0,'R');
-        $this->Cell(0,0,$certDate,0,0,'R');
+        $this->Cell(0,0,$this->certDate,0,0,'R');
 
         $this->Ln(5);
-        $this->Cell(332.5,0,'Specialty:',0,0,'C');
-        $this->Ln(0);
-        $this->Cell(375,0,$specialty,0,0,'C');
-
+        $this->Cell(0,0,'Specialty: '.$this->specialty);
         $this->Ln();
+        //$this->Cell(30,0,$specialty,0,0,'C');
+        $this->Cell(264.5,0,'Pay Location:',0,0,'C');
+        $this->Ln();
+
         $this->Cell(250,0,'Certificate Type:',0,0,'R');
-        $this->Cell(0,0,$certType,0,0,'R');
+        $this->Cell(0,0,$this->certType,0,0,'R');
 
         // Draw a line
         $width=$this -> w; // Width of Current Page
