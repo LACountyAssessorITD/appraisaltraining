@@ -7,7 +7,7 @@ This Code dynamically generate individual PDF (Annual Totals Summary)
 require_once "../../constants.php";
 require_once "../../session.php";
 session_start();
-require_once "../../report_template/pdfTemplate_annualTotals.php";
+require_once "../../report_template/pdfTemplate_AnnualTotals.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;

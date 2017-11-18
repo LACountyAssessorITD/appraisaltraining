@@ -7,7 +7,7 @@ This Code dynamically generate individual PDF (Specific Year Report)
 require_once "../../constants.php";
 require_once "../../session.php";
 //session_start();
-require_once "../../report_template/pdfTemplate_completedCourse.php";
+require_once "../../report_template/pdfTemplate_AnnualTraining.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -23,14 +23,12 @@ $connectionInfo = array( "UID"=>$uid,
 $conn = sqlsrv_connect( $serverName, $connectionInfo);
 if( $conn === false )
 {
-     echo "Unable to connect.</br>";
      die( print_r( sqlsrv_errors(), true));
 }
 $totalcarryover = 0;
 
 $certid =  getCertNo();
-$fromYearInt = $_SESSION["fromYearInt"];
-$toYearInt = $_SESSION["toYearInt"];
+$year =  $_SESSION["specific_year"];
 
 ///////////////////////////////////////////////////////////////////
 
@@ -40,6 +38,6 @@ $pdf->AddPage();
 $pdf->generate($conn);
 
 sqlsrv_close($conn);
-$name = (string)$certid."_".$fromYearInt."_".$toYearInt."_CompletedCourseSummary.pdf";
+$name = (string)$certid."_".$year."_AnnualTraining.pdf";
 $pdf->Output($name,'D');
 ?>
