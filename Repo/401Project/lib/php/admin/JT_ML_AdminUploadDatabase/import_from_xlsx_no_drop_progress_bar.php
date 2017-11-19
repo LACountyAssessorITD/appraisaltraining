@@ -30,9 +30,25 @@
 			echo "SQL Server connection to " + SQL_SERVER_USERNAME + " cannot be established.<br />";
 			die( print_r( sqlsrv_errors(), true));
 		}
-		// step 2 - create metadata database
-		$create_metadata = "IF (db_id(N'" + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00 + "') IS NULL) CREATE DATABASE " + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00
+		// step 2 - if not exist create metadata database
+		$create_metadata = "IF (db_id(N'" + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00 + "') IS NULL) CREATE DATABASE " + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00;
+		$srvr_stmt = sqlsrv_query( $conn, $create_metadata );
+		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		// step 2.5 -  and populate "DbTable" table!
+		$create_dbtable = ""
 
+
+		// step 3 - if not exist create db1
+		$create_db1 = "IF (db_id(N'" + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01 + "') IS NULL) CREATE DATABASE " + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01;
+		$srvr_stmt = sqlsrv_query( $conn, $create_db1 );
+		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+
+		// step 4 - if not exist create db2
+		$create_db2 = "IF (db_id(N'" + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02 + "') IS NULL) CREATE DATABASE " + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02;
+		$srvr_stmt = sqlsrv_query( $conn, $create_db2 );
+		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+
+		// step 5 - all 3 databases and DbTable should exist right now, start reading from it
 		$current_db_query = "SELECT DbName FROM DbTable WHERE IsCurrent = 0";
 		$srvr_stmt = sqlsrv_query( $conn, $current_db_query );
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
