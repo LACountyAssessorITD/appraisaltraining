@@ -422,7 +422,7 @@ $(document).ready(function(){
                     //var audit = results[i]['Auditor'];
                     var certNo = results[i]['CertNo'];
                     var empNo = results[i]['EmployeeID'];
-                    var balance = results[i]['CurrentYearBalance'];
+                    var balance = results[i]['CarryForwardTotal'];
                     loadTable(name,certNo,empNo,balance);
                     // var trHTML = "<tr>\
                     //                 <td><input type='checkbox' name='selected'></td>\
