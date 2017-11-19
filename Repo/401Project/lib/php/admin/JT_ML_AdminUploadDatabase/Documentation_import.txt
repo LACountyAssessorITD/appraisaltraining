@@ -8,3 +8,14 @@ Below is the documentation on Appraisal Training Record Tracking System Project 
 	(1)	Setup Microsoft SQL Server (2014 is preferred, although later versions should work just fine)
 		HTRAINDATADEV-V
 	(2) Create a database named
+
+2. Misc:
+	(1)	[new structure] "table Employee" contains a column named <CurrentStatus>, which is obtained from
+		BOE's AnnualReq.xlsx (whereas most of other columns in "table Employee" is from Summary.xlsx),
+		and one slight drawback is that <CurrentStatus> is "active" for all employees. This is a lot of
+		duplicated data, and if BOE's AnnualReq.xlsx always behaves like this, we might be able to discard
+		this column in "table Employee". However we are keeping it in the code and Database for now.
+	(2)	More importantly, this seems like an error (or at least a weird thing they're doing on their end):
+		in BOE's AnnualReq.xlsx, every employee at every fiscal year has "active" in <CurrentStatus>, however
+		in <Status> some employees at some years have "active/inactive/terminated/leave of absence/retired/
+		terminated/null". Why should an employee have "active" <CurrentStatus> but "retired" in <Status>?
