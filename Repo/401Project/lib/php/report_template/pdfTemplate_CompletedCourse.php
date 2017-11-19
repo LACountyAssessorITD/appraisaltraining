@@ -121,7 +121,7 @@ class myPDF extends FPDF {
             } else {
               $certDate = date("m/d/Y",strtotime($row['PermCertDate']));
             }
-            $certType = $row['CertType'];
+            // $certType = $row['CertType'];
         }
         sqlsrv_free_stmt($stmt);
 
