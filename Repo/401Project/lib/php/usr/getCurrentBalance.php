@@ -1,4 +1,8 @@
 <?php
+/*
+This Code dynamically gets individual's Carry Forward Total for the newest fiscal year
+@ Yining Huang
+*/
 include_once "../constants.php";
 include_once "../session.php";
 //session_start();

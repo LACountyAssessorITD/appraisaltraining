@@ -1,4 +1,10 @@
 <?php
+/*
+This Code retrieves individual's all available fiscal years in the system 
+and put results into the AdminHome.php's YearSelection dropdown for each person 
+in the result table
+@ Yining Huang
+*/
 include_once "../constants.php";
 include_once "../session.php";
 //session_start();

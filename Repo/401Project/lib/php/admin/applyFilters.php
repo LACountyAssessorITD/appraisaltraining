@@ -1,4 +1,8 @@
 <?php
+/*
+	To handle upload filtering process according to what are selected by admin
+	@ Yining Huang
+*/
 include_once "../constants.php";
 include_once "../session.php";
 

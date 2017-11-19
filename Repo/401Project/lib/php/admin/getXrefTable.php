@@ -1,4 +1,8 @@
 <?php
+/*
+This Code retrieves Employee_Xref table in the table to get EmpNo. CertNo and Names
+@ Yining Huang
+*/
 include_once "../constants.php";
 include_once "../session.php";
 //session_start();

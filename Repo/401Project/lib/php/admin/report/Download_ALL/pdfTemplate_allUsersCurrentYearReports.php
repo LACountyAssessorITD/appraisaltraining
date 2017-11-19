@@ -1,11 +1,26 @@
 <?php
 /*
-This Code draw out the individual PDF (Specific Year Report)
+This Code draw out a 600+ pages pdf Annual Training report (for current fiscal year) 
 @ Yining Huang
 */
 
 require('../../../FPDF/fpdf.php');
 class myPDF extends FPDF {
+    public $allowedcarryover;
+    public $certid;
+    public $year;
+
+    // Query from [New_Employee] table
+    public $lastName = ""; public $firstName = "";
+    public $certDate = ""; public $status = ""; // active or not
+    public $specialty = "";
+
+    // Query from [New_CertHistory] table
+    public $certType ="";
+    public $RequiredHours;
+    public $PriorYearBalance;
+    public $hoursEarned;
+
     function header() {
         // Add logo
         $this->Image('../../../../img/Logo.gif',10,8,-270);
@@ -19,8 +34,9 @@ class myPDF extends FPDF {
         $this->Ln();
 
         // Add year
-        $year = $GLOBALS['year'];
-        $this->Cell(0,5,'FY '.(string)$year.'-'.(string)($year+1),0,0,'C');
+        $this->year = $GLOBALS['year'];
+        $this->certid = $GLOBALS['certid'];
+        $this->Cell(0,5,'FY '.(string)$this->year.'-'.(string)($this->year+1),0,0,'C');
         $this->Ln();
 
         // Draw a line
@@ -29,27 +45,13 @@ class myPDF extends FPDF {
         $this->SetLineWidth(0.7);
         $this->SetDrawColor(162,157,150);
         $this->Line(10, 30,$width-10,30); // Line one Cross
-    }
 
-    function generate($conn){
-        $certid = $GLOBALS['certid'];
-        $year = $GLOBALS['year'];
-
-/////////////////////////////////////////////////////////////////////////////////////////
-// ********************       Start of Personal Information          ********************
-
-        // Query from [New_Employee] table
-        $lastName = ""; $firstName = "";
-        $certDate = ""; $status = ""; // active or not
-        $specialty = "";
-
-        // Query from [New_CertHistory] table
-        $certType ="";
-        $allowedcarryover=""; $PriorYearBalance; // for Annual Summary Table only
-
-        // Get Names, Certification Date, status and specialty
-        // from [New_Employee]
-        $tsql = "SELECT * FROM [New_Employee] WHERE CertNo=".(string)$certid;
+        // Get Names, Certification Date, cert type, status and specialty
+        $tsql = "SELECT * FROM [New_Employee]
+                INNER JOIN [New_CertHistory]
+                    ON [New_CertHistory].CertNo = [New_Employee].CertNo
+                WHERE [New_Employee].CertNo=".(string)$this->certid." AND [New_CertHistory].CertYear='".(string)$this->year."-".(string)($this->year+1)."'";
+        $conn = $GLOBALS['conn'];
         $stmt = sqlsrv_query( $conn, $tsql);
         if( $stmt === false )
         {
@@ -58,46 +60,43 @@ class myPDF extends FPDF {
         }
         else {
             $row= sqlsrv_fetch_array($stmt);
-            $lastName = $row['LastName'];
-            $firstName = $row['FirstName'];
-            $status = $row['CurrentStatus'];
-            $specialty = $row['Auditor'];
-            if ($specialty == "True") {
-              $specialty = "Audit";
+            $this->lastName = $row['LastName'];
+            $this->firstName = $row['FirstName'];
+            $this->status = $row['CurrentStatus'];
+            $this->specialty = $row['Auditor'];
+            if ($this->specialty == "True") {
+              $this->specialty = "Audit";
             } else {
-              $specialty = "";
+              $this->specialty = "";
             }
             if ($row['PermCertDate'] == NULL) {
-              $certDate = "NA"; // if not permanet, data shows "NA"
+              $this->certDate = "NA"; // if not permanet, data shows "NA"
             } else {
-              $certDate = date("m/d/Y",strtotime($row['PermCertDate']));
+              $this->certDate = date("m/d/Y",strtotime($row['PermCertDate']));
             }
+            $this->certType = $row['CertType'];
+            $GLOBALS['carryforwardtotal'] = $row['CarryForwardTotal'];
+            $this->allowedcarryover= $row['CarryForwardTotal'];
+            $this->PriorYearBalance = $row['PriorYearBalance'];
+            $this->RequiredHours = $row['RequiredHours'];
+            $this->hoursEarned = $row['HoursEarned'];
         }
         sqlsrv_free_stmt($stmt);
+    }
+
+    function generate($conn){
 
 
-        // Get Certification Type and Allowed carry over
-        // from [New_CertHistory] table
-        $tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid."AND CertYear='".
-            (string)$year."-".(string)($year+1)."'";
-        $stmt = sqlsrv_query( $conn, $tsql);
-        if( $stmt === false )
-        {
-             echo "Error in executing query98.</br>";
-             die( print_r( sqlsrv_errors(), true));
-        }
-        else {
-            $row= sqlsrv_fetch_array($stmt);
-            $certType = $row['CertType'];
-            $allowedcarryover= $row['CarryForwardTotal'];
-            $PriorYearBalance = $row['PriorYearBalance'];
-        }
-        sqlsrv_free_stmt($stmt);
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// ********************       Start of Personal Information          ********************
+        // Get LDAP Info
+        // TO DO
 
         // Fill in data for personal information
         $this->SetFont('Arial','B',12);
         $this->SetTextColor(0,0,0);
-        $this->Cell(500,5,$status,0,0,'C');
+        $this->Cell(500,5,$this->status,0,0,'C');
 
         $this->Ln(10);
         $this->SetFont('Arial','',11);
@@ -106,32 +105,31 @@ class myPDF extends FPDF {
         $this->SetFont('Arial','B',11);
         $this->Ln(0);
         $this->Cell(13);
-        $this->Cell(0,0,$lastName.', '.$firstName);
+        $this->Cell(0,0,$this->lastName.', '.$this->firstName);
         $this->Ln();
         $this->SetFont('Arial','',11);
         $this->Cell(274,0,'Employee Number:',0,0,'C');
         $this->Ln();
         $this->Cell(255,0,'Certificate Number:',0,0,'R');
-        $this->Cell(0,0,$certid,0,0,'R');
+        $this->Cell(0,0,$this->certid,0,0,'R');
 
         $this->Ln(5);
         $this->Cell(0,0,'Title:');
         $this->Ln();
         $this->Cell(250,0,'Item:',0,0,'C');
         $this->Ln();
-        $this->Cell(338.5,0,'PayLocation:',0,0,'C');
-        $this->Ln();
         $this->Cell(249.5,0,'Certificate Date:',0,0,'R');
-        $this->Cell(0,0,$certDate,0,0,'R');
+        $this->Cell(0,0,$this->certDate,0,0,'R');
 
         $this->Ln(5);
-        $this->Cell(332.5,0,'Specialty:',0,0,'C');
-        $this->Ln(0);
-        $this->Cell(375,0,$specialty,0,0,'C');
-
+        $this->Cell(0,0,'Specialty: '.$this->specialty);
         $this->Ln();
+        //$this->Cell(30,0,$specialty,0,0,'C');
+        $this->Cell(264.5,0,'Pay Location:',0,0,'C');
+        $this->Ln();
+
         $this->Cell(250,0,'Certificate Type:',0,0,'R');
-        $this->Cell(0,0,$certType,0,0,'R');
+        $this->Cell(0,0,$this->certType,0,0,'R');
 
         // Draw a line
         $width=$this -> w; // Width of Current Page
@@ -154,8 +152,9 @@ class myPDF extends FPDF {
         // Add Titles
         $this->SetFont('Arial','B',11);
         $this->SetTextColor(0,0,0);
-        $this->Ln(22);
+        $this->Ln(15);
 
+        $year = $GLOBALS['year'];
         $this->Cell(263,0,(string)$year."-".(string)($year+1),0,0,'R');
         $this->Ln(5);
 
@@ -164,19 +163,20 @@ class myPDF extends FPDF {
         $this->Cell(30);
         $this->Cell(0,0,'COURSE TITLE');
         $this->Ln();
-        $this->Cell(0,0,'SOURCE',0,0,'C');
-        $this->Ln();
+        /*
+        Notice: the Source of the Course is not added
+                to the current version of report
+        */
+        // $this->Cell(0,0,'SOURCE',0,0,'C');
+        // $this->Ln();
         $this->Cell(260,0,'HOURS',0,0,'R');
         $this->Ln(10);
 
         // Query from [New_CourseDetail] table
         $EndDate = ""; $Course = ""; $HoursEarned = "";
         $TotalHoursEarned = 0;
-
-        $time_start = "'".(string)$year."/1/1'";
-        $time_end = "'".(string)$year."/12/31'";
+        $certid = $GLOBALS['certid'];
         $tsql = "SELECT * FROM [New_CourseDetail] WHERE CertNo=".(string)$certid."
-                AND EndDate BETWEEN ".$time_start." AND ".$time_end."
                 AND CourseYear='".(string)$year."-".(string)($year+1)."'";
 
         $stmt = sqlsrv_query( $conn, $tsql);
@@ -192,9 +192,10 @@ class myPDF extends FPDF {
                     $this->AddPage();
                     $this->ln(10);
                 }
-                $EndDate = date("m/d/Y",strtotime($row['EndDate']));;
+                $EndDate = date("m/d/Y",strtotime($row['EndDate']));
                 $Course = $row['CourseName'];
-                //$Course = str_replace((string)$year."-".(string)($year+1)." ANNUAL ","",$Course);
+                if ($Course == "No training was completed during this fiscal year")
+                    $EndDate = "N/A";
                 $HoursEarned= $row['CourseHours'];
                 $TotalHoursEarned += $HoursEarned;
                 $this->SetFont('Arial','',11);
@@ -203,21 +204,23 @@ class myPDF extends FPDF {
                 $this->Ln();
                 $this->Cell(30);
 
-                // Swith to next line and add an "-" if the course name is too long
+                // Swith to next line and add an "-" if the course name
+                // is longer than $max_length_of_string
                 $x_begin=$this -> getX();
                 $y_begin=$this -> getY();
                 $x_temp = $x_begin;
                 $y_temp = $y_begin;
-                if ((strlen($Course) <= 37)) {
+                $max_length_of_string = 90;
+                if ((strlen($Course) <= $max_length_of_string)) {
                     $this->Cell(0,0,$Course);
                     $this->Ln();
                 }
                 else {
-                    while (strlen($Course) > 37) {
+                    while (strlen($Course) > $max_length_of_string) {
                         $x_temp = $this -> getX();
                         $y_temp = $this -> getY();
-                        if (strlen($Course) >= 37)
-                            $temp_coursename = substr($Course, 0,37);
+                        if (strlen($Course) >= $max_length_of_string)
+                            $temp_coursename = substr($Course, 0,$max_length_of_string);
                         else
                             $temp_coursename = substr($Course, 0,strlen($Course) );
                         $Course = str_replace($temp_coursename,"",$Course);
@@ -234,7 +237,7 @@ class myPDF extends FPDF {
                 $this->SetXY($x_begin, $y_begin);
                 $this->Ln();
 
-                $this->Cell(0,0,'NA',0,0,'C');  // Source
+                //$this->Cell(0,0,'NA',0,0,'C');  // Source is current commented out
                 $this->Ln();
                 $this->Cell(260,0,$HoursEarned,0,0,'R');
                 $this->SetXY($x_begin,$y_temp);
@@ -247,7 +250,7 @@ class myPDF extends FPDF {
             $this->AddPage();
             $this->ln(10);
         }
-        $this->ln(15);
+        $this->ln(12);
         $this->SetFont('Arial','B',11);
         $this->Cell(240,0,'Total',0,0,'R');
         $this->ln(0);
@@ -260,15 +263,13 @@ class myPDF extends FPDF {
 /////////////////////////////////////////////////////////////////////////////////////////
 // ********************       Start of Annual Summary         ********************
 
-        // Query from [New_CarryoverLimits]
-        $RequiredHours;
-
-        // Add Annual Training Hours Summary
+        // Add Annual Hours Summary
         $y=$this -> getY(); // Height of Current Page
-        if ($y >= 132) {    // Force Page Break if too low on page
+        if ($y >= 133) {    // Force Page Break if too low on page
             $this->AddPage();
-            $this->ln(20);
+            $this->ln(15);
         }
+        $this->ln(10);
         $this->SetFont('Arial','BU',11);
         $this->Cell(241,0,'Annual Training Hours Summary',0,0,'R');
 
@@ -282,26 +283,12 @@ class myPDF extends FPDF {
         $this->SetFont('','');
         $this->Cell(237,0,'Carry Over Hours from Prior Years*:',0,0,'R');
         $this->ln(0);
-        $this->Cell(260,0,$PriorYearBalance,0,0,'R');
+        $this->Cell(260,0,$this->PriorYearBalance,0,0,'R');
 
-
-        // Get Required Hours from [New_CarryoverLimits]
-        $tsql = "SELECT * FROM [New_CarryoverLimits] WHERE Status='".$status."'";
-        $stmt = sqlsrv_query( $conn, $tsql);
-        if( $stmt === false )
-        {
-             echo "Error in executing query329.</br>";
-             die( print_r( sqlsrv_errors(), true));
-        }
-        else {
-            $row= sqlsrv_fetch_array($stmt);
-            $RequiredHours = $row['RequiredHours'];
-        }
-        sqlsrv_free_stmt($stmt);
         $this->Ln(6);
         $this->Cell(236.8,0,'Less Req. Hours for FY '.(string)$year."-".(string)($year+1),0,0,'R');
         $this->ln(0);
-        $this->Cell(260,0,$RequiredHours,0,0,'R');
+        $this->Cell(260,0,$this->RequiredHours,0,0,'R');
 
         //draw out the first line
         $x=$this -> getX();
@@ -312,12 +299,12 @@ class myPDF extends FPDF {
         $this->Ln(8);
         $this->Cell(236.8,0,'Sub-Total:',0,0,'R');
         $this->ln(0);
-        $this->Cell(260,0,$PriorYearBalance-$RequiredHours,0,0,'R');
+        $this->Cell(260,0,$this->PriorYearBalance-$this->RequiredHours,0,0,'R');
 
         $this->Ln(6);
         $this->Cell(236.8,0,'Plus FY '.(string)$year."-".(string)($year+1).' Hours Completed:',0,0,'R');
         $this->ln(0);
-        $this->Cell(260,0,$TotalHoursEarned,0,0,'R');
+        $this->Cell(260,0,$this->hoursEarned,0,0,'R');
 
         //draw out the second line
         $x=$this -> getX();
@@ -328,15 +315,15 @@ class myPDF extends FPDF {
         $this->Ln(8);
         $this->Cell(236.8,0,'Total Carry Over Hours:',0,0,'R');
         $this->ln(0);
-        $totalcarryover = $TotalHoursEarned+$PriorYearBalance-$RequiredHours;
-        $GLOBALS['totalcarryover'] = $totalcarryover;
+        $totalcarryover = $this->hoursEarned+$this->PriorYearBalance-$this->RequiredHours;
         $this->Cell(260,0,$totalcarryover,0,0,'R');
 
         $this->Ln(6);
         $this->SetFont('Arial','B',11);
         $this->Cell(236.8,0,'Allowed Carry Over Hours for Next FY*:',0,0,'R');
         $this->ln(0);
-        $this->Cell(260,0,$allowedcarryover,0,0,'R');
+        $this->Cell(260,0,$this->allowedcarryover,0,0,'R');
+        // $GLOBALS['allowedcarryover'] = $allowedcarryover;
 
         $this->Ln(10);
         $this->SetFont('Arial','I',10);
@@ -353,11 +340,11 @@ class myPDF extends FPDF {
         $this->SetLineWidth(0.5);
 
         $year = $GLOBALS['year'];
-        if ($GLOBALS['totalcarryover']>=0) {
+        if ($this->allowedcarryover>=0) {
           $this->Cell(0,5,'TRAINING HOURS REQUIREMENT HAS BEEN MET FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
         }
         else {
-          $this->Cell(0,5,'TRAINING HOURS REQUIREMENT HAS NOT BEEN MET FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
+          $this->Cell(0,5, $this->allowedcarryover*(-1).' HOURS TO COMPLETE TRAINING HOURS REQUIREMENT FOR FY '.(string)$year.'-'.(string)($year+1),1,0,'C');
         }
 
         $this->SetY(-15);

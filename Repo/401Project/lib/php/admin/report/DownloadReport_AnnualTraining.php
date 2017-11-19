@@ -1,13 +1,14 @@
 <?php
 /*
-This Code dynamically generate individual PDF (Specific Year Report)
+This Code dynamically generates and downloads individual PDF (Annual Training Report)
+	for the admin page
 @ Yining Huang
 */
 
 include_once "../../constants.php";
 include_once "../../session.php";
 //session_start();
-include_once "../../report_template/pdfTemplate_specificYear.php";
+include_once "../../report_template/pdfTemplate_AnnualTraining.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;

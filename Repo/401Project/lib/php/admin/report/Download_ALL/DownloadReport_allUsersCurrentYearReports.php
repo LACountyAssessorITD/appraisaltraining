@@ -1,6 +1,7 @@
 <?php
 /*
-This Code dynamically generate individual PDF (Specific Year Report)
+This Code generates a 600+ pages pdf Annual Training report (for current fiscal year) 
+and enable to download
 @ Yining Huang
 */
 

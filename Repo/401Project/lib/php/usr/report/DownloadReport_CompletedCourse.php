@@ -1,6 +1,6 @@
 <?php
 /*
-This Code dynamically generate individual PDF (Specific Year Report)
+This Code dynamically generates and downloads individual PDF (Completed Course Summary Report)
 @ Yining Huang
 */
 

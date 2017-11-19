@@ -1,6 +1,7 @@
 <?php
 /*
-This Code draw out individual PDF (Annual Totals Summary)
+This code renders the individual PDF (Annual Totals Summary)
+Given a specific Cert No
 @ Yining Huang
 */
 

@@ -1,13 +1,13 @@
 <?php
 /*
-This Code dynamically generate individual PDF (Completed Course Summary Report)
+This Code dynamically generate individual PDF (Annual Totals Summary) for the admin page
 @ Yining Huang
 */
 
 include_once "../../constants.php";
 include_once "../../session.php";
-//session_start();
-include_once "../../report_template/pdfTemplate_completedCourse.php";
+session_start();
+include_once "../../report_template/pdfTemplate_AnnualTotals.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -29,8 +29,6 @@ if( $conn === false )
 $totalcarryover = 0;
 
 $certid = $_SESSION['view_certNo'];
-$fromYearInt = $_SESSION['view_year1'];
-$toYearInt = $_SESSION["view_year2"];
 
 ///////////////////////////////////////////////////////////////////
 
@@ -40,6 +38,5 @@ $pdf->AddPage();
 $pdf->generate($conn);
 
 sqlsrv_close($conn);
-$name = (string)$certid."_".$fromYearInt."_".$toYearInt."_CompletedCourseSummary.pdf";
-$pdf->Output($name,'D');
+$pdf->Output('I');
 ?>

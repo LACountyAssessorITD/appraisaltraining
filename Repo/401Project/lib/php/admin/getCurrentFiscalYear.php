@@ -1,6 +1,6 @@
 <?php
 /*
-This Code dynamically generate individual PDF (Specific Year Report)
+This Code retrieves the newest fiscal year from the database ->  as current fiscal year
 @ Yining Huang
 */
 

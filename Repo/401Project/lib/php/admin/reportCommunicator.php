@@ -1,4 +1,10 @@
 <?php
+/*	This code is used to handle admin's request for generating reports
+	Handle ajax from web page -> identify requested report type -> pass around the needed info
+
+	@ Yining Huang
+
+*/
 session_start();
 
 $_SESSION['view_certNo'] = $_POST["certNo"];

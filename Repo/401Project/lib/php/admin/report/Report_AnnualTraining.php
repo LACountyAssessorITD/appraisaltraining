@@ -1,13 +1,13 @@
 <?php
 /*
-This Code dynamically generate individual PDF (Annual Totals Summary)
+This Code dynamically generate individual PDF (Annual Training Report) for the admin page
 @ Yining Huang
 */
 
 include_once "../../constants.php";
 include_once "../../session.php";
-//session_start();
-include_once "../../report_template/pdfTemplate_annualTotals.php";
+session_start();
+include_once "../../report_template/pdfTemplate_AnnualTraining.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -29,6 +29,7 @@ if( $conn === false )
 $totalcarryover = 0;
 
 $certid = $_SESSION['view_certNo'];
+$year = $_SESSION['view_specific_year'];
 
 ///////////////////////////////////////////////////////////////////
 
@@ -36,8 +37,6 @@ $pdf = new myPDF('L','mm','A4');
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->generate($conn);
-
 sqlsrv_close($conn);
-$name = (string)$certid."_"."AnnualTotalsSummary.pdf";
-$pdf->Output($name,'D');
+$pdf->Output('I');
 ?>

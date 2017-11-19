@@ -1,6 +1,6 @@
 <?php
 /*
-This Code dynamically generate individual PDF (Annual Totals Summary)
+This Code dynamically generates and downloads individual PDF (Annual Totals Summary)
 @ Yining Huang
 */
 

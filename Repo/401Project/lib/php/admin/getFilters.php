@@ -1,4 +1,9 @@
 <?php
+/*
+    Dynamically query the database, fill in the filter dropdown on AdminHome.php
+     and gets distinct values for each requested columns in table
+    @ Yining Huang
+*/
 include_once "../constants.php";
 include_once "../session.php";
 //session_start();

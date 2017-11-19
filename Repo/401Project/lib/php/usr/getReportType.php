@@ -1,4 +1,8 @@
 <?php
+/*
+This Code retrieves available reports related information in the report table of the database
+@ Yining Huang
+*/
 include_once "../constants.php";
 include_once "../session.php";
 //session_start();

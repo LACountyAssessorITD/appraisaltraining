@@ -1,6 +1,6 @@
 <?php
 /*
-This Code dynamically generate individual PDF (Specific Year Report)
+This Code dynamically generate individual PDF (Annual Training Report)
 @ Yining Huang
 */
 

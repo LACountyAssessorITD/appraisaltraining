@@ -1,6 +1,7 @@
  <?php
 /*
 This code renders the individual PDF (Annual Training Report)
+Given a specific fiscal year and A Cert No
 @ Yining Huang
 */
 
