@@ -29,7 +29,7 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certi." Order By CertNo";
+$tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid." Order By CertNo";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
