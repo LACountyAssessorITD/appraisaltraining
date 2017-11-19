@@ -44,7 +44,7 @@ class myPDF extends FPDF {
         $this->SetLineWidth(0.5);
         $this->SetDrawColor(0,0,0);
         $this->Line(10,$height+5,$width-10,$height+5); // Line one Cross
-        //$this->ln(10);
+        $this->ln(10);
     }
 
     function header() {
@@ -210,26 +210,22 @@ class myPDF extends FPDF {
              die( print_r( sqlsrv_errors(), true));
         }
         else {
-            $this->SetFont('Arial','BI',11);
+            $this->SetFont('Arial','BI',12);
             $current_year_header = (string)($year2-1)."-".(string)($year2);
             $TotalHoursEarned = 0;
             $this->Cell(0,0,$current_year_header);
             $this->SetFont('Arial','',11);
             while($row = sqlsrv_fetch_array($stmt)){
                 $y=$this -> getY(); // Height of Current Page
-                if ($y >= 180) {    // Force Page Break if too low on page
-                    $this->AddPage();
-                    $this->ln(10);
-                }
                 $FiscalYear = $row['CourseYear'];
                 if ($FiscalYear != $current_year_header) {
-                    $this->Ln(5);
+                    $this->Ln(7);
                     $this->SetFont('Arial','B',11);
-                    $this->Cell(240,0,'Total',0,0,'R');
-                    $this->ln(0);
-                    $this->Cell(260,0,$TotalHoursEarned,0,0,'R');
-                    $this->SetFont('Arial','BI',11);
-                    $this->Ln(15);
+                    $this->Cell(0,0,'Total Hours: '.$TotalHoursEarned,0,0,'R');
+                    $this->Ln(5);
+
+                    $this->SetFont('Arial','BI',12);
+                    $this->Ln(5);
                     $current_year_header = $FiscalYear;
                     $this->Cell(0,0,$current_year_header);
                     $this->SetFont('Arial','',11);
@@ -298,16 +294,10 @@ class myPDF extends FPDF {
 
         }
         sqlsrv_free_stmt($stmt);
-        $y=$this -> getY(); // Height of Current Page
-        if ($y >= 180) {    // Force Page Break if too low on page
-            $this->AddPage();
-            $this->ln(10);
-        }
-        $this->ln(5);
+        $this->Ln(7);
         $this->SetFont('Arial','B',11);
-        $this->Cell(240,0,'Total',0,0,'R');
-        $this->ln(0);
-        $this->Cell(260,0,$TotalHoursEarned,0,0,'R');
+        $this->Cell(0,0,'Total Hours: '.$TotalHoursEarned,0,0,'R');
+        $this->Ln(5);
 
 // ********************       End of Course Datails          ********************
 /////////////////////////////////////////////////////////////////////////////////////////
