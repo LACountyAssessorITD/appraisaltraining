@@ -183,7 +183,7 @@ class myPDF extends FPDF {
         $this->Ln(3);
 
         $this->addSubheaders();
-        $this->Ln(10);
+        // $this->Ln(5);
         $year1 = $GLOBALS["fromYearInt"];
         $year2 = $GLOBALS["toYearInt"];
 
@@ -224,8 +224,15 @@ class myPDF extends FPDF {
                     $this->Cell(0,0,'Total Hours: '.$TotalHoursEarned,0,0,'R');
                     $this->Ln(5);
 
+                    $width=$this -> w; // Width of Current Page
+                    $height=$this->getY();
+                    $this->SetLineWidth(0.3);
+                    $this->SetDrawColor(162,157,150);
+                    $this->Line(10,$height,$width-10,$height); // Line one Cross
+                    $this->ln(5);
+
                     $this->SetFont('Arial','BI',12);
-                    $this->Ln(5);
+                    // $this->Ln(5);
                     $current_year_header = $FiscalYear;
                     $this->Cell(0,0,$current_year_header);
                     $this->SetFont('Arial','',11);
