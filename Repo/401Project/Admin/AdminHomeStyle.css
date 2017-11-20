@@ -402,6 +402,10 @@
 	margin-bottom:20px;
 }
 
+.pdfView a{
+	color: red;
+}
+
 .rightContentColumn {
 	width: 100%;
 	margin:0;
@@ -652,7 +656,7 @@
     overflow: auto;
     max-height: 500px;
     width: 1600%;
-    left:60%;
+    left:100%;
     bottom:0;
     padding: 10px 10px;
 }

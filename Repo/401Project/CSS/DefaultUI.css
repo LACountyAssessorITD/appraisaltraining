@@ -119,6 +119,10 @@ select {
 	/*float: right;*/
 }
 
+.logoutBtn {
+	color: red;
+}
+
 .header img {
 	position: absolute;
 	/*vertical-align: center;*/

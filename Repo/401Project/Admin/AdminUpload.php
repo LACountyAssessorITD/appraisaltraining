@@ -64,13 +64,16 @@
 			    	</div>
 			    	<p id="chosenFileLabel">File Chosen:</p>
 			    	<p id="chosenFileName">None</p>
+			    	<div id="effDateDiv">
+			    		<p class="clearRow">Effective Date: </p>
+			    		<input type='text' placeholder='yyyy' autocomplete='off' id="yearEffInput">
+		                <input type='text' placeholder='mm' autocomplete='off' id="monthEffInput">
+		            	<input type='text' placeholder='dd' autocomplete='off' id="dayEffInput">
+			            <!-- <button id="effDateBtn">Submit</button> -->
+			        </div>
 				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 				</form>
 
-				<label>Effective Date: </label><input type='text' placeholder='yyyy' autocomplete='off' id="yearEffInput">
-                <input type='text' placeholder='mm' autocomplete='off' id="monthEffInput">
-            	<input type='text' placeholder='dd' autocomplete='off' id="dayEffInput">
-	            <button id="effDateBtn">Submit</button>
 			</div>
 
 			<div id="statusDiv">
