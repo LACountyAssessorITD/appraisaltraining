@@ -1,23 +1,83 @@
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
 <?php
+	// Start the session.
+	session_start();
+
+	// We have to make sure there is no garbage left here.
+	// Failed process will leave the file undeleted.
+	// So, we need to delete the file that older than 2 days.
+	// $files = glob("D:/t/*");
+	// $now   = time();
+
+	// foreach ($files as $file) {
+	//   if (is_file($file)) {
+	//     if ($now - filemtime($file) >= 60 * 60 * 24 * 2) { // 2 days and older
+	//       unlink($file);
+	//     }
+	//   }
+	// }
+
+	// // The example total processes.
+	// // $total = 20;
+
+	// // The array for storing the progress.
+	// $arr_content = array();
+
+	// // Loop through process
+	// for($i=1; $i<=$total; $i++){
+	// 	// Calculate the percentation
+	// 	$percent = intval($overall_row_counter/$total_num_of_rows * 100);
+
+	// 	// Put the progress percentage and message to array.
+	// 	$arr_content['percent'] = $percent;
+	// 	$arr_content['message'] = $i . " row(s) processed.";
+
+	// 	// Write the progress into file and serialize the PHP array into JSON format.
+	// 	// The file name is the session id.
+	// 	file_put_contents("D:/t/" . session_id() . ".txt", json_encode($arr_content));
+
+	// 	// Sleep one second so we can see the delay
+	// 	sleep(1);
+	// }
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// for LA County Assessor's Office - Appraisal Training Record Tracking System use only!
 	// updated by James Tseng and Mian Lu
 	// last edit October 2017
 
 	// mianlu: NOTE: if(true/$variable){ } blocks are used to foster code snippit folding with Sublime functionalities.
 
-	ini_set('memory_limit', '512M'); // TOT optimize more?
-	$do_step_1	= true;
-	$do_step_2	= true;
-	$do_step_3	= true;
-	$do_cleanup	= false;
-
 	// put include_once statements here:
 	include_once "../../constants.php";
+
+	// Initialization Pt 1 - declare variables, constants, and flags
+	ini_set('memory_limit', '512M'); // TOT optimize more?
+	$do_step_1  = true;
+	$do_step_2  = true;
+	$do_step_3  = true;
+	$do_cleanup = false;
+	$total_num_of_rows = intval(0);
+	$overall_row_counter = intval(0);
+	$progress_bar_arr_content = array(); // variable to write out current percentage (of line-by-line insertion) to a file, which is then read from importing webpage's progress bar
+
+
+
+	// Initialization Pt 2 - count total number of rows from 3 excel sheets, using 3 "lazy-reading" blocks
+	$excelReader_AnnualReq	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq	->setReadDataOnly(true);
+	$excelObj_AnnualReq		=	$excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
+	$annualreq				=	$excelObj_AnnualReq->getActiveSheet();
+	$total_num_of_rows		+=	$annualreq->getHighestRow() - 1; // minus one row because of header row in xlsx
+	unset($excelObj_AnnualReq);
+	$excelReader_Summary	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary		->setReadDataOnly(true);
+	$excelObj_Summary		=	$excelReader_Summary->load(PATH_XLSX_SUMMARY);
+	$summary				=	$excelObj_Summary->getActiveSheet();
+	$total_num_of_rows		+=	$summary->getHighestRow() - 1; // minus one row because of header row in xlsx
+	unset($excelObj_Summary);
+	$excelReader_Details	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details		->setReadDataOnly(true);
+	$excelObj_Details		=	$excelReader_Details->load(PATH_XLSX_DETAILS);
+	$details				=	$excelObj_Details->getActiveSheet();
+	$total_num_of_rows		+=	$details->getHighestRow() - 1; // minus one row because of header row in xlsx
+	unset($excelObj_Summary);
+	echo "Total number of rows to be inserted: ".(string)$total_num_of_rows."; starting insertion operation...<br />";
 
 	////////////////////////////////// Step I: Mian's sql server - open connection //////////////////////////////////
 	// initialization, then open connection to metadata table which tells me which among the 2 tables shall I connect to next!
@@ -37,7 +97,7 @@
 			// (if not exist) CREATE METADATA DB
 			$create_metadata_db = "
 				IF DB_ID(N'".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00."') IS NULL
-				    CREATE DATABASE ".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00.";
+					CREATE DATABASE ".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00.";
 			";
 			$srvr_stmt = sqlsrv_query( $conn, $create_metadata_db );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
@@ -123,11 +183,11 @@
 	////////////////////////////////// Step II: Mian's sql server - create 5 empty tables //////////////////////////////////
 	if(true) {
 		// 1. create queries to drop existing tables with same names that we're gonna create
-		$drop_CH	= "IF OBJECT_ID('dbo.CertHistory', 'U') IS NOT NULL DROP TABLE dbo.CertHistory";
-		$drop_CD	= "IF OBJECT_ID('dbo.CourseDetail', 'U') IS NOT NULL DROP TABLE dbo.CourseDetail";
-		$drop_COL	= "IF OBJECT_ID('dbo.CarryoverLimits', 'U') IS NOT NULL DROP TABLE dbo.CarryoverLimits";
-		$drop_EX	= "IF OBJECT_ID('dbo.EmployeeID_Xref', 'U') IS NOT NULL DROP TABLE dbo.EmployeeID_Xref";
-		$drop_E		= "IF OBJECT_ID('dbo.Employee', 'U') IS NOT NULL DROP TABLE dbo.Employee";
+		$drop_CH    = "IF OBJECT_ID('dbo.CertHistory', 'U') IS NOT NULL DROP TABLE dbo.CertHistory";
+		$drop_CD    = "IF OBJECT_ID('dbo.CourseDetail', 'U') IS NOT NULL DROP TABLE dbo.CourseDetail";
+		$drop_COL   = "IF OBJECT_ID('dbo.CarryoverLimits', 'U') IS NOT NULL DROP TABLE dbo.CarryoverLimits";
+		$drop_EX    = "IF OBJECT_ID('dbo.EmployeeID_Xref', 'U') IS NOT NULL DROP TABLE dbo.EmployeeID_Xref";
+		$drop_E     = "IF OBJECT_ID('dbo.Employee', 'U') IS NOT NULL DROP TABLE dbo.Employee";
 		// 2. run the above queries
 		$srvr_stmt = sqlsrv_query( $conn, $drop_CH );
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
@@ -141,57 +201,57 @@
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		// 3. create table 3 Employee (DO THIS FIRST! CertNo need to be a foreign key for all other tables!)
 		$create_E = "CREATE TABLE dbo.Employee (
-			CertNo float,						--dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
-			FirstName nvarchar(50),				--dbo.Summary
-			MiddleName nvarchar(50),			--dbo.Summary
-			LastName nvarchar(50),				--dbo.Summary
-			TempCertDate datetime2(0),			--dbo.AnnualReq
-			PermCertDate datetime2(0),			--dbo.AnnualReq
-			AdvCertDate datetime2(0),			--dbo.AnnualReq
-			CurrentStatus nvarchar(50),			--dbo.AnnualReq
-			Auditor nvarchar(50),				--dbo.Summary
+			CertNo float,                       --dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
+			FirstName nvarchar(50),             --dbo.Summary
+			MiddleName nvarchar(50),            --dbo.Summary
+			LastName nvarchar(50),              --dbo.Summary
+			TempCertDate datetime2(0),          --dbo.AnnualReq
+			PermCertDate datetime2(0),          --dbo.AnnualReq
+			AdvCertDate datetime2(0),           --dbo.AnnualReq
+			CurrentStatus nvarchar(50),         --dbo.AnnualReq
+			Auditor nvarchar(50),               --dbo.Summary
 			-- ml: below are Mian's suggested extra columns from earlier (not necessary!)
-			-- CountyCode nvarchar(2),			--dbo.Summary
-			-- CurrFiscalYear nvarchar(10),		--dbo.Summary
-			-- CurrCertType 					--contained in dbo.AnnualReq, not unique! i.e. one employee can have multiple types, all active!
-			primary key (CertNo),				-- CertNo should be foreign key
+			-- CountyCode nvarchar(2),          --dbo.Summary
+			-- CurrFiscalYear nvarchar(10),     --dbo.Summary
+			-- CurrCertType                     --contained in dbo.AnnualReq, not unique! i.e. one employee can have multiple types, all active!
+			primary key (CertNo),               -- CertNo should be foreign key
 		)";
 		// 4. create table 1 CourseDetail
 		$create_CD = "CREATE TABLE dbo.CourseDetail (
 			CertNo float references dbo.Employee(CertNo), -- foreign key from Employee
-			CourseYear nvarchar(10),			-- from dbo.Details(FiscalYear)
-			ItemNumber float,					-- undefined, maybe an index for all possible courses, if so then new table all_courses needed
-			CourseName nvarchar(100),			-- from dbo.tbl: Course Title + dbo.Details(Course)
-			CourseLocation nvarchar(50),		-- from dbo.Details(Location)
-			CourseGrade nvarchar(50),			-- from dbo.Details(Grade)
-			CourseHours float,					-- from dbo.Details(HoursEarned)
-			EndDate datetime2(0),				-- from dbo.Details(EndDate) ( TOT: datetime2(0) )
+			CourseYear nvarchar(10),            -- from dbo.Details(FiscalYear)
+			ItemNumber float,                   -- undefined, maybe an index for all possible courses, if so then new table all_courses needed
+			CourseName nvarchar(100),           -- from dbo.tbl: Course Title + dbo.Details(Course)
+			CourseLocation nvarchar(50),        -- from dbo.Details(Location)
+			CourseGrade nvarchar(50),           -- from dbo.Details(Grade)
+			CourseHours float,                  -- from dbo.Details(HoursEarned)
+			EndDate datetime2(0),               -- from dbo.Details(EndDate) ( TOT: datetime2(0) )
 			-- primary key (CertNo, CourseYear, CourseName), -- if ItemNumber correctly implemented, switch to it! CertNo should be foreign key
 		)";
 		// 5. create table 4 CarryoverLimits
 		$create_COL = "CREATE TABLE dbo.CarryoverLimits (
-			[Status] nvarchar(50),				-- primary key from dbo.CertHistory, referenced in CertHistory(Status)
-			RequiredHours float,				-- undefined
-			Year1Limit float,					-- undefined
-			Year2Limit float,					-- undefined
-			Year3Limit float,					-- undefined
+			[Status] nvarchar(50),              -- primary key from dbo.CertHistory, referenced in CertHistory(Status)
+			RequiredHours float,                -- undefined
+			Year1Limit float,                   -- undefined
+			Year2Limit float,                   -- undefined
+			Year3Limit float,                   -- undefined
 			-- primary key ([Status]),
 		)";
 		// 6. create table 2 CertHistory
 		$create_CH = "CREATE TABLE dbo.CertHistory (
 			CertNo float references dbo.Employee(CertNo), -- foreign key from Employee
-			CertYear nvarchar(10),				-- from dbo.AnnualReq
-			CertType nvarchar(50),				-- from dbo.AnnualReq
-			-- [Status] nvarchar(50) references dbo.CarryoverLimits([Status]),				-- from dbo.AnnualReq
-			[Status] nvarchar(50),				-- from dbo.AnnualReq
-			HoursEarned float,					-- from dbo.AnnualReq
+			CertYear nvarchar(10),              -- from dbo.AnnualReq
+			CertType nvarchar(50),              -- from dbo.AnnualReq
+			-- [Status] nvarchar(50) references dbo.CarryoverLimits([Status]),              -- from dbo.AnnualReq
+			[Status] nvarchar(50),              -- from dbo.AnnualReq
+			HoursEarned float,                  -- from dbo.AnnualReq
 			RequiredHours float,
-			CurrentYearBalance float,			-- from dbo.AnnualReq
-			PriorYearBalance float,				-- from dbo.AnnualReq
-			CarryToYear1 float,					-- from dbo.AnnualReq
-			CarryToYear2 float,					-- from dbo.AnnualReq
-			CarryToYear3 float,					-- from dbo.AnnualReq
-			CarryForwardTotal float,			-- from dbo.AnnualReq
+			CurrentYearBalance float,           -- from dbo.AnnualReq
+			PriorYearBalance float,             -- from dbo.AnnualReq
+			CarryToYear1 float,                 -- from dbo.AnnualReq
+			CarryToYear2 float,                 -- from dbo.AnnualReq
+			CarryToYear3 float,                 -- from dbo.AnnualReq
+			CarryForwardTotal float,            -- from dbo.AnnualReq
 			constraint PK_CERTNO_CERTYEAR primary key (CertNo, CertYear), -- CertNo should be foreign key
 		)";
 		// 7. create table 5 EmployeeID_Xref
@@ -233,15 +293,15 @@
 		// then insert into Employee row by row from Summary, while querying Temp2 for the 3 dates
 		// TrickyWork Pt.1: create table Temp
 		if(true) {
-			$drop_temp	= "IF OBJECT_ID('dbo.Temp', 'U') IS NOT NULL DROP TABLE dbo.Temp";
+			$drop_temp  = "IF OBJECT_ID('dbo.Temp', 'U') IS NOT NULL DROP TABLE dbo.Temp";
 			$srvr_stmt = sqlsrv_query( $conn, $drop_temp );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 			$create_temp = "CREATE TABLE dbo.Temp (
-				CertNo float,						--dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
-				TempCertDate datetime2(0),			--dbo.AnnualReq
-				PermCertDate datetime2(0),			--dbo.AnnualReq
-				AdvCertDate datetime2(0),			--dbo.AnnualReq
-				CurrentStatus nvarchar(50),			--dbo.AnnualReq
+				CertNo float,                       --dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
+				TempCertDate datetime2(0),          --dbo.AnnualReq
+				PermCertDate datetime2(0),          --dbo.AnnualReq
+				AdvCertDate datetime2(0),           --dbo.AnnualReq
+				CurrentStatus nvarchar(50),         --dbo.AnnualReq
 			)";
 			$srvr_stmt = sqlsrv_query( $conn, $create_temp );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
@@ -251,43 +311,43 @@
 			$srvr_query = "INSERT INTO Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate, CurrentStatus)";
 			$srvr_query .= " VALUES (?,?,?,?,?)";
 			//////////////////// lazy-reading INIT ////////////////////
-			$excelReader_AnnualReq	= PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq	->setReadDataOnly(true);
-			$excelObj_AnnualReq		= $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
-			$annualreq				= $excelObj_AnnualReq->getActiveSheet();
+			$excelReader_AnnualReq  = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq  ->setReadDataOnly(true);
+			$excelObj_AnnualReq     = $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
+			$annualreq              = $excelObj_AnnualReq->getActiveSheet();
 			//////////////////// lazy-reading READY ////////////////////
 			$row_count = (int)2; // actual data starts at row 2 of Excel spreadsheet
 			while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
 				// select distinct CertID rows from AnnualReq
-				$CertNo			= $annualreq->getCell('D'.$row_count)->getValue();
+				$CertNo         = $annualreq->getCell('D'.$row_count)->getValue();
 				// 3 tricky dates
 				// one weird bug: getCell and getValue naively would result in today's date being inserted into Temp! which would mess
 				// up everything from this point onwards in php code execution!
 				// TempCertDate
-				$TempCell		= $annualreq->getCell('G'.$row_count);
-				$TempCertDate	= $TempCell->getValue();
+				$TempCell       = $annualreq->getCell('G'.$row_count);
+				$TempCertDate   = $TempCell->getValue();
 				if($TempCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in TempCertDate!<br/>";
 				// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
 				else if(PHPExcel_Shared_Date::isDateTime($TempCell)) $TempCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($TempCertDate));
 				// PermCertDate
-				$PermCell		= $annualreq->getCell('H'.$row_count);
-				$PermCertDate	= $PermCell->getValue();
+				$PermCell       = $annualreq->getCell('H'.$row_count);
+				$PermCertDate   = $PermCell->getValue();
 				if($PermCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in PermCertDate!<br/>";
 				else if(PHPExcel_Shared_Date::isDateTime($PermCell)) $PermCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($PermCertDate));
 				// AdvCertDate
-				$AdvCell		= $annualreq->getCell('I'.$row_count);
-				$AdvCertDate	= $AdvCell->getValue();
+				$AdvCell        = $annualreq->getCell('I'.$row_count);
+				$AdvCertDate    = $AdvCell->getValue();
 				if($AdvCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in AdvCertDate!<br/>";
 				else if(PHPExcel_Shared_Date::isDateTime($AdvCell)) $AdvCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($AdvCertDate));
 				// CurrentStatus
-				$CurrentStatus	= $annualreq->getCell('J'.$row_count)->getValue();
+				$CurrentStatus  = $annualreq->getCell('J'.$row_count)->getValue();
 				// if($CurrentStatusCell == NULL) {
-				// 	echo "NOTE: Appraiser ".$CertNo." has NULL in CurrentStatus!<br/>";
-				// 	$CurrentStatus = "";
+				//  echo "NOTE: Appraiser ".$CertNo." has NULL in CurrentStatus!<br/>";
+				//  $CurrentStatus = "";
 				// }
 				// else $CurrentStatus = $CurrentStatusCell->getValue();
 				// inserting operation
-				$params 		= array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate, $CurrentStatus);
-				$stmt 			= sqlsrv_query( $conn, $srvr_query, $params);
+				$params         = array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate, $CurrentStatus);
+				$stmt           = sqlsrv_query( $conn, $srvr_query, $params);
 				if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
 				$row_count ++;
 			}
@@ -325,18 +385,18 @@
 		// TrickyWork Pt.5: insert into Employee table from summary.xlsx (line-by-line) & Temp2 (querying 3 dates + CurrentStatus along with each line)
 		if(true) {
 			//////////////////// lazy-reading INIT ////////////////////
-			$excelReader_Summary	= PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary->setReadDataOnly(true);
-			$excelObj_Summary		= $excelReader_Summary->load(PATH_XLSX_SUMMARY);
-			$summary				= $excelObj_Summary->getActiveSheet();
+			$excelReader_Summary    = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary->setReadDataOnly(true);
+			$excelObj_Summary       = $excelReader_Summary->load(PATH_XLSX_SUMMARY);
+			$summary                = $excelObj_Summary->getActiveSheet();
 			//////////////////// lazy-reading READY ////////////////////
 			$row_count = (int)2;
 			while ( $row_count <= $summary->getHighestRow() ) { // read until the last line
-				$params		= NULL;
-				$CertNo		= $summary->getCell('G'.$row_count)->getValue();
-				$LastName	= $summary->getCell('D'.$row_count)->getValue();
-				$MiddleName	= $summary->getCell('F'.$row_count)->getValue();
-				$FirstName	= $summary->getCell('E'.$row_count)->getValue();
-				$Auditor	= $summary->getCell('H'.$row_count)->getValue();
+				$params     = NULL;
+				$CertNo     = $summary->getCell('G'.$row_count)->getValue();
+				$LastName   = $summary->getCell('D'.$row_count)->getValue();
+				$MiddleName = $summary->getCell('F'.$row_count)->getValue();
+				$FirstName  = $summary->getCell('E'.$row_count)->getValue();
+				$Auditor    = $summary->getCell('H'.$row_count)->getValue();
 				// echo $row_count."\t".$LastName."\t".$FirstName."\t".(int)$CertNo."\t".$Auditor."<br />"; // debug
 				$Select_Temp2_Dates = "SELECT TempCertDate, PermCertDate, AdvCertDate, CurrentStatus FROM Temp2";
 				$Select_Temp2_Dates .= " WHERE CertNo = ";
@@ -349,6 +409,7 @@
 				$errorcheck_counter = (int)0;
 				$stmt = sqlsrv_query($conn, $Select_Temp2_Dates); // TOT
 				if( $stmt === false ) die( print_r(sqlsrv_errors(), true) ); // TOT generic 2-line-template for executing SQL Server query
+
 				while( $temp_row = sqlsrv_fetch_object( $stmt )) { // $temp_row should have 3 columns
 					$errorcheck_counter ++;
 					// echo $temp_row->CertNo.'<br />';
@@ -360,6 +421,13 @@
 																  VALUES (?,?,?,?,?,?,?,?,?)";
 				if( $stmt = sqlsrv_query( $conn, $Summary_to_Employee, $params) === false ) die( print_r(sqlsrv_errors(), true) );
 				$row_count ++;
+				// FOR PRORESS BAR >>>
+				$overall_row_counter += 1;
+				$percent = intval($overall_row_counter/$total_num_of_rows * 100);
+				$arr_content['percent'] = $percent;
+				$arr_content['message'] = $overall_row_counter . " row(s) processed.";
+				file_put_contents("D:/t/" . session_id() . ".txt", json_encode($arr_content)); // Write the progress into D:/t/<session_id>.txt and serialize the PHP array into JSON format.
+				// FOR PROGRESS BAR END <<<
 			}
 			unset($excelObj_Summary); //////////////////// lazy-reading END
 		}
@@ -374,31 +442,38 @@
 		$srvr_query .= " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 		echo "===== Start inserting AnnualReq into CertHistory =====<br />";
 		//////////////////// lazy-reading INIT ////////////////////
-		$excelReader_AnnualReq	= PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq->setReadDataOnly(true);
-		$excelObj_AnnualReq		= $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
-		$annualreq				= $excelObj_AnnualReq->getActiveSheet();
+		$excelReader_AnnualReq  = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq->setReadDataOnly(true);
+		$excelObj_AnnualReq     = $excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
+		$annualreq              = $excelObj_AnnualReq->getActiveSheet();
 		//////////////////// lazy-reading READY ////////////////////
 		$row_count = (int)2;
 		while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
 			// int counter logic end
-			$CertNo				= $annualreq->getCell('D'.$row_count)->getValue();
-			$CertYear			= $annualreq->getCell('M'.$row_count)->getValue();
-			$CertType			= $annualreq->getCell('L'.$row_count)->getValue();
-			$Status				= $annualreq->getCell('K'.$row_count)->getValue();
-			$HoursEarned		= $annualreq->getCell('N'.$row_count)->getValue();
-			$RequiredHours		= $annualreq->getCell('O'.$row_count)->getValue();
-			$CurrentYearBalance	= $annualreq->getCell('P'.$row_count)->getValue();
-			$PriorYearBalance	= $annualreq->getCell('Q'.$row_count)->getValue();
-			$CarryToYear1		= $annualreq->getCell('R'.$row_count)->getValue();
-			$CarryToYear2		= $annualreq->getCell('S'.$row_count)->getValue();
-			$CarryToYear3		= $annualreq->getCell('T'.$row_count)->getValue();
-			$CarryForwardTotal	= $annualreq->getCell('U'.$row_count)->getValue();
+			$CertNo             = $annualreq->getCell('D'.$row_count)->getValue();
+			$CertYear           = $annualreq->getCell('M'.$row_count)->getValue();
+			$CertType           = $annualreq->getCell('L'.$row_count)->getValue();
+			$Status             = $annualreq->getCell('K'.$row_count)->getValue();
+			$HoursEarned        = $annualreq->getCell('N'.$row_count)->getValue();
+			$RequiredHours      = $annualreq->getCell('O'.$row_count)->getValue();
+			$CurrentYearBalance = $annualreq->getCell('P'.$row_count)->getValue();
+			$PriorYearBalance   = $annualreq->getCell('Q'.$row_count)->getValue();
+			$CarryToYear1       = $annualreq->getCell('R'.$row_count)->getValue();
+			$CarryToYear2       = $annualreq->getCell('S'.$row_count)->getValue();
+			$CarryToYear3       = $annualreq->getCell('T'.$row_count)->getValue();
+			$CarryForwardTotal  = $annualreq->getCell('U'.$row_count)->getValue();
 			$params = array($CertNo, $CertYear, $CertType, $Status, $HoursEarned, $RequiredHours,
 			$CurrentYearBalance, $PriorYearBalance, $CarryToYear1,$CarryToYear2, $CarryToYear3,
 			$CarryForwardTotal);
 			$stmt = sqlsrv_query( $conn, $srvr_query, $params);
 			if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
 			$row_count ++;
+			// FOR PRORESS BAR >>>
+			$overall_row_counter += 1;
+			$percent = intval($overall_row_counter/$total_num_of_rows * 100);
+			$arr_content['percent'] = $percent;
+			$arr_content['message'] = $overall_row_counter . " row(s) processed.";
+			file_put_contents("D:/t/" . session_id() . ".txt", json_encode($arr_content)); // Write the progress into D:/t/<session_id>.txt and serialize the PHP array into JSON format.
+			// FOR PROGRESS BAR END <<<
 		}
 		unset($excelObj_AnnualReq); //////////////////// lazy-reading END
 		echo "===== AnnualReq into CertHistory finished, ".($row_count-2)." rows inserted. =====<br />";
@@ -411,26 +486,26 @@
 		$srvr_query .= " VALUES (?,?,?,?,?,?,?)";
 		echo "===== Start inserting Details into CourseDetail =====<br />";
 		//////////////////// lazy-reading INIT ////////////////////
-		$excelReader_Details	= PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details->setReadDataOnly(true);
-		$excelObj_Details		= $excelReader_Details->load(PATH_XLSX_DETAILS);
-		$details				= $excelObj_Details->getActiveSheet();
+		$excelReader_Details    = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details->setReadDataOnly(true);
+		$excelObj_Details       = $excelReader_Details->load(PATH_XLSX_DETAILS);
+		$details                = $excelObj_Details->getActiveSheet();
 		//////////////////// lazy-reading READY ////////////////////
 		echo "===== Details.xlsx excel object allocation (aka lazy-reading) success! =====<br />";
 		$row_count = (int)2;
 		while ( $row_count <= $details->getHighestRow() ) { // read until the last line
-			$CertNo				= $details->getCell('C'.$row_count)->getValue();
-			$CourseYear			= $details->getCell('G'.$row_count)->getValue();
+			$CertNo             = $details->getCell('C'.$row_count)->getValue();
+			$CourseYear         = $details->getCell('G'.$row_count)->getValue();
 			// $ItemNumber
-			$CourseName			= $details->getCell('I'.$row_count)->getValue();
-			$CourseLocation		= $details->getCell('J'.$row_count)->getValue();
-			$CourseGrade		= $details->getCell('K'.$row_count)->getValue();
-			$CourseHours		= $details->getCell('L'.$row_count)->getValue();
+			$CourseName         = $details->getCell('I'.$row_count)->getValue();
+			$CourseLocation     = $details->getCell('J'.$row_count)->getValue();
+			$CourseGrade        = $details->getCell('K'.$row_count)->getValue();
+			$CourseHours        = $details->getCell('L'.$row_count)->getValue();
 
-			// $EndDate			= $details->getCell('H'.$row_count)->getValue();
+			// $EndDate         = $details->getCell('H'.$row_count)->getValue();
 
 			// EndDate
-			$EndDateCell		= $details->getCell('H'.$row_count);
-			$EndDate			= $EndDateCell->getValue();
+			$EndDateCell        = $details->getCell('H'.$row_count);
+			$EndDate            = $EndDateCell->getValue();
 			if($EndDate == NULL) ;// echo "NOTE: appraiser ".$CertNo." has NULL EndDate in course \"".$CourseName."\" at \"".$CourseLocation."\" !<br/>";
 			// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
 			else if(PHPExcel_Shared_Date::isDateTime($EndDateCell)) $EndDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($EndDate));
@@ -440,6 +515,13 @@
 			$stmt = sqlsrv_query( $conn, $srvr_query, $params);
 			if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
 			$row_count ++;
+			// FOR PRORESS BAR >>>
+			$overall_row_counter += 1;
+			$percent = intval($overall_row_counter/$total_num_of_rows * 100);
+			$arr_content['percent'] = $percent;
+			$arr_content['message'] = $overall_row_counter . " row(s) processed.";
+			file_put_contents("D:/t/" . session_id() . ".txt", json_encode($arr_content)); // Write the progress into D:/t/<session_id>.txt and serialize the PHP array into JSON format.
+			// FOR PROGRESS BAR END <<<
 		}
 		unset($excelObj_Details); //////////////////// lazy-reading END
 		echo "===== Details into CourseDetail finished, ".($row_count-2)." rows inserted. =====<br />";
@@ -450,10 +532,10 @@
 	if($do_step_1 && $do_step_2 && $do_step_3) {
 		// delete table Temp and Temp2 from current database
 		if($do_cleanup) {
-			$drop_temp	= "IF OBJECT_ID('dbo.Temp', 'U') IS NOT NULL DROP TABLE dbo.Temp";
+			$drop_temp  = "IF OBJECT_ID('dbo.Temp', 'U') IS NOT NULL DROP TABLE dbo.Temp";
 			$srvr_stmt = sqlsrv_query( $conn, $drop_temp );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-			$drop_temp2	= "IF OBJECT_ID('dbo.Temp2', 'U') IS NOT NULL DROP TABLE dbo.Temp2";
+			$drop_temp2 = "IF OBJECT_ID('dbo.Temp2', 'U') IS NOT NULL DROP TABLE dbo.Temp2";
 			$srvr_stmt = sqlsrv_query( $conn, $drop_temp2 );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		}
