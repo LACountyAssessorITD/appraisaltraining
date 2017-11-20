@@ -38,9 +38,9 @@ $(document).ready(function(){
     //     m = 1;
     //   }
       var y = currDate.getFullYear();
-      $("#yearEffInput").val(y);
-      $("#monthEffInput").val((m<10 ? '0' : '') + m);
-      $("#dayEffInput").val((d<10 ? '0' : '') + d);
+      $("#yearEffInput").attr('value',y);
+      $("#monthEffInput").attr('value',(m<10 ? '0' : '') + m);
+      $("#dayEffInput").attr('value',(d<10 ? '0' : '') + d);
     }
 
     function checkValidDate(year, month, day) {
@@ -282,7 +282,7 @@ $(document).ready(function(){
 
     function insertRow(employeeIDNew, certNoNew, firstName, LastName) {
       //These two should be found based on employeeID and CertNO
-      
+
       var empName = "name";
       // $.ajax({
       //       url:"../LDAP/getLdapInfo.php",
