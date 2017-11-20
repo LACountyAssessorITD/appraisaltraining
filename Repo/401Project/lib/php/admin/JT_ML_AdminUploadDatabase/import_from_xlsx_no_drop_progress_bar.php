@@ -26,33 +26,54 @@
 		if(true) {
 			$connectionInfo = array( "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
 			$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
-			if( $conn ) echo "SQL Server connection to " + SQL_SERVER_USERNAME + " established.<br />";
+			if( $conn ) echo "SQL Server connection to ".SQL_SERVER_USERNAME." established.<br />";
 			else {
-				echo "SQL Server connection to " + SQL_SERVER_USERNAME + " cannot be established.<br />";
+				echo "SQL Server connection to ".SQL_SERVER_USERNAME." cannot be established.<br />";
 				die( print_r( sqlsrv_errors(), true));
 			}
 		}
-		// step 2 - (if not exist) create metadata database
+		// step 2 - (if not exist) create metadata database, connect to it, then create & populate DbTable
 		if(true) {
-			$create_metadata = "
+			// (if not exist) CREATE METADATA DB
+			$create_metadata_db = "
 				IF DB_ID(N'".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00."') IS NULL
-				BEGIN;
 				    CREATE DATABASE ".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00.";
-					GO
+			";
+			$srvr_stmt = sqlsrv_query( $conn, $create_metadata_db );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+			// CONNECT TO METADATA DB
+			$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
+			$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
+			if( $conn ) echo "SQL Server connection to METADATA DATABASE established.<br />";
+			else {
+				echo "SQL Server connection to METADATA DATABASE could not be established.<br />";
+				die( print_r( sqlsrv_errors(), true));
+			}
+			// (if not exist) CREATE METADATA DB -> METADATA TABLE
+			$create_metadata_tbl = "
+				IF OBJECT_ID('dbo.DbTable', 'U') IS NULL
+				BEGIN;
 					CREATE TABLE ".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00.".dbo.DbTable (
 						DbName nvarchar(50),
 						IsCurrent int
 					);
-					GO
-					INSERT INTO DbTable (DbName, IsCurrent) VALUES (".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01.", 0);
-					GO
-					INSERT INTO DbTable (DbName, IsCurrent) VALUES (".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02.", 1);
-					GO
 				END;
-			"
-			$srvr_stmt = sqlsrv_query( $conn, $create_metadata );
+			";
+			$srvr_stmt = sqlsrv_query( $conn, $create_metadata_tbl );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+			// (if empty) POPULATE METADATA DB -> METADATA TABLE -> 2 rows
+			$insert_metadata_tbl = "
+				IF NOT EXISTS (SELECT * FROM DbTable)
+				BEGIN;
+					INSERT INTO dbo.DbTable (DbName, IsCurrent) VALUES (".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01.", 0);
+					INSERT INTO dbo.DbTable (DbName, IsCurrent) VALUES (".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02.", 1);
+				END;
+			";
+			echo ("i'm here!<br/>"); // TOT
+			$srvr_stmt = sqlsrv_query( $conn, $insert_metadata_tbl );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		}
+
 		// step 3 - if not exist create db1
 		if(true) {
 			$create_db1 = "IF (db_id(N'".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01."') IS NULL) CREATE DATABASE ".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01;
@@ -259,7 +280,12 @@
 				if($AdvCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in AdvCertDate!<br/>";
 				else if(PHPExcel_Shared_Date::isDateTime($AdvCell)) $AdvCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($AdvCertDate));
 				// CurrentStatus
-				$CurrentStatus	= $annualrea->getCell('J'.$row_count)->getValue();
+				$CurrentStatus	= $annualreq->getCell('J'.$row_count)->getValue();
+				// if($CurrentStatusCell == NULL) {
+				// 	echo "NOTE: Appraiser ".$CertNo." has NULL in CurrentStatus!<br/>";
+				// 	$CurrentStatus = "";
+				// }
+				// else $CurrentStatus = $CurrentStatusCell->getValue();
 				// inserting operation
 				$params 		= array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate, $CurrentStatus);
 				$stmt 			= sqlsrv_query( $conn, $srvr_query, $params);
