@@ -383,6 +383,9 @@ iframe {
 .insertRowBtn {
 	height: 100%;
 	margin:0;
+	background: white;
+	border-radius: 3px;
+	border:none;
 }
 
 .spaceSpan {
