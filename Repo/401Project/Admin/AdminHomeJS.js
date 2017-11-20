@@ -207,11 +207,8 @@ $(document).ready(function(){
                 empNo:empNo,
             },
             success:function(results){
-                // alert(results[1]);
-                alert(results[2]);
                 email = results[1];
-                // alert(email);
-                manager = parseLDAPManager(results[2]);
+                manager = results[2].replace(/\\/g, ",");
                 phone = results[4];
                 department = results[5];
                 title = results[6];
@@ -285,7 +282,6 @@ $(document).ready(function(){
                                 <li>Name: "+name+"</li>\
                                 <li class='certNoLi'>CertNo: <span class='certNoInfo'>"+certNo+"</span></li>\
                                 <li class='empNoInfo'>EmpNo: "+empNo+"</li>\
-                                <li>Status: xxx</li>\
                                 <li class='emailLi'>Email: <span class='emailInfo'>"+email+"</span></li>\
                             </ul>\
                             <ul class='info_ul_two'>\
@@ -309,6 +305,22 @@ $(document).ready(function(){
     }
 
     $(document).on("click",".infoHoverBtn", function() {
+        var isClicked = false;
+        if($(this).data("clicked")) {
+            isClicked = true;
+        }
+
+        $(".infoHoverDPBCont").each(function() {
+            $(this).hide();
+            $(this).prev(".infoHoverBtn").data("clicked",false);
+            // if($(this).data("clicked")) {
+            //     $(this).next(".infoHoverDPBCont").hide();
+            //     $(this).closest(".infoHoverBtn").data("clicked",false);
+            // }
+        });
+
+        $(this).data("clicked",isClicked);
+
         if($(this).data("clicked")) {
             $(this).next(".infoHoverDPBCont").hide();
             $(this).data("clicked",false);

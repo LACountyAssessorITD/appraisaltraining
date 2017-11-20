@@ -3,7 +3,7 @@ include_once "../constants.php";
 include_once "authenticate.php";
 session_start();
 
-	$look_up_username = "0".(string)$_POST['empNo'];
+	$look_up_username = (string)$_POST['empNo'];
 	$ldapusername = "laassessor"."\\".$_SESSION['USERNAME'];
 	$ldappassword = $_SESSION['password'];
 
@@ -15,6 +15,7 @@ session_start();
 		$bind = ldap_bind($ldap, $ldapusername, $ldappassword);
 		$basedn = "OU=ASSR,DC=laassessor,DC=co,DC=la,DC=ca,DC=us";
 		$filter = '(samaccountname='.$look_up_username.')';
+		// $filter = '(samaccountname=243141)';
 		$attributes = array("displayname", "samaccountname", "mail", "manager","givenname",
 							"telephoneNumber","department","title");
 		$result = ldap_search($ldap, $basedn, $filter, $attributes);
@@ -26,8 +27,11 @@ session_start();
 				for ($i=0; $i<$info["count"]; $i++) {
 					$inforesult[] = $info[$i]["displayname"][0];
 					$inforesult[] =$info[$i]["mail"][0];
-					$managerArr = explode(",", (string)$info[$i]["manager"][0], 3);
-					$inforesult[] = (string)$managerArr[0]." ".(string)$managerArr[1];
+					$managerArrOne = explode(",", (string)$info[$i]["manager"][0], 3);
+					$tempName = (string)$managerArrOne[0]." ".(string)$managerArrOne[1];
+					$managerArrTwo = explode("=", $tempName, 2);
+					$inforesult[] = (string)$managerArrTwo[1];
+					// $inforesult[] = $info[$i]["manager"][0];
 					$inforesult[] = $info[$i]["givenname"][0];
 					$inforesult[] = $info[$i]["telephonenumber"][0];	 // phone number
 					$inforesult[] = $info[$i]["department"][0];	// pay location

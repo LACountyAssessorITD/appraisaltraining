@@ -84,9 +84,9 @@
 				</div>
 
 				<div class="employeeFilters" name="[New_CertHistory]">
-					<div class="dropDownFilter">
+					<!-- <div class="dropDownFilter">
 						<button class="dropDownBtn" name="Status">Employment Status</button>
-					</div>
+					</div> -->
 	                <!--  Flter for advanced certification progess -->
 	                <!-- TO DO -->
 
@@ -177,7 +177,7 @@
 					<div class="pdfView">
 						<div id="infoLabelWrap">
 							<!-- <h3 id="effectiveLabel" class="infoLabel">Effective as of: <span></span></h3> -->
-							<h3 id="hoursNeededLabel" class="infoLabel">Hours needed: <span></span></h3>
+							<h3 id="hoursNeededLabel">Hours needed: <span></span></h3>
 							<a id="downloadLink" href="../lib/php/admin/report/downloadCommunicator.php" target="_blank">
 								<button class="downloadBtn" id="downloadCurrent">
 									<i class="fa fa-download" aria-hidden="true"></i> Download Previewing Report

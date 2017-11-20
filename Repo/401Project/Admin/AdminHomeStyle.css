@@ -14,6 +14,10 @@
     padding-top:10px;
 }
 
+#pdfBox p {
+	margin: 0;
+}
+
 .leftContentColumn, .rightContent, .rightContentColumn, .midColumn {
 	position: relative;
 	float: left;
@@ -387,13 +391,18 @@
 	padding-bottom: 10px;
 }
 
-.infoLabel {
+#hoursNeededLabel {
 	width:33%;
-	float: left;
 	text-align: left;
 	color: white;
 	font-size: 1.5vw;
 	margin: 0;
+}
+
+#hoursNeededLabel {
+	content: "";
+	display: table;
+	clear: both;
 }
 
 .pdfView {
