@@ -54,7 +54,7 @@
 		<!-- <div class="selectCont" id="accordion"> -->
 
 		<div class="upload">
-			<h1 id="UploadTitle">Update</h1>
+			<!-- <h1 id="UploadTitle">Update</h1> -->
 			<div id="chooseFileDiv">
 				<h3>Select File to Upload</h3>
 				<form action="../lib/php/admin/AdminUploadPHP.php" method="post" enctype="multipart/form-data" id="uploadForm" target="myFrame">
@@ -62,7 +62,7 @@
 	    			<div class="clearRow">
 			    		<button id="chooseFileBtn">Choose File</button>
 			    	</div>
-			    	<p id="chosenFileLabel">File Chosen:</p>
+			    	<p id="chosenFileLabel">File Chosen: (3 Files)</p>
 			    	<p id="chosenFileName">None</p>
 			    	<div id="effDateDiv">
 			    		<p class="clearRow">Effective Date: </p>
@@ -77,14 +77,14 @@
 			</div>
 
 			<div id="statusDiv">
-				<div class="uploadStatus">
+				<!-- <div class="uploadStatus">
 					<h2>Upload Status</h2>
 					<h2 id="uploadStatusResult"></h2>
-				</div>
+				</div> -->
 
 				<div class="errorDisplay">
 					<div class="clearRow">
-						<label>Error Log:</label>
+						<p>Error Log:</p>
 					</div>
 					<iframe name="myFrame"></iframe>
 				</div>
@@ -93,7 +93,6 @@
 		</div>
 
 		<div class="restore">
-			<h3>Past Files</h3>
 			<div id="restoreTableDiv">
 				<table>
 					<thead>

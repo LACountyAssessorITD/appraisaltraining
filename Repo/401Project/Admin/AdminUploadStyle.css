@@ -62,6 +62,11 @@ iframe {
 #chooseFileDiv {
 	width: 50%;
 	float:left;
+	margin: 10px auto;
+}
+
+#chooseFileDiv h3{
+	color: white;
 }
 
 #statusDiv {
@@ -83,7 +88,7 @@ iframe {
 	/*text-align: center;*/
 }
 
-#chooseFileBtn {
+#chooseFileBtn, #submitNewBtn {
 	width: 50%;
 	height: 70px;
 	margin: 20px auto;
@@ -92,17 +97,25 @@ iframe {
 	outline: none;
 	font-size: 1.5vw;
 	background-color: white;
-	box-shadow: 7px 7px 10px rgba(20, 20, 20, 0.4);
+	cursor: pointer;
+	/*box-shadow: 7px 7px 10px rgba(20, 20, 20, 0.4);*/
 }
 
-#chooseFileBtn:hover {
-	background-color: rgb(255, 221, 197);
+#chooseFileBtn:hover, #submitNewBtn:hover {
+	background-color: #d5d5d5;
 }
 
-#chosenFileLabel, #chosenFileName {
+#chosenFileLabel {
 	width: 100%;
 	text-align: center;
 	font-size: 1.5vw;
+	color: white;
+}
+
+#chosenFileName {
+	width: 100%;
+	text-align: center;
+	font-size: 1.2vw;
 	color: white;
 }
 
@@ -114,35 +127,15 @@ iframe {
 
 #effDateDiv p {
 	color: white;
+	font-size: 1.5vw;
 }
 
 #effDateDiv input {
 	width: 30%;
-}
-
-#submitNewBtn {
-	width: 50%;
-	margin: auto;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	padding: 15px;
-	min-height: 80px;
-	display: block;
-	border-radius: 10px;
-	border-width: 0;
-
-	/*font-family: "Times New Roman";*/
+	padding: 5px;
 	font-size: 1.2vw;
-	box-shadow: 7px 7px 10px rgba(20, 20, 20, 0.4);
-	overflow: auto;
-	outline: none;
-	cursor: pointer;
-
-	background-color: white;
-}
-
-#submitNewBtn:hover {
-	background-color: rgb(255, 221, 197);
+	border-radius: 5px;
+	border: none;
 }
 
 .uploadStatus {
@@ -155,20 +148,26 @@ iframe {
 }
 
 .errorDisplay {
-	margin-top: 10px;
+	/*margin-top: 10px;*/
+	width: 80%;
 	text-align: center;
-	font-size: 1.5vw;
-	padding: 20px;
+	font-size: 1vw;
+	color: white;
+	margin: 10px auto;
+	/*padding: 20px;*/
 }
 
-.errorDisplay label {
+.errorDisplay p {
 	width: 100%;
 	color: red;
 	font-size: 1.5vw;
 	font-weight: bold;
 }
 
-
+.errorDisplay iframe {
+	width: 100%;
+	height: 600px;
+}
 
 
 #restoreTableDiv {
