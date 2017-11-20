@@ -11,65 +11,92 @@
 	// mianlu: NOTE: if(true/$variable){ } blocks are used to foster code snippit folding with Sublime functionalities.
 
 	ini_set('memory_limit', '512M'); // TOT optimize more?
-	$do_step_1 = true;
-	$do_step_2 = true;
-	$do_step_3 = true;
+	$do_step_1	= true;
+	$do_step_2	= true;
+	$do_step_3	= true;
+	$do_cleanup	= false;
 
 	// put include_once statements here:
 	include_once "../../constants.php";
 
 	////////////////////////////////// Step I: Mian's sql server - open connection //////////////////////////////////
-	// open connectio to metadata table which tells me which among the 2 tables shall I connect to next!
+	// initialization, then open connection to metadata table which tells me which among the 2 tables shall I connect to next!
 	if(true) {
-		// step 1 - connect to SQL Server
-		// $connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
-		$connectionInfo = array( "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
-		$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
-		if( $conn ) echo "SQL Server connection to " + SQL_SERVER_USERNAME + " established.<br />";
-		else {
-			echo "SQL Server connection to " + SQL_SERVER_USERNAME + " cannot be established.<br />";
-			die( print_r( sqlsrv_errors(), true));
+		// step 1 - connect to SQL Server, NOT specifying any database!
+		if(true) {
+			$connectionInfo = array( "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
+			$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
+			if( $conn ) echo "SQL Server connection to " + SQL_SERVER_USERNAME + " established.<br />";
+			else {
+				echo "SQL Server connection to " + SQL_SERVER_USERNAME + " cannot be established.<br />";
+				die( print_r( sqlsrv_errors(), true));
+			}
 		}
-		// step 2 - if not exist create metadata database
-		$create_metadata = "IF (db_id(N'" + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00 + "') IS NULL) CREATE DATABASE " + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00;
-		$srvr_stmt = sqlsrv_query( $conn, $create_metadata );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		// step 2.5 -  and populate "DbTable" table!
-		$create_dbtable = ""
-
-
+		// step 2 - (if not exist) create metadata database
+		if(true) {
+			$create_metadata = "
+				IF DB_ID(N'".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00."') IS NULL
+				BEGIN;
+				    CREATE DATABASE ".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00.";
+					GO
+					CREATE TABLE ".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00.".dbo.DbTable (
+						DbName nvarchar(50),
+						IsCurrent int
+					);
+					GO
+					INSERT INTO DbTable (DbName, IsCurrent) VALUES (".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01.", 0);
+					GO
+					INSERT INTO DbTable (DbName, IsCurrent) VALUES (".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02.", 1);
+					GO
+				END;
+			"
+			$srvr_stmt = sqlsrv_query( $conn, $create_metadata );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		}
 		// step 3 - if not exist create db1
-		$create_db1 = "IF (db_id(N'" + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01 + "') IS NULL) CREATE DATABASE " + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01;
-		$srvr_stmt = sqlsrv_query( $conn, $create_db1 );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-
-		// step 4 - if not exist create db2
-		$create_db2 = "IF (db_id(N'" + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02 + "') IS NULL) CREATE DATABASE " + SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02;
-		$srvr_stmt = sqlsrv_query( $conn, $create_db2 );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-
-		// step 5 - all 3 databases and DbTable should exist right now, start reading from it
-		$current_db_query = "SELECT DbName FROM DbTable WHERE IsCurrent = 0";
-		$srvr_stmt = sqlsrv_query( $conn, $current_db_query );
-		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		$CurrentDatabase = (string)"";
-		$error_checker = (int) 0;
-		while( $temp_row = sqlsrv_fetch_object( $srvr_stmt )) {
-			$error_checker ++;
-			$CurrentDatabase = $temp_row->DbName;
+		if(true) {
+			$create_db1 = "IF (db_id(N'".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01."') IS NULL) CREATE DATABASE ".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01;
+			$srvr_stmt = sqlsrv_query( $conn, $create_db1 );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		}
-		$CurrentDatabase = (string)$CurrentDatabase;
-		sqlsrv_close($conn); // close connection to Metadata Database
-		unset($conn);
-		if($error_checker != 1) die("ERROR in METADATA DATABASE! Please ask development team to troubleshoot! Exactly 1 entry in Metadata Table should contain IsCurrent = 1 and Exactly 1 entry should contain IsCurrent = 0");
-
-		// open connection to the non-current database so that if sth bad occurs during import, roll-back to previous database!
-		$connectionInfo = array( "Database"=>$CurrentDatabase, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
-		$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
-		if( $conn ) echo "SQL Server connection to CURRENT DATABASE established.<br />";
-		else {
-			echo "SQL Server connection to CURRENT DATABASE could not be established.<br />";
-			die( print_r( sqlsrv_errors(), true));
+		// step 4 - if not exist create db2
+		if(true) {
+			$create_db2 = "IF (db_id(N'".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02."') IS NULL) CREATE DATABASE ".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02;
+			$srvr_stmt = sqlsrv_query( $conn, $create_db2 );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		}
+		// step 5 - all 3 databases and DbTable should exist right now, PLEASE reconnect $conn to metadata db, and start reading
+		if(true) {
+			$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
+			$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
+			if( $conn ) echo "SQL Server connection to METADATA DATABASE established.<br />";
+			else {
+				echo "SQL Server connection to METADATA DATABASE could not be established.<br />";
+				die( print_r( sqlsrv_errors(), true));
+			}
+			$current_db_query = "SELECT DbName FROM DbTable WHERE IsCurrent = 0";
+			$srvr_stmt = sqlsrv_query( $conn, $current_db_query );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+			$CurrentDatabase = (string)"";
+			$error_checker = (int) 0;
+			while( $temp_row = sqlsrv_fetch_object( $srvr_stmt )) {
+				$error_checker ++;
+				$CurrentDatabase = $temp_row->DbName;
+			}
+			$CurrentDatabase = (string)$CurrentDatabase;
+			sqlsrv_close($conn); // close connection to Metadata Database
+			unset($conn);
+			if($error_checker != 1) die("ERROR in METADATA DATABASE! Please ask development team to troubleshoot! Exactly 1 entry in Metadata Table should contain IsCurrent = 1 and Exactly 1 entry should contain IsCurrent = 0");
+		}
+		// Step 6 - open connection to the non-current database so that if sth bad occurs during import, roll-back to previous database!
+		if(true) {
+			$connectionInfo = array( "Database"=>$CurrentDatabase, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
+			$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
+			if( $conn ) echo "SQL Server connection to CURRENT DATABASE established.<br />";
+			else {
+				echo "SQL Server connection to CURRENT DATABASE could not be established.<br />";
+				die( print_r( sqlsrv_errors(), true));
+			}
 		}
 	}
 
@@ -251,6 +278,7 @@
 				TempCertDate datetime2(0),
 				PermCertDate datetime2(0),
 				AdvCertDate datetime2(0),
+				CurrentStatus nvarchar(50),
 			)";
 			$srvr_stmt = sqlsrv_query( $conn, $create_temp2 );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
@@ -258,18 +286,18 @@
 		// TrickyWork Pt.4: populate Temp2
 		if(true) {
 			$select_query = "SELECT DISTINCT * FROM Temp ORDER BY CertNo";
-			$insert_query = "INSERT INTO Temp2 (CertNo, TempCertDate, PermCertDate, AdvCertDate) VALUES (?,?,?,?)";
+			$insert_query = "INSERT INTO Temp2 (CertNo, TempCertDate, PermCertDate, AdvCertDate, CurrentStatus) VALUES (?,?,?,?,?)";
 			// BLOCK looping thru query selected lines and manipulate data fetched!
 			if(($result = sqlsrv_query($conn, $select_query)) !== false){
 				while( $temp_row = sqlsrv_fetch_object( $result )) {
 					// echo $temp_row->CertNo.'<br />';
-					$params = array($temp_row->CertNo, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate);
+					$params = array($temp_row->CertNo, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate, $temp_row->CurrentStatus);
 					$stmt = sqlsrv_query($conn, $insert_query, $params);
 					if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
 				}
 			}
 		}
-		// TrickyWork Pt.5: insert into Employee table from summary.xlsx (line-by-line) & Temp2 (querying 3 dates along with each line)
+		// TrickyWork Pt.5: insert into Employee table from summary.xlsx (line-by-line) & Temp2 (querying 3 dates + CurrentStatus along with each line)
 		if(true) {
 			//////////////////// lazy-reading INIT ////////////////////
 			$excelReader_Summary	= PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary->setReadDataOnly(true);
@@ -285,7 +313,7 @@
 				$FirstName	= $summary->getCell('E'.$row_count)->getValue();
 				$Auditor	= $summary->getCell('H'.$row_count)->getValue();
 				// echo $row_count."\t".$LastName."\t".$FirstName."\t".(int)$CertNo."\t".$Auditor."<br />"; // debug
-				$Select_Temp2_Dates = "SELECT TempCertDate, PermCertDate, AdvCertDate FROM Temp2";
+				$Select_Temp2_Dates = "SELECT TempCertDate, PermCertDate, AdvCertDate, CurrentStatus FROM Temp2";
 				$Select_Temp2_Dates .= " WHERE CertNo = ";
 				$Select_Temp2_Dates .= $CertNo;
 				// use a counter to check for conflicting dates across Temp2:
@@ -299,19 +327,18 @@
 				while( $temp_row = sqlsrv_fetch_object( $stmt )) { // $temp_row should have 3 columns
 					$errorcheck_counter ++;
 					// echo $temp_row->CertNo.'<br />';
-					$params = array($CertNo, $LastName, $MiddleName, $FirstName, $Auditor, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate);
+					$params = array($CertNo, $LastName, $MiddleName, $FirstName, $Auditor, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate, $temp_row->CurrentStatus);
 				}
 				if($errorcheck_counter != 1) echo "ERROR: defective data from annualreq.xlsx! conflicting 3-date tuples";
 				$Summary_to_Employee = "INSERT INTO Employee (CertNo, LastName, MiddleName, FirstName, Auditor,
-																  TempCertDate, PermCertDate, AdvCertDate)
-																  VALUES (?,?,?,?,?,?,?,?)";
+																  TempCertDate, PermCertDate, AdvCertDate, CurrentStatus)
+																  VALUES (?,?,?,?,?,?,?,?,?)";
 				if( $stmt = sqlsrv_query( $conn, $Summary_to_Employee, $params) === false ) die( print_r(sqlsrv_errors(), true) );
 				$row_count ++;
 			}
 			unset($excelObj_Summary); //////////////////// lazy-reading END
 		}
 		echo "===== Summary into Employee finished, ".($row_count-2)." rows inserted. =====<br />";
-		// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
 	}  // Summary & AnnualReq -> Employee: DONE
 
 	// 2. AnnualReq -> CertHistory: START
@@ -396,6 +423,15 @@
 
 	////////////////////////////////// Step IV: clean up: close "current table" connection and update Metadata DB //////////////////////////////////
 	if($do_step_1 && $do_step_2 && $do_step_3) {
+		// delete table Temp and Temp2 from current database
+		if($do_cleanup) {
+			$drop_temp	= "IF OBJECT_ID('dbo.Temp', 'U') IS NOT NULL DROP TABLE dbo.Temp";
+			$srvr_stmt = sqlsrv_query( $conn, $drop_temp );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+			$drop_temp2	= "IF OBJECT_ID('dbo.Temp2', 'U') IS NOT NULL DROP TABLE dbo.Temp2";
+			$srvr_stmt = sqlsrv_query( $conn, $drop_temp2 );
+			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+		}
 		// close connection to the new Current Database
 		sqlsrv_close($conn);
 		unset($conn);
