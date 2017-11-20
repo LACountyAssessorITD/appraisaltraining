@@ -65,11 +65,10 @@
 			$insert_metadata_tbl = "
 				IF NOT EXISTS (SELECT * FROM DbTable)
 				BEGIN;
-					INSERT INTO dbo.DbTable (DbName, IsCurrent) VALUES (".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01.", 0);
-					INSERT INTO dbo.DbTable (DbName, IsCurrent) VALUES (".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02.", 1);
+					INSERT INTO dbo.DbTable (DbName, IsCurrent) VALUES ('".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_01."', 0);
+					INSERT INTO dbo.DbTable (DbName, IsCurrent) VALUES ('".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02."', 1);
 				END;
 			";
-			echo ("i'm here!<br/>"); // TOT
 			$srvr_stmt = sqlsrv_query( $conn, $insert_metadata_tbl );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		}
