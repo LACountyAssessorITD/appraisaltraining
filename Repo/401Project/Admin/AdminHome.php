@@ -152,7 +152,7 @@
 
 				<div class="rightContentColumn">
 					<button id="EmailAll"><i class="fa fa-envelope" aria-hidden="true"></i> Email</button>
-					<div id="optionTabDiv">
+					<!-- <div id="optionTabDiv"> -->
 						<div id="emailDiv">
 							<p>Subject</p>
 							<textarea id="emailSubjectTA" placeholder="Email Subject..." rows="1"></textarea>
@@ -164,7 +164,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					<!-- </div> -->
 				</div>
 			</div>
 
