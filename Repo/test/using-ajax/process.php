@@ -25,7 +25,7 @@ $arr_content = array();
 // Loop through process
 for($i=1; $i<=$total; $i++){
   // Calculate the percentation
-  $percent = intval($i/$total * 100);
+  $percent = intval((float)$i/$total * 100);
 
   // Put the progress percentage and message to array.
   $arr_content['percent'] = $percent;

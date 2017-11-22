@@ -11,13 +11,20 @@ session_start();
     var timer;
     // The function to refresh the progress bar.
     function refreshProgress() {
+    //   alert(".");
+      // $("#hasStarted")[0].innerHTML = "yes";
       // We use Ajax again to check the progress by calling the checker script.
       // Also pass the session id to read the file because the file which storing the progress is placed in a file per session.
       // If the call was success, display the progress bar.
+
+      var urlStr = "checker.php?file=<?php echo session_id() ?>";
       $.ajax({
-        url: "checker.php?file=<?php echo session_id() ?>",
+        cache: false,
+        url: urlStr,
         success:function(data){
-          $("#progress").html('<div class="bar" style="width:' + data.percent + '%"></div>');
+          // $("#progress").html('<div class="bar" style="width:' + data.percent + '%"></div>');
+          // alert(data.percent);
+          $("#progress").css("width",data.percent+"%");
           $("#message").html(data.message);
           // If the process is completed, we should stop the checking process.
           if (data.percent == 100) {
@@ -39,7 +46,7 @@ session_start();
       // Refresh the progress bar every 1 second.
       timer = window.setInterval(refreshProgress, 1000);
     }
-     
+
 
     // When the document is ready
     $(document).ready(function(){
@@ -49,21 +56,25 @@ session_start();
       // timer = window.setInterval(refreshProgress, 1000);
     });
 
+    // $(document).on("click","#startBtn", start);
+
 
   </script>
   <style>
     #progress {
-      width: 500px;
+      /*width: 500px;*/
+      width: 1%;
       border: 1px solid #aaa;
       height: 20px;
     }
-    #progress .bar {
+    /*#progress .bar {
       background-color: #ccc;
       height: 20px;
-    }
+    }*/
   </style>
 </head>
 <body>
+  <label id='hasStarted'>no</label>
   <div id="progress"></div>
   <div id="message"></div>
    <button onclick="start()">Start</button>
