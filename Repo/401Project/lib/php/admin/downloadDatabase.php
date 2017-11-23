@@ -1,33 +1,45 @@
 <?php
-$name = $_GET['name'];
-$the_folder = 'D:/temp/'.$name;
-$zip_file_name = 'archived_name.zip';
 
-class FlxZipArchive extends ZipArchive {
-        /** Add a Dir with Files and Subdirs to the archive;;;;; @param string $location Real Location;;;;  @param string $name Name in Archive;;; @author Nicolas Heimann;;;; @access private  **/
-    public function addDir($location, $name) {
-        $this->addEmptyDir($name);
-         $this->addDirDo($location, $name);
-     } // EO addDir;
+// Get real path for our folder
+$rootPath = realpath('D:/temp/'.$_GET['data']);
+$zip_file = "BOE_RAW_DATA_".$_GET['data'].".zip";
 
-        /**  Add Files & Dirs to archive;;;; @param string $location Real Location;  @param string $name Name in Archive;;;;;; @author Nicolas Heimann * @access private   **/
-    private function addDirDo($location, $name) {
-        $name .= '/';         $location .= '/';
-      // Read all Files in Dir
-        $dir = opendir ($location);
-        while ($file = readdir($dir))    {
-            if ($file == '.' || $file == '..') continue;
-          // Rekursiv, If dir: FlxZipArchive::addDir(), else ::File();
-            $do = (filetype( $location . $file) == 'dir') ? 'addDir' : 'addFile';
-            $this->$do($location . $file, $name . $file);
-        }
-    } 
+// Initialize archive object
+$zip = new ZipArchive();
+$tmp_file = tempnam('.','');
+$zip->open($tmp_file, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+// Create recursive directory iterator
+/** @var SplFileInfo[] $files */
+$files = new RecursiveIteratorIterator(
+    new RecursiveDirectoryIterator($rootPath),
+    RecursiveIteratorIterator::LEAVES_ONLY
+);
+
+foreach ($files as $name => $file)
+{
+    // Skip directories (they would be added automatically)
+    if (!$file->isDir())
+    {
+        // Get real and relative path for current file
+        $filePath = $file->getRealPath();
+        $relativePath = substr($filePath, strlen($rootPath) + 1);
+
+        // Add current file to archive
+        $zip->addFile($filePath, $relativePath);
+    }
 }
 
-$za = new FlxZipArchive;
-$res = $za->open($zip_file_name, ZipArchive::CREATE);
-if($res === TRUE)    {
-    $za->addDir($the_folder, basename($the_folder)); $za->close();
-}
-else  { echo 'Could not create a zip archive';}
+// Zip archive will be created only after closing object
+$zip->close();
+header("Content-Disposition: attachment; filename=" . urlencode($zip_file));
+header("Content-Type: application/force-download");
+header("Content-Type: application/octet-stream");
+header("Content-Type: application/download");
+header("Content-Description: File Transfer");
+header("Content-Length: " . filesize($zip_file));
+flush(); // this doesn't really matter.
+// $fp = fopen($zip_file, "r");
+ob_end_clean();
+readfile($tmp_file);
 ?>
