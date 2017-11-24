@@ -10,32 +10,10 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="AdminUploadJS.js"></script>
-	<script type="text/javascript">
-
-		function restore_db(db) {
-			alert(db + "clicked");
-		}
-		function update_confirm(db) {
-		    var r = confirm("Do you want to update the db file now?");
-		    if (r == true) {
-		        alert("Start updating!");
-		        $.ajax({
-		            url:"../lib/php/admin/updateDB.php",
-		            type: "POST",
-		            data: {
-	                    db:db
-	                },
-		            dataType: "json",
-		            success:function(results){
-		                alert("Finish Updating!"+results);
-		            },
-		            error: function(xhr, status, error){
-		                alert("Fail to connect to the server when trying to submit update request");
-		            }
-		        });
-		    }
-		}
+	<script src="AdminUploadJS.js">
+		    function testUpload() {
+      alert("123123123ttested");
+    }
 	</script>
 </head>
 
@@ -57,7 +35,7 @@
 			<!-- <h1 id="UploadTitle">Update</h1> -->
 			<div id="chooseFileDiv">
 				<h3>Select File to Upload</h3>
-				<form action="../lib/php/admin/AdminUploadPHP.php" method="post" enctype="multipart/form-data" id="uploadForm" target="myFrame">
+				<form action="../lib/php/admin/uploadDatabase.php" method="post" enctype="multipart/form-data" id="uploadForm" target="myFrame">
 	    			<input type="file" name="fileToUpload[]" id="fileToUpload" accept=".xlsx" multiple>
 	    			<div class="clearRow">
 			    		<button id="chooseFileBtn">Choose File</button>
