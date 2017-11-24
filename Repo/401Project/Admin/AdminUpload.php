@@ -28,7 +28,7 @@
 	                },
 		            dataType: "json",
 		            success:function(results){
-		                alert("Finish Updating!");
+		                alert("Finish Updating!"+results);
 		            },
 		            error: function(xhr, status, error){
 		                alert("Fail to connect to the server when trying to submit update request");
