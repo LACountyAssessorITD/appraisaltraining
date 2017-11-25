@@ -25,9 +25,6 @@ $(document).ready(function(){
         }
 
     });
-    function testUpload() {
-      alert("123123123ttested");
-    }
 
     getCurrDate();
 

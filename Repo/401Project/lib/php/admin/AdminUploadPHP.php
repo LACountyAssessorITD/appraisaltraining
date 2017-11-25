@@ -66,9 +66,18 @@
 	    	} else {
 	    		$message = "file uploaddded";
 	    		echo '<script>alert("File Uploaded!!!!!");</script>';
+	    		echo '<script type="text/javascript">',
+	    		'update_confirm('.$target_file.');',
+	    		'</script>'
+	    		;
 	    		echo '<script>
 	    		if(confirm("Do you want to update the db file now?")){
+<<<<<<< HEAD:Repo/401Project/lib/php/admin/uploadDatabase.php
 	    			alert("Start updating!");}
+=======
+	    			alert("Start updating!");
+	    		}
+>>>>>>> parent of c961a82... [yh] upload related:Repo/401Project/lib/php/admin/AdminUploadPHP.php
 	    		</script>';
 	    	}
 
