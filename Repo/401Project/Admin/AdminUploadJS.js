@@ -176,6 +176,25 @@ $(document).ready(function(){
       }
     });
 
+    $("uploadForm").submit(function(evt){  
+      evt.preventDefault();
+      var formData = new FormData($(this)[0]);
+      $.ajax({
+        url: "../lib/php/admin/uploadDatabase.php",
+        type: 'POST',
+        data: formData,
+        async: false,
+        cache: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        processData: false,
+        success: function (response) {
+          alert(response);
+        }
+      });
+      return false;
+    });
+
     //Expand or collapse edit xrefDiv
     $(document).on("click",".editRowBtn", function() {
     // $(".editRowBtn").on("click", function() {
@@ -281,7 +300,7 @@ $(document).ready(function(){
     }
 
 
-    loadTable();
+    loadTable();  // To load Xref table for admin
 
     function insertRow(employeeIDNew, certNoNew, firstName, LastName) {
       //These two should be found based on employeeID and CertNO
