@@ -10,11 +10,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="AdminUploadJS.js">
-		    function testUpload() {
-      alert("123123123ttested");
-    }
-	</script>
+	<script src="AdminUploadJS.js"></script>
 </head>
 
 <body>
