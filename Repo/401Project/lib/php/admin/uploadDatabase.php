@@ -68,8 +68,7 @@
 	    		echo '<script>alert("File Uploaded!!!!!");</script>';
 	    		echo '<script>
 	    		if(confirm("Do you want to update the db file now?")){
-	    			alert("Start updating!");
-	    			document.testUpload();}
+	    			alert("Start updating!");}
 	    		</script>';
 	    	}
 

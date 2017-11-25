@@ -176,24 +176,41 @@ $(document).ready(function(){
       }
     });
 
-    $("uploadForm").submit(function(evt){  
-      evt.preventDefault();
-      var formData = new FormData($(this)[0]);
-      $.ajax({
-        url: "../lib/php/admin/uploadDatabase.php",
-        type: 'POST',
-        data: formData,
-        async: false,
-        cache: false,
-        contentType: false,
-        enctype: 'multipart/form-data',
-        processData: false,
-        success: function (response) {
-          alert(response);
+    // $("uploadForm").submit(function(evt){  
+    //   evt.preventDefault();
+    //   var formData = new FormData($(this)[0]);
+    //   $.ajax({
+    //     url: "../lib/php/admin/uploadDatabase.php",
+    //     type: 'POST',
+    //     data: formData,
+    //     async: false,
+    //     cache: false,
+    //     contentType: false,
+       
+    //     processData: false,
+    //     success: function (response) {
+    //       alert(response);
+    //     }
+    //   });
+    //   return false;
+    // });
+     function submitForm() {
+            console.log("submit event");
+            var fd = new FormData(document.getElementById("uploadForm"));
+            fd.append("label", "WEBUPLOAD");
+            $.ajax({
+              url: "../lib/php/admin/uploadDatabase.php",
+              type: "POST",
+              data: fd,
+              enctype: 'multipart/form-data',
+              processData: false,  // tell jQuery not to process the data
+              contentType: false   // tell jQuery not to set contentType
+            }).done(function( data ) {
+                console.log("PHP Output:");
+                console.log( data );
+            });
+            return false;
         }
-      });
-      return false;
-    });
 
     //Expand or collapse edit xrefDiv
     $(document).on("click",".editRowBtn", function() {

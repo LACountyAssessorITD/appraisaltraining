@@ -31,8 +31,8 @@
 			<!-- <h1 id="UploadTitle">Update</h1> -->
 			<div id="chooseFileDiv">
 				<h3>Select File to Upload</h3>
-				<form  id="uploadForm">
-	    			<input type="file" name="fileToUpload[]" id="fileToUpload" accept=".xlsx" multiple>
+				<form action="../lib/php/admin/uploadDatabase.php" method="post" id="uploadForm" onsubmit="return submitForm();">
+	    			<input type="file" name="fileToUpload[]" id="fileToUpload" accept=".xlsx" multiple required >
 	    			<div class="clearRow">
 			    		<button id="chooseFileBtn">Choose File</button>
 			    	</div>
@@ -45,7 +45,7 @@
 		            	<input type='text' placeholder='dd' autocomplete='off' id="dayEffInput">
 			            <!-- <button id="effDateBtn">Submit</button> -->
 			        </div>
-				    <input type="submit" value="Upload file" id="submitNewBtn">
+				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 				</form>
 
 			</div>
