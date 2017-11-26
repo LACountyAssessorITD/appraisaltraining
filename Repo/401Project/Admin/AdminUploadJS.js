@@ -146,7 +146,8 @@ $(document).ready(function(){
       }
     }
 
-    $("#chooseFileBtn").on("click",function() {
+    $("#chooseFileBtn").on("click",function(evt) {
+       evt.preventDefault();
       $("#fileToUpload").click();
     });
 
@@ -167,47 +168,45 @@ $(document).ready(function(){
 
     $("#submitNewBtn").on("click",function() {
       // $("#chosenFileName").text("");
-      alert("clicked");
+      // alert("clicked");
       if(!checkValidDate()) {
         return false;
       }
     });
 
-    // $("uploadForm").submit(function(evt){  
-    //   evt.preventDefault();
-    //   var formData = new FormData($(this)[0]);
-    //   $.ajax({
-    //     url: "../lib/php/admin/uploadDatabase.php",
-    //     type: 'POST',
-    //     data: formData,
-    //     async: false,
-    //     cache: false,
-    //     contentType: false,
-       
-    //     processData: false,
-    //     success: function (response) {
-    //       alert(response);
-    //     }
-    //   });
-    //   return false;
-    // });
-     function submitForm() {
-            console.log("submit event");
-            var fd = new FormData(document.getElementById("uploadForm"));
-            fd.append("label", "WEBUPLOAD");
-            $.ajax({
-              url: "../lib/php/admin/uploadDatabase.php",
-              type: "POST",
-              data: fd,
-              enctype: 'multipart/form-data',
-              processData: false,  // tell jQuery not to process the data
-              contentType: false   // tell jQuery not to set contentType
-            }).done(function( data ) {
-                console.log("PHP Output:");
-                console.log( data );
-            });
-            return false;
+
+    $("#uploadForm").submit(function(evt){
+      // alert("Submitted!");
+      evt.preventDefault();
+      var formData = new FormData($(this)[0]);
+      $.ajax({
+        url: "../lib/php/admin/AdminUploadPHP.php",
+        type: 'POST',
+        data: formData,
+        async: false,
+        cache: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        processData: false,
+        success: function (response) {
+          if (response.indexOf("success") !== -1) { // if upload success
+            alert("Files Successfully Uploaded!");
+            if(confirm("Do you want to update the db file now?")){
+              var dir = response.replace('success:','');
+              alert("Start updating! @ " + dir);
+            }
+          }
+          else {      // upload fail
+            alert("Upload Failed! Error: " + response);
+          }
+
         }
+      });
+      document.getElementById("uploadForm").reset();
+      document.getElementById("chosenFileName").innerHTML = "None";
+      return false;
+    });
+
 
     //Expand or collapse edit xrefDiv
     $(document).on("click",".editRowBtn", function() {

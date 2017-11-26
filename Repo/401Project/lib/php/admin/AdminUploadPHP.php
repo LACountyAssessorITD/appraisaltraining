@@ -3,7 +3,8 @@
 	To handle upload requests by admin
 	@ Yining Huang
 */
-	if(isset($_POST["submit"])) {
+	// echo "Going inside Upload.php";
+	// if(isset($_POST["submit"])) {
 
 		$files = $_FILES["fileToUpload"];
 		if  (count($files["name"])==0) {
@@ -22,7 +23,6 @@
 		// $now->format('Y-m-d H:i:s');
 		$timestamp = $now->getTimestamp();
 		$target_dir = "D:/temp/".$timestamp.'/';
-		$uploadOk = 1;
 		$target_file = Array();
 
 		for ($i = 0; $i< count($files["name"]); $i++) {
@@ -38,49 +38,32 @@
 			// Check file size
 		    if ($files["size"][$i] > 50000000) { // if the file is larger than 50 MB
 		    	echo "Sorry, your file is too large.";
-		    	$uploadOk = 0;
+		    	return;
 		    }
 		    // Allow certain file formats
 		    if($FileType != "mdb" && $FileType != "xlsx" && $FileType != "csv") {
 		    	echo "Sorry, only mdb, xlsx and csv files are allowed.";
-		    	$uploadOk = 0;
+		    	return;
 		    }
 
 		}
 
-		// Check if $uploadOk is set to 0 by an error
-	    if ($uploadOk == 0) {
-	    	echo "\nSorry, your file was not uploaded.";
-	    // if everything is ok, try to upload file
-	    } else {
-	    	$moved_progress = 0;
-	    	mkdir($target_dir,0700,true);
-	    	for ($i = 0; $i< count($files["name"]); $i++) {
-	    		if (move_uploaded_file($files["tmp_name"][$i], $target_file[$i])){
-	    			$moved_progress ++;
-	    		}
-	    	}
 
-	    	if ($moved_progress != count($files["name"])) {
-	    		echo "\nSorry, there was an error uploading your file.";
-	    	} else {
-	    		$message = "file uploaddded";
-	    		echo '<script>alert("File Uploaded!!!!!");</script>';
-	    		echo '<script type="text/javascript">',
-	    		'update_confirm('.$target_file.');',
-	    		'</script>'
-	    		;
-	    		echo '<script>
-	    		if(confirm("Do you want to update the db file now?")){
-<<<<<<< HEAD:Repo/401Project/lib/php/admin/uploadDatabase.php
-	    			alert("Start updating!");}
-=======
-	    			alert("Start updating!");
-	    		}
->>>>>>> parent of c961a82... [yh] upload related:Repo/401Project/lib/php/admin/AdminUploadPHP.php
-	    		</script>';
-	    	}
+    	$moved_progress = 0;
+    	mkdir($target_dir,0700,true);
+    	for ($i = 0; $i< count($files["name"]); $i++) {
+    		if (move_uploaded_file($files["tmp_name"][$i], $target_file[$i])){
+    			$moved_progress ++;
+    		}
+    	}
 
+    	if ($moved_progress != count($files["name"])) {
+    		echo "Sorry, there was an error uploading your file.";
+    		return;
+    	} else {
+    		echo "success:".$target_dir;
+    	}
+    	return;
 	    	/*
 	    	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 	        	// reloadPage();
@@ -120,8 +103,8 @@
 	    		echo "Sorry, there was an error uploading your file.". $_FILES["fileToUpload"]['error'];
 	    	}
 	    	*/
-	    }
 
 
-}
+
+
 ?>
