@@ -22,9 +22,9 @@ session_start();
         cache: false,
         url: urlStr,
         success:function(data){
-          // $("#progress").html('<div class="bar" style="width:' + data.percent + '%"></div>');
+          $("#progress").html('<div class="bar" style="width:' + data.percent + '%"></div>');
           // alert(data.percent);
-          $("#progress").css("width",data.percent+"%");
+          // $("#progress").css("width",data.percent+"%");
           $("#message").html(data.message);
           // If the process is completed, we should stop the checking process.
           if (data.percent == 100) {
@@ -61,16 +61,15 @@ session_start();
 
   </script>
   <style>
-    #progress {
-      /*width: 500px;*/
-      width: 1%;
+#progress {
+      width: 500px;
       border: 1px solid #aaa;
       height: 20px;
     }
-    /*#progress .bar {
+    #progress .bar {
       background-color: #ccc;
       height: 20px;
-    }*/
+    }
   </style>
 </head>
 <body>
