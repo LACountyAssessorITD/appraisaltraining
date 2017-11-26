@@ -64,30 +64,17 @@
 
 		<div class="restore">
 			<div id="restoreTableDiv">
-				<table>
+				<table id="uploadedDatabaseTable">
 					<thead>
 						<tr>
-							<th>File</th>
+							<th>Timestamp</th>
+							<th>EffectiveDate</th>
+							<th>ifCurrentDatabase</th>
 							<th>Save</th>
+							<th>Note</th>
 						</tr>
 					</thead>
-				<?php
-					if ($handle = opendir("D:/temp/")) {
-					    while (false !== ($entry = readdir($handle))) {
-					        if ($entry != "." && $entry != "..") {
-					        	echo "<tr>";
-					            echo "<td>"."$entry"."</td>";
-					            // echo '<td>'.'<input type="button" value="click me" onclick="restore_db('."'$entry'".')"'.'/></td>';
-					            // echo '<td><button class="saveBtn"><i class="fa fa-floppy-o" aria-hidden="true"></i></button></td>';
-					            echo '<td><a id="downloadLink" href="../lib/php/admin/downloadDatabase.php?data='.$entry.'" target="_blank">
-											<button class="saveBtn"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-										</a></td>';
-					            echo "</tr>";
-					        }
-					    }
-				    closedir($handle);
-					}
-				?>
+
 				</table>
 			</div>
 		</div>

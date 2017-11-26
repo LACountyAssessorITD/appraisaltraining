@@ -475,6 +475,31 @@ $(document).ready(function(){
         sortTable(f_hour,numCol);
     });
 
+    function loadUploadedDatabaseTable() {
+      $.ajax({
+          url:"../lib/php/admin/getUploadedDatabase.php",
+          type: "POST",
+          dataType: "json",
+          success:function(results){
+              for (var i = 0 ; i < results.length; i ++) {
+                var markup = "<tr>\
+                    <td>"+results[i]['Timestamp']+"</td>\
+                    <td>"+results[i]['EffectiveDate']+"</td>\
+                    <td>"+results[i]['ifCurrentDatabase']+"</td>\
+                    <td><a id='downloadLink' href='../lib/php/admin/downloadDatabase.php?data="+results[i]['Timestamp']+" target='_blank'>\
+                      <button class='saveBtn'><i class='fa fa-floppy-o' aria-hidden='true'></i></button></a></td>\
+                    <td>"+results[i]['Note']+"</td>\
+                  </tr>";
+                $("#uploadedDatabaseTable").append(markup);
+              }
+          },
+          error: function(xhr, status, error){
+              alert("Fail to connect to the server when trying to load xref table");
+          },
+          async: false
+      });
+    }
+    loadUploadedDatabaseTable();
 
     // Progress Bar
     var timer;
