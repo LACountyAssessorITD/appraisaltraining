@@ -179,8 +179,9 @@ $(document).ready(function(){
       // alert("Submitted!");
       evt.preventDefault();
       var formData = new FormData($(this)[0]);
+      var url_str = "?Date="+"2018/12/12"+"&Note="+"nnnnnn";
       $.ajax({
-        url: "../lib/php/admin/uploadDatabase.php",
+        url: "../lib/php/admin/uploadDatabase.php"+url_str,
         type: 'POST',
         data: formData,
         async: false,

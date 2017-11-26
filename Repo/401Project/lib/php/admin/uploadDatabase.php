@@ -5,8 +5,12 @@
 */
 	// echo "Going inside Upload.php";
 	// if(isset($_POST["submit"])) {
+	include_once "../constants.php";
 
 		$files = $_FILES["fileToUpload"];
+		$effectiveDate = $_GET['Date'];
+		$note = $_GET['Note'];
+		
 		if  (count($files["name"])==0) {
 			echo "Please select files to upload";
 			return;
@@ -62,49 +66,32 @@
     		return;
     	} else {
     		echo "success:".$target_dir;
+    		/* Access Database here */
+			$serverName = SQL_SERVER_NAME;
+			$uid = SQL_SERVER_USERNAME;
+			$pwd = SQL_SERVER_PASSWORD;
+			$db = SQL_SERVER_LACDATABASE;
+			$connectionInfo = array( "UID"=>$uid,
+			                         "PWD"=>$pwd,
+			                         "Database"=>$db,
+			             "ReturnDatesAsStrings"=>true);  // convert datetime to string
+
+			/* Connect using SQL Server Authentication. */
+			$conn = sqlsrv_connect( $serverName, $connectionInfo);
+			if( $conn === false ) {
+		    	die( print_r( sqlsrv_errors(), true));
+			}
+			$tsql = "INSERT INTO [UploadedDatabaseFiles] 
+					(Timestamp, EffectiveDate, ifCurrentDatabase, Note) 
+					VALUES 
+					('".$timestamp."',	'".$effectiveDate."',	'"."0"."',	'".$note."') ";
+			$stmt = sqlsrv_query( $conn, $tsql);
+			if( $stmt === false ){
+				die( print_r( sqlsrv_errors(), true));
+			}
+			sqlsrv_free_stmt($stmt);
+			sqlsrv_close($conn);
     	}
     	return;
-	    	/*
-	    	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-	        	// reloadPage();
-	        	// header("Location:AdminUpload.php");
-	        	// header("Location:AdminHome.html");
-	    		$message = "file uploaddded";
-	    		echo '<script>alert("File Uploaded!!!!!");</script>';
-	    		echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-	    		echo " Renamed as ".$File_name;
-	            //echo '<script>update_confirm("'.$target_file.'"");</script>';
-	    		echo '<script type="text/javascript">',
-	    		'update_confirm('.$target_file.');',
-	    		'</script>'
-	    		;
-	    		echo '<script>
-	    		if(confirm("Do you want to update the db file now?")){
-	    			alert("Start updating!");
-	    			$.ajax({
-	    				url:"../lib/php/admin/updateDB.php",
-	    				type: "POST",
-	    				data: {
-	    					db:db
-	    				},
-	    				dataType: "json",
-	    				success:function(results){
-	    					alert("Finish Updating!");
-	    				},
-	    				error: function(xhr, status, error){
-	    					alert("Fail to connect to the server when trying to submit update request");
-	    				}
-	    			});
-	    		}
-	    		</script>';
-	        	// echo "<script>setTimeout('header('Location:AdminUpload.php')');</script>";
-	            //echo '<script>alert("File Uploaded!")</script>';
-	    	} else {
-	    		echo "Sorry, there was an error uploading your file.". $_FILES["fileToUpload"]['error'];
-	    	}
-	    	*/
-
-
-
 
 ?>
