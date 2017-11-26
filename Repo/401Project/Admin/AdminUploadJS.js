@@ -194,6 +194,16 @@ $(document).ready(function(){
             if(confirm("Do you want to update the db file now?")){
               var dir = response.replace('success:','');
               alert("Start updating! @ " + dir);
+              // TO DO : pass directory name to ML's code and start Progress Bar
+              $.ajax({
+                url:"../lib/php/admin/update.php",
+                type: "POST",
+                data: dir:dir,
+                success:function(){
+                  
+                },
+                async: false
+              });
             }
           }
           else {      // upload fail
