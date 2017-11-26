@@ -147,7 +147,7 @@ iframe {
 #uploadStatusResult {
 }
 
-.errorDisplay {
+/*.errorDisplay {
 	/*margin-top: 10px;*/
 	width: 90%;
 	text-align: center;
@@ -167,7 +167,7 @@ iframe {
 .errorDisplay iframe {
 	width: 100%;
 	height: 600px;
-}
+}*/
 
 
 #restoreTableDiv {

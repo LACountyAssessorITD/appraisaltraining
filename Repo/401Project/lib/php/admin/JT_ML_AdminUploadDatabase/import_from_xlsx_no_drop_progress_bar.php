@@ -2,6 +2,9 @@
 	// Start the session.
 	session_start();
 
+	// To get uploaded files directory
+	$dir = $_POST['dir']; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files
+
 	// We have to make sure there is no garbage left here.
 	// Failed process will leave the file undeleted.
 	// So, we need to delete the file that older than 2 days.
@@ -59,9 +62,18 @@
 	$overall_row_counter = intval(0);
 	$progress_bar_arr_content = array(); // variable to write out current percentage (of line-by-line insertion) to a file, which is then read from importing webpage's progress bar
 
+	// Initialization Pt 2 - xlsx reading initialization
+	if(true) {
+		error_reporting(E_ALL ^ E_NOTICE);
+		require_once 'Classes/PHPExcel.php';
+		// enable caching to reduce memory usage for PHPExcel (tips/trick from StackOverflow)
+		$cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
+		$cacheSettings = array( ' memoryCacheSize ' => '16MB');
+		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+		// lazy-reading from now on! all Excel file reading are done immediately before using its data, not earlier!
+	}
 
-
-	// Initialization Pt 2 - count total number of rows from 3 excel sheets, using 3 "lazy-reading" blocks
+	// Initialization Pt 3 - count total number of rows from 3 excel sheets, using 3 "lazy-reading" blocks
 	$excelReader_AnnualReq	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq	->setReadDataOnly(true);
 	$excelObj_AnnualReq		=	$excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
 	$annualreq				=	$excelObj_AnnualReq->getActiveSheet();
@@ -275,16 +287,7 @@
 	}
 
 	////////////////////////////////// Step III: read data from xlsx or mdb, and then insert into SQL sever //////////////////////////////////
-	// 0. xlsx reading - initialization
-	if(true) {
-		error_reporting(E_ALL ^ E_NOTICE);
-		require_once 'Classes/PHPExcel.php';
-		// enable caching to reduce memory usage for PHPExcel (tips/trick from StackOverflow)
-		$cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
-		$cacheSettings = array( ' memoryCacheSize ' => '16MB');
-		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
-		// lazy-reading from now on! all Excel file reading are done immediately before using its data, not earlier!
-	}
+
 
 	// 1. Summary & AnnualReq -> Employee: START
 	if($do_step_1) {

@@ -21,7 +21,6 @@
 		<!-- Progress Bar Items -->
 		<div id="progress"></div>
 		<div id="message"></div>
-		
 		<div class="buttonGroup">
 			<button id="uploadSegCtrl">Upload</button>
 			<button id="restoreSegCtrl">History</button>
@@ -58,12 +57,7 @@
 					<h2 id="uploadStatusResult"></h2>
 				</div> -->
 
-				<div class="errorDisplay">
-					<div class="clearRow">
-						<p>Error Log:</p>
-					</div>
-					<iframe name="myFrame"></iframe>
-				</div>
+
 			</div>
 
 		</div>

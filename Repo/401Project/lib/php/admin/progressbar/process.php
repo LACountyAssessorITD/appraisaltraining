@@ -7,7 +7,7 @@ session_start();
 // So, we need to delete the file that older than 2 days.
 $files = glob("D:/t/*");
 $now   = time();
-
+$dir = $_POST['dir'];
 foreach ($files as $file) {
   if (is_file($file)) {
     if ($now - filemtime($file) >= 60 * 60 * 24 * 2) { // 2 days and older
@@ -33,7 +33,7 @@ for($i=1; $i<=$total; $i++){
 
   // Write the progress into file and serialize the PHP array into JSON format.
   // The file name is the session id.
-  file_put_contents("D:/t/" . session_id() . ".txt", json_encode($arr_content));
+  file_put_contents("D:/t/log.txt", json_encode($arr_content));
 
   // Sleep one second so we can see the delay
   sleep(1);

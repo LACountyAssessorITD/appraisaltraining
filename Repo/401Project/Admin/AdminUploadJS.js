@@ -195,15 +195,16 @@ $(document).ready(function(){
               var dir = response.replace('success:','');
               alert("Start updating! @ " + dir);
               // TO DO : pass directory name to ML's code and start Progress Bar
-              $.ajax({
-                url:"../lib/php/admin/update.php",
-                type: "POST",
-                data: dir:dir,
-                success:function(){
-                  
-                },
-                async: false
-              });
+              startProgress(dir);
+              // $.ajax({
+              //   url:"../lib/php/admin/update.php",
+              //   type: "POST",
+              //   data: {dir:dir},
+              //   success:function(){
+
+              //   },
+              //   async: false
+              // });
             }
           }
           else {      // upload fail
@@ -474,17 +475,11 @@ $(document).ready(function(){
     });
 
 
-    // Progress Bar 
+    // Progress Bar
     var timer;
     // The function to refresh the progress bar.
     function refreshProgress() {
-    //   alert(".");
-      // $("#hasStarted")[0].innerHTML = "yes";
-      // We use Ajax again to check the progress by calling the checker script.
-      // Also pass the session id to read the file because the file which storing the progress is placed in a file per session.
-      // If the call was success, display the progress bar.
-
-      var urlStr = "../lib/php/admin/progressbar/checker.php?file=<?php echo session_id() ?>";
+      var urlStr = "../lib/php/admin/progressbar/checker.php";
       $.ajax({
         cache: false,
         url: urlStr,
@@ -497,19 +492,25 @@ $(document).ready(function(){
           if (data.percent == 100) {
             alert('done');
             window.clearInterval(timer);
-            timer = window.setInterval(completed, 1000);
+            timer = window.setInterval(completedProgress, 1000);
           }
         }
       });
     }
-
-    function completed() {
+    function completedProgress() {
       $("#message").html("Completed");
       window.clearInterval(timer);
     }
-    function start() {
+    function startProgress(dir) {
       // Trigger the process in web server.
-       $.ajax({url: "../lib/php/admin/progressbar/process.php"});
+      $.ajax({
+        url: "../lib/php/admin/progressbar/process.php",
+        // url: "../lib/php/admin/JT_ML_AdminUploadDatabase/import_from_xlsx_no_drop_progress_bar.php",
+        type: "POST",
+        data: {
+          dir:dir,
+        },
+      });
       // Refresh the progress bar every 1 second.
       timer = window.setInterval(refreshProgress, 1000);
     }
