@@ -18,7 +18,10 @@
 	<?php include "../common/AdminTop.php"; ?>
 
 	<div class="content">
-
+		<!-- Progress Bar Items -->
+		<div id="progress"></div>
+		<div id="message"></div>
+		
 		<div class="buttonGroup">
 			<button id="uploadSegCtrl">Upload</button>
 			<button id="restoreSegCtrl">History</button>
