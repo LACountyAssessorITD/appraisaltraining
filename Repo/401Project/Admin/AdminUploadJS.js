@@ -180,7 +180,7 @@ $(document).ready(function(){
       evt.preventDefault();
       var formData = new FormData($(this)[0]);
       $.ajax({
-        url: "../lib/php/admin/AdminUploadPHP.php",
+        url: "../lib/php/admin/uploadDatabase.php",
         type: 'POST',
         data: formData,
         async: false,
