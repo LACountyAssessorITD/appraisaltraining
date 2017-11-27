@@ -1,5 +1,37 @@
 <?php
 include_once "../lib/php/session.php";
+include_once "../lib/php/constants.php";
+
+$date="NA";
+/* Access Database here */
+$serverName = SQL_SERVER_NAME;
+$uid = SQL_SERVER_USERNAME;
+$pwd = SQL_SERVER_PASSWORD;
+$db = SQL_SERVER_LACDATABASE;
+$connectionInfo = array( "UID"=>$uid,
+                         "PWD"=>$pwd,
+                         "Database"=>$db,
+             "ReturnDatesAsStrings"=>true);  // convert datetime to string
+
+/* Connect using SQL Server Authentication. */
+$conn = sqlsrv_connect( $serverName, $connectionInfo);
+if( $conn === false ){
+     die( print_r( sqlsrv_errors(), true));
+}
+$tsql = "SELECT [EffectiveDate] FROM [UploadedDatabaseFiles]        
+        WHERE [ifCurrentDatabase]=TRUE";
+$stmt = sqlsrv_query( $conn, $tsql);
+if( $stmt === false ){
+     die( print_r( sqlsrv_errors(), true));
+}
+else {
+    $row= sqlsrv_fetch_array($stmt);
+    if ($row[0] =="") $row[0]="NA";
+    $date = $row[0];
+}
+sqlsrv_free_stmt($stmt);
+sqlsrv_close($conn);
+
 // redirect_onAdminPage();
 echo "<div class='top'>
 		<div class='header'>
@@ -13,7 +45,7 @@ echo "<div class='top'>
 			<hr>
 			<h3><strong>Los Angeles County Office of the Assessor</strong></h3>
 			<br>
-			<h4 id='effectiveLabel'>Data effective as of: <span></span></h4>
+			<h4 id='effectiveLabel'>Data effective as of: <span>".$date."</span></h4>
 			<img src='../BGimg/Logo.png' alt='Logo' width='130px' height='130px'>
 		</div>
 
@@ -25,3 +57,5 @@ echo "<div class='top'>
 		</nav>
 	</div>";
 ?>
+
+
