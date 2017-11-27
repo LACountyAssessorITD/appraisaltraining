@@ -308,7 +308,7 @@ $(document).ready(function(){
           async: false
       });
 
-      insertRow(employeeIDNew, certNoNew, fName, lName);
+      insertRow(employeeIDNew, "jjj", "lll", certNoNew, fName, lName);
 
       checkMismatch();
 
@@ -323,8 +323,31 @@ $(document).ready(function(){
           type: "POST",
           dataType: "json",
           success:function(results){
+
               for (var i = 0 ; i < results.length; i ++) {
-                insertRow(results[i]['EmployeeID'],results[i]['CertNo'],results[i]['FirstName'],results[i]['LastName']);
+                var empName = "";
+                var firstName = "";
+                var LastName = "";
+                $.ajax({
+                    url:"../lib/php/LDAP/getLdapInfo.php",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        empNo:results[i]['EmployeeID'],
+                    },
+                    success:function(results){
+                        firstName  = results[3];
+                        LastName = results[7];
+                        // empName = firs;
+                    },
+                    error: function(xhr, status, error){
+                        // alert(empNo);
+                        // alert(error);
+                        empName = "fail";
+                    },
+                    async:false
+                });
+                insertRow(results[i]['EmployeeID'],firstName, LastName,results[i]['CertNo'],results[i]['FirstName'],results[i]['LastName']);
               }
               checkMismatch();
           },
@@ -339,32 +362,16 @@ $(document).ready(function(){
 
     loadTable();  // To load Xref table for admin
 
-    function insertRow(employeeIDNew, certNoNew, firstName, LastName) {
+    function insertRow(employeeIDNew, empFName, empLName, certNoNew, firstName, LastName) {
       //These two should be found based on employeeID and CertNO
 
-      var empName = "name";
-      // $.ajax({
-      //       url:"../LDAP/getLdapInfo.php",
-      //       type: "POST",
-      //       dataType: "json",
-      //       data: {
-      //           empNo:empNo,
-      //       },
-      //       success:function(results){
-      //           // alert(results[1]);
-      //           empName = results[0];
-      //       },
-      //       error: function(xhr, status, error){
-      //           // alert(empNo);
-      //           // alert(error);
-      //       },
-      //       async:false
-      //   });
+      var empFullName = empFName + " " + empLName;
+
       var certName = firstName + " " + LastName;
 
       var markup = "<tr>\
                       <td class='EmployeeIDData'>"+employeeIDNew+"</td>\
-                      <td class='EmployeeIDName'>"+empName+"</td>\
+                      <td class='EmployeeIDName'>"+empFullName+"</td>\
                       <td class='CertNoData'>"+certNoNew+"</td>\
                       <td class='CertNoName'>"+certName+"</td>\
                       <td>\
@@ -431,10 +438,19 @@ $(document).ready(function(){
             }
             if(empName.toUpperCase()!=certName.toUpperCase()) {
               var employeeIDNum = $(this).find(".EmployeeIDData")[0].innerHTML;
+              var empName = $(this).find(".EmployeeIDName")[0].innerHTML;
               var certNoNum = $(this).find(".CertNoData")[0].innerHTML;
+              var certName = $(this).find(".CertNoName")[0].innerHTML
               // var employeeIDNum = 100;
               // var certNoNum = 200;
-              var markup = "<li>Employee ID = "+employeeIDNum+", CertNo = "+certNoNum+"</li>";
+              var markup = "";
+              if(empName==" ") {
+                markup = "<li style='color: red'>Employee ID = "+employeeIDNum+", EmpName = "+empName+", CertNo = "+certNoNum+", CertName = "+certName+"</li>";
+              }
+              else {
+                markup = "<li>Employee ID = "+employeeIDNum+", EmpName = "+empName+", CertNo = "+certNoNum+", CertName = "+certName+"</li>";
+              }
+              // var markup = "<li>Employee ID = "+employeeIDNum+", EmpName = "+empName+", CertNo = "+certNoNum+", CertName = "+certName+"</li>";
               $("#mismatchList").append(markup);
               numMismatch += 1;
             }
