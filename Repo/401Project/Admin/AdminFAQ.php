@@ -10,7 +10,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="AdminFAQJS.js"></script>
+	<script src="../common/FAQJS.js"></script>
 </head>
 
 <body>
@@ -22,7 +22,9 @@
 		<div class="faqContent">
 
 			<div class="faqSetDiv">
-				<button class="questionButton"><span class='downArrowSpan'><i class='fa fa-angle-down' aria-hidden='true'></i></span> How do I filter what report I want to see?</button>
+				<button class="questionButton">
+					<span class='downArrowSpan'><i class='fa fa-angle-down' aria-hidden='true'></i></span> How do I filter what report I want to see?
+				</button>
 
 				<div class="answerDiv">
 					<p>The answer.The answer.The answer.The answer.The answer.The answer.The answer.
