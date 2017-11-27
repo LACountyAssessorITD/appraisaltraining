@@ -36,7 +36,7 @@ $year = $_SESSION['current_fiscal_year'];
 $all_certid;
 $all_empid;
 
-$tsql = "SELECT DISTINCT [CertNo] FROM [New_Employee]
+$tsql = "SELECT [New_Employee].[CertNo],[New_EmployeeID_Xref].[EmployeeID] FROM [New_Employee]
         INNER JOIN [New_EmployeeID_Xref]
             ON [New_Employee].CertNo = [New_EmployeeID_Xref].CertNo";
 $stmt = sqlsrv_query( $conn, $tsql);
