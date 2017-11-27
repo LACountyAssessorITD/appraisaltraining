@@ -35,7 +35,7 @@ if( $stmt === false )
 else {
     $result = array();
     while($row = sqlsrv_fetch_array($stmt)){
-        $row['EffectiveDate'] = date("Y/d/m",strtotime($row['EffectiveDate']));
+        $row['EffectiveDate'] = date("Y/m/d",strtotime($row['EffectiveDate']));
         if ($row['ifCurrentDatabase'] == 0)
             $row['ifCurrentDatabase'] = 'No';
         else $row['ifCurrentDatabase'] = 'Yes';

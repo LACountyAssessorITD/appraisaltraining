@@ -513,14 +513,14 @@ $(document).ready(function(){
             $("#uploadedDatabaseTable tbody tr").remove();
             for (var i = 0 ; i < results.length; i ++) {
               var d = new Date(results[i]['Timestamp']*1000);
-              var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+              //var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
               var year = d.getFullYear();
-              var month = months[d.getMonth()];
-              var date = a.getDate();
-              var hour = a.getHours();
-              var min = a.getMinutes();
-              var sec = a.getSeconds();
-              var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+              var month = d.getMonth() +1 ;
+              var date = d.getDate();
+              var hour = d.getHours();
+              var min = d.getMinutes(); if (min < 10) { min = '0'+min;}
+              var sec = d.getSeconds(); if (sec < 10) { sec = '0'+sec;}
+              var time = year + '/' + month + '/' + date +' '+ hour + ':' + min + ':' + sec ;
               var markup = "<tbody><tr>\
                   <td>"+results[i]['Timestamp']+"</td>\
                   <td>"+time+"</td>\
