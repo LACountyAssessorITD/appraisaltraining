@@ -126,18 +126,19 @@ class myPDF extends FPDF {
         $this->Cell(0,0,'Specialty: '.$this->specialty);
         $this->Ln();
         //$this->Cell(30,0,$specialty,0,0,'C');
-        $this->Cell(264.5,0,'Pay Location: '.$GLOBALS['ldap_info'][5],0,0,'C');
-        $this->Ln();
 
         $this->Cell(250,0,'Certificate Type:',0,0,'R');
         $this->Cell(0,0,$this->certType,0,0,'R');
+        $this->Ln(5);
+        $this->Cell(0,0,'Pay Location: '.$GLOBALS['ldap_info'][5]);
+        $this->Ln();
 
         // Draw a line
         $width=$this -> w; // Width of Current Page
         $height=$this -> h; // Height of Current Page
         $this->SetLineWidth(0.7);
         $this->SetDrawColor(0,0,0);
-        $this->Line(10,53,$width-10,53); // Line one Cross
+        $this->Line(10,48,$width-10,48); // Line one Cross
 
 // ********************       End of Personal Information          ********************
 /////////////////////////////////////////////////////////////////////////////////////////
