@@ -8,6 +8,7 @@ require_once "../../constants.php";
 require_once "../../session.php";
 session_start();
 require_once "../../report_template/pdfTemplate_AnnualTraining.php";
+include_once "../../LDAP/getLdapInfoInReport.php";
 ///////////////////////////////////////////////////////////////////
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -30,6 +31,9 @@ $totalcarryover = 0;
 
 $certid =  getCertNo();
 $year =  $_SESSION["specific_year"];
+$empid = getEmployeeID();
+$ldap_info = getInfo($empid);
+
 
 ///////////////////////////////////////////////////////////////////
 

@@ -109,15 +109,15 @@ class myPDF extends FPDF {
         $this->Cell(0,0,$this->lastName.', '.$this->firstName);
         $this->Ln();
         $this->SetFont('Arial','',11);
-        $this->Cell(274,0,'Employee Number:',0,0,'C');
+        $this->Cell(274,0,'Employee Number: '.$GLOBALS['empid'],0,0,'C');
         $this->Ln();
         $this->Cell(255,0,'Certificate Number:',0,0,'R');
         $this->Cell(0,0,$this->certid,0,0,'R');
 
         $this->Ln(5);
-        $this->Cell(0,0,'Title:');
+        $this->Cell(0,0,'Title: '.$GLOBALS['ldap_info'][6]);
         $this->Ln();
-        $this->Cell(250,0,'Item:',0,0,'C');
+        $this->Cell(250,0,'Item: '.$GLOBALS['ldap_info'][7],0,0,'C');
         $this->Ln();
         $this->Cell(249.5,0,'Certificate Date:',0,0,'R');
         $this->Cell(0,0,$this->certDate,0,0,'R');
@@ -126,7 +126,7 @@ class myPDF extends FPDF {
         $this->Cell(0,0,'Specialty: '.$this->specialty);
         $this->Ln();
         //$this->Cell(30,0,$specialty,0,0,'C');
-        $this->Cell(264.5,0,'Pay Location:',0,0,'C');
+        $this->Cell(264.5,0,'Pay Location: '.$GLOBALS['ldap_info'][5],0,0,'C');
         $this->Ln();
 
         $this->Cell(250,0,'Certificate Type:',0,0,'R');
