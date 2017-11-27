@@ -214,8 +214,8 @@ $(document).ready(function(){
                 title = results[6];
             },
             error: function(xhr, status, error){
-                alert(empNo);
-                alert(error);
+                // alert(empNo);
+                // alert(error);
             },
             async:false
         });
@@ -281,7 +281,7 @@ $(document).ready(function(){
                             <ul class='info_ul_one'>\
                                 <li>Name: "+name+"</li>\
                                 <li class='certNoLi'>CertNo: <span class='certNoInfo'>"+certNo+"</span></li>\
-                                <li class='empNoInfo'>EmpNo: "+empNo+"</li>\
+                                <li class='empNoLi'>CertNo: <span class='empNoInfo'>"+empNo+"</span></li>\
                                 <li class='emailLi'>Email: <span class='emailInfo'>"+email+"</span></li>\
                             </ul>\
                             <ul class='info_ul_two'>\
