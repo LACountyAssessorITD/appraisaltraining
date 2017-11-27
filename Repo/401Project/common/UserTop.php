@@ -3,12 +3,38 @@ include_once "../lib/php/session.php";
 include_once "../lib/php/constants.php";
 // redirect_onUserPage();
 
-$date="NA";
+// To get current Database and define as constant
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-$db = SQL_SERVER_LACDATABASE;
+$db = SQL_SERVER_MASTERDATABASE;
+$connectionInfo = array( "UID"=>$uid,
+                         "PWD"=>$pwd,
+                         "Database"=>$db,
+             "ReturnDatesAsStrings"=>true);  // convert datetime to string
+
+/* Connect using SQL Server Authentication. */
+$conn = sqlsrv_connect( $serverName, $connectionInfo);
+if( $conn === false ){
+     die( print_r( sqlsrv_errors(), true));
+}
+$tsql = "SELECT [DbName] FROM [DbTable]
+        WHERE [IsCurrent] = 1";
+$stmt = sqlsrv_query( $conn, $tsql);
+if( $stmt === false ){
+     die( print_r( sqlsrv_errors(), true));
+}
+else {
+    $row= sqlsrv_fetch_array($stmt);
+    define("SQL_SERVER_LACDATABASE", (string)$row[0]);
+}
+sqlsrv_free_stmt($stmt);
+sqlsrv_close($conn);
+
+
+// Get the effective date of current database
+$date="NA";
 $connectionInfo = array( "UID"=>$uid,
                          "PWD"=>$pwd,
                          "Database"=>$db,

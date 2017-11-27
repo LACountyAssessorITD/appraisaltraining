@@ -3,6 +3,7 @@ include_once "../lib/php/session.php";
 include_once "../lib/php/constants.php";
 // redirect_onAdminPage
 
+// To get current Database and define as constant
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
@@ -31,13 +32,9 @@ else {
 sqlsrv_free_stmt($stmt);
 sqlsrv_close($conn);
 
-echo SQL_SERVER_LACDATABASE;
+
+// Get the effective date of current database
 $date="NA";
-/* Access Database here */
-$serverName = SQL_SERVER_NAME;
-$uid = SQL_SERVER_USERNAME;
-$pwd = SQL_SERVER_PASSWORD;
-$db = SQL_SERVER_LACDATABASE;
 $connectionInfo = array( "UID"=>$uid,
                          "PWD"=>$pwd,
                          "Database"=>$db,
