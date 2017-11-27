@@ -32,7 +32,7 @@ $totalcarryover = 0;
 $certid =  getCertNo();
 $year =  $_SESSION["specific_year"];
 $empid = getEmployeeID();
-$ldap_info = getInfoTesting($empid);
+$ldap_info = getInfo($empid);
 
 
 ///////////////////////////////////////////////////////////////////

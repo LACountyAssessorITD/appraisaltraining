@@ -140,15 +140,21 @@ class myPDF extends FPDF {
         $this->Cell(0,0,$lastName.', '.$firstName);
         $this->Ln();
         $this->SetFont('Arial','',11);
-        $this->Cell(274,0,'Employee Number:',0,0,'C');
+        $this->Cell(270,0,'Employee Number: ',0,0,'C');
+        $this->Ln();
+        $this->Cell(152);
+        $this->Cell(0,0,$GLOBALS['empid']);
         $this->Ln();
         $this->Cell(255,0,'Certificate Number:',0,0,'R');
         $this->Cell(0,0,$certid,0,0,'R');
 
         $this->Ln(5);
-        $this->Cell(0,0,'Title:');
+        $this->Cell(0,0,'Title: '.$GLOBALS['ldap_info'][6]);
         $this->Ln();
-        $this->Cell(250,0,'Item:',0,0,'C');
+        $this->Cell(245,0,'Item: ',0,0,'C');
+        $this->Ln();
+        $this->Cell(127);
+        $this->Cell(0,0,$GLOBALS['ldap_info'][7]);
         $this->Ln();
         $this->Cell(249.5,0,'Certificate Date:',0,0,'R');
         $this->Cell(0,0,$certDate,0,0,'R');
@@ -156,7 +162,10 @@ class myPDF extends FPDF {
         $this->Ln(5);
         $this->Cell(0,0,'Specialty: '.$specialty);
         $this->Ln();
-        $this->Cell(264.5,0,'Pay Location:',0,0,'C');
+        $this->Cell(260.5,0,'Pay Location: ',0,0,'C');
+        $this->Ln();
+        $this->Cell(142);
+        $this->Cell(0,0,$GLOBALS['ldap_info'][5]);
         $this->Ln();
 
         // Comment out Cert Type because they might be different for every year

@@ -1,6 +1,6 @@
 <?php
-/* 
-	This code provides a function to retrieve LDAP information for both Admin and User 
+/*
+	This code provides a function to retrieve LDAP information for both Admin and User
 	By specifying an Employee ID
 	@ Yining Huang
 
@@ -24,7 +24,7 @@
 		else if (strpos( $title, "Appraiser Trainee" )) return 1960;
 		else if (strpos( $title, "Chief Appraiser" )) return 1974;
 	}
-
+	/*
 	function getInfo($empNo) {
 		$look_up_username = (string)$empNo;
 		$ldapusername = "laassessor"."\\".$_SESSION['USERNAME'];
@@ -69,12 +69,12 @@
 				else {
 					echo "error when try to connect LDAP";
 				}
-				
+
 			}
 		}
 	}
-
-	function getInfoTesting($empNo) {
+	*/
+	function getInfo($empNo) {
 		$inforesult  = array();
 		$inforesult[] ="Yining Huang";
 		$inforesult[] ="test@123.com";
@@ -84,8 +84,8 @@
 		$inforesult[] = "Best. Depart";	// pay location
 		$title_string = "Appraiser";
 		$inforesult[] = $title_string; // title
-		$inforesult[] = getItemNumber($title_string);		
+		$inforesult[] = getItemNumber($title_string);
 		return $inforesult;
 	}
-	
+
 ?>
