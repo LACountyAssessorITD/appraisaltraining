@@ -1,6 +1,7 @@
 <?php
 include_once "../lib/php/session.php";
 include_once "../lib/php/constants.php";
+// redirect_onAdminPage();
 
 $date="NA";
 /* Access Database here */

@@ -1,4 +1,9 @@
 <?php
+/*
+  Code to test progress bar on Admin Page
+  @ Yining Huang
+*/
+
 // Start the session.
 session_start();
 

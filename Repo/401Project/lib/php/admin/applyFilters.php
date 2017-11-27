@@ -25,7 +25,6 @@ if( $conn === false ) {
 	echo "Unable to connect.</br>";
 	die( print_r( sqlsrv_errors(), true));
 }
-// $tsql = "SELECT * FROM [New_Employee]"." WHERE ".(string)$query; // This is where hardcoded!!!!!!
 
 $year_string = (string)$year . "-" . (string)($year+1);
 

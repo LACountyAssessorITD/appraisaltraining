@@ -1,4 +1,9 @@
 <?php
+/*
+  Update the log file for update process
+  @ Yining Huang
+*/
+  
 // The file has JSON type.
 header('Content-Type: application/json');
 
