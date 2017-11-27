@@ -32,7 +32,7 @@
 		<div class="upload">
 			<!-- <h1 id="UploadTitle">Update</h1> -->
 			<div id="chooseFileDiv">
-				<h3>Select File to Upload</h3>
+				<h3>Select Files to Upload</h3>
 				<form id="uploadForm">
 	    			<input type="file" name="fileToUpload[]" id="fileToUpload" accept=".xlsx" multiple>
 	    			<div class="clearRow">
@@ -47,6 +47,7 @@
 		            	<input type='text' placeholder='dd' autocomplete='off' id="dayEffInput">
 			            <!-- <button id="effDateBtn">Submit</button> -->
 			        </div>
+			        Note: <input type="text" id = "noteInputField"><br>
 				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 				</form>
 			</div>
@@ -68,10 +69,12 @@
 					<thead>
 						<tr>
 							<th>Timestamp</th>
+							<th>Uploaded Time</th>
 							<th>EffectiveDate</th>
 							<th>ifCurrentDatabase</th>
-							<th>Save</th>
 							<th>Note</th>
+							<th>Save</th>
+							<th>View</th>
 						</tr>
 					</thead>
 

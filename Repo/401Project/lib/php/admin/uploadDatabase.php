@@ -10,7 +10,8 @@
 		$files = $_FILES["fileToUpload"];
 		$effectiveDate = $_GET['Date'];
 		$note = $_GET['Note'];
-		
+		$note = str_replace("'", "''", $note);
+
 		if  (count($files["name"])==0) {
 			echo "Please select files to upload";
 			return;
@@ -81,9 +82,9 @@
 			if( $conn === false ) {
 		    	die( print_r( sqlsrv_errors(), true));
 			}
-			$tsql = "INSERT INTO [UploadedDatabaseFiles] 
-					(Timestamp, EffectiveDate, ifCurrentDatabase, Note) 
-					VALUES 
+			$tsql = "INSERT INTO [UploadedDatabaseFiles]
+					(Timestamp, EffectiveDate, ifCurrentDatabase, Note)
+					VALUES
 					('".$timestamp."',	'".$effectiveDate."',	'"."0"."',	'".$note."') ";
 			$stmt = sqlsrv_query( $conn, $tsql);
 			if( $stmt === false ){

@@ -61,6 +61,14 @@ $(document).ready(function(){
         }
     }
 
+    function getInputDate() {
+        var year = parseInt($("#yearEffInput").val());
+        var month = parseInt($("#monthEffInput").val());
+        var day = parseInt($("#dayEffInput").val());
+        var datestring = year+'/'+month+'/'+day;
+        return datestring;
+    }
+
     $("#uploadForm").each(function() {
     	$(this)[0].reset();
     });
@@ -179,7 +187,10 @@ $(document).ready(function(){
       // alert("Submitted!");
       evt.preventDefault();
       var formData = new FormData($(this)[0]);
-      var url_str = "?Date="+"2018/12/12"+"&Note="+"nnnnnn";
+      var datestring = getInputDate();
+      var notestring = document.getElementById('noteInputField').value;
+      if (notestring == "") notestring = "None";
+      var url_str = "?Date="+datestring+"&Note="+notestring;
       $.ajax({
         url: "../lib/php/admin/uploadDatabase.php"+url_str,
         type: 'POST',
@@ -192,6 +203,7 @@ $(document).ready(function(){
         success: function (response) {
           if (response.indexOf("success") !== -1) { // if upload success
             alert("Files Successfully Uploaded!");
+            loadUploadedDatabaseTable();
             if(confirm("Do you want to update the db file now?")){
               var dir = response.replace('success:','');
               alert("Start updating! @ " + dir);
@@ -476,22 +488,26 @@ $(document).ready(function(){
     });
 
     function loadUploadedDatabaseTable() {
+
       $.ajax({
           url:"../lib/php/admin/getUploadedDatabase.php",
           type: "POST",
           dataType: "json",
           success:function(results){
-              for (var i = 0 ; i < results.length; i ++) {
-                var markup = "<tr>\
-                    <td>"+results[i]['Timestamp']+"</td>\
-                    <td>"+results[i]['EffectiveDate']+"</td>\
-                    <td>"+results[i]['ifCurrentDatabase']+"</td>\
-                    <td><a id='downloadLink' href='../lib/php/admin/downloadDatabase.php?data="+results[i]['Timestamp']+" target='_blank'>\
-                      <button class='saveBtn'><i class='fa fa-floppy-o' aria-hidden='true'></i></button></a></td>\
-                    <td>"+results[i]['Note']+"</td>\
-                  </tr>";
-                $("#uploadedDatabaseTable").append(markup);
-              }
+            $("#uploadedDatabaseTable tbody tr").remove();
+            for (var i = 0 ; i < results.length; i ++) {
+              var d = new Date(results[i]['Timestamp']*1000);
+              var markup = "<tbody><tr>\
+                  <td>"+results[i]['Timestamp']+"</td>\
+                  <td>"+d+"</td>\
+                  <td>"+results[i]['EffectiveDate']+"</td>\
+                  <td>"+results[i]['ifCurrentDatabase']+"</td>\
+                  <td>"+results[i]['Note']+"</td>\
+                  <td><a id='downloadLink' href='../lib/php/admin/downloadDatabase.php?data="+results[i]['Timestamp']+"' target='_blank'>\
+                    <button class='saveBtn'><i class='fa fa-floppy-o' aria-hidden='true'></i></button></a></td>\
+                </tr></tbody>";
+              $("#uploadedDatabaseTable").append(markup);
+            }
           },
           error: function(xhr, status, error){
               alert("Fail to connect to the server when trying to load xref table");
