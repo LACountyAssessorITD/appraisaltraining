@@ -25,8 +25,10 @@ if( $stmt === false ){
 }
 else {
     $row= sqlsrv_fetch_array($stmt);
-    if ($row[0] =="") $row[0]="NA";
-    $date = $row[0];
+    if ($row[0] =="") 
+    	$date = "NA";
+    else 
+    	$date = date("Y/m/d",strtotime($row[0]));
 }
 sqlsrv_free_stmt($stmt);
 sqlsrv_close($conn);
