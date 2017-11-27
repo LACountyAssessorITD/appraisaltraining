@@ -512,7 +512,7 @@ $(document).ready(function(){
           success:function(results){
             $("#uploadedDatabaseTable tbody tr").remove();
             for (var i = 0 ; i < results.length; i ++) {
-              var d = new Date(results[i]['Timestamp']*1000);
+              var d = new Date("Y-m-d H:i:s",results[i]['Timestamp']*1000);
               var markup = "<tbody><tr>\
                   <td>"+results[i]['Timestamp']+"</td>\
                   <td>"+d+"</td>\
