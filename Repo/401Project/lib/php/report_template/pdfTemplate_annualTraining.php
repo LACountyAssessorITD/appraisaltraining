@@ -138,7 +138,7 @@ class myPDF extends FPDF {
         $height=$this -> h; // Height of Current Page
         $this->SetLineWidth(0.7);
         $this->SetDrawColor(0,0,0);
-        $this->Line(10,48,$width-10,48); // Line one Cross
+        $this->Line(10,53,$width-10,53); // Line one Cross
 
 // ********************       End of Personal Information          ********************
 /////////////////////////////////////////////////////////////////////////////////////////
