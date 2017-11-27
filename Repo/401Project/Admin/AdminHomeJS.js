@@ -487,7 +487,8 @@ $(document).ready(function(){
     $(document).on("click",".viewReportBtn", function() {
         // TO DO: Fill in data
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
-        alert("certno is "+certNo);
+        var empNo = $(this).closest("tr").find(".empNoInfo")[0].innerHTML;
+        alert("certno is "+certNo+ " EmpNo is "+empNo);
         var report_name = $("#reportTypeSelect option:selected").val();
         var report_file_name = getReportFileName(report_name);
         // var year_type = 1;  // # of year inputs
@@ -515,6 +516,7 @@ $(document).ready(function(){
             type: "POST",
             data: {
                 certNo:certNo,
+                empNo:empNo,
                 year_type:dropDownType,
                 year1:year1,
                 year2:year2,

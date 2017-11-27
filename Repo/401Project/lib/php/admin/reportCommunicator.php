@@ -8,6 +8,7 @@
 session_start();
 
 $_SESSION['view_certNo'] = $_POST["certNo"];
+$_SESSION['view_empNo'] = $_POST["empNo"];
 
 $type = $_POST['year_type'];
 $year1 = $_POST['year1'];
