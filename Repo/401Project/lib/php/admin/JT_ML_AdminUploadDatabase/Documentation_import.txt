@@ -7,7 +7,7 @@ Below is the documentation on Appraisal Training Record Tracking System Project 
 	These are the steps necessary to be done before the code could execute normally:
 	(1)	Setup Microsoft SQL Server (2014 is preferred, although later versions should work just fine)
 		HTRAINDATADEV-V
-	(2) Create a database named
+	(2) Setup PHP with IIS on Windows Server 2014 (which is the version our project uses, other versions might work)
 
 2. Misc:
 	(1)	[new structure] "table Employee" contains a column named <CurrentStatus>, which is obtained from
@@ -15,7 +15,16 @@ Below is the documentation on Appraisal Training Record Tracking System Project 
 		and one slight drawback is that <CurrentStatus> is "active" for all employees. This is a lot of
 		duplicated data, and if BOE's AnnualReq.xlsx always behaves like this, we might be able to discard
 		this column in "table Employee". However we are keeping it in the code and Database for now.
-	(2)	More importantly, this seems like an error (or at least a weird thing they're doing on their end):
+	(2)	More importantly, this seems like a problem (or at least a weird thing they're doing on their end):
 		in BOE's AnnualReq.xlsx, every employee at every fiscal year has "active" in <CurrentStatus>, however
 		in <Status> some employees at some years have "active/inactive/terminated/leave of absence/retired/
 		terminated/null". Why should an employee have "active" <CurrentStatus> but "retired" in <Status>?
+
+3. How the code works:
+	(1)	set memory limit to 512M which seems absolutely necessary for the code to work (after memory-optimization
+		measures taken already). The reason this code requires this much memory is the implementation of PHPExcel, a
+		3rd-party PHP library that we decided to use, in order to extract data from Excel files in PHP code.
+	(2)	to clarify: if(true){ } blocks are used to enable code snippit folding with Sublime Text functionalities.
+	(3) all global constants that LOOKS_LIKE_THIS_FORMAT are defined in ../../constants.php (in folder lib->PHP)
+	(4) each step in the procedure of importing is clearly lined out in the code itself. See comments in code for more
+		details.
