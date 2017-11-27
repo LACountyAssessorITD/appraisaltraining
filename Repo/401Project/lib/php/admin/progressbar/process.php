@@ -34,7 +34,7 @@ for($i=1; $i<=$total; $i++){
   // Write the progress into file and serialize the PHP array into JSON format.
   // The file name is the session id.
   file_put_contents("D:/t/log.txt", json_encode($arr_content));
-
+  session_write_close();
   // Sleep one second so we can see the delay
   sleep(1);
 }
