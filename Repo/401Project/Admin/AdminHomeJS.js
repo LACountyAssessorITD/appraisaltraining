@@ -15,7 +15,7 @@ $(document).ready(function(){
     loadDefaultPDF();
 
     function loadDefaultPDF() {
-        var parent = $(".pdfView");
+        var parent = $("#pdfDiv");
         var newElement = "<object id='pdfBox' data='../LACLogo.pdf' type='application/pdf' width='100%' height='600px'>\
                             <p>It appears you don't have Adobe Reader or PDF support in this web browser.\
                             <a href='singleUserReport.php'>Click here to download the PDF</a>. Or\
@@ -524,11 +524,17 @@ $(document).ready(function(){
             },
             success:function(result){
                 if (result != "!UNDEFINED") {
-                    var parent = $("#pdfBox").parent();
+                    var parent = $("#pdfDiv");
+                    // var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/report/"+report_file_name+"' type='/pdf' width='100%' height='600px'>\
+                    //             <embed src='"+"../lib/php/admin/report/"+report_file_name+"' type='application/pdf'></embed>\
+                    //         </object>";
+                    parent[0].innerHTML = "";
                     var newElement = "<object id='pdfBox' data='"+"../lib/php/admin/report/"+report_file_name+"' type='/pdf' width='100%' height='600px'>\
+                                <p>It appears you don't have Adobe Reader or PDF support in this web browser.\
+                                <a href='singleUserReport.php'>Click here to download the PDF</a>. Or\
+                                <a href='http://get.adobe.com/reader/' target='_blank'>click here to install Adobe Reader</a>.</p>\
                                 <embed src='"+"../lib/php/admin/report/"+report_file_name+"' type='application/pdf'></embed>\
                             </object>";
-                    $("#pdfBox").remove();
                     parent.append(newElement);
                 }
                 else {
