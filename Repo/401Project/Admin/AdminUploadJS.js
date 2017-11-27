@@ -512,10 +512,18 @@ $(document).ready(function(){
           success:function(results){
             $("#uploadedDatabaseTable tbody tr").remove();
             for (var i = 0 ; i < results.length; i ++) {
-              var d = new Date("Y-m-d H:i:s",results[i]['Timestamp']*1000);
+              var d = new Date(results[i]['Timestamp']*1000);
+              var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+              var year = d.getFullYear();
+              var month = months[d.getMonth()];
+              var date = a.getDate();
+              var hour = a.getHours();
+              var min = a.getMinutes();
+              var sec = a.getSeconds();
+              var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
               var markup = "<tbody><tr>\
                   <td>"+results[i]['Timestamp']+"</td>\
-                  <td>"+d+"</td>\
+                  <td>"+time+"</td>\
                   <td>"+results[i]['EffectiveDate']+"</td>\
                   <td>"+results[i]['ifCurrentDatabase']+"</td>\
                   <td>"+results[i]['Note']+"</td>\
