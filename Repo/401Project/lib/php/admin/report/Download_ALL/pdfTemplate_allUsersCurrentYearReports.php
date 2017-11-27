@@ -90,8 +90,6 @@ class myPDF extends FPDF {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // ********************       Start of Personal Information          ********************
-        // Get LDAP Info
-        // TO DO
 
         // Fill in data for personal information
         $this->SetFont('Arial','B',12);
@@ -106,37 +104,44 @@ class myPDF extends FPDF {
         $this->Ln(0);
         $this->Cell(13);
         $this->Cell(0,0,$this->lastName.', '.$this->firstName);
-        $this->Ln();
+        $this->Ln(5);
         $this->SetFont('Arial','',11);
-        $this->Cell(274,0,'Employee Number:',0,0,'C');
+        $this->Cell(270,0,'Employee Number: ',0,0,'C');
+        $this->Ln();
+        $this->Cell(152);
+        $this->Cell(0,0,$GLOBALS['empid']);
         $this->Ln();
         $this->Cell(255,0,'Certificate Number:',0,0,'R');
         $this->Cell(0,0,$this->certid,0,0,'R');
 
+        $this->Ln(0);
+        $this->Cell(0,0,'Title: '.$GLOBALS['ldap_info'][6]);
         $this->Ln(5);
-        $this->Cell(0,0,'Title:');
+        $this->Cell(245,0,'Item: ',0,0,'C');
         $this->Ln();
-        $this->Cell(250,0,'Item:',0,0,'C');
+        $this->Cell(127);
+        $this->Cell(0,0,$GLOBALS['ldap_info'][7]);
         $this->Ln();
         $this->Cell(249.5,0,'Certificate Date:',0,0,'R');
         $this->Cell(0,0,$this->certDate,0,0,'R');
 
-        $this->Ln(5);
+        $this->Ln(0);
         $this->Cell(0,0,'Specialty: '.$this->specialty);
-        $this->Ln();
+        $this->Ln(5);
         //$this->Cell(30,0,$specialty,0,0,'C');
-        $this->Cell(264.5,0,'Pay Location:',0,0,'C');
-        $this->Ln();
 
         $this->Cell(250,0,'Certificate Type:',0,0,'R');
         $this->Cell(0,0,$this->certType,0,0,'R');
+        $this->Ln(0);
+        $this->Cell(0,0,'Pay Location: '.$GLOBALS['ldap_info'][5]);
+        $this->Ln();
 
         // Draw a line
         $width=$this -> w; // Width of Current Page
         $height=$this -> h; // Height of Current Page
         $this->SetLineWidth(0.7);
         $this->SetDrawColor(0,0,0);
-        $this->Line(10,53,$width-10,53); // Line one Cross
+        $this->Line(10,54,$width-10,54); // Line one Cross
 
 // ********************       End of Personal Information          ********************
 /////////////////////////////////////////////////////////////////////////////////////////
