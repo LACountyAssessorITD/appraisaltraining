@@ -138,10 +138,22 @@ iframe {
 	padding: 10px;
 }
 
+/* Progress Bar */
 #progressBarDiv {
 	width: 70%;
 	text-align: center;
 	margin: 10px auto;
+}
+
+#progress {
+	/*width: 500px;*/
+	width: 100%;
+	border: 1px solid #aaa;
+ 	height: 20px;
+}
+#progress .bar {
+ 	background-color: #ccc;
+	height: 20px;
 }
 
 #restoreTableDiv {
@@ -228,10 +240,10 @@ iframe {
 }
 
 #mismatchListWrap {
-	margin: 10px auto;
+	/*margin: 10px auto;*/
 	overflow: auto;
 	height: 100%;
-	padding: 20px auto;
+	/*padding: 20px auto;*/
 }
 
 #mismatchDiv ul {
@@ -241,11 +253,19 @@ iframe {
 	/*overflow: auto;*/
 }
 
+#redWarning {
+	color: red;
+	font-size: 1vw;
+	text-align: center;
+	/*margin-top: 20px;*/
+}
+
 #xrefSearchBar input {
 	width: 100%;
 	padding: 5px;
 	font-size: 1vw;
-	border-radius: 5px;
+	/*border-radius: 5px;*/
+	border: none;
 }
 
 #xrefTableDiv {
@@ -253,6 +273,7 @@ iframe {
 	height: 700px;
 	text-align: center;
 	margin: 30px auto;
+	margin-top: 20px;
     border-collapse: collapse; /* Collapse borders */
     border: 1px solid #ddd; /* Add a grey border */
     font-size: 1vw; /* Increase font-size */
@@ -364,15 +385,4 @@ iframe {
 
 .spaceSpan {
 	width: 10px;
-}
-
-/* Progress Bar */
-#progress {
-      width: 500px;
-      border: 1px solid #aaa;
-      height: 20px;
-    }
-#progress .bar {
-  background-color: #ccc;
-  height: 20px;
 }

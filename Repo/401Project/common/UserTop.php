@@ -17,8 +17,8 @@ $conn = sqlsrv_connect( $serverName, $connectionInfo);
 if( $conn === false ){
      die( print_r( sqlsrv_errors(), true));
 }
-$tsql = "SELECT [EffectiveDate] FROM [UploadedDatabaseFiles]        
-        WHERE [ifCurrentDatabase]=TRUE";
+$tsql = "SELECT [EffectiveDate] FROM [UploadedDatabaseFiles]
+        WHERE [ifCurrentDatabase]='TRUE'";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false ){
      die( print_r( sqlsrv_errors(), true));

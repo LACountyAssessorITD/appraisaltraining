@@ -597,7 +597,7 @@
 
 #overviewTable thead > tr{
 	/*padding: 10px;*/
-	height: 80px;
+	height: 50px;
 	background-color: rgb(185,185,185);
 }
 

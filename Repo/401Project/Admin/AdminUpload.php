@@ -42,7 +42,7 @@
 		            	<input type='text' placeholder='dd' autocomplete='off' id="dayEffInput">
 			            <!-- <button id="effDateBtn">Submit</button> -->
 			        </div>
-			        Note: <input type="text" id = "noteInputField"><br>
+			        <p><span style="color:white"> Note: </span><input type="text" id = "noteInputField"><br></p>
 				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 				</form>
 
@@ -50,7 +50,7 @@
 				<div id="progressBarDiv">
 					<div id="progress"></div>
 					<div id="message"></div>
-				<div>
+				</div>
 			</div>
 
 		</div>
@@ -75,16 +75,20 @@
 		</div>
 
 		<div class="xrefDiv">
-			<form id='xrefSearchBar'>
-                <input type='text' placeholder='Search..' autocomplete='off'>
-            </form>
             <div id="mismatchDiv">
             	<label>Mismatched Pairs: <span id="mismatchCount">0</span></label>
+            	<!-- <br> -->
             	<div id='mismatchListWrap'>
 	            	<ul id="mismatchList">
 	            	</ul>
 	            </div>
             </div>
+            <div id="redWarning">
+            	<label>*Red entries indicate empty names from the corresponding employee or certification number</label>
+         	</div>
+            <form id='xrefSearchBar'>
+                <input type='text' placeholder='Search..' autocomplete='off'>
+            </form>
 			<div id="xrefTableDiv">
 				<table id="xrefTable">
 					<thead>
@@ -97,42 +101,7 @@
 							<th width="5%"></th>
 						</tr>
 					</thead>
-					<tbody>
-						<!-- <tr>
-							<td class="EmployeeIDData">12345</td>
-							<td class="CertNoData">23456</td>
-							<td>
-								<button class='editRowBtn'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-								<div class="editRowDiv">
-									<label>EmployeeID</label>
-									<input type="text" name="EmployeeIDInput">
-									<br>
-									<label>CertNo</label>
-									<input type="text" name="CertNoInput">
-									<br>
-									<button class="confirmEditBtn">Confirm Edit</button>
-								</div>
-							</td>
-							<td><button class="deleteRowBtn"><i class="fa fa-times" aria-hidden="true"></i></button></td>
-						</tr>
-						<tr>
-							<td class="EmployeeIDData">12345</td>
-							<td class="CertNoData">23456</td>
-							<td>
-								<button class='editRowBtn'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-								<div class="editRowDiv">
-									<label>EmployeeID</label>
-									<input type="text" name="EmployeeIDInput">
-									<br>
-									<label>CertNo</label>
-									<input type="text" name="CertNoInput">
-									<br>
-									<button class="confirmEditBtn">Confirm Edit</button>
-								</div>
-							</td>
-							<td><button class="deleteRowBtn"><i class="fa fa-times" aria-hidden="true"></i></button></td>
-						</tr> -->
-					</tbody>
+					<tbody></tbody>
 				</table>
 
 			</div>
