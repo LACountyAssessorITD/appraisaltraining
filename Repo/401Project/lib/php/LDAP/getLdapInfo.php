@@ -42,7 +42,7 @@ session_start();
 		$filter = '(samaccountname='.$look_up_username.')';
 		// $filter = '(samaccountname=243141)';
 		$attributes = array("displayname", "samaccountname", "mail", "manager","givenname",
-							"telephoneNumber","department","title");
+							"telephoneNumber","department","title","sn");
 		$result = ldap_search($ldap, $basedn, $filter, $attributes);
 
 		if (FALSE !== $result) {
@@ -76,6 +76,7 @@ session_start();
 					$title_string = (string)$info[$i]["title"][0];
 					$inforesult[] = $title_string; // title
 					$inforesult[] = getItemNumber($title_string);
+					$inforesult[] = $info[$i]["sn"][0];	//index == 8
 				}
 				echo json_encode($inforesult);
 			}
