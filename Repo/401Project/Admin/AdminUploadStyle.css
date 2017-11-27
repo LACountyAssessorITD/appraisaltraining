@@ -60,18 +60,12 @@ iframe {
 }
 
 #chooseFileDiv {
-	width: 50%;
-	float:left;
+	width: 100%;
 	margin: 10px auto;
 }
 
 #chooseFileDiv h3{
 	color: white;
-}
-
-#statusDiv {
-	width:50%;
-	float:left;
 }
 
 #UploadTitle {
@@ -142,6 +136,12 @@ iframe {
 	/*margin: auto;*/
 	/*width: 50%*/
 	padding: 10px;
+}
+
+#progressBarDiv {
+	width: 70%;
+	text-align: center;
+	margin: 10px auto;
 }
 
 #restoreTableDiv {

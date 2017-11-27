@@ -1,6 +1,5 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
 <head>
 	<title>LAC Website</title>
@@ -18,16 +17,12 @@
 	<?php include "../common/AdminTop.php"; ?>
 
 	<div class="content">
-		<!-- Progress Bar Items -->
-		<div id="progress"></div>
-		<div id="message"></div>
+
 		<div class="buttonGroup">
 			<button id="uploadSegCtrl">Upload</button>
 			<button id="restoreSegCtrl">History</button>
 			<button id="xrefSegCtrl">Xref</button>
 		</div>
-
-		<!-- <div class="selectCont" id="accordion"> -->
 
 		<div class="upload">
 			<!-- <h1 id="UploadTitle">Update</h1> -->
@@ -50,15 +45,12 @@
 			        Note: <input type="text" id = "noteInputField"><br>
 				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 				</form>
-			</div>
 
-			<div id="statusDiv">
-				<!-- <div class="uploadStatus">
-					<h2>Upload Status</h2>
-					<h2 id="uploadStatusResult"></h2>
-				</div> -->
-
-
+				<!-- Progress Bar Items -->
+				<div id="progressBarDiv">
+					<div id="progress"></div>
+					<div id="message"></div>
+				<div>
 			</div>
 
 		</div>

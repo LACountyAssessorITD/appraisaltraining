@@ -337,7 +337,7 @@ $(document).ready(function(){
                     },
                     success:function(results){
                         firstName  = results[3];
-                        LastName = results[7];
+                        LastName = results[8];
                         // empName = firs;
                     },
                     error: function(xhr, status, error){
