@@ -72,7 +72,20 @@
 				
 			}
 		}
+	}
 
+	function getInfoTesting($empNo) {
+		$inforesult  = array();
+		$inforesult[] ="Yining Huang";
+		$inforesult[] ="test@123.com";
+		$inforesult[] = "Manager abc";
+		$inforesult[] = "Yining";
+		$inforesult[] = "123123"; // phone number
+		$inforesult[] = "Best. Depart";	// pay location
+		$title_string = "Appraiser";
+		$inforesult[] = $title_string; // title
+		$inforesult[] = getItemNumber($title_string);		
+		return $inforesult;
 	}
 	
 ?>
