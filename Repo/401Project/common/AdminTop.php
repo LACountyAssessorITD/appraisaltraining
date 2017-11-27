@@ -41,7 +41,6 @@ echo "<div class='top'>
 				<label>Welcome, </label>
 				<label>".$_SESSION['FIRSTNAME']."</label>
 				<br>
-				<a href='../LDAP/logout.php' class='btn btn-danger square-btn-adjust logoutBtn'>Logout</a>
 			</div>
 			<h1><strong>Training Record</strong></h1>
 			<hr>

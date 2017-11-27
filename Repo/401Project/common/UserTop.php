@@ -37,7 +37,8 @@ echo "<div class='top'>
 		<div class='header'>
 			<div class='Welcome'>
 				<label>Welcome, </label>
-				<label>Name</label>
+				<label>".$_SESSION['FIRSTNAME']."</label>
+				<br>
 			</div>
 			<div id='pageTitle'>
 				<h1><strong>Training Record</strong></h1>
