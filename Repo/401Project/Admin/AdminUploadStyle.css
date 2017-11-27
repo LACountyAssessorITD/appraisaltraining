@@ -144,32 +144,6 @@ iframe {
 	padding: 10px;
 }
 
-#uploadStatusResult {
-}
-
-/*.errorDisplay {
-	/*margin-top: 10px;*/
-	width: 90%;
-	text-align: center;
-	font-size: 1vw;
-	color: white;
-	margin: 10px auto;
-	/*padding: 20px;*/
-}
-
-.errorDisplay p {
-	width: 100%;
-	color: red;
-	font-size: 1.5vw;
-	font-weight: bold;
-}
-
-.errorDisplay iframe {
-	width: 100%;
-	height: 600px;
-}*/
-
-
 #restoreTableDiv {
 	margin: 10px;
 	max-height: 500px;
@@ -246,7 +220,7 @@ iframe {
 #mismatchDiv {
 	text-align: center;
 	margin: 20px auto;
-	width: 30%;
+	width: 60%;
 	border-radius: 3px;
 	height: 200px;
 	color: white;
