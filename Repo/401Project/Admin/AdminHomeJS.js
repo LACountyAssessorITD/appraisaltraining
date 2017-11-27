@@ -281,7 +281,7 @@ $(document).ready(function(){
                             <ul class='info_ul_one'>\
                                 <li>Name: "+name+"</li>\
                                 <li class='certNoLi'>CertNo: <span class='certNoInfo'>"+certNo+"</span></li>\
-                                <li class='empNoLi'>CertNo: <span class='empNoInfo'>"+empNo+"</span></li>\
+                                <li class='empNoLi'>EmpNo: <span class='empNoInfo'>"+empNo+"</span></li>\
                                 <li class='emailLi'>Email: <span class='emailInfo'>"+email+"</span></li>\
                             </ul>\
                             <ul class='info_ul_two'>\
