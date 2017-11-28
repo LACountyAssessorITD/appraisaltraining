@@ -27,7 +27,7 @@ if( $stmt === false ){
 }
 else {
     $row= sqlsrv_fetch_array($stmt);
-    // define("SQL_SERVER_LACDATABASE", (string)$row[0]);
+	//$_SESSION['SQL_SERVER_LACDATABASE'] = (string)$row[0];
     $_SESSION['SQL_SERVER_LACDATABASE'] = "temporary_5_table";
 }
 sqlsrv_free_stmt($stmt);
