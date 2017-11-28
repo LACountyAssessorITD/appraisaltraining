@@ -1,36 +1,47 @@
 <?php
-	// Start the session.
-	session_start();
-
-	///// below copied from PHP.net tutorial
-	$log_file = 'most_recent_log.txt';
-	$log_append_string = "This is the beginning of log file!\n";
-	file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX); // FILE_APPEND to append content to the end; LOCK_EX flag to prevent anyone else writing to the file at the same time
-	///// above copied from PHP.net tutorial
-
-	// To get uploaded files directory
-	$recv_xlsx_dir = $_POST['dir']; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files, uploaded from front end webpage!
+	// put include_once statements here:
+	include_once "../../constants.php";
 
 	// below would be overridden!
 	$var_path_ANNUALREQ = PATH_XLSX_ANNUALREQ;
 	$var_path_SUMMARY = PATH_XLSX_SUMMARY;
 	$var_path_DETAILS = PATH_XLSX_DETAILS;
 
+	///// below copied from PHP.net tutorial
+	$log_file = 'D:/mianlu/most_recent_log.txt';
+	$log_append_string = "This is the beginning of log file!\r\n";
+	// FILE_APPEND to append content to the end; LOCK_EX flag to prevent anyone else writing to the file at the same time
+	if ( false === file_put_contents($log_file, $log_append_string, LOCK_EX) ) die(); // ml: don't use the FILE_APPEND flag here! so the log.txt file would be overwritten on this first writing operation, each time code is run
+	///// above copied from PHP.net tutorial
 
-	if ($handle = opendir('.')) {
-		while (false !== ($entry = readdir($handle))) {
-			if ($entry != "." && $entry != "..") {
-				$log_append_string = "DIR:: ".$entry."\n";
-				file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+
+	define("CALLING_FROM_WEB", true);
+
+	if (CALLING_FROM_WEB) {
+		// Start the session.
+		session_start();
+
+		// To get uploaded files directory
+		$recv_xlsx_dir = $_POST['dir']; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files, uploaded from front end webpage!
+
+		if ($handle = opendir('.')) {
+			while (false !== ($entry = readdir($handle))) {
+				if ($entry != "." && $entry != "..") {
+					$log_append_string = "DIR:: ".$entry."\r\n";
+					if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+				}
 			}
+			closedir($handle);
 		}
-		closedir($handle);
+		else {
+			$log_append_string = "FAILED TO OPEN DIR, EXITING...\r\n";
+			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+			die();
+		}
 	}
-	else {
-		$log_append_string = "FAILED TO OPEN DIR, EXITING...\n";
-		file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
-		die();
-	}
+
+
+
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// for LA County Assessor's Office - Appraisal Training Record Tracking System use only!
@@ -38,9 +49,6 @@
 	// last edit October 2017
 
 	// mianlu: NOTE: if(true/$variable){ } blocks are used to foster code snippit folding with Sublime functionalities.
-
-	// put include_once statements here:
-	include_once "../../constants.php";
 
 	// INITIALIZATION
 	if(true) {
@@ -50,7 +58,7 @@
 		$do_step_2  = true;
 		$do_step_3  = true;
 		$do_cleanup = false;
-		$print_notes = true;
+		$print_notes = false;
 		$total_num_of_rows = intval(0);
 		$overall_row_counter = intval(0);
 		$progress_bar_arr_content = array(); // variable to write out current percentage (of line-by-line insertion) to a file, which is then read from importing webpage's progress bar
@@ -86,8 +94,8 @@
 		$details				=	$excelObj_Details->getActiveSheet();
 		$total_num_of_rows		+=	$details->getHighestRow() - 1; // minus one row because of header row in xlsx
 		unset($excelObj_Summary);
-		$log_append_string = "Total number of rows to be inserted: ".(string)$total_num_of_rows."; starting insertion operation...\n";
-		file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+		$log_append_string = "Total number of rows to be inserted: ".(string)$total_num_of_rows."; starting insertion operation...\r\n";
+		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 	}
 
 
@@ -100,12 +108,12 @@
 			$connectionInfo = array( "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
 			$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
 			if( $conn ) {
-				$log_append_string = "SQL Server connection to ".SQL_SERVER_USERNAME." established.\n";
-				file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+				$log_append_string = "SQL Server connection to ".SQL_SERVER_USERNAME." established.\r\n";
+				if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 			}
 			else {
-				$log_append_string = "SQL Server connection to ".SQL_SERVER_USERNAME." cannot be established.\n";
-				file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+				$log_append_string = "SQL Server connection to ".SQL_SERVER_USERNAME." cannot be established.\r\n";
+				if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 				die( print_r( sqlsrv_errors(), true));
 			}
 		}
@@ -122,12 +130,12 @@
 			$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
 			$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
 			if( $conn ) {
-				$log_append_string = "SQL Server connection to METADATA DATABASE established.\n";
-				file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+				$log_append_string = "SQL Server connection to METADATA DATABASE established.\r\n";
+				if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 			}
 			else {
-				$log_append_string = "SQL Server connection to METADATA DATABASE could not be established.\n";
-				file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+				$log_append_string = "SQL Server connection to METADATA DATABASE could not be established.\r\n";
+				if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 				die( print_r( sqlsrv_errors(), true));
 			}
 			// (if not exist) CREATE METADATA DB -> METADATA TABLE
@@ -171,12 +179,12 @@
 			$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
 			$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
 			if( $conn ) {
-				$log_append_string = "SQL Server connection to METADATA DATABASE established.\n";
-				file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+				$log_append_string = "SQL Server connection to METADATA DATABASE established.\r\n";
+				if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 			}
 			else {
-				$log_append_string = "SQL Server connection to METADATA DATABASE could not be established.\n";
-				file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+				$log_append_string = "SQL Server connection to METADATA DATABASE could not be established.\r\n";
+				if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 				die( print_r( sqlsrv_errors(), true));
 			}
 			$current_db_query = "SELECT DbName FROM DbTable WHERE IsCurrent = 0";
@@ -198,12 +206,12 @@
 			$connectionInfo = array( "Database"=>$CurrentDatabase, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
 			$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
 			if( $conn ) {
-				$log_append_string = "SQL Server connection to CURRENT DATABASE established.\n";
-				file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+				$log_append_string = "SQL Server connection to CURRENT DATABASE established.\r\n";
+				if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 			}
 			else {
-				$log_append_string = "SQL Server connection to CURRENT DATABASE could not be established.\n";
-				file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+				$log_append_string = "SQL Server connection to CURRENT DATABASE could not be established.\r\n";
+				if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 				die( print_r( sqlsrv_errors(), true));
 			}
 		}
@@ -308,8 +316,8 @@
 
 	// 1. Summary & AnnualReq -> Employee: START
 	if($do_step_1) {
-		$log_append_string = "===== Start inserting Summary into Employee =====\n";
-		file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+		$log_append_string = "===== Start inserting Summary into Employee =====\r\n";
+		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 		// Tricky work: create table Temp to store all CertNo + 3 Dates + CurrentStatus; then create Temp2 to store distinct rows from Temp;
 		// then insert into Employee row by row from Summary, while querying Temp2 for the 3 dates
 		// TrickyWork Pt.1: create table Temp
@@ -348,8 +356,8 @@
 				$TempCertDate   = $TempCell->getValue();
 				if($TempCertDate == NULL) {
 					if($print_notes) {
-						$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in TempCertDate!\n";
-						file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+						$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in TempCertDate!\r\n";
+						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 					}
 				}
 				// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
@@ -359,8 +367,8 @@
 				$PermCertDate   = $PermCell->getValue();
 				if($PermCertDate == NULL) {
 					if($print_notes) {
-						$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in PermCertDate!\n";
-						file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+						$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in PermCertDate!\r\n";
+						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 					}
 				}
 				else if(PHPExcel_Shared_Date::isDateTime($PermCell)) $PermCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($PermCertDate));
@@ -369,8 +377,8 @@
 				$AdvCertDate    = $AdvCell->getValue();
 				if($AdvCertDate == NULL) {
 					if($print_notes) {
-						$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in AdvCertDate!\n";
-						file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+						$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in AdvCertDate!\r\n";
+						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 					}
 				}
 				else if(PHPExcel_Shared_Date::isDateTime($AdvCell)) $AdvCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($AdvCertDate));
@@ -444,8 +452,8 @@
 					$params = array($CertNo, $LastName, $MiddleName, $FirstName, $Auditor, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate, $temp_row->CurrentStatus);
 				}
 				if($errorcheck_counter != 1) {
-					$log_append_string = "ERROR: defective data from annualreq.xlsx! conflicting 3-date tuples\n";
-					file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+					$log_append_string = "ERROR: defective data from annualreq.xlsx! conflicting 3-date tuples\r\n";
+					if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 				}
 				$Summary_to_Employee = "INSERT INTO Employee (CertNo, LastName, MiddleName, FirstName, Auditor,
 																  TempCertDate, PermCertDate, AdvCertDate, CurrentStatus)
@@ -462,8 +470,8 @@
 			}
 			unset($excelObj_Summary); //////////////////// lazy-reading END
 		}
-		$log_append_string = "===== Summary into Employee finished, ".($row_count-2)." rows inserted. =====\n";
-		file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+		$log_append_string = "===== Summary into Employee finished, ".($row_count-2)." rows inserted. =====\r\n";
+		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 	}  // Summary & AnnualReq -> Employee: DONE
 
 	// 2. AnnualReq -> CertHistory: START
@@ -472,8 +480,8 @@
 		CurrentYearBalance, PriorYearBalance, CarryToYear1,
 		CarryToYear2, CarryToYear3, CarryForwardTotal)";
 		$srvr_query .= " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-		$log_append_string = "===== Start inserting AnnualReq into CertHistory =====\n";
-		file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+		$log_append_string = "===== Start inserting AnnualReq into CertHistory =====\r\n";
+		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 		//////////////////// lazy-reading INIT ////////////////////
 		$excelReader_AnnualReq  = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq->setReadDataOnly(true);
 		$excelObj_AnnualReq     = $excelReader_AnnualReq->load($var_path_ANNUALREQ);
@@ -509,8 +517,8 @@
 			// FOR PROGRESS BAR END <<<
 		}
 		unset($excelObj_AnnualReq); //////////////////// lazy-reading END
-		$log_append_string = "===== AnnualReq into CertHistory finished, ".($row_count-2)." rows inserted. =====\n";
-		file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+		$log_append_string = "===== AnnualReq into CertHistory finished, ".($row_count-2)." rows inserted. =====\r\n";
+		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 	}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
 
 	// 3. Details -> CourseDetail: START
@@ -518,8 +526,8 @@
 		$srvr_query = "INSERT INTO CourseDetail (CertNo, CourseYear, --ItemNumber,
 													CourseName, CourseLocation, CourseGrade, CourseHours, EndDate)";
 		$srvr_query .= " VALUES (?,?,?,?,?,?,?)";
-		$log_append_string = "===== Start inserting Details into CourseDetail =====\n";
-		file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+		$log_append_string = "===== Start inserting Details into CourseDetail =====\r\n";
+		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 		//////////////////// lazy-reading INIT ////////////////////
 		$excelReader_Details    = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details->setReadDataOnly(true);
 		$excelObj_Details       = $excelReader_Details->load($var_path_DETAILS);
@@ -540,8 +548,8 @@
 			$EndDate            = $EndDateCell->getValue();
 			if($EndDate == NULL) {
 				if($print_notes) {
-					$log_append_string = "NOTE: appraiser ".$CertNo." has NULL EndDate in course \"".$CourseName."\" at \"".$CourseLocation."\" !\n";
-					file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+					$log_append_string = "NOTE: appraiser ".$CertNo." has NULL EndDate in course \"".$CourseName."\" at \"".$CourseLocation."\" !\r\n";
+					if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 				}
 			}
 			// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
@@ -560,8 +568,8 @@
 			// FOR PROGRESS BAR END <<<
 		}
 		unset($excelObj_Details); //////////////////// lazy-reading END
-		$log_append_string = "===== Details into CourseDetail finished, ".($row_count-2)." rows inserted. =====\n";
-		file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+		$log_append_string = "===== Details into CourseDetail finished, ".($row_count-2)." rows inserted. =====\r\n";
+		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 	}  // Details -> CourseDetail: DONE
 
 
@@ -583,20 +591,20 @@
 		$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
 		$conn = sqlsrv_connect( SQL_SERVER_NAME, $connectionInfo);
 		if( $conn ) {
-			$log_append_string = "SQL Server connection to METADATA DATABASE established.\n";
-			file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+			$log_append_string = "SQL Server connection to METADATA DATABASE established.\r\n";
+			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 		}
 		else {
-			$log_append_string = "SQL Server connection to METADATA DATABASE could not be established.\n";
-			file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+			$log_append_string = "SQL Server connection to METADATA DATABASE could not be established.\r\n";
+			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 			die( print_r( sqlsrv_errors(), true));
 		}
 		// a clever way to toggle IsCurrent for db1 and db2
 		$update_current_db_query = "UPDATE DbTable SET IsCurrent = 1 - IsCurrent"; // previous "current database", gets IsCurrent = 0
 		$srvr_stmt = sqlsrv_query( $conn, $update_current_db_query );
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		$log_append_string = "Switching the old CURRENT DATABASE to the new CURRENT DATABASE done!\n";
-		file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX);
+		$log_append_string = "Switching the old CURRENT DATABASE to the new CURRENT DATABASE done!\r\n";
+		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 		// close connection to Metadata Database
 		sqlsrv_close($conn);
 		unset($conn);

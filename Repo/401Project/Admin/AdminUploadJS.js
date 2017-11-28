@@ -582,7 +582,7 @@ $(document).ready(function(){
           dir:dir,
         },
       });
-      // Refresh the progress bar every 5 second.
-      timer = window.setInterval(refreshProgress, 5000);
+      // Refresh the progress bar every 1 second.
+      timer = window.setInterval(refreshProgress, 1000);
     }
 });
