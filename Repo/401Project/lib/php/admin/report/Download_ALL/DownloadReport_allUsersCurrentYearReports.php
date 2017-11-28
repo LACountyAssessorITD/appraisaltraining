@@ -1,6 +1,6 @@
 <?php
 /*
-This Code generates a 600+ pages pdf Annual Training report (for current fiscal year) 
+This Code generates a 600+ pages pdf Annual Training report (for current fiscal year)
 and enable to download
 @ Yining Huang
 */
@@ -16,6 +16,7 @@ $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
 $db = SQL_SERVER_LACDATABASE;
+$master_db = SQL_SERVER_MASTERDATABASE;
 $connectionInfo = array( "UID"=>$uid,
                          "PWD"=>$pwd,
                          "Database"=>$db,
@@ -35,10 +36,11 @@ $year = $_SESSION['current_fiscal_year'];
 
 $all_certid;
 $all_empid;
+$tsql = "SELECT a.CertNo, b.EmployeeID
+        FROM ".$db.".dbo.Employee a
+        LEFT JOIN ".$master_db.".dbo.EmployeeID_Xref b
+        ON a.CertNo=b.CertNo";
 
-$tsql = "SELECT [New_Employee].[CertNo],[New_EmployeeID_Xref].[EmployeeID] FROM [New_Employee]
-        LEFT JOIN [New_EmployeeID_Xref]
-            ON [New_Employee].CertNo = [New_EmployeeID_Xref].CertNo";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
