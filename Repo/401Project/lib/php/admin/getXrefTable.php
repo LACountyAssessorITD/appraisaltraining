@@ -26,10 +26,10 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "SELECT [Employee].FirstName, [Employee].LastName, [".$master_db."].[EmployeeID_Xref].EmployeeID,[".$master_db."].[EmployeeID_Xref].CertNo
-        FROM [".$master_db."].[EmployeeID_Xref]
+$tsql = "SELECT [Employee].FirstName, [Employee].LastName, [".$master_db."].[dbo].[EmployeeID_Xref].EmployeeID,[".$master_db."].[dbo].[EmployeeID_Xref].CertNo
+        FROM [".$master_db."].[dbo].[EmployeeID_Xref]
         INNER JOIN [Employee]
-            ON [Employee].CertNo = [".$master_db."].[EmployeeID_Xref].CertNo";
+            ON [Employee].CertNo = [".$master_db."].[dbo].[EmployeeID_Xref].CertNo";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
