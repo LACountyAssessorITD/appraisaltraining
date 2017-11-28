@@ -23,17 +23,33 @@
 
 			<div class="faqSetDiv">
 				<button class="questionButton">
-					<span class='downArrowSpan'><i class='fa fa-angle-down' aria-hidden='true'></i></span> How do I filter what report I want to see?
+					<span class='downArrowSpan'><i class='fa fa-angle-down' aria-hidden='true'></i></span> How do I use the filters?
 				</button>
 
 				<div class="answerDiv">
-					<p>The answer.The answer.The answer.The answer.The answer.The answer.The answer.
-						The answer.The answer.The answer.The answer.The answer.The answer.
-					The answer.The answer.The answer.The answer.The answer.The answer.The answer.</p>
+					<p>Select from the list of filters from the left column of the webpage and click on "Apply Filter" after selections are made. The results will be displayed in the results table.</p>
 				</div>
 			</div>
 
-		</div>
+			<div class="faqSetDiv">
+				<button class="questionButton">
+					<span class='downArrowSpan'><i class='fa fa-angle-down' aria-hidden='true'></i></span> How do I view an employee's report?
+				</button>
+
+				<div class="answerDiv">
+					<p>Once you see an employee in the results table, click on the view report button at the right end of the row.</p>
+				</div>
+			</div>
+
+			<div class="faqSetDiv">
+				<button class="questionButton">
+					<span class='downArrowSpan'><i class='fa fa-angle-down' aria-hidden='true'></i></span> How do I view an employee's information?
+				</button>
+
+				<div class="answerDiv">
+					<p>Once you see an employee in the results table, click on the info icon to view that employee's information. To close, click on the icon again.</p>
+				</div>
+			</div>
 
 	</div>
 

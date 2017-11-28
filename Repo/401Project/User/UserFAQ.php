@@ -23,25 +23,11 @@
 
 			<div class="faqSetDiv">
 				<button class="questionButton">
-					<span class='downArrowSpan'><i class='fa fa-angle-down' aria-hidden='true'></i></span> How do I filter what report I want to see?
+					<span class='downArrowSpan'><i class='fa fa-angle-down' aria-hidden='true'></i></span> How do I use the filters?
 				</button>
 
 				<div class="answerDiv">
-					<p>The answer.The answer.The answer.The answer.The answer.The answer.The answer.
-						The answer.The answer.The answer.The answer.The answer.The answer.
-					The answer.The answer.The answer.The answer.The answer.The answer.The answer.</p>
-				</div>
-			</div>
-
-			<div class="faqSetDiv">
-				<button class="questionButton">
-					<span class='downArrowSpan'><i class='fa fa-angle-down' aria-hidden='true'></i></span> How do I filter what report I want to see?
-				</button>
-
-				<div class="answerDiv">
-					<p>The answer.The answer.The answer.The answer.The answer.The answer.The answer.
-						The answer.The answer.The answer.The answer.The answer.The answer.
-					The answer.The answer.The answer.The answer.The answer.The answer.The answer.</p>
+					<p>Select from the report type you want to view, then select the year or year range you want to see (if applicable). Finally, click on "Generate Report" to preview the report.</p>
 				</div>
 			</div>
 
