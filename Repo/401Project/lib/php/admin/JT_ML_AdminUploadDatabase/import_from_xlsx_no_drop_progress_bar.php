@@ -52,18 +52,19 @@
 	// put include_once statements here:
 	include_once "../../constants.php";
 
-	// Initialization Pt 1 - declare variables, constants, and flags
-	ini_set('memory_limit', '512M'); // TOT optimize more?
-	$do_step_1  = true;
-	$do_step_2  = false;
-	$do_step_3  = false;
-	$do_cleanup = false;
-	$total_num_of_rows = intval(0);
-	$overall_row_counter = intval(0);
-	$progress_bar_arr_content = array(); // variable to write out current percentage (of line-by-line insertion) to a file, which is then read from importing webpage's progress bar
-
-	// Initialization Pt 2 - xlsx reading initialization
+	// INITIALIZATION
 	if(true) {
+		// Initialization Pt 1 - declare variables, constants, and flags
+		ini_set('memory_limit', '512M'); // TOT optimize more?
+		$do_step_1  = true;
+		$do_step_2  = true;
+		$do_step_3  = true;
+		$do_cleanup = false;
+		$total_num_of_rows = intval(0);
+		$overall_row_counter = intval(0);
+		$progress_bar_arr_content = array(); // variable to write out current percentage (of line-by-line insertion) to a file, which is then read from importing webpage's progress bar
+
+		// Initialization Pt 2 - xlsx reading initialization
 		error_reporting(E_ALL ^ E_NOTICE);
 		require_once 'Classes/PHPExcel.php';
 		// enable caching to reduce memory usage for PHPExcel (tips/trick from StackOverflow)
@@ -71,25 +72,26 @@
 		$cacheSettings = array( ' memoryCacheSize ' => '16MB');
 		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 		// lazy-reading from now on! all Excel file reading are done immediately before using its data, not earlier!
+
+		// Initialization Pt 3 - count total number of rows from 3 excel sheets, using 3 "lazy-reading" blocks
+		$excelReader_AnnualReq	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq	->setReadDataOnly(true);
+		$excelObj_AnnualReq		=	$excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
+		$annualreq				=	$excelObj_AnnualReq->getActiveSheet();
+		$total_num_of_rows		+=	$annualreq->getHighestRow() - 1; // minus one row because of header row in xlsx
+		unset($excelObj_AnnualReq);
+		$excelReader_Summary	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary		->setReadDataOnly(true);
+		$excelObj_Summary		=	$excelReader_Summary->load(PATH_XLSX_SUMMARY);
+		$summary				=	$excelObj_Summary->getActiveSheet();
+		$total_num_of_rows		+=	$summary->getHighestRow() - 1; // minus one row because of header row in xlsx
+		unset($excelObj_Summary);
+		$excelReader_Details	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details		->setReadDataOnly(true);
+		$excelObj_Details		=	$excelReader_Details->load(PATH_XLSX_DETAILS);
+		$details				=	$excelObj_Details->getActiveSheet();
+		$total_num_of_rows		+=	$details->getHighestRow() - 1; // minus one row because of header row in xlsx
+		unset($excelObj_Summary);
+		echo "Total number of rows to be inserted: ".(string)$total_num_of_rows."; starting insertion operation...<br />";
 	}
 
-	// Initialization Pt 3 - count total number of rows from 3 excel sheets, using 3 "lazy-reading" blocks
-	$excelReader_AnnualReq	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq	->setReadDataOnly(true);
-	$excelObj_AnnualReq		=	$excelReader_AnnualReq->load(PATH_XLSX_ANNUALREQ);
-	$annualreq				=	$excelObj_AnnualReq->getActiveSheet();
-	$total_num_of_rows		+=	$annualreq->getHighestRow() - 1; // minus one row because of header row in xlsx
-	unset($excelObj_AnnualReq);
-	$excelReader_Summary	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary		->setReadDataOnly(true);
-	$excelObj_Summary		=	$excelReader_Summary->load(PATH_XLSX_SUMMARY);
-	$summary				=	$excelObj_Summary->getActiveSheet();
-	$total_num_of_rows		+=	$summary->getHighestRow() - 1; // minus one row because of header row in xlsx
-	unset($excelObj_Summary);
-	$excelReader_Details	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details		->setReadDataOnly(true);
-	$excelObj_Details		=	$excelReader_Details->load(PATH_XLSX_DETAILS);
-	$details				=	$excelObj_Details->getActiveSheet();
-	$total_num_of_rows		+=	$details->getHighestRow() - 1; // minus one row because of header row in xlsx
-	unset($excelObj_Summary);
-	echo "Total number of rows to be inserted: ".(string)$total_num_of_rows."; starting insertion operation...<br />";
 
 	////////////////////////////////// Step I: Mian's sql server - open connection //////////////////////////////////
 	// initialization, then open connection to metadata table which tells me which among the 2 tables shall I connect to next!

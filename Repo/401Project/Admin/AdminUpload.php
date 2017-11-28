@@ -66,7 +66,6 @@
 							<th>ifCurrentDatabase</th>
 							<th>Note</th>
 							<th>Save</th>
-							<th>View</th>
 						</tr>
 					</thead>
 
