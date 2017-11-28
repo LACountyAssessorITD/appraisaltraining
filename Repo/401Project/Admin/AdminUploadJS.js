@@ -156,7 +156,7 @@ $(document).ready(function(){
 
     $("#chooseFileBtn").on("click",function(evt) {
        evt.preventDefault();
-       alert("clicked");
+       // alert("clicked");
       $("#fileToUpload").click();
     });
 

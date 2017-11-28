@@ -42,7 +42,7 @@
 		            	<input type='text' placeholder='dd' autocomplete='off' id="dayEffInput">
 			            <!-- <button id="effDateBtn">Submit</button> -->
 			        </div>
-			        <p><span style="color:white"> Note: </span><input type="text" id = "noteInputField"><br></p>
+			        <p><span style="color:white"> Note: </span><input type="text" id = "noteInputField"><span style="color: white;"> (optional)</span><br></p>
 				    <input type="submit" value="Upload file" name="submit" id="submitNewBtn">
 				</form>
 
