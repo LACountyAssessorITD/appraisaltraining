@@ -5,7 +5,7 @@ This Code retrieves Employee_Xref table in the table to get EmpNo. CertNo and Na
 */
 include_once "../constants.php";
 include_once "../session.php";
-//session_start();
+session_start();
 
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
