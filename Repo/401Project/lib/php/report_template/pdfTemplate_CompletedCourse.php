@@ -93,11 +93,11 @@ class myPDF extends FPDF {
         $certType ="";
 
         // Get Names, Certification Date, cert type, status and specialty
-        $tsql = "SELECT * FROM [New_Employee]
-                INNER JOIN [New_CertHistory]
-                    ON [New_CertHistory].CertNo = [New_Employee].CertNo
-                WHERE [New_Employee].CertNo=".(string)$certid.
-                    " ORDER BY [New_CertHistory].CertYear DESC";
+        $tsql = "SELECT * FROM [Employee]
+                INNER JOIN [CertHistory]
+                    ON [CertHistory].CertNo = [Employee].CertNo
+                WHERE [Employee].CertNo=".(string)$certid.
+                    " ORDER BY [CertHistory].CertYear DESC";
         $conn = $GLOBALS['conn'];
         $stmt = sqlsrv_query( $conn, $tsql);
         if( $stmt === false )
@@ -209,7 +209,7 @@ class myPDF extends FPDF {
             $year_across = $year_across." OR CourseYear='".(string)$i."-".(string)($i+1)."'";
         }
         $year_across = $year_across.")";
-        $tsql = "SELECT * FROM [New_CourseDetail] WHERE CertNo=".(string)$certid." AND".$year_across.
+        $tsql = "SELECT * FROM [CourseDetail] WHERE CertNo=".(string)$certid." AND".$year_across.
                 "ORDER BY CourseYear DESC,EndDate";
 
         $stmt = sqlsrv_query( $conn, $tsql);

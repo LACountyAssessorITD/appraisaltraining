@@ -27,7 +27,7 @@ class myPDF extends FPDF {
             $this->SetDrawColor(162,157,150);
             $this->Line(10, 30,$width-10,30); // Line one Cross
         }
-        else { // if summary not finish, add columns titles to the next page
+        else { // if summary not fininew_sh, add columns titles to the next page
             $this->ln(10);
             $this->addSummaryTitles();
         }
@@ -124,7 +124,7 @@ class myPDF extends FPDF {
 
         // Get Names, Temp/Perm Certification Date, status and specialty
         // from [New_Employee]
-        $tsql = "SELECT * FROM [New_Employee] WHERE CertNo=".(string)$certid;
+        $tsql = "SELECT * FROM [Employee] WHERE CertNo=".(string)$certid;
         $stmt = sqlsrv_query( $conn, $tsql);
         if( $stmt === false )
         {
@@ -209,7 +209,7 @@ class myPDF extends FPDF {
         
         // Get Certification Type and Allowed carry over
         // from [New_CertHistory] table
-        $tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid.
+        $tsql = "SELECT * FROM [CertHistory] WHERE CertNo=".(string)$certid.
                 "ORDER BY CertYear";
         $stmt = sqlsrv_query( $conn, $tsql);
         if( $stmt === false )
