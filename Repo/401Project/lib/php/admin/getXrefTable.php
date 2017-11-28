@@ -25,7 +25,7 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "SELECT [New_Employee].FirstName, [New_Employee].LastName, [New_EmployeeID_Xref].EmployeeID,[New_EmployeeID_Xref].CertNo 
+$tsql = "SELECT [New_Employee].FirstName, [New_Employee].LastName, [New_EmployeeID_Xref].EmployeeID,[New_EmployeeID_Xref].CertNo
         FROM [New_EmployeeID_Xref]
         INNER JOIN [New_Employee]
             ON [New_Employee].CertNo = [New_EmployeeID_Xref].CertNo";

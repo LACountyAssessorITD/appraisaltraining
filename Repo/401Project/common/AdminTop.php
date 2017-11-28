@@ -1,7 +1,7 @@
 <?php
 include_once "../lib/php/session.php";
 include_once "../lib/php/constants.php";
-// redirect_onAdminPage
+// redirect_onAdminPage();
 
 // To get current Database and define as constant
 /* Access Database here */
@@ -27,7 +27,8 @@ if( $stmt === false ){
 }
 else {
     $row= sqlsrv_fetch_array($stmt);
-    define("SQL_SERVER_LACDATABASE", (string)$row[0]);
+    // define("SQL_SERVER_LACDATABASE", (string)$row[0]);
+    $_SESSION['SQL_SERVER_LACDATABASE'] = "temporary_5_table";
 }
 sqlsrv_free_stmt($stmt);
 sqlsrv_close($conn);
@@ -53,9 +54,9 @@ if( $stmt === false ){
 }
 else {
     $row= sqlsrv_fetch_array($stmt);
-    if ($row[0] =="") 
+    if ($row[0] =="")
     	$date = "NA";
-    else 
+    else
     	$date = date("Y/m/d",strtotime($row[0]));
 }
 sqlsrv_free_stmt($stmt);
