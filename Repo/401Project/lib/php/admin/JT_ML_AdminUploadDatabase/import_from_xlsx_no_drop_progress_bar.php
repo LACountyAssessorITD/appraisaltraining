@@ -63,6 +63,12 @@
 		$total_num_of_rows = intval(0);
 		$overall_row_counter = intval(0);
 		$progress_bar_arr_content = array(); // variable to write out current percentage (of line-by-line insertion) to a file, which is then read from importing webpage's progress bar
+		// FOR PRORESS BAR >>>
+		$percent = intval(0); // make the progress bar show a 0% early on!
+		$arr_content['percent'] = $percent;
+		$arr_content['message'] = $overall_row_counter . " row(s) processed.";
+		file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+		// FOR PROGRESS BAR END <<<
 
 		// Initialization Pt 2 - xlsx reading initialization
 		error_reporting(E_ALL ^ E_NOTICE);
@@ -91,6 +97,7 @@
 		unset($excelObj_Summary);
 		echo "Total number of rows to be inserted: ".(string)$total_num_of_rows."; starting insertion operation...<br />";
 	}
+
 
 
 	////////////////////////////////// Step I: Mian's sql server - open connection //////////////////////////////////
@@ -330,26 +337,21 @@
 				// TempCertDate
 				$TempCell       = $annualreq->getCell('G'.$row_count);
 				$TempCertDate   = $TempCell->getValue();
-				if($TempCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in TempCertDate!<br/>";
+				if($TempCertDate == NULL) { if($print_notes) echo "NOTE: Appraiser ".$CertNo." has NULL in TempCertDate!<br/>"; }
 				// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
 				else if(PHPExcel_Shared_Date::isDateTime($TempCell)) $TempCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($TempCertDate));
 				// PermCertDate
 				$PermCell       = $annualreq->getCell('H'.$row_count);
 				$PermCertDate   = $PermCell->getValue();
-				if($PermCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in PermCertDate!<br/>";
+				if($PermCertDate == NULL) { if($print_notes) echo "NOTE: Appraiser ".$CertNo." has NULL in PermCertDate!<br/>"; }
 				else if(PHPExcel_Shared_Date::isDateTime($PermCell)) $PermCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($PermCertDate));
 				// AdvCertDate
 				$AdvCell        = $annualreq->getCell('I'.$row_count);
 				$AdvCertDate    = $AdvCell->getValue();
-				if($AdvCertDate == NULL) echo "NOTE: Appraiser ".$CertNo." has NULL in AdvCertDate!<br/>";
+				if($AdvCertDate == NULL) { if($print_notes) echo "NOTE: Appraiser ".$CertNo." has NULL in AdvCertDate!<br/>"; }
 				else if(PHPExcel_Shared_Date::isDateTime($AdvCell)) $AdvCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($AdvCertDate));
 				// CurrentStatus
 				$CurrentStatus  = $annualreq->getCell('J'.$row_count)->getValue();
-				// if($CurrentStatusCell == NULL) {
-				//  echo "NOTE: Appraiser ".$CertNo." has NULL in CurrentStatus!<br/>";
-				//  $CurrentStatus = "";
-				// }
-				// else $CurrentStatus = $CurrentStatusCell->getValue();
 				// inserting operation
 				$params         = array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate, $CurrentStatus);
 				$stmt           = sqlsrv_query( $conn, $srvr_query, $params);
@@ -380,7 +382,6 @@
 			// BLOCK looping thru query selected lines and manipulate data fetched!
 			if(($result = sqlsrv_query($conn, $select_query)) !== false){
 				while( $temp_row = sqlsrv_fetch_object( $result )) {
-					// echo $temp_row->CertNo.'<br />';
 					$params = array($temp_row->CertNo, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate, $temp_row->CurrentStatus);
 					$stmt = sqlsrv_query($conn, $insert_query, $params);
 					if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
@@ -402,7 +403,6 @@
 				$MiddleName = $summary->getCell('F'.$row_count)->getValue();
 				$FirstName  = $summary->getCell('E'.$row_count)->getValue();
 				$Auditor    = $summary->getCell('H'.$row_count)->getValue();
-				// echo $row_count."\t".$LastName."\t".$FirstName."\t".(int)$CertNo."\t".$Auditor."<br />"; // debug
 				$Select_Temp2_Dates = "SELECT TempCertDate, PermCertDate, AdvCertDate, CurrentStatus FROM Temp2";
 				$Select_Temp2_Dates .= " WHERE CertNo = ";
 				$Select_Temp2_Dates .= $CertNo;
@@ -417,7 +417,6 @@
 
 				while( $temp_row = sqlsrv_fetch_object( $stmt )) { // $temp_row should have 3 columns
 					$errorcheck_counter ++;
-					// echo $temp_row->CertNo.'<br />';
 					$params = array($CertNo, $LastName, $MiddleName, $FirstName, $Auditor, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate, $temp_row->CurrentStatus);
 				}
 				if($errorcheck_counter != 1) echo "ERROR: defective data from annualreq.xlsx! conflicting 3-date tuples";
@@ -495,7 +494,6 @@
 		$excelObj_Details       = $excelReader_Details->load(PATH_XLSX_DETAILS);
 		$details                = $excelObj_Details->getActiveSheet();
 		//////////////////// lazy-reading READY ////////////////////
-		echo "===== Details.xlsx excel object allocation (aka lazy-reading) success! =====<br />";
 		$row_count = (int)2;
 		while ( $row_count <= $details->getHighestRow() ) { // read until the last line
 			$CertNo             = $details->getCell('C'.$row_count)->getValue();
@@ -505,16 +503,13 @@
 			$CourseLocation     = $details->getCell('J'.$row_count)->getValue();
 			$CourseGrade        = $details->getCell('K'.$row_count)->getValue();
 			$CourseHours        = $details->getCell('L'.$row_count)->getValue();
-
 			// $EndDate         = $details->getCell('H'.$row_count)->getValue();
-
 			// EndDate
 			$EndDateCell        = $details->getCell('H'.$row_count);
 			$EndDate            = $EndDateCell->getValue();
-			if($EndDate == NULL) ;// echo "NOTE: appraiser ".$CertNo." has NULL EndDate in course \"".$CourseName."\" at \"".$CourseLocation."\" !<br/>";
+			if($EndDate == NULL) { if($print_notes) echo "NOTE: appraiser ".$CertNo." has NULL EndDate in course \"".$CourseName."\" at \"".$CourseLocation."\" !<br/>";}
 			// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
 			else if(PHPExcel_Shared_Date::isDateTime($EndDateCell)) $EndDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($EndDate));
-
 
 			$params = array($CertNo, $CourseYear, $CourseName, $CourseLocation, $CourseGrade, $CourseHours, $EndDate);
 			$stmt = sqlsrv_query( $conn, $srvr_query, $params);
