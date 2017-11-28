@@ -1,6 +1,6 @@
 <?php
 	// Start the session.
-	session_start();
+	// session_start();
 
 	// To get uploaded files directory
 	$dir = $_POST['dir']; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files

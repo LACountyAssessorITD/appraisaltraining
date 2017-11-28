@@ -12,6 +12,7 @@ $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
 $db = SQL_SERVER_LACDATABASE;
+$master_db = SQL_SERVER_MASTERDATABASE;
 $connectionInfo = array( "UID"=>$uid,
                          "PWD"=>$pwd,
                          "Database"=>$db,
@@ -25,10 +26,10 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "SELECT [New_Employee].FirstName, [New_Employee].LastName, [New_EmployeeID_Xref].EmployeeID,[New_EmployeeID_Xref].CertNo
-        FROM [New_EmployeeID_Xref]
-        INNER JOIN [New_Employee]
-            ON [New_Employee].CertNo = [New_EmployeeID_Xref].CertNo";
+$tsql = "SELECT [Employee].FirstName, [Employee].LastName, [".$master_db."].[EmployeeID_Xref].EmployeeID,[".$master_db."].[EmployeeID_Xref].CertNo
+        FROM [".$master_db."].[EmployeeID_Xref]
+        INNER JOIN [Employee]
+            ON [Employee].CertNo = [".$master_db."].[EmployeeID_Xref].CertNo";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
