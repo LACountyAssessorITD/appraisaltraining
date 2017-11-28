@@ -19,12 +19,13 @@
 
 	if (CALLING_FROM_WEB) {
 		// Start the session.
-		session_start();
+		// session_start();
 
 		// To get uploaded files directory
+		// $recv_xlsx_dir = 'D:\temp\1511856783'; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files, uploaded from front end webpage!
 		$recv_xlsx_dir = $_POST['dir']; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files, uploaded from front end webpage!
 
-		if ($handle = opendir('.')) {
+		if ( ($handle = opendir((string)$recv_xlsx_dir))) {
 			while (false !== ($entry = readdir($handle))) {
 				if ($entry != "." && $entry != "..") {
 					$log_append_string = "DIR:: ".$entry."\r\n";
@@ -56,7 +57,7 @@
 		ini_set('memory_limit', '512M'); // TOT optimize more?
 		$do_step_1  = true;
 		$do_step_2  = true;
-		$do_step_3  = true;
+		$do_step_3  = false;
 		$do_cleanup = false;
 		$print_notes = false;
 		$total_num_of_rows = intval(0);
