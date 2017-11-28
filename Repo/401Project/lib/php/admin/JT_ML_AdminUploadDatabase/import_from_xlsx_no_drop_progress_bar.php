@@ -36,7 +36,7 @@
 
 	// 	// Write the progress into file and serialize the PHP array into JSON format.
 	// 	// The file name is the session id.
-	// 	file_put_contents("D:/t/" . session_id() . ".txt", json_encode($arr_content));
+	// 	file_put_contents("D:/t/log.txt", json_encode($arr_content));
 
 	// 	// Sleep one second so we can see the delay
 	// 	sleep(1);
@@ -55,8 +55,8 @@
 	// Initialization Pt 1 - declare variables, constants, and flags
 	ini_set('memory_limit', '512M'); // TOT optimize more?
 	$do_step_1  = true;
-	$do_step_2  = true;
-	$do_step_3  = true;
+	$do_step_2  = false;
+	$do_step_3  = false;
 	$do_cleanup = false;
 	$total_num_of_rows = intval(0);
 	$overall_row_counter = intval(0);
@@ -429,7 +429,7 @@
 				$percent = intval($overall_row_counter/$total_num_of_rows * 100);
 				$arr_content['percent'] = $percent;
 				$arr_content['message'] = $overall_row_counter . " row(s) processed.";
-				file_put_contents("D:/t/" . session_id() . ".txt", json_encode($arr_content)); // Write the progress into D:/t/<session_id>.txt and serialize the PHP array into JSON format.
+				file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
 				// FOR PROGRESS BAR END <<<
 			}
 			unset($excelObj_Summary); //////////////////// lazy-reading END
@@ -475,7 +475,7 @@
 			$percent = intval($overall_row_counter/$total_num_of_rows * 100);
 			$arr_content['percent'] = $percent;
 			$arr_content['message'] = $overall_row_counter . " row(s) processed.";
-			file_put_contents("D:/t/" . session_id() . ".txt", json_encode($arr_content)); // Write the progress into D:/t/<session_id>.txt and serialize the PHP array into JSON format.
+			file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
 			// FOR PROGRESS BAR END <<<
 		}
 		unset($excelObj_AnnualReq); //////////////////// lazy-reading END
@@ -523,7 +523,7 @@
 			$percent = intval($overall_row_counter/$total_num_of_rows * 100);
 			$arr_content['percent'] = $percent;
 			$arr_content['message'] = $overall_row_counter . " row(s) processed.";
-			file_put_contents("D:/t/" . session_id() . ".txt", json_encode($arr_content)); // Write the progress into D:/t/<session_id>.txt and serialize the PHP array into JSON format.
+			file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
 			// FOR PROGRESS BAR END <<<
 		}
 		unset($excelObj_Details); //////////////////// lazy-reading END

@@ -156,6 +156,7 @@ $(document).ready(function(){
 
     $("#chooseFileBtn").on("click",function(evt) {
        evt.preventDefault();
+       alert("clicked");
       $("#fileToUpload").click();
     });
 
@@ -163,16 +164,16 @@ $(document).ready(function(){
       $("#chosenFileName").text($("#fileToUpload").val());
     });
 
-    $("#effDateBtn").hide();
+    // $("#effDateBtn").hide();
 
-    $("#chooseFileBtn").on("click",function() {
-      if($("#chosenFileName").val().toUpperCase()=="none".toUpperCase()) {
-        $("#effDateBtn").hide();
-      }
-      else {
-        $("#effDateBtn").show();
-      }
-    });
+    // $("#chooseFileBtn").on("click",function() {
+    //   if($("#chosenFileName").val().toUpperCase()=="none".toUpperCase()) {
+    //     $("#effDateBtn").hide();
+    //   }
+    //   else {
+    //     $("#effDateBtn").show();
+    //   }
+    // });
 
     $("#submitNewBtn").on("click",function() {
       // $("#chosenFileName").text("");
@@ -218,6 +219,10 @@ $(document).ready(function(){
               //   },
               //   async: false
               // });
+
+              // mianlu: try to execute my php directly, using my stored xlsx files, instead of whatever file just uploaded!
+              // alert( 'echo ../lib/php/admin/JT_ML_AdminUploadDatabase -q import_from_xlsx_no_drop_progress_bar.php | at now' );
+
             }
           }
           else {      // upload fail
@@ -570,8 +575,8 @@ $(document).ready(function(){
     function startProgress(dir) {
       // Trigger the process in web server.
       $.ajax({
-        url: "../lib/php/admin/progressbar/process.php",
-        // url: "../lib/php/admin/JT_ML_AdminUploadDatabase/import_from_xlsx_no_drop_progress_bar.php",
+        // url: "../lib/php/admin/progressbar/process.php",
+        url: "../lib/php/admin/JT_ML_AdminUploadDatabase/import_from_xlsx_no_drop_progress_bar.php",
         type: "POST",
         data: {
           dir:dir,
