@@ -5,7 +5,7 @@ This Code retrieves Employee_Xref table in the table to get EmpNo. CertNo and Na
 */
 include_once "../constants.php";
 include_once "../session.php";
-//session_start();
+session_start();
 
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -26,10 +26,14 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "SELECT [New_Employee].FirstName, [New_Employee].LastName, [New_EmployeeID_Xref].EmployeeID,[New_EmployeeID_Xref].CertNo
-        FROM [New_EmployeeID_Xref]
-        INNER JOIN [New_Employee]
-            ON [New_Employee].CertNo = [New_EmployeeID_Xref].CertNo";
+// $tsql = "SELECT [".$db."].[dbo].[Employee].FirstName, [Employee].LastName, [".$master_db."].[dbo].[EmployeeID_Xref].EmployeeID,[".$master_db."].[dbo].[EmployeeID_Xref].CertNo
+//         FROM [".$master_db."].[dbo].[EmployeeID_Xref]
+//         INNER JOIN [".$db."].[dbo].[Employee]
+//             ON [".$db."].[dbo].[Employee].CertNo = [".$master_db."].[dbo].[EmployeeID_Xref].CertNo";
+$tsql = "SELECT a.FirstName, a.LastName, b.EmployeeID, b.CertNo
+        FROM ".$db.".dbo.Employee a
+        inner join ".$master_db.".dbo.EmployeeID_Xref b
+        ON a.CertNo=b.CertNo";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {

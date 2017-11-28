@@ -2,6 +2,7 @@
 include_once "../lib/php/session.php";
 include_once "../lib/php/constants.php";
 // redirect_onUserPage();
+session_start();
 
 // To get current Database and define as constant
 /* Access Database here */
@@ -27,8 +28,8 @@ if( $stmt === false ){
 }
 else {
     $row= sqlsrv_fetch_array($stmt);
-	//$_SESSION['SQL_SERVER_LACDATABASE'] = (string)$row[0];
-    $_SESSION['SQL_SERVER_LACDATABASE'] = "temporary_5_table";
+    $_SESSION['SQL_SERVER_LACDATABASE'] = (string)$row[0];
+    // $_SESSION['SQL_SERVER_LACDATABASE'] = "temporary_5_table";
 }
 sqlsrv_free_stmt($stmt);
 sqlsrv_close($conn);

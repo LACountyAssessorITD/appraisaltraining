@@ -149,11 +149,15 @@ iframe {
 	/*width: 500px;*/
 	width: 100%;
 	border: 1px solid #aaa;
- 	height: 20px;
+ 	height: 21.5px;
 }
 #progress .bar {
- 	background-color: #ccc;
+ 	background-color: white;
 	height: 20px;
+}
+
+#message {
+	color: white;
 }
 
 #restoreTableDiv {

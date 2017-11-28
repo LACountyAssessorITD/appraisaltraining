@@ -7,7 +7,7 @@ in the result table
 */
 include_once "../constants.php";
 include_once "../session.php";
-//session_start();
+session_start();
 
 $certid = $_POST['certNo'];
 
@@ -29,7 +29,7 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid." Order By CertNo";
+$tsql = "SELECT * FROM [CertHistory] WHERE CertNo=".(string)$certid." Order By CertNo";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {

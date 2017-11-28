@@ -28,7 +28,7 @@ if( $conn === false )
 
 $year = -1;
 
-$tsql = "SELECT MAX(CertYear) FROM [New_CertHistory]";
+$tsql = "SELECT MAX(CertYear) FROM [CertHistory]";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
