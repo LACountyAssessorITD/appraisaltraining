@@ -308,7 +308,7 @@ $(document).ready(function(){
               }
           },
           error: function(xhr, status, error){
-              alert("Fail to connect to the server when trying to load xref table");
+              alert("Fail to connect to the server when trying to load xref table 1");
           },
           async: false
       });
@@ -357,7 +357,7 @@ $(document).ready(function(){
               checkMismatch();
           },
           error: function(xhr, status, error){
-              alert("Fail to connect to the server when trying to load xref table");
+              alert("Fail to connect to the server when trying to load xref table 2");
           },
           async: false
       });
@@ -539,7 +539,7 @@ $(document).ready(function(){
             }
           },
           error: function(xhr, status, error){
-              alert("Fail to connect to the server when trying to load xref table");
+              alert("Fail to connect to the server when trying to load xref table 3 + error: "+error);
           },
           async: false
       });
@@ -576,7 +576,6 @@ $(document).ready(function(){
       // Trigger the process in web server.
       $.ajax({
         // url: "../lib/php/admin/progressbar/process.php",
-        // url: "../lib/php/admin/JT_ML_AdminUploadDatabase/test_progress_bar_dir_passing.php",
         url: "../lib/php/admin/JT_ML_AdminUploadDatabase/import_from_xlsx_no_drop_progress_bar.php",
         type: "POST",
         data: {
