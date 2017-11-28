@@ -41,7 +41,7 @@ session_start();
 					 	$serverName = SQL_SERVER_NAME;
 						$uid = SQL_SERVER_USERNAME;
 						$pwd = SQL_SERVER_PASSWORD;
-						$db = SQL_SERVER_LACDATABASE;
+						$db = SQL_SERVER_MASTERDATABASE;
 						$connectionInfo = array( "UID"=>$uid,
 												"PWD"=>$pwd,
 												"Database"=>$db,
@@ -57,7 +57,7 @@ session_start();
 						//echo "EmployeeID is: ".$user_name."\n";
 
 						// $tsql = "SELECT * FROM [New_EmployeeID_Xref] WHERE EmployeeID=".(int)$user_name;
-						$tsql = "SELECT * FROM [New_EmployeeID_Xref] WHERE EmployeeID=".(int)$user_name;
+						$tsql = "SELECT * FROM [EmployeeID_Xref] WHERE EmployeeID=".(int)$user_name;
 						// $tsql = "SELECT * FROM [New_EmployeeID_Xref] WHERE EmployeeID = 603253"; // Angel's EmployeeID!
 						// echo "looking in XREF for employeeID: "
 						$stmt = sqlsrv_query( $conn, $tsql);

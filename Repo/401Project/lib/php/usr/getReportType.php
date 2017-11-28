@@ -5,13 +5,13 @@ This Code retrieves available reports related information in the report table of
 */
 include_once "../constants.php";
 include_once "../session.php";
-//session_start();
+// session_start();
 
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-$db = SQL_SERVER_LACDATABASE;
+$db = SQL_SERVER_MASTERDATABASE;
 $connectionInfo = array( "UID"=>$uid,
                          "PWD"=>$pwd,
                          "Database"=>$db,

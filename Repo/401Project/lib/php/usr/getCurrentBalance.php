@@ -5,7 +5,7 @@ This Code dynamically gets individual's Carry Forward Total for the newest fisca
 */
 include_once "../constants.php";
 include_once "../session.php";
-//session_start();
+session_start();
 
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;
@@ -27,7 +27,7 @@ if( $conn === false )
 
 $certid = getCertNo();
 
-$tsql = "SELECT * FROM [New_CertHistory] WHERE CertNo=".(string)$certid." Order By [CertYear] DESC";
+$tsql = "SELECT * FROM [CertHistory] WHERE CertNo=".(string)$certid." Order By [CertYear] DESC";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {

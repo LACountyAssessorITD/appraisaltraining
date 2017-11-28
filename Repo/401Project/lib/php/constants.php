@@ -13,7 +13,6 @@
 		define("DIR", "appraisaltraining/Repo/401Project/");
 		// SQL Server Name
 		define("SQL_SERVER_NAME", "Assessor");
-		define("SQL_SERVER_LACDATABASE", $_SESSION['SQL_SERVER_LACDATABASE']); // ""
 	}
 	else {
 		// git repo file path
@@ -22,6 +21,7 @@
 		define("SQL_SERVER_NAME", "HTRAINDATADEV-V");
 		// define("SQL_SERVER_LACDATABASE", "ml_LAC_mdb_data"); // "temporary_5_table"
 	}
+
 	// Importing From These XLSX Paths
 	define("PATH_XLSX_ANNUALREQ",	DIR_PREFIX.DIR."lib/php/admin/JT_ML_AdminUploadDatabase/original_xlsx_files/AnnualReq Los Angeles.xlsx");
 	define("PATH_XLSX_SUMMARY",		DIR_PREFIX.DIR."lib/php/admin/JT_ML_AdminUploadDatabase/original_xlsx_files/Summary Los Angeles.xlsx");
@@ -36,6 +36,7 @@
 	// Common SQL Server Credentials/DatabaseNames
 	define("SQL_SERVER_USERNAME", "superadmin");
 	define("SQL_SERVER_PASSWORD", "admin");
+	define("SQL_SERVER_LACDATABASE", $_SESSION['SQL_SERVER_LACDATABASE']); // ""
 	define("SQL_SERVER_MASTERDATABASE", "ml_development_no_drop_00");
 
 	// define("SQL_SERVER_LACDATABASE_ML_DEVELOPMENT", "ml_development");
