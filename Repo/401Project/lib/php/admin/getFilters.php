@@ -6,7 +6,7 @@
 */
 include_once "../constants.php";
 include_once "../session.php";
-//session_start();
+session_start();
 
 $filter_name = $_POST['filter_name'];
 $filter_table = $_POST['filter_type'];

@@ -31,7 +31,7 @@ if( $conn === false )
 //         INNER JOIN [".$db."].[dbo].[Employee]
 //             ON [".$db."].[dbo].[Employee].CertNo = [".$master_db."].[dbo].[EmployeeID_Xref].CertNo";
 $tsql = "SELECT a.FirstName, a.LastName, b.EmployeeID, b.CertNo
-        FROM ml_development_no_drop_01.dbo.Employee a
+        FROM ".$db.".dbo.Employee a
         inner join ".$master_db.".dbo.EmployeeID_Xref b
         ON a.CertNo=b.CertNo";
 $stmt = sqlsrv_query( $conn, $tsql);
