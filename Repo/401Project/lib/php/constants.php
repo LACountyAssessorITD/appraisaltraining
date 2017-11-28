@@ -13,6 +13,7 @@
 		define("DIR", "appraisaltraining/Repo/401Project/");
 		// SQL Server Name
 		define("SQL_SERVER_NAME", "Assessor");
+		$_SESSION["FIRSTNAME"] = "Yining";
 	}
 	else {
 		// git repo file path
