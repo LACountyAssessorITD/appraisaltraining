@@ -2,7 +2,7 @@
 include_once "../lib/php/session.php";
 include_once "../lib/php/constants.php";
 // redirect_onAdminPage();
-
+session_start();
 // To get current Database and define as constant
 /* Access Database here */
 $serverName = SQL_SERVER_NAME;

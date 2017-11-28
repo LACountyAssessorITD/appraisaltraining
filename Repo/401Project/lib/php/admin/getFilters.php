@@ -33,7 +33,7 @@ if ($filter_name == "Name") {
     $tsql = "SELECT FirstName,LastName FROM ".$filter_table;
 }
 else {
-    $tsql = "SELECT DISTINCT ".$filter_name." FROM ".$filter_table;
+    $tsql = "SELECT DISTINCT ".$filter_name." FROM ".$db.'.dbo.'.$filter_table;
 }
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )

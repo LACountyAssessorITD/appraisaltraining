@@ -52,7 +52,7 @@
 
 				<!-- <p class="pFiltersLabel">Employee Info</p> -->
 
-				<div class="employeeFilters" name="[New_Employee]">
+				<div class="employeeFilters" name="[Employee]">
 
 					<div class="dropDownFilter">
 						<button class="dropDownBtn" name="Name">Full Name</button>
@@ -83,7 +83,7 @@
 					</div>
 				</div>
 
-				<div class="employeeFilters" name="[New_CertHistory]">
+				<div class="employeeFilters" name="[CertHistory]">
 					<!-- <div class="dropDownFilter">
 						<button class="dropDownBtn" name="Status">Employment Status</button>
 					</div> -->

@@ -29,9 +29,10 @@ if( $conn === false ) {
 }
 
 $year_string = (string)$year . "-" . (string)($year+1);
-a - employee  b-xref c-cerHis
-$tsql = "
-SELECT a.CertNo, a.FirstName, a.LastName, b.EmployeeID, c.CarryForwardTotal 
+$query = str_replace("Employee", "a", $query);
+$query = str_replace("EmployeeID_Xref", "b", $query);
+$query = str_replace("CertHistory", "c", $query);
+$tsql = "SELECT a.CertNo, a.FirstName, a.LastName, b.EmployeeID, c.CarryForwardTotal
   FROM ".$db.".dbo.Employee a
   INNER JOIN ".$master_db.".dbo.EmployeeID_Xref b
 	ON a.CertNo = b.CertNo
