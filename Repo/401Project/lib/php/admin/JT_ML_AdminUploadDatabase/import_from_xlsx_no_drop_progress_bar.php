@@ -606,6 +606,14 @@
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		$log_append_string = "Switching the old CURRENT DATABASE to the new CURRENT DATABASE done!\r\n";
 		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+
+		$d = $_POST['dir'];
+		$d = str_replace(UPLOADED_FILES_DIR,"",$d);
+		$update_current_db_query = "UPDATE UploadedDatabaseFiles SET ifCurrentDatabase = 0;
+									UPDATE UploadedDatabaseFiles SET ifCurrentDatabase = 1
+										WHERE Timestamp = ".$d;
+		$srvr_stmt = sqlsrv_query( $conn, $update_current_db_query );
+		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		// close connection to Metadata Database
 		sqlsrv_close($conn);
 		unset($conn);

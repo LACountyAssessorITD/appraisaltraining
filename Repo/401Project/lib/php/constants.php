@@ -33,6 +33,7 @@
 	define("ADMIN_HOME_PAGE_URL",	HTTP_PREFIX.DIR."Admin/AdminHome.php");
 	define("LOGIN_URL",				HTTP_PREFIX.DIR."index.php");
 	define("ERROR_URL",				HTTP_PREFIX.DIR."error.php");
+	define("UPLOADED_FILES_DIR", "D:/temp/");
 
 	// Common SQL Server Credentials/DatabaseNames
 	define("SQL_SERVER_USERNAME", "superadmin");
