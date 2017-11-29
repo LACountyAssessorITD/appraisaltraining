@@ -379,6 +379,7 @@ $(document).ready(function(){
                       <td class='EmployeeIDName'>"+empFullName+"</td>\
                       <td class='CertNoData'>"+certNoNew+"</td>\
                       <td class='CertNoName'>"+certName+"</td>\
+                      <td class='isAdminBool'>No</td>\
                       <td>\
                         <button class='editRowBtn'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button>\
                         <div class='editRowDiv'>\
@@ -387,6 +388,9 @@ $(document).ready(function(){
                           <br>\
                           <label>CertNo</label>\
                           <input type='text' name='CertNoInput' value='"+certNoNew+"'>\
+                          <br>\
+                          <label>is Admin</label>\
+                          <input type='checkbox' name='editIsAdminCheckbox'>\
                           <br>\
                           <button class='confirmEditBtn'>Confirm Edit</button>\
                         </div>\
@@ -463,26 +467,28 @@ $(document).ready(function(){
         $("#mismatchCount")[0].innerHTML = numMismatch;
     }
 
-    $("#saveXrefBtn").on("click",function() {
-      if (!confirm("This will update the Xref table. Cannot undo the changes. Are you sure you want to save the changes?")) {
+    $("#saveXrefBtn").on("click", function() {
+      if (!confirm("This will update the Xref table. Changes cannot be undone. Are you sure you want to save the changes?")) {
         return;
       }
+      alert("Saving is not working for now");
+      /*
       var employeeIDStr = [];
       var certNoStr = [];
-      
+
       $("#xrefTable tbody").find("tr").each(function() {
         var empid = $(this).find(".EmployeeIDData")[0].innerHTML;
         var certno = $(this).find(".CertNoData")[0].innerHTML;
         employeeIDStr.push(empid);
         certNoStr.push(certno);
-      }
+      });
       $.ajax({
         url:"../lib/php/admin/updateXrefTable.php",
         type: "POST",
         data: {
           employeeIDStr:employeeIDStr,
-          certNoStr:certNoStr
-        }
+          certNoStr:certNoStr,
+        },
         success:function(results){
           if (results == "success") {
             alert("Update saved Successfully!");
@@ -496,7 +502,8 @@ $(document).ready(function(){
         },
         async: false
       });
-    }
+      */
+    });
 
 
     function sortTable(f,n){

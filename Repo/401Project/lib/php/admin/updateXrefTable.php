@@ -1,6 +1,6 @@
 <?php
 /*
-This Code retrieves Employee_Xref table in the table to get EmpNo. CertNo and Names
+This Code update Employee_Xref table for admin (Incomplete)
 @ Yining Huang
 */
 include_once "../constants.php";

@@ -224,6 +224,26 @@ iframe {
 	position: relative;
 }*/
 
+
+
+#saveXrefDiv {
+	width: 15%;
+	text-align: center;
+	background: white;
+	border: none;
+	border-radius: 3px;
+	margin: 10px auto;
+}
+
+#saveXrefBtn {
+	width:100%;
+	text-align: center;
+	background: white;
+	border: none;
+	border-radius: 3px;
+	margin: 10px auto;
+}
+
 #xrefSearchBar {
 	text-align: center;
 	margin: 20px auto;

@@ -85,10 +85,12 @@
             <div id="redWarning">
             	<label>*Red entries indicate empty names from the corresponding employee or certification number</label>
          	</div>
+     		<div id="saveXrefDiv">
+	            <button id="saveXrefBtn"><i class="fa fa-check" aria-hidden="true"></i> Save Changes</button>
+	        </div>
             <form id='xrefSearchBar'>
                 <input type='text' placeholder='Search..' autocomplete='off'>
             </form>
-            <button id="saveXrefBtn">Save Changes</button>
 			<div id="xrefTableDiv">
 				<table id="xrefTable">
 					<thead>
@@ -97,7 +99,8 @@
 							<th width="15%">Name <button class="nameSort"><i class="fa fa-sort" aria-hidden="true"></i></button></th>
 							<th width="15%">CertNo <button class="numSort"><i class="fa fa-sort" aria-hidden="true"></i></button></th>
 							<th width="15%">Name <button class="nameSort"><i class="fa fa-sort" aria-hidden="true"></i></button></th>
-							<th width="35%">Edit</th>
+							<th width="5%">Admin</th>
+							<th width="30%">Edit</th>
 							<th width="5%"></th>
 						</tr>
 					</thead>
@@ -111,6 +114,8 @@
 				<input type="text" name="InsertEmployeeIDInput">
 				<label>CertNo:</label>
 				<input type="text" name="InsertCertNoInput">
+				<label> is Admin: </label>
+				<input type='checkbox' name='isAdminCheckbox'>
 				<button class="insertRowBtn"><span class="spaceSpan"></span>Insert Row</button>
 			</div>
 		</div>
