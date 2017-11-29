@@ -1,9 +1,11 @@
 <?php
+	error_reporting(0);
+	session_start();
 	include_once "constants.php";
 
 	$_SESSION["CERTNO"] = 6466;
 	$_SESSION["EMPLOYEEID"] = 6466;
-	
+
 	function getCertNo() {
 		return $_SESSION['CERTNO'];
 	}
@@ -58,5 +60,6 @@
 			header("Location: " . LOGIN_URL);
 		}
 	}
+	session_write_close();
 
 ?>
