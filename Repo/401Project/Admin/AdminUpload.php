@@ -88,6 +88,7 @@
             <form id='xrefSearchBar'>
                 <input type='text' placeholder='Search..' autocomplete='off'>
             </form>
+            <button id="saveXrefBtn">Save Changes</button>
 			<div id="xrefTableDiv">
 				<table id="xrefTable">
 					<thead>

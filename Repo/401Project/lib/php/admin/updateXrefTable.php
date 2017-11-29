@@ -13,11 +13,10 @@ $certNoStr = $_POST['certNoStr'];
 $serverName = SQL_SERVER_NAME;
 $uid = SQL_SERVER_USERNAME;
 $pwd = SQL_SERVER_PASSWORD;
-$db = SQL_SERVER_LACDATABASE;
 $master_db = SQL_SERVER_MASTERDATABASE;
 $connectionInfo = array( "UID"=>$uid,
                          "PWD"=>$pwd,
-                         "Database"=>$db,
+                         "Database"=>$master_db,
              "ReturnDatesAsStrings"=>true);  // convert datetime to string
 
 /* Connect using SQL Server Authentication. */
@@ -28,14 +27,11 @@ if( $conn === false )
      die( print_r( sqlsrv_errors(), true));
 }
 
-$tsql = "SELECT a.FirstName, a.LastName, b.EmployeeID, b.CertNo
-        FROM ".$db.".dbo.Employee a
-        inner join ".$master_db.".dbo.EmployeeID_Xref b
-        ON a.CertNo=b.CertNo";
+$tsql = "TRUNCATE TABLE ".$master_db.".dbo.EmployeeID_Xref";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {
-     echo "Error in executing query.</br>";
+     echo "Error in dropping database.</br>";
      die( print_r( sqlsrv_errors(), true));
 }
 else {

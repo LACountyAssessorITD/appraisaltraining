@@ -463,6 +463,41 @@ $(document).ready(function(){
         $("#mismatchCount")[0].innerHTML = numMismatch;
     }
 
+    $("#saveXrefBtn").on("click",function() {
+      if (!confirm("This will update the Xref table. Cannot undo the changes. Are you sure you want to save the changes?")) {
+        return;
+      }
+      var employeeIDStr = [];
+      var certNoStr = [];
+      
+      $("#xrefTable tbody").find("tr").each(function() {
+        var empid = $(this).find(".EmployeeIDData")[0].innerHTML;
+        var certno = $(this).find(".CertNoData")[0].innerHTML;
+        employeeIDStr.push(empid);
+        certNoStr.push(certno);
+      }
+      $.ajax({
+        url:"../lib/php/admin/updateXrefTable.php",
+        type: "POST",
+        data: {
+          employeeIDStr:employeeIDStr,
+          certNoStr:certNoStr
+        }
+        success:function(results){
+          if (results == "success") {
+            alert("Update saved Successfully!");
+          }
+          else {
+            alert("Some error occurred when updating the database");
+          }
+        },
+        error: function(xhr, status, error){
+            alert("Fail to connect to the server when trying to request update of xref table");
+        },
+        async: false
+      });
+    }
+
 
     function sortTable(f,n){
         var rows = $('#xrefTable tbody tr').get();
