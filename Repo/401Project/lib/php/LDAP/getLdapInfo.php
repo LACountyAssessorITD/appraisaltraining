@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
 	This code retrieve LDAP information for both Admin and User
 	Handle the post method (by specifying an employee number) from an ajax call
 	@ Yining Huang
@@ -27,6 +27,8 @@ session_start();
 		else if (strpos( $title, "Appraiser Trainee" )) return 1960;
 		else if (strpos( $title, "Chief Appraiser" )) return 1974;
 	}
+
+	error_reporting(0);
 
 	$look_up_username = (string)$_POST['empNo'];
 	$ldapusername = "laassessor"."\\".$_SESSION['USERNAME'];

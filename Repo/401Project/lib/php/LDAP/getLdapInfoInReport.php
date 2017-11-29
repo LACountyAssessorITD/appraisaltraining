@@ -16,18 +16,20 @@
 */
 
 	function getItemNumber($title) {
-		if ($title == "Appraiser") return 1962;
-		else if (strpos( $title, "Principal Appraiser" )) return 1970;
-		else if (strpos( $title, "Appraiser Specialist" )) return 1965;
-		else if (strpos( $title, "Supervising Appraiser" )) return 1968;
-		else if (strpos( $title, "Appraiser Assistant" )) return 1958;
-		else if (strpos( $title, "Appraiser Trainee" )) return 1960;
-		else if (strpos( $title, "Chief Appraiser" )) return 1974;
+		$title = strtolower($title);
+		if (strpos($title, strtolower("Appraiser"))!==FALSE) return 1962;
+		else if (strpos($title, strtolower("Principal Appraiser"))!==FALSE) return 1970;
+		else if (strpos($title, strtolower("Appraiser Specialist"))!==FALSE) return 1965;
+		else if (strpos($title, strtolower("Supervising Appraiser"))!==FALSE) return 1968;
+		else if (strpos($title, strtolower("Appraiser Assistant"))!==FALSE) return 1958;
+		else if (strpos($title, strtolower("Appraiser Trainee"))!==FALSE) return 1960;
+		else if (strpos($title, strtolower("Chief Appraiser"))!==FALSE) return 1974;
 	}
-	/*
+
 	function getInfo($empNo) {
-		if ($empNo == "") {		
-			$inforesult  = array();	
+		error_reporting(0);
+		if ($empNo == "") {
+			$inforesult  = array();
 			for ($i=0; $i<8; $i ++)
 				$inforesult[] = "NA";
 			return $inforesult;
@@ -50,7 +52,8 @@
 				if (FALSE !== $result) {
 					$info = ldap_get_entries($ldap, $result);
 					$inforesult  = array();
-					if($info["count"] > 0) {
+					if($info["count"] > 0 /* && sizeof($attributes)==8 */) {
+						// echo $look_up_username."\n";
 						for ($i=0; $i<$info["count"]; $i++) {
 							$inforesult[] = $info[$i]["displayname"][0];
 							$inforesult[] =$info[$i]["mail"][0];
@@ -65,6 +68,8 @@
 							$inforesult[] = $info[$i]["telephonenumber"][0];	 // phone number
 							$inforesult[] = $info[$i]["department"][0];	// pay location
 
+
+
 							$title_string = (string)$info[$i]["title"][0];
 							$inforesult[] = $title_string; // title
 							$inforesult[] = getItemNumber($title_string);
@@ -73,33 +78,42 @@
 						return $inforesult;
 					}
 					else {
-						echo "error when try to connect LDAP";
+						$inforesult[] = "NA";
+						$inforesult[] = "NA";
+						$inforesult[] = "NA";
+						$inforesult[] = "NA";
+						$inforesult[] = "NA";
+						$inforesult[] = "NA";
+						$inforesult[] = "NA";
+						$inforesult[] = "NA";
+						// echo $look_up_username;
+						return $inforesult;
 					}
 
 				}
 			}
-		}	
-	}
-	*/
-	function getInfo($empNo) {
-		$inforesult  = array();
-		if ($empNo == "") {
-			for ($i=0; $i<8; $i ++)
-				$inforesult[] = "NA";
 		}
-		else {
-			$inforesult[] ="Yining Huang";
-			$inforesult[] ="test@123.com";
-			$inforesult[] = "Manager abc";
-			$inforesult[] = "Yining";
-			$inforesult[] = "123123"; // phone number
-			$inforesult[] = "Best. Depart";	// pay location
-			$title_string = "Appraiser";
-			$inforesult[] = $title_string; // title
-			$inforesult[] = getItemNumber($title_string);
-		}
-		
-		return $inforesult;
 	}
+
+	// function getInfo($empNo) {
+	// 	$inforesult  = array();
+	// 	if ($empNo == "") {
+	// 		for ($i=0; $i<8; $i ++)
+	// 			$inforesult[] = "NA";
+	// 	}
+	// 	else {
+	// 		$inforesult[] ="Yining Huang";
+	// 		$inforesult[] ="test@123.com";
+	// 		$inforesult[] = "Manager abc";
+	// 		$inforesult[] = "Yining";
+	// 		$inforesult[] = "123123"; // phone number
+	// 		$inforesult[] = "Best. Depart";	// pay location
+	// 		$title_string = "Appraiser";
+	// 		$inforesult[] = $title_string; // title
+	// 		$inforesult[] = getItemNumber($title_string);
+	// 	}
+
+	// 	return $inforesult;
+	// }
 
 ?>

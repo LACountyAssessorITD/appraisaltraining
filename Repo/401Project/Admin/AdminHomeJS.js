@@ -214,8 +214,8 @@ $(document).ready(function(){
                 title = results[6];
             },
             error: function(xhr, status, error){
-                // alert(empNo);
-                // alert(error);
+                alert(empNo);
+                alert(error);
             },
             async:false
         });
@@ -488,6 +488,7 @@ $(document).ready(function(){
         // TO DO: Fill in data
         var certNo = $(this).closest("tr").find(".certNoInfo")[0].innerHTML;
         var empNo = $(this).closest("tr").find(".empNoInfo")[0].innerHTML;
+        var hoursShort = $(this).closest("tr").find(".hoursShortInfo")[0].innerHTML;
         alert("certno is "+certNo+ " EmpNo is "+empNo);
         var report_name = $("#reportTypeSelect option:selected").val();
         var report_file_name = getReportFileName(report_name);
@@ -536,6 +537,7 @@ $(document).ready(function(){
                                 <embed src='"+"../lib/php/admin/report/"+report_file_name+"' type='application/pdf'></embed>\
                             </object>";
                     parent.append(newElement);
+                    $("#hoursNeededLabel span")[0].innerHTML = hoursShort;
                 }
                 else {
                     alert("Undefined Report Type!");
