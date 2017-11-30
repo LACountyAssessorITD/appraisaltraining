@@ -83,7 +83,7 @@
 		    	die( print_r( sqlsrv_errors(), true));
 			}
 			$tsql = "INSERT INTO [UploadedDatabaseFiles]
-					(Timestamp, EffectiveDate, ifCurrentDatabase, Note)
+					(uploadedTimestamp, EffectiveDate, ifCurrentDatabase, Note)
 					VALUES
 					('".$timestamp."',	'".$effectiveDate."',	'"."0"."',	'".$note."') ";
 			$stmt = sqlsrv_query( $conn, $tsql);

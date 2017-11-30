@@ -26,7 +26,7 @@ if( $conn === false )
 
 $year = -1;
 
-$tsql = "SELECT * FROM [UploadedDatabaseFiles] ORDER BY [Timestamp] DESC";
+$tsql = "SELECT * FROM [UploadedDatabaseFiles] ORDER BY [uploadedTimestamp] DESC";
 $stmt = sqlsrv_query( $conn, $tsql);
 if( $stmt === false )
 {

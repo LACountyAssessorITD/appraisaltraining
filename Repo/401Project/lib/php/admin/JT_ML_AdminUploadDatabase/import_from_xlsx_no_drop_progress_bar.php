@@ -57,7 +57,7 @@
 		ini_set('memory_limit', '512M'); // TOT optimize more?
 		$do_step_1  = true;
 		$do_step_2  = true;
-		$do_step_3  = false;
+		$do_step_3  = true;
 		$do_cleanup = false;
 		$print_notes = false;
 		$total_num_of_rows = intval(0);
@@ -609,9 +609,9 @@
 
 		$d = $_POST['dir'];
 		$d = str_replace(UPLOADED_FILES_DIR,"",$d);
-		$update_current_db_query = "UPDATE UploadedDatabaseFiles SET ifCurrentDatabase = 0;
-									UPDATE UploadedDatabaseFiles SET ifCurrentDatabase = 1
-										WHERE Timestamp = ".$d;
+		$d = str_replace("/","",$d);
+		$update_current_db_query = "UPDATE UploadedDatabaseFiles SET ifCurrentDatabase = 'False';
+									UPDATE UploadedDatabaseFiles SET ifCurrentDatabase = 'True' WHERE [uploadedTimestamp] = '".$d."'";
 		$srvr_stmt = sqlsrv_query( $conn, $update_current_db_query );
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		// close connection to Metadata Database

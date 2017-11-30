@@ -559,7 +559,7 @@ $(document).ready(function(){
           success:function(results){
             $("#uploadedDatabaseTable tbody tr").remove();
             for (var i = 0 ; i < results.length; i ++) {
-              var d = new Date(results[i]['Timestamp']*1000);
+              var d = new Date(results[i]['uploadedTimestamp']*1000);
               //var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
               var year = d.getFullYear();
               var month = d.getMonth() +1 ;
@@ -569,19 +569,19 @@ $(document).ready(function(){
               var sec = d.getSeconds(); if (sec < 10) { sec = '0'+sec;}
               var time = year + '/' + month + '/' + date +' '+ hour + ':' + min + ':' + sec ;
               var markup = "<tbody><tr>\
-                  <td>"+results[i]['Timestamp']+"</td>\
+                  <td>"+results[i]['uploadedTimestamp']+"</td>\
                   <td>"+time+"</td>\
                   <td>"+results[i]['EffectiveDate']+"</td>\
                   <td>"+results[i]['ifCurrentDatabase']+"</td>\
-                  <td>"+results[i]['Note']+"</td>\
-                  <td><a id='downloadLink' href='../lib/php/admin/downloadDatabase.php?data="+results[i]['Timestamp']+"' target='_blank'>\
+                  <td><a id='downloadLink' href='../lib/php/admin/downloadDatabase.php?data="+results[i]['uploadedTimestamp']+"' target='_blank'>\
                     <button class='saveBtn'><i class='fa fa-floppy-o' aria-hidden='true'></i></button></a></td>\
+                  <td>"+results[i]['Note']+"</td>\
                 </tr></tbody>";
               $("#uploadedDatabaseTable").append(markup);
             }
           },
           error: function(xhr, status, error){
-              alert("Fail to connect to the server when trying to load xref table 3 + error: "+error);
+              alert("Fail to connect to the server when trying to load uploaded files");
           },
           async: false
       });
@@ -606,6 +606,7 @@ $(document).ready(function(){
             alert('done');
             window.clearInterval(timer);
             timer = window.setInterval(completedProgress, 1000);
+            loadUploadedDatabaseTable();
           }
         }
       });

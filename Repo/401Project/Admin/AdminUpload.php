@@ -64,8 +64,8 @@
 							<th>Uploaded Time</th>
 							<th>EffectiveDate</th>
 							<th>ifCurrentDatabase</th>
-							<th>Note</th>
 							<th>Save</th>
+							<th>Note</th>
 						</tr>
 					</thead>
 
