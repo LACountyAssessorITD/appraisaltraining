@@ -47,67 +47,87 @@
 		by the line numbers (on the lines with "if(true)" statements) to toggle-fold large chunks of code.
 	==================================================================================================================*/
 
-	// define a bunch of flags & constants; flags are used for branches in following code
-	define("CALLING_FROM_WEB", true);
-	define("DO_STEP_1", true);
-	define("DO_STEP_2", true);
-	define("DO_STEP_3", true);
-	define("DO_CLEANUP", true);
-	// 3 variables below would be overridden soon!
-	$var_path_ANNUALREQ = PATH_XLSX_ANNUALREQ;
-	$var_path_SUMMARY = PATH_XLSX_SUMMARY;
-	$var_path_DETAILS = PATH_XLSX_DETAILS;
+	/*----------------------------------------------------------------------------------------------------------------*/
+	// define functions to be called in main process
+	function checkForExit() { // call in each iteration, so that if front-end "stop" button is pressed, terminate script
+	    echo "Hello world!";
 
-	// put include_once statements here:
-	include_once "../../constants.php";
-
-	///// below copied from PHP.net tutorial
-	$log_file = 'D:/mianlu/most_recent_log.txt';
-	$log_append_string = "This is the beginning of log file!\r\n";
-	// FILE_APPEND to append content to the end; LOCK_EX flag to prevent anyone else writing to the file at the same time
-	if ( false === file_put_contents($log_file, $log_append_string, LOCK_EX) ) die(); // ml: although used in every subsequent log-write, don't use the FILE_APPEND flag here! Not using "append" will result in file re-creation, so log.txt would be completely overwritten on this line
-	///// above copied from PHP.net tutorial
-
-	if (CALLING_FROM_WEB) {
-		// DO NOT start the session. It won't work when calling from front end webpage.
-		// session_start();
-
-		// get uploaded files directory, passed by front end ajax code (adminUploadJS.js)
-		$recv_xlsx_dir = $_POST['dir']; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files, uploaded from front end uploadDatabase.php
-
-		if ( ($handle = opendir((string)$recv_xlsx_dir))) { // if read directory success
-			while (false !== ($entry = readdir($handle))) {
-				if ($entry != "." && $entry != "..") {
-					$log_append_string = "DIR:: ".$entry."\r\n";
-					if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-				}
-			}
-			closedir($handle);
-		}
-		else { // read directory fails
-			$log_append_string = "FAILED TO OPEN DIR, EXITING...\r\n";
-			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-			die();
-		}
 	}
 
+	function updateProgresBar($percentage, $msg) {
+		$arr_content['percent'] = (string)$percentage;
+		$arr_content['message'] = (string)$msg;
+		file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+	}
+	/*----------------------------------------------------------------------------------------------------------------*/
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// INITIALIZATION
+	// beginning of actual work
+
+	//	I.		INITIALIZATION
 	if(true) {
-		// Initialization Pt 1 - declare variables, constants, and flags
+		//	1.	ALWAYS PUT THIS ON TOP! because constants are referenced everywhere. Put include_once statements here:
+		include_once "../../constants.php";
+
+		//	2.	define a bunch of constants & flags; flags are used for branches in following code
 		ini_set('memory_limit', '512M'); // TOT optimize more?
-		$print_notes = false;
+		define("CALLING_FROM_WEB", false);
+		define("PRINT_NOTES", false);
+		define("DO_STEP_1", true);
+		define("DO_STEP_2", false);
+		define("DO_STEP_3", false);
+		define("DO_CLEANUP", false);
+		$var_path_ANNUALREQ = PATH_XLSX_ANNUALREQ;
+		$var_path_SUMMARY = PATH_XLSX_SUMMARY;
+		$var_path_DETAILS = PATH_XLSX_DETAILS;
 		$total_num_of_rows = intval(0);
 		$overall_row_counter = intval(0);
-		$progress_bar_arr_content = array(); // variable to write out current percentage (of line-by-line insertion) to a file, which is then read from importing webpage's progress bar
+		$progress_bar_arr_content = array();	// variable to write out current percentage (of line-by-line insertion)
+												// to a file, which is then read from importing webpage's progress bar
 		// FOR PRORESS BAR >>>
-		$percent = intval(0); // make the progress bar show a 0% early on!
-		$arr_content['percent'] = $percent;
-		$arr_content['message'] = $overall_row_counter." row(s) processed.";
-		file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+		updateProgresBar( intval(0), ((string)$overall_row_counter." row(s) processed. - INITIAL") )
+		exit();
+		// $percent = intval(0); // make the progress bar show a 0% early on, for admin to see, instead of blanking for 30s
+		// $arr_content['percent'] = $percent;
+		// $arr_content['message'] = $overall_row_counter." row(s) processed.";
+		// file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
 		// FOR PROGRESS BAR END <<<
 
-		// Initialization Pt 2 - xlsx reading initialization
+		//	3.	define a log text file to replace "echo" debugging statements. See top block of comments for more details.
+		// below copied from PHP.net tutorial >>>
+		$log_file = 'D:/mianlu/most_recent_log.txt';
+		$log_append_string = "This is the beginning of log file!\r\n";
+		// FILE_APPEND to append content to the end; LOCK_EX flag to prevent anyone else writing to the file at the same time
+		if ( false === file_put_contents($log_file, $log_append_string, LOCK_EX) ) die(); // ml: although used in every subsequent log-write, don't use the FILE_APPEND flag here! Not using "append" will result in file re-creation, so log.txt would be completely overwritten on this line
+		// above copied from PHP.net tutorial <<<
+
+		//	4.	if calling code from web, here are some extra overhead to get everything working. If running this php
+		//		as stand-alone webpage, lines below are skipped
+		if (CALLING_FROM_WEB) {
+			// DO NOT start the session. It won't work when calling from front end webpage.
+			// session_start();
+
+			// get uploaded files directory, passed by front end ajax code (adminUploadJS.js)
+			$recv_xlsx_dir = $_POST['dir']; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files, uploaded from front end uploadDatabase.php
+			if ( ($handle = opendir((string)$recv_xlsx_dir))) { // if read directory success
+				while (false !== ($entry = readdir($handle))) {
+					if ($entry != "." && $entry != "..") {
+						$log_append_string = "DIR:: ".$entry."\r\n";
+						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+					}
+				}
+				closedir($handle);
+			}
+			else { // read directory fails
+				$log_append_string = "FAILED TO OPEN DIR, EXITING...\r\n";
+				if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+				die();
+			}
+		}
+
+
+
+		//	6.	xlsx reading initialization
 		error_reporting(E_ALL ^ E_NOTICE);
 		require_once 'Classes/PHPExcel.php';
 		// enable caching to reduce memory usage for PHPExcel (tips/trick from StackOverflow)
@@ -116,7 +136,7 @@
 		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 		// lazy-reading from now on! all Excel file reading are done immediately before using its data, not earlier!
 
-		// Initialization Pt 3 - count total number of rows from 3 excel sheets, using 3 "lazy-reading" blocks
+		//	7.	count total number of rows from 3 excel sheets, using 3 "lazy-reading" blocks
 		$excelReader_AnnualReq	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq	->setReadDataOnly(true);
 		$excelObj_AnnualReq		=	$excelReader_AnnualReq->load($var_path_ANNUALREQ);
 		$annualreq				=	$excelObj_AnnualReq->getActiveSheet();
@@ -142,10 +162,9 @@
 		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 	}
 
-
-
-	////////////////////////////////// Step I: Mian's sql server - open connection //////////////////////////////////
-	// initialization, then open connection to metadata table which tells me which among the 2 tables shall I connect to next!
+	//	II.		SQL Server - open connection the correct way
+	//			try to open Metadata Database "00" (or create it, if it's not there); make sure "01" & "02" exist;
+	//			decide which among "01" & "02" is the obsolete one and run database update that one. (see top comment)
 	if(true) {
 		// step 1 - connect to SQL Server, NOT specifying any database!
 		if(true) {
@@ -167,6 +186,7 @@
 			file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
 			// FOR PROGRESS BAR END <<<
 		}
+
 		// step 2 - (if not exist) create metadata database, connect to it, then create & populate DbTable
 		if(true) {
 			// (if not exist) CREATE METADATA DB
@@ -224,12 +244,14 @@
 			$srvr_stmt = sqlsrv_query( $conn, $create_db1 );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		}
+
 		// step 4 - if not exist create db2
 		if(true) {
 			$create_db2 = "IF (db_id(N'".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02."') IS NULL) CREATE DATABASE ".SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_02;
 			$srvr_stmt = sqlsrv_query( $conn, $create_db2 );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		}
+
 		// step 5 - all 3 databases and DbTable should exist right now, PLEASE reconnect $conn to metadata db, and start reading
 		if(true) {
 			$connectionInfo = array( "Database"=>SQL_SERVER_LACDATABASE_ML_DEVELOPMENT_no_drop_00, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
@@ -257,6 +279,7 @@
 			unset($conn);
 			if($error_checker != 1) die("ERROR in METADATA DATABASE! Please ask development team to troubleshoot! Exactly 1 entry in Metadata Table should contain IsCurrent = 1 and Exactly 1 entry should contain IsCurrent = 0");
 		}
+
 		// Step 6 - open connection to the non-current database so that if sth bad occurs during import, roll-back to previous database!
 		if(true) {
 			$connectionInfo = array( "Database"=>$CurrentDatabase, "UID"=>SQL_SERVER_USERNAME, "PWD"=>SQL_SERVER_PASSWORD);
@@ -271,15 +294,19 @@
 				die( print_r( sqlsrv_errors(), true));
 			}
 		}
-		// FOR PRORESS BAR >>>
-		$percent = intval(11); // roughly say, 11% of work is done up to now
-		$arr_content['percent'] = $percent;
-		$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
-		file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
-		// FOR PROGRESS BAR END <<<
+
+		// Step 7 - progress bar update
+		if(true) {
+			// FOR PRORESS BAR >>>
+			$percent = intval(11); // roughly say, 11% of work is done up to now
+			$arr_content['percent'] = $percent;
+			$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+			file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+			// FOR PROGRESS BAR END <<<
+		}
 	}
 
-	////////////////////////////////// Step II: Mian's sql server - create 5 empty tables //////////////////////////////////
+	//	III.	SQL Server - create 5 empty tables
 	if(true) {
 		// 1. create queries to drop existing tables with same names that we're gonna create
 		$drop_CH    = "IF OBJECT_ID('dbo.CertHistory', 'U') IS NOT NULL DROP TABLE dbo.CertHistory";
@@ -379,166 +406,213 @@
 		// FOR PROGRESS BAR END <<<
 	}
 
-	////////////////////////////////// Step III: read data from xlsx or mdb, and then insert into SQL sever //////////////////////////////////
+	//	IV.		Read data from xlsx or mdb, and then insert into SQL sever
+	if(true) {
+		// 1. Summary & AnnualReq -> Employee: START
+		if(DO_STEP_1) {
+			$log_append_string = "===== Start inserting Summary into Employee =====\r\n";
+			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+			// Tricky work: create table Temp to store all CertNo + 3 Dates + CurrentStatus; then create Temp2 to store distinct rows from Temp;
+			// then insert into Employee row by row from Summary, while querying Temp2 for the 3 dates
+			// TrickyWork Pt.1: create table Temp
+			if(true) {
+				$drop_temp  = "IF OBJECT_ID('dbo.Temp', 'U') IS NOT NULL DROP TABLE dbo.Temp";
+				$srvr_stmt = sqlsrv_query( $conn, $drop_temp );
+				if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+				$create_temp = "CREATE TABLE dbo.Temp (
+					CertNo float,                       --dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
+					TempCertDate datetime2(0),          --dbo.AnnualReq
+					PermCertDate datetime2(0),          --dbo.AnnualReq
+					AdvCertDate datetime2(0),           --dbo.AnnualReq
+					CurrentStatus nvarchar(50),         --dbo.AnnualReq
+				)";
+				$srvr_stmt = sqlsrv_query( $conn, $create_temp );
+				if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+			}
+			// TrickyWork Pt.2: populate Temp
+			if(true) {
+				$srvr_query = "INSERT INTO Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate, CurrentStatus)";
+				$srvr_query .= " VALUES (?,?,?,?,?)";
+				//////////////////// lazy-reading INIT ////////////////////
+				$excelReader_AnnualReq  = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq  ->setReadDataOnly(true);
+				$excelObj_AnnualReq     = $excelReader_AnnualReq->load($var_path_ANNUALREQ);
+				$annualreq              = $excelObj_AnnualReq->getActiveSheet();
+				//////////////////// lazy-reading READY ////////////////////
+				$row_count = (int)2; // actual data starts at row 2 of Excel spreadsheet
+				while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
+					// select distinct CertID rows from AnnualReq
+					$CertNo         = $annualreq->getCell('D'.$row_count)->getValue();
+					// 3 tricky dates
+					// one weird bug: getCell and getValue naively would result in today's date being inserted into Temp! which would mess
+					// up everything from this point onwards in php code execution!
+					// TempCertDate
+					$TempCell       = $annualreq->getCell('G'.$row_count);
+					$TempCertDate   = $TempCell->getValue();
+					if($TempCertDate == NULL) {
+						if(PRINT_NOTES) {
+							$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in TempCertDate!\r\n";
+							if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+						}
+					}
+					// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
+					else if(PHPExcel_Shared_Date::isDateTime($TempCell)) $TempCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($TempCertDate));
+					// PermCertDate
+					$PermCell       = $annualreq->getCell('H'.$row_count);
+					$PermCertDate   = $PermCell->getValue();
+					if($PermCertDate == NULL) {
+						if(PRINT_NOTES) {
+							$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in PermCertDate!\r\n";
+							if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+						}
+					}
+					else if(PHPExcel_Shared_Date::isDateTime($PermCell)) $PermCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($PermCertDate));
+					// AdvCertDate
+					$AdvCell        = $annualreq->getCell('I'.$row_count);
+					$AdvCertDate    = $AdvCell->getValue();
+					if($AdvCertDate == NULL) {
+						if(PRINT_NOTES) {
+							$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in AdvCertDate!\r\n";
+							if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+						}
+					}
+					else if(PHPExcel_Shared_Date::isDateTime($AdvCell)) $AdvCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($AdvCertDate));
+					// CurrentStatus
+					$CurrentStatus  = $annualreq->getCell('J'.$row_count)->getValue();
+					// inserting operation
+					$params         = array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate, $CurrentStatus);
+					$stmt           = sqlsrv_query( $conn, $srvr_query, $params);
+					if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
+					$row_count ++;
+				}
+				unset($excelObj_AnnualReq); //////////////////// lazy-reading END
+				// FOR PRORESS BAR >>>
+				$percent = intval(18); // roughly say, 18% of work is done up to now
+				$arr_content['percent'] = $percent;
+				$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+				file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+				// FOR PROGRESS BAR END <<<
+			}
+			// TrickyWork Pt.3: create table Temp2
+			if(true) {
+				$drop_temp2 = "IF OBJECT_ID('dbo.Temp2', 'U') IS NOT NULL DROP TABLE dbo.Temp2";
+				$srvr_stmt = sqlsrv_query( $conn, $drop_temp2 );
+				if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+				$create_temp2 = "CREATE TABLE dbo.Temp2 (
+					CertNo float,
+					TempCertDate datetime2(0),
+					PermCertDate datetime2(0),
+					AdvCertDate datetime2(0),
+					CurrentStatus nvarchar(50),
+				)";
+				$srvr_stmt = sqlsrv_query( $conn, $create_temp2 );
+				if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+			}
+			// TrickyWork Pt.4: populate Temp2
+			if(true) {
+				$select_query = "SELECT DISTINCT * FROM Temp ORDER BY CertNo";
+				$insert_query = "INSERT INTO Temp2 (CertNo, TempCertDate, PermCertDate, AdvCertDate, CurrentStatus) VALUES (?,?,?,?,?)";
+				// BLOCK looping thru query selected lines and manipulate data fetched!
+				if(($result = sqlsrv_query($conn, $select_query)) !== false){
+					while( $temp_row = sqlsrv_fetch_object( $result )) {
+						$params = array($temp_row->CertNo, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate, $temp_row->CurrentStatus);
+						$stmt = sqlsrv_query($conn, $insert_query, $params);
+						if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
+					}
+				}
+				// FOR PRORESS BAR >>>
+				$percent = intval(20); // roughly say, 20% of work is done up to now
+				$arr_content['percent'] = $percent;
+				$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+				file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+				// FOR PROGRESS BAR END <<<
+			}
+			// TrickyWork Pt.5: insert into Employee table from summary.xlsx (line-by-line) & Temp2 (querying 3 dates + CurrentStatus along with each line)
+			if(true) {
+				//////////////////// lazy-reading INIT ////////////////////
+				$excelReader_Summary    = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary->setReadDataOnly(true);
+				$excelObj_Summary       = $excelReader_Summary->load($var_path_SUMMARY);
+				$summary                = $excelObj_Summary->getActiveSheet();
+				//////////////////// lazy-reading READY ////////////////////
+				$row_count = (int)2;
+				while ( $row_count <= $summary->getHighestRow() ) { // read until the last line
+					$params     = NULL;
+					$CertNo     = $summary->getCell('G'.$row_count)->getValue();
+					$LastName   = $summary->getCell('D'.$row_count)->getValue();
+					$MiddleName = $summary->getCell('F'.$row_count)->getValue();
+					$FirstName  = $summary->getCell('E'.$row_count)->getValue();
+					$Auditor    = $summary->getCell('H'.$row_count)->getValue();
+					$Select_Temp2_Dates = "SELECT TempCertDate, PermCertDate, AdvCertDate, CurrentStatus FROM Temp2";
+					$Select_Temp2_Dates .= " WHERE CertNo = ";
+					$Select_Temp2_Dates .= $CertNo;
+					// use a counter to check for conflicting dates across Temp2:
+					// ideally, Temp2 table should never contain multiple rows with the same CertNo, since in Temp,
+					// each person i.e. CertNo should have all rows with the same 3 dates; however if this is not the case,
+					// then Temp2 (which contains all distinct rows from Temp) would contain multiple rows with the same CertNo but different
+					// 3 dates, which is an error in BOE data. This integer counter would detect it.
+					$errorcheck_counter = (int)0;
+					$stmt = sqlsrv_query($conn, $Select_Temp2_Dates); // TOT
+					if( $stmt === false ) die( print_r(sqlsrv_errors(), true) ); // TOT generic 2-line-template for executing SQL Server query
 
+					while( $temp_row = sqlsrv_fetch_object( $stmt )) { // $temp_row should have 3 columns
+						$errorcheck_counter ++;
+						$params = array($CertNo, $LastName, $MiddleName, $FirstName, $Auditor, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate, $temp_row->CurrentStatus);
+					}
+					if($errorcheck_counter != 1) {
+						$log_append_string = "ERROR: defective data from annualreq.xlsx! conflicting 3-date tuples\r\n";
+						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+					}
+					$Summary_to_Employee = "INSERT INTO Employee (CertNo, LastName, MiddleName, FirstName, Auditor,
+																	  TempCertDate, PermCertDate, AdvCertDate, CurrentStatus)
+																	  VALUES (?,?,?,?,?,?,?,?,?)";
+					if( $stmt = sqlsrv_query( $conn, $Summary_to_Employee, $params) === false ) die( print_r(sqlsrv_errors(), true) );
+					$row_count ++;
+					// FOR PRORESS BAR >>>
+					$overall_row_counter += 1;
+					$percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
+					$arr_content['percent'] = $percent;
+					$arr_content['message'] = $overall_row_counter . " row(s) processed.";
+					file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+					// FOR PROGRESS BAR END <<<
+				}
+				unset($excelObj_Summary); //////////////////// lazy-reading END
+			}
+			$log_append_string = "===== Summary into Employee finished, ".($row_count-2)." rows inserted. =====\r\n";
+			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+		}  // Summary & AnnualReq -> Employee: DONE
 
-	// 1. Summary & AnnualReq -> Employee: START
-	if(DO_STEP_1) {
-		$log_append_string = "===== Start inserting Summary into Employee =====\r\n";
-		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-		// Tricky work: create table Temp to store all CertNo + 3 Dates + CurrentStatus; then create Temp2 to store distinct rows from Temp;
-		// then insert into Employee row by row from Summary, while querying Temp2 for the 3 dates
-		// TrickyWork Pt.1: create table Temp
-		if(true) {
-			$drop_temp  = "IF OBJECT_ID('dbo.Temp', 'U') IS NOT NULL DROP TABLE dbo.Temp";
-			$srvr_stmt = sqlsrv_query( $conn, $drop_temp );
-			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-			$create_temp = "CREATE TABLE dbo.Temp (
-				CertNo float,                       --dbo.Summary (dbo.AnnualReq/Details also contain, but should be all duplicates, doublecheck!)
-				TempCertDate datetime2(0),          --dbo.AnnualReq
-				PermCertDate datetime2(0),          --dbo.AnnualReq
-				AdvCertDate datetime2(0),           --dbo.AnnualReq
-				CurrentStatus nvarchar(50),         --dbo.AnnualReq
-			)";
-			$srvr_stmt = sqlsrv_query( $conn, $create_temp );
-			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		}
-		// TrickyWork Pt.2: populate Temp
-		if(true) {
-			$srvr_query = "INSERT INTO Temp (CertNo, TempCertDate, PermCertDate, AdvCertDate, CurrentStatus)";
-			$srvr_query .= " VALUES (?,?,?,?,?)";
+		// 2. AnnualReq -> CertHistory: START
+		if(DO_STEP_2) {
+			$srvr_query = "INSERT INTO CertHistory (CertNo, CertYear, CertType, Status, HoursEarned, RequiredHours,
+			CurrentYearBalance, PriorYearBalance, CarryToYear1,
+			CarryToYear2, CarryToYear3, CarryForwardTotal)";
+			$srvr_query .= " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+			$log_append_string = "===== Start inserting AnnualReq into CertHistory =====\r\n";
+			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 			//////////////////// lazy-reading INIT ////////////////////
-			$excelReader_AnnualReq  = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq  ->setReadDataOnly(true);
+			$excelReader_AnnualReq  = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq->setReadDataOnly(true);
 			$excelObj_AnnualReq     = $excelReader_AnnualReq->load($var_path_ANNUALREQ);
 			$annualreq              = $excelObj_AnnualReq->getActiveSheet();
 			//////////////////// lazy-reading READY ////////////////////
-			$row_count = (int)2; // actual data starts at row 2 of Excel spreadsheet
-			while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
-				// select distinct CertID rows from AnnualReq
-				$CertNo         = $annualreq->getCell('D'.$row_count)->getValue();
-				// 3 tricky dates
-				// one weird bug: getCell and getValue naively would result in today's date being inserted into Temp! which would mess
-				// up everything from this point onwards in php code execution!
-				// TempCertDate
-				$TempCell       = $annualreq->getCell('G'.$row_count);
-				$TempCertDate   = $TempCell->getValue();
-				if($TempCertDate == NULL) {
-					if($print_notes) {
-						$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in TempCertDate!\r\n";
-						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-					}
-				}
-				// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
-				else if(PHPExcel_Shared_Date::isDateTime($TempCell)) $TempCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($TempCertDate));
-				// PermCertDate
-				$PermCell       = $annualreq->getCell('H'.$row_count);
-				$PermCertDate   = $PermCell->getValue();
-				if($PermCertDate == NULL) {
-					if($print_notes) {
-						$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in PermCertDate!\r\n";
-						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-					}
-				}
-				else if(PHPExcel_Shared_Date::isDateTime($PermCell)) $PermCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($PermCertDate));
-				// AdvCertDate
-				$AdvCell        = $annualreq->getCell('I'.$row_count);
-				$AdvCertDate    = $AdvCell->getValue();
-				if($AdvCertDate == NULL) {
-					if($print_notes) {
-						$log_append_string = "NOTE: Appraiser ".$CertNo." has NULL in AdvCertDate!\r\n";
-						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-					}
-				}
-				else if(PHPExcel_Shared_Date::isDateTime($AdvCell)) $AdvCertDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($AdvCertDate));
-				// CurrentStatus
-				$CurrentStatus  = $annualreq->getCell('J'.$row_count)->getValue();
-				// inserting operation
-				$params         = array($CertNo, $TempCertDate, $PermCertDate, $AdvCertDate, $CurrentStatus);
-				$stmt           = sqlsrv_query( $conn, $srvr_query, $params);
-				if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
-				$row_count ++;
-			}
-			unset($excelObj_AnnualReq); //////////////////// lazy-reading END
-			// FOR PRORESS BAR >>>
-			$percent = intval(18); // roughly say, 18% of work is done up to now
-			$arr_content['percent'] = $percent;
-			$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
-			file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
-			// FOR PROGRESS BAR END <<<
-		}
-		// TrickyWork Pt.3: create table Temp2
-		if(true) {
-			$drop_temp2 = "IF OBJECT_ID('dbo.Temp2', 'U') IS NOT NULL DROP TABLE dbo.Temp2";
-			$srvr_stmt = sqlsrv_query( $conn, $drop_temp2 );
-			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-			$create_temp2 = "CREATE TABLE dbo.Temp2 (
-				CertNo float,
-				TempCertDate datetime2(0),
-				PermCertDate datetime2(0),
-				AdvCertDate datetime2(0),
-				CurrentStatus nvarchar(50),
-			)";
-			$srvr_stmt = sqlsrv_query( $conn, $create_temp2 );
-			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		}
-		// TrickyWork Pt.4: populate Temp2
-		if(true) {
-			$select_query = "SELECT DISTINCT * FROM Temp ORDER BY CertNo";
-			$insert_query = "INSERT INTO Temp2 (CertNo, TempCertDate, PermCertDate, AdvCertDate, CurrentStatus) VALUES (?,?,?,?,?)";
-			// BLOCK looping thru query selected lines and manipulate data fetched!
-			if(($result = sqlsrv_query($conn, $select_query)) !== false){
-				while( $temp_row = sqlsrv_fetch_object( $result )) {
-					$params = array($temp_row->CertNo, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate, $temp_row->CurrentStatus);
-					$stmt = sqlsrv_query($conn, $insert_query, $params);
-					if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
-				}
-			}
-			// FOR PRORESS BAR >>>
-			$percent = intval(20); // roughly say, 20% of work is done up to now
-			$arr_content['percent'] = $percent;
-			$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
-			file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
-			// FOR PROGRESS BAR END <<<
-		}
-		// TrickyWork Pt.5: insert into Employee table from summary.xlsx (line-by-line) & Temp2 (querying 3 dates + CurrentStatus along with each line)
-		if(true) {
-			//////////////////// lazy-reading INIT ////////////////////
-			$excelReader_Summary    = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary->setReadDataOnly(true);
-			$excelObj_Summary       = $excelReader_Summary->load($var_path_SUMMARY);
-			$summary                = $excelObj_Summary->getActiveSheet();
-			//////////////////// lazy-reading READY ////////////////////
 			$row_count = (int)2;
-			while ( $row_count <= $summary->getHighestRow() ) { // read until the last line
-				$params     = NULL;
-				$CertNo     = $summary->getCell('G'.$row_count)->getValue();
-				$LastName   = $summary->getCell('D'.$row_count)->getValue();
-				$MiddleName = $summary->getCell('F'.$row_count)->getValue();
-				$FirstName  = $summary->getCell('E'.$row_count)->getValue();
-				$Auditor    = $summary->getCell('H'.$row_count)->getValue();
-				$Select_Temp2_Dates = "SELECT TempCertDate, PermCertDate, AdvCertDate, CurrentStatus FROM Temp2";
-				$Select_Temp2_Dates .= " WHERE CertNo = ";
-				$Select_Temp2_Dates .= $CertNo;
-				// use a counter to check for conflicting dates across Temp2:
-				// ideally, Temp2 table should never contain multiple rows with the same CertNo, since in Temp,
-				// each person i.e. CertNo should have all rows with the same 3 dates; however if this is not the case,
-				// then Temp2 (which contains all distinct rows from Temp) would contain multiple rows with the same CertNo but different
-				// 3 dates, which is an error in BOE data. This integer counter would detect it.
-				$errorcheck_counter = (int)0;
-				$stmt = sqlsrv_query($conn, $Select_Temp2_Dates); // TOT
-				if( $stmt === false ) die( print_r(sqlsrv_errors(), true) ); // TOT generic 2-line-template for executing SQL Server query
-
-				while( $temp_row = sqlsrv_fetch_object( $stmt )) { // $temp_row should have 3 columns
-					$errorcheck_counter ++;
-					$params = array($CertNo, $LastName, $MiddleName, $FirstName, $Auditor, $temp_row->TempCertDate, $temp_row->PermCertDate, $temp_row->AdvCertDate, $temp_row->CurrentStatus);
-				}
-				if($errorcheck_counter != 1) {
-					$log_append_string = "ERROR: defective data from annualreq.xlsx! conflicting 3-date tuples\r\n";
-					if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-				}
-				$Summary_to_Employee = "INSERT INTO Employee (CertNo, LastName, MiddleName, FirstName, Auditor,
-																  TempCertDate, PermCertDate, AdvCertDate, CurrentStatus)
-																  VALUES (?,?,?,?,?,?,?,?,?)";
-				if( $stmt = sqlsrv_query( $conn, $Summary_to_Employee, $params) === false ) die( print_r(sqlsrv_errors(), true) );
+			while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
+				// int counter logic end
+				$CertNo             = $annualreq->getCell('D'.$row_count)->getValue();
+				$CertYear           = $annualreq->getCell('M'.$row_count)->getValue();
+				$CertType           = $annualreq->getCell('L'.$row_count)->getValue();
+				$Status             = $annualreq->getCell('K'.$row_count)->getValue();
+				$HoursEarned        = $annualreq->getCell('N'.$row_count)->getValue();
+				$RequiredHours      = $annualreq->getCell('O'.$row_count)->getValue();
+				$CurrentYearBalance = $annualreq->getCell('P'.$row_count)->getValue();
+				$PriorYearBalance   = $annualreq->getCell('Q'.$row_count)->getValue();
+				$CarryToYear1       = $annualreq->getCell('R'.$row_count)->getValue();
+				$CarryToYear2       = $annualreq->getCell('S'.$row_count)->getValue();
+				$CarryToYear3       = $annualreq->getCell('T'.$row_count)->getValue();
+				$CarryForwardTotal  = $annualreq->getCell('U'.$row_count)->getValue();
+				$params = array($CertNo, $CertYear, $CertType, $Status, $HoursEarned, $RequiredHours,
+				$CurrentYearBalance, $PriorYearBalance, $CarryToYear1,$CarryToYear2, $CarryToYear3,
+				$CarryForwardTotal);
+				$stmt = sqlsrv_query( $conn, $srvr_query, $params);
+				if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
 				$row_count ++;
 				// FOR PRORESS BAR >>>
 				$overall_row_counter += 1;
@@ -548,112 +622,65 @@
 				file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
 				// FOR PROGRESS BAR END <<<
 			}
-			unset($excelObj_Summary); //////////////////// lazy-reading END
-		}
-		$log_append_string = "===== Summary into Employee finished, ".($row_count-2)." rows inserted. =====\r\n";
-		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-	}  // Summary & AnnualReq -> Employee: DONE
+			unset($excelObj_AnnualReq); //////////////////// lazy-reading END
+			$log_append_string = "===== AnnualReq into CertHistory finished, ".($row_count-2)." rows inserted. =====\r\n";
+			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+		}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
 
-	// 2. AnnualReq -> CertHistory: START
-	if(DO_STEP_2) {
-		$srvr_query = "INSERT INTO CertHistory (CertNo, CertYear, CertType, Status, HoursEarned, RequiredHours,
-		CurrentYearBalance, PriorYearBalance, CarryToYear1,
-		CarryToYear2, CarryToYear3, CarryForwardTotal)";
-		$srvr_query .= " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-		$log_append_string = "===== Start inserting AnnualReq into CertHistory =====\r\n";
-		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-		//////////////////// lazy-reading INIT ////////////////////
-		$excelReader_AnnualReq  = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq->setReadDataOnly(true);
-		$excelObj_AnnualReq     = $excelReader_AnnualReq->load($var_path_ANNUALREQ);
-		$annualreq              = $excelObj_AnnualReq->getActiveSheet();
-		//////////////////// lazy-reading READY ////////////////////
-		$row_count = (int)2;
-		while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
-			// int counter logic end
-			$CertNo             = $annualreq->getCell('D'.$row_count)->getValue();
-			$CertYear           = $annualreq->getCell('M'.$row_count)->getValue();
-			$CertType           = $annualreq->getCell('L'.$row_count)->getValue();
-			$Status             = $annualreq->getCell('K'.$row_count)->getValue();
-			$HoursEarned        = $annualreq->getCell('N'.$row_count)->getValue();
-			$RequiredHours      = $annualreq->getCell('O'.$row_count)->getValue();
-			$CurrentYearBalance = $annualreq->getCell('P'.$row_count)->getValue();
-			$PriorYearBalance   = $annualreq->getCell('Q'.$row_count)->getValue();
-			$CarryToYear1       = $annualreq->getCell('R'.$row_count)->getValue();
-			$CarryToYear2       = $annualreq->getCell('S'.$row_count)->getValue();
-			$CarryToYear3       = $annualreq->getCell('T'.$row_count)->getValue();
-			$CarryForwardTotal  = $annualreq->getCell('U'.$row_count)->getValue();
-			$params = array($CertNo, $CertYear, $CertType, $Status, $HoursEarned, $RequiredHours,
-			$CurrentYearBalance, $PriorYearBalance, $CarryToYear1,$CarryToYear2, $CarryToYear3,
-			$CarryForwardTotal);
-			$stmt = sqlsrv_query( $conn, $srvr_query, $params);
-			if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
-			$row_count ++;
-			// FOR PRORESS BAR >>>
-			$overall_row_counter += 1;
-			$percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
-			$arr_content['percent'] = $percent;
-			$arr_content['message'] = $overall_row_counter . " row(s) processed.";
-			file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
-			// FOR PROGRESS BAR END <<<
-		}
-		unset($excelObj_AnnualReq); //////////////////// lazy-reading END
-		$log_append_string = "===== AnnualReq into CertHistory finished, ".($row_count-2)." rows inserted. =====\r\n";
-		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-	}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
-
-	// 3. Details -> CourseDetail: START
-	if(DO_STEP_3) {
-		$srvr_query = "INSERT INTO CourseDetail (CertNo, CourseYear, --ItemNumber,
-													CourseName, CourseLocation, CourseGrade, CourseHours, EndDate)";
-		$srvr_query .= " VALUES (?,?,?,?,?,?,?)";
-		$log_append_string = "===== Start inserting Details into CourseDetail =====\r\n";
-		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-		//////////////////// lazy-reading INIT ////////////////////
-		$excelReader_Details    = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details->setReadDataOnly(true);
-		$excelObj_Details       = $excelReader_Details->load($var_path_DETAILS);
-		$details                = $excelObj_Details->getActiveSheet();
-		//////////////////// lazy-reading READY ////////////////////
-		$row_count = (int)2;
-		while ( $row_count <= $details->getHighestRow() ) { // read until the last line
-			$CertNo             = $details->getCell('C'.$row_count)->getValue();
-			$CourseYear         = $details->getCell('G'.$row_count)->getValue();
-			// $ItemNumber
-			$CourseName         = $details->getCell('I'.$row_count)->getValue();
-			$CourseLocation     = $details->getCell('J'.$row_count)->getValue();
-			$CourseGrade        = $details->getCell('K'.$row_count)->getValue();
-			$CourseHours        = $details->getCell('L'.$row_count)->getValue();
-			// $EndDate         = $details->getCell('H'.$row_count)->getValue();
-			// EndDate
-			$EndDateCell        = $details->getCell('H'.$row_count);
-			$EndDate            = $EndDateCell->getValue();
-			if($EndDate == NULL) {
-				if($print_notes) {
-					$log_append_string = "NOTE: appraiser ".$CertNo." has NULL EndDate in course \"".$CourseName."\" at \"".$CourseLocation."\" !\r\n";
-					if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+		// 3. Details -> CourseDetail: START
+		if(DO_STEP_3) {
+			$srvr_query = "INSERT INTO CourseDetail (CertNo, CourseYear, --ItemNumber,
+														CourseName, CourseLocation, CourseGrade, CourseHours, EndDate)";
+			$srvr_query .= " VALUES (?,?,?,?,?,?,?)";
+			$log_append_string = "===== Start inserting Details into CourseDetail =====\r\n";
+			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+			//////////////////// lazy-reading INIT ////////////////////
+			$excelReader_Details    = PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details->setReadDataOnly(true);
+			$excelObj_Details       = $excelReader_Details->load($var_path_DETAILS);
+			$details                = $excelObj_Details->getActiveSheet();
+			//////////////////// lazy-reading READY ////////////////////
+			$row_count = (int)2;
+			while ( $row_count <= $details->getHighestRow() ) { // read until the last line
+				$CertNo             = $details->getCell('C'.$row_count)->getValue();
+				$CourseYear         = $details->getCell('G'.$row_count)->getValue();
+				// $ItemNumber
+				$CourseName         = $details->getCell('I'.$row_count)->getValue();
+				$CourseLocation     = $details->getCell('J'.$row_count)->getValue();
+				$CourseGrade        = $details->getCell('K'.$row_count)->getValue();
+				$CourseHours        = $details->getCell('L'.$row_count)->getValue();
+				// $EndDate         = $details->getCell('H'.$row_count)->getValue();
+				// EndDate
+				$EndDateCell        = $details->getCell('H'.$row_count);
+				$EndDate            = $EndDateCell->getValue();
+				if($EndDate == NULL) {
+					if(PRINT_NOTES) {
+						$log_append_string = "NOTE: appraiser ".$CertNo." has NULL EndDate in course \"".$CourseName."\" at \"".$CourseLocation."\" !\r\n";
+						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+					}
 				}
+				// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
+				else if(PHPExcel_Shared_Date::isDateTime($EndDateCell)) $EndDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($EndDate));
+
+				$params = array($CertNo, $CourseYear, $CourseName, $CourseLocation, $CourseGrade, $CourseHours, $EndDate);
+				$stmt = sqlsrv_query( $conn, $srvr_query, $params);
+				if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
+				$row_count ++;
+				// FOR PRORESS BAR >>>
+				$overall_row_counter += 1;
+				$percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
+				$arr_content['percent'] = $percent;
+				$arr_content['message'] = $overall_row_counter . " row(s) processed.";
+				file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+				// FOR PROGRESS BAR END <<<
 			}
-			// note for below: only convert cell to datetime2 variable if cell is not NULL, otherwise insert NULL into database
-			else if(PHPExcel_Shared_Date::isDateTime($EndDateCell)) $EndDate = date($format = "m-d-Y", PHPExcel_Shared_Date::ExcelToPHP($EndDate));
-
-			$params = array($CertNo, $CourseYear, $CourseName, $CourseLocation, $CourseGrade, $CourseHours, $EndDate);
-			$stmt = sqlsrv_query( $conn, $srvr_query, $params);
-			if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
-			$row_count ++;
-			// FOR PRORESS BAR >>>
-			$overall_row_counter += 1;
-			$percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
-			$arr_content['percent'] = $percent;
-			$arr_content['message'] = $overall_row_counter . " row(s) processed.";
-			file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
-			// FOR PROGRESS BAR END <<<
-		}
-		unset($excelObj_Details); //////////////////// lazy-reading END
-		$log_append_string = "===== Details into CourseDetail finished, ".($row_count-2)." rows inserted. =====\r\n";
-		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-	}  // Details -> CourseDetail: DONE
+			unset($excelObj_Details); //////////////////// lazy-reading END
+			$log_append_string = "===== Details into CourseDetail finished, ".($row_count-2)." rows inserted. =====\r\n";
+			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+		}  // Details -> CourseDetail: DONE
+	}
 
 
-	////define("//////////////////////////////", p IV: clean up: close "current table" connection and update Metadata DB /////////////////////////////////)/
+	//	V.		Clean up: close "current table" connection and update Metadata DB
 	if(DO_STEP_1 && DO_STEP_2 && DO_STEP_3) {
 		// delete table Temp and Temp2 from current database
 		if(DO_CLEANUP) {
@@ -704,7 +731,7 @@
 		// FOR PROGRESS BAR END <<<
 	}
 
-
+	//	VI.		Other notes below...
 	/* // block comment starter
 	// */ // ml: DO NOT DELETE THIS LINE! this is a convenient comment ender for anywhere in the php block.
 	// 128M: Fatal error: Allowed memory size of 134217728 bytes exhausted (tried to allocate 4096 bytes)
