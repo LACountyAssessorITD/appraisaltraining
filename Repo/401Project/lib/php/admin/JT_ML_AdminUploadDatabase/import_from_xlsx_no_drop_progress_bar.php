@@ -1,11 +1,64 @@
 <?php
-	// put include_once statements here:
-	include_once "../../constants.php";
+	/*==================================================================================================================
+	Date: Aug. - Dec. 2017
+	Author: James Tseng (tsengj@usc.edu) and Mian Lu (mianlu@usc.edu, miuralu670@gmail.com)
 
-	// below would be overridden!
+	Below are some things to note:
+
+	1.	There are a bunch of T/F flags defined in the beginning part of code:
+		- CALLING_FROM_WEB:			defaults to True because this php entire php script will be called by front end with
+									ajax, from adminUploadPHP.php & adminUploadJS.js; make it false when running this
+									php script as a webpage directly (most likely when debugging)
+		- do_step_1/2/3/cleanup:	default to all True, to make all 3 steps in the primary work (load data into
+									Employee table, CertHistory table and CourseDetails table) happen. 2 & 3 can be set
+									to false to make debugging finish faster (since completing all 3 steps will take
+									~6mins while step 1 alone takes <30s)
+
+	2.	Since this php script should mainly be called from webpage front end (adminUploadPHP.php -> adminUploadJS.js),
+		debugging messages using "echo" statements is difficult (must be "catch"ed from higher level ajax, but not
+		implemented in this project). Therefore, debugging messages are written to a log file using this statement:
+			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+		Note that when writing to log file fails, this PHP script immediately terminates and all remaining code not run
+		yet will never get executed. However, also note that this PHP script is fail-safe, meaning one execution that
+		failed half-way would not affect the "production database" (the one being queried by front end webpages)
+
+	3.	Explanation of "fail-safety" for this PHP script:
+		In short, a failed attempt to import xlsx files and update the database, will result in nothing. Everything will
+		be as if the attempt was never made, and webpages will continue to show old data. Only when an import is
+		successful, then all webpages will show newly imported data.
+		To explain in full details: this "safety" relates to the 3-databases structure of this project.
+		In SQL Server (if viewed using SSMS), there are 3 databases ending with "00", "01" and "02". "00" is
+		called "metadata database"; "01" and "02" are two databases that ideally have the same structure and similar
+		data. The "production database", at any point in time, should refer to either "01" or "02", indicated by data
+		stored in "00". Each time an import operation is executed by a DB Admin going to adminUploadPHP.php webpage,
+		s/he would specify 3 xlsx files that are received from BOE in that specific month. If, say, before the import
+		operation starts, the "production database" is "01", then this import operation is going to load these 3 xlsx
+		files into "02". If this import operation fails half-way, then "02" would contain incomplete data; however "01"
+		is NOT affected by this operation, and all the webpages would continue to fetch old data from "01". On the other
+		hand, if this import operation is successful, then "metadata database" (i.e. "00") will update one row in one of
+		its tables ("DbTable") to say, "Last import was successful, therefore the new 'production database' should be
+		'02' instead of '01'!". Afterwards all webpages would automatically switch to query "02" (when generating
+		reports, etc.), and the subsequent import attempt would be done on "01" so that latest "02" won't be affected
+		by a failure.
+
+	4.	To enable easy code-folding in Sublime Text, a bunch of "if (true)" statements are used. This might be a bad
+		practice, but helps to visualize major steps in the code. In Sublime Text, click on the little downward arrow
+		by the line numbers (on the lines with "if(true)" statements) to toggle-fold large chunks of code.
+	==================================================================================================================*/
+
+	// define a bunch of flags & constants; flags are used for branches in following code
+	define("CALLING_FROM_WEB", true);
+	define("DO_STEP_1", true);
+	define("DO_STEP_2", true);
+	define("DO_STEP_3", true);
+	define("DO_CLEANUP", true);
+	// 3 variables below would be overridden soon!
 	$var_path_ANNUALREQ = PATH_XLSX_ANNUALREQ;
 	$var_path_SUMMARY = PATH_XLSX_SUMMARY;
 	$var_path_DETAILS = PATH_XLSX_DETAILS;
+
+	// put include_once statements here:
+	include_once "../../constants.php";
 
 	///// below copied from PHP.net tutorial
 	$log_file = 'D:/mianlu/most_recent_log.txt';
@@ -14,18 +67,14 @@
 	if ( false === file_put_contents($log_file, $log_append_string, LOCK_EX) ) die(); // ml: don't use the FILE_APPEND flag here! so the log.txt file would be overwritten on this first writing operation, each time code is run
 	///// above copied from PHP.net tutorial
 
-
-	define("CALLING_FROM_WEB", true);
-
 	if (CALLING_FROM_WEB) {
-		// Start the session.
+		// DO NOT start the session. It won't work when calling from front end webpage.
 		// session_start();
 
-		// To get uploaded files directory
-		// $recv_xlsx_dir = 'D:\temp\1511856783'; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files, uploaded from front end webpage!
-		$recv_xlsx_dir = $_POST['dir']; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files, uploaded from front end webpage!
+		// get uploaded files directory, passed by front end ajax code (adminUploadJS.js)
+		$recv_xlsx_dir = $_POST['dir']; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files, uploaded from front end uploadDatabase.php
 
-		if ( ($handle = opendir((string)$recv_xlsx_dir))) {
+		if ( ($handle = opendir((string)$recv_xlsx_dir))) { // if read directory success
 			while (false !== ($entry = readdir($handle))) {
 				if ($entry != "." && $entry != "..") {
 					$log_append_string = "DIR:: ".$entry."\r\n";
@@ -34,7 +83,7 @@
 			}
 			closedir($handle);
 		}
-		else {
+		else { // read directory fails
 			$log_append_string = "FAILED TO OPEN DIR, EXITING...\r\n";
 			if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 			die();
@@ -55,10 +104,7 @@
 	if(true) {
 		// Initialization Pt 1 - declare variables, constants, and flags
 		ini_set('memory_limit', '512M'); // TOT optimize more?
-		$do_step_1  = true;
-		$do_step_2  = true;
-		$do_step_3  = true;
-		$do_cleanup = false;
+
 		$print_notes = false;
 		$total_num_of_rows = intval(0);
 		$overall_row_counter = intval(0);
@@ -316,7 +362,7 @@
 
 
 	// 1. Summary & AnnualReq -> Employee: START
-	if($do_step_1) {
+	if(DO_STEP_1) {
 		$log_append_string = "===== Start inserting Summary into Employee =====\r\n";
 		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 		// Tricky work: create table Temp to store all CertNo + 3 Dates + CurrentStatus; then create Temp2 to store distinct rows from Temp;
@@ -476,7 +522,7 @@
 	}  // Summary & AnnualReq -> Employee: DONE
 
 	// 2. AnnualReq -> CertHistory: START
-	if($do_step_2) {
+	if(DO_STEP_2) {
 		$srvr_query = "INSERT INTO CertHistory (CertNo, CertYear, CertType, Status, HoursEarned, RequiredHours,
 		CurrentYearBalance, PriorYearBalance, CarryToYear1,
 		CarryToYear2, CarryToYear3, CarryForwardTotal)";
@@ -523,7 +569,7 @@
 	}  // AnnualReq pt1 - AnnualReq -> CertHistory: DONE
 
 	// 3. Details -> CourseDetail: START
-	if($do_step_3) {
+	if(DO_STEP_3) {
 		$srvr_query = "INSERT INTO CourseDetail (CertNo, CourseYear, --ItemNumber,
 													CourseName, CourseLocation, CourseGrade, CourseHours, EndDate)";
 		$srvr_query .= " VALUES (?,?,?,?,?,?,?)";
@@ -574,10 +620,10 @@
 	}  // Details -> CourseDetail: DONE
 
 
-	////////////////////////////////// Step IV: clean up: close "current table" connection and update Metadata DB //////////////////////////////////
-	if($do_step_1 && $do_step_2 && $do_step_3) {
+	////define("//////////////////////////////", p IV: clean up: close "current table" connection and update Metadata DB /////////////////////////////////)/
+	if(DO_STEP_1 && DO_STEP_2 && DO_STEP_3) {
 		// delete table Temp and Temp2 from current database
-		if($do_cleanup) {
+		if(DO_CLEANUP) {
 			$drop_temp  = "IF OBJECT_ID('dbo.Temp', 'U') IS NOT NULL DROP TABLE dbo.Temp";
 			$srvr_stmt = sqlsrv_query( $conn, $drop_temp );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
