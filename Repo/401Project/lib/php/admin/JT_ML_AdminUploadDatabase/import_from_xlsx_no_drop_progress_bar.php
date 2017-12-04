@@ -64,7 +64,7 @@
 	$log_file = 'D:/mianlu/most_recent_log.txt';
 	$log_append_string = "This is the beginning of log file!\r\n";
 	// FILE_APPEND to append content to the end; LOCK_EX flag to prevent anyone else writing to the file at the same time
-	if ( false === file_put_contents($log_file, $log_append_string, LOCK_EX) ) die(); // ml: don't use the FILE_APPEND flag here! so the log.txt file would be overwritten on this first writing operation, each time code is run
+	if ( false === file_put_contents($log_file, $log_append_string, LOCK_EX) ) die(); // ml: although used in every subsequent log-write, don't use the FILE_APPEND flag here! Not using "append" will result in file re-creation, so log.txt would be completely overwritten on this line
 	///// above copied from PHP.net tutorial
 
 	if (CALLING_FROM_WEB) {
