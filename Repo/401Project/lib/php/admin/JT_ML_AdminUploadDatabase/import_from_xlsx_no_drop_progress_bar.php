@@ -45,19 +45,25 @@
 	4.	To enable easy code-folding in Sublime Text, a bunch of "if (true)" statements are used. This might be a bad
 		practice, but helps to visualize major steps in the code. In Sublime Text, click on the little downward arrow
 		by the line numbers (on the lines with "if(true)" statements) to toggle-fold large chunks of code.
+
+	5.	To implement a progress bar, this php script will periodically write current progress status to a file somewhere
+		in D:/ (please see below function updateProgressBar() for actual file path), while front end adminUpdate webpage
+		(which calls this php script using ajax) will constantly poll on that same file, updating its progress bar
+		display every second. Therefore this php script and the front end webpage both run as separate threads,	one
+		writing to a file and the other one reading from it.
 	==================================================================================================================*/
 
 	/*----------------------------------------------------------------------------------------------------------------*/
 	// define functions to be called in main process
 	function checkForExit() { // call in each iteration, so that if front-end "stop" button is pressed, terminate script
 	    echo "Hello world!";
-
 	}
 
 	function updateProgresBar($percentage, $msg) {
 		$arr_content['percent'] = (string)$percentage;
 		$arr_content['message'] = (string)$msg;
-		file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+		file_put_contents("D:/t/log.txt", json_encode($arr_content));	// Write the progress into D:/t/log.txt and
+																		// serialize the PHP array into JSON format.
 	}
 	/*----------------------------------------------------------------------------------------------------------------*/
 
@@ -84,31 +90,28 @@
 		$overall_row_counter = intval(0);
 		$progress_bar_arr_content = array();	// variable to write out current percentage (of line-by-line insertion)
 												// to a file, which is then read from importing webpage's progress bar
-		// FOR PRORESS BAR >>>
-		updateProgresBar( intval(0), ((string)$overall_row_counter." row(s) processed. - INITIAL") )
-		exit();
-		// $percent = intval(0); // make the progress bar show a 0% early on, for admin to see, instead of blanking for 30s
-		// $arr_content['percent'] = $percent;
-		// $arr_content['message'] = $overall_row_counter." row(s) processed.";
-		// file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
-		// FOR PROGRESS BAR END <<<
 
-		//	3.	define a log text file to replace "echo" debugging statements. See top block of comments for more details.
-		// below copied from PHP.net tutorial >>>
+		//	2.1	update progress bar
+		updateProgresBar( intval(0), ((string)$overall_row_counter." row(s) processed.") );
+
+		//	3.	define a log text file to replace "echo" debugging statements (see top comment). Template from PHP.net.
 		$log_file = 'D:/mianlu/most_recent_log.txt';
 		$log_append_string = "This is the beginning of log file!\r\n";
-		// FILE_APPEND to append content to the end; LOCK_EX flag to prevent anyone else writing to the file at the same time
-		if ( false === file_put_contents($log_file, $log_append_string, LOCK_EX) ) die(); // ml: although used in every subsequent log-write, don't use the FILE_APPEND flag here! Not using "append" will result in file re-creation, so log.txt would be completely overwritten on this line
-		// above copied from PHP.net tutorial <<<
+		// set flag FILE_APPEND to append content to end of file; LOCK_EX flag prevents others writing at the same time
+		if ( false === file_put_contents($log_file, $log_append_string, LOCK_EX) ) die();	// although used in every
+																							// subsequent log-write,
+																							// don't use the FILE_APPEND
+																							// flag here! Not using it
+																							// will result in file re-
+																							// creation, so log.txt will
+																							// be overwritten here
 
 		//	4.	if calling code from web, here are some extra overhead to get everything working. If running this php
 		//		as stand-alone webpage, lines below are skipped
 		if (CALLING_FROM_WEB) {
-			// DO NOT start the session. It won't work when calling from front end webpage.
-			// session_start();
-
-			// get uploaded files directory, passed by front end ajax code (adminUploadJS.js)
-			$recv_xlsx_dir = $_POST['dir']; // e.g. dir = "D:/temp/1599028283" which contains 3 xlsx files, uploaded from front end uploadDatabase.php
+			// get uploaded files directory, passed to this script from front end ajax code (adminUploadJS.js)
+			$recv_xlsx_dir = $_POST['dir'];	// e.g. dir = "D:/temp/1599028283" which should contain 3 xlsx files,
+											// uploaded from front end adminUploadPHP.php
 			if ( ($handle = opendir((string)$recv_xlsx_dir))) { // if read directory success
 				while (false !== ($entry = readdir($handle))) {
 					if ($entry != "." && $entry != "..") {
@@ -124,8 +127,6 @@
 				die();
 			}
 		}
-
-
 
 		//	6.	xlsx reading initialization
 		error_reporting(E_ALL ^ E_NOTICE);
