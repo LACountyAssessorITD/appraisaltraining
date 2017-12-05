@@ -59,10 +59,10 @@
 	    echo "Hello world!";
 	}
 
-	function updateProgresBar($percentage, $msg) {
+	function updateProgressBar($percentage, $msg) {
 		$arr_content['percent'] = (string)$percentage;
 		$arr_content['message'] = (string)$msg;
-		file_put_contents("D:/t/log.txt", json_encode($arr_content));	// Write the progress into D:/t/log.txt and
+		file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content));	// Write the progress into D:/mianlu/ProgressBar.txt and
 																		// serialize the PHP array into JSON format.
 	}
 	/*----------------------------------------------------------------------------------------------------------------*/
@@ -88,11 +88,9 @@
 		$var_path_DETAILS = PATH_XLSX_DETAILS;
 		$total_num_of_rows = intval(0);
 		$overall_row_counter = intval(0);
-		$progress_bar_arr_content = array();	// variable to write out current percentage (of line-by-line insertion)
-												// to a file, which is then read from importing webpage's progress bar
 
 		//	2.1	update progress bar
-		updateProgresBar( intval(0), ((string)$overall_row_counter." row(s) processed.") );
+		updateProgressBar( intval(0), ((string)$overall_row_counter." row(s) processed.") );
 
 		//	3.	define a log text file to replace "echo" debugging statements (see top comment). Template from PHP.net.
 		$log_file = 'D:/mianlu/most_recent_log.txt';
@@ -154,13 +152,16 @@
 		$total_num_of_rows		+=	$details->getHighestRow() - 1; // minus one row because of header row in xlsx
 		unset($excelObj_Summary);
 		$log_append_string = "Total number of rows to be inserted: ".(string)$total_num_of_rows."; starting insertion operation...\r\n";
-		// FOR PRORESS BAR >>>
-		$percent = intval(5); // roughly say, 5% of work is done just after counting number of all rows in 3 xlsx files
-		$arr_content['percent'] = $percent;
-		$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
-		file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
-		// FOR PROGRESS BAR END <<<
 		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+
+		updateProgressBar( intval(5), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+
+		// // FOR PROGRESS BAR >>>
+		// $percent = intval(5); // roughly say, 5% of work is done just after counting number of all rows in 3 xlsx files
+		// $arr_content['percent'] = $percent;
+		// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+		// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
+		// // FOR PROGRESS BAR END <<<
 	}
 
 	//	II.		SQL Server - open connection the correct way
@@ -180,11 +181,14 @@
 				if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 				die( print_r( sqlsrv_errors(), true));
 			}
-			// FOR PRORESS BAR >>>
-			$percent = intval(7); // roughly say, 7% of work is done up to now
-			$arr_content['percent'] = $percent;
-			$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
-			file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+
+			updateProgressBar( intval(7), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+
+			// FOR PROGRESS BAR >>>
+			// $percent = intval(7); // roughly say, 7% of work is done up to now
+			// $arr_content['percent'] = $percent;
+			// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+			// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 			// FOR PROGRESS BAR END <<<
 		}
 
@@ -231,11 +235,14 @@
 			";
 			$srvr_stmt = sqlsrv_query( $conn, $insert_metadata_tbl );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-			// FOR PRORESS BAR >>>
-			$percent = intval(9); // roughly say, 9% of work is done up to now
-			$arr_content['percent'] = $percent;
-			$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
-			file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+
+			updateProgressBar( intval(9), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+
+			// FOR PROGRESS BAR >>>
+			// $percent = intval(9); // roughly say, 9% of work is done up to now
+			// $arr_content['percent'] = $percent;
+			// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+			// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 			// FOR PROGRESS BAR END <<<
 		}
 
@@ -298,11 +305,13 @@
 
 		// Step 7 - progress bar update
 		if(true) {
-			// FOR PRORESS BAR >>>
-			$percent = intval(11); // roughly say, 11% of work is done up to now
-			$arr_content['percent'] = $percent;
-			$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
-			file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+			updateProgressBar( intval(11), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+
+			// FOR PROGRESS BAR >>>
+			// $percent = intval(11); // roughly say, 11% of work is done up to now
+			// $arr_content['percent'] = $percent;
+			// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+			// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 			// FOR PROGRESS BAR END <<<
 		}
 	}
@@ -399,11 +408,14 @@
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		$srvr_stmt = sqlsrv_query( $conn, $create_EX );
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-		// FOR PRORESS BAR >>>
-		$percent = intval(15); // roughly say, 15% of work is done up to now
-		$arr_content['percent'] = $percent;
-		$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
-		file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+
+		updateProgressBar( intval(15), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+
+		// FOR PROGRESS BAR >>>
+		// $percent = intval(15); // roughly say, 15% of work is done up to now
+		// $arr_content['percent'] = $percent;
+		// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+		// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 		// FOR PROGRESS BAR END <<<
 	}
 
@@ -486,11 +498,14 @@
 					$row_count ++;
 				}
 				unset($excelObj_AnnualReq); //////////////////// lazy-reading END
-				// FOR PRORESS BAR >>>
-				$percent = intval(18); // roughly say, 18% of work is done up to now
-				$arr_content['percent'] = $percent;
-				$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
-				file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+
+				updateProgressBar( intval(18), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+
+				// FOR PROGRESS BAR >>>
+				// $percent = intval(18); // roughly say, 18% of work is done up to now
+				// $arr_content['percent'] = $percent;
+				// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+				// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 				// FOR PROGRESS BAR END <<<
 			}
 			// TrickyWork Pt.3: create table Temp2
@@ -520,11 +535,14 @@
 						if( $stmt === false ) { die( print_r(sqlsrv_errors(), true) ); }
 					}
 				}
-				// FOR PRORESS BAR >>>
-				$percent = intval(20); // roughly say, 20% of work is done up to now
-				$arr_content['percent'] = $percent;
-				$arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
-				file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+
+				updateProgressBar( intval(20), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+
+				// FOR PROGRESS BAR >>>
+				// $percent = intval(20); // roughly say, 20% of work is done up to now
+				// $arr_content['percent'] = $percent;
+				// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+				// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 				// FOR PROGRESS BAR END <<<
 			}
 			// TrickyWork Pt.5: insert into Employee table from summary.xlsx (line-by-line) & Temp2 (querying 3 dates + CurrentStatus along with each line)
@@ -567,12 +585,15 @@
 																	  VALUES (?,?,?,?,?,?,?,?,?)";
 					if( $stmt = sqlsrv_query( $conn, $Summary_to_Employee, $params) === false ) die( print_r(sqlsrv_errors(), true) );
 					$row_count ++;
-					// FOR PRORESS BAR >>>
+
+
+					// FOR PROGRESS BAR >>>
 					$overall_row_counter += 1;
-					$percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
-					$arr_content['percent'] = $percent;
-					$arr_content['message'] = $overall_row_counter . " row(s) processed.";
-					file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+					updateProgressBar( intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+					// $percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
+					// $arr_content['percent'] = $percent;
+					// $arr_content['message'] = $overall_row_counter . " row(s) processed.";
+					// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 					// FOR PROGRESS BAR END <<<
 				}
 				unset($excelObj_Summary); //////////////////// lazy-reading END
@@ -615,12 +636,14 @@
 				$stmt = sqlsrv_query( $conn, $srvr_query, $params);
 				if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
 				$row_count ++;
-				// FOR PRORESS BAR >>>
+				// FOR PROGRESS BAR >>>
 				$overall_row_counter += 1;
-				$percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
-				$arr_content['percent'] = $percent;
-				$arr_content['message'] = $overall_row_counter . " row(s) processed.";
-				file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+				updateProgressBar( intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+
+				// $percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
+				// $arr_content['percent'] = $percent;
+				// $arr_content['message'] = $overall_row_counter . " row(s) processed.";
+				// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 				// FOR PROGRESS BAR END <<<
 			}
 			unset($excelObj_AnnualReq); //////////////////// lazy-reading END
@@ -666,12 +689,14 @@
 				$stmt = sqlsrv_query( $conn, $srvr_query, $params);
 				if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
 				$row_count ++;
-				// FOR PRORESS BAR >>>
+				// FOR PROGRESS BAR >>>
 				$overall_row_counter += 1;
-				$percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
-				$arr_content['percent'] = $percent;
-				$arr_content['message'] = $overall_row_counter . " row(s) processed.";
-				file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+				updateProgressBar( intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+
+				// $percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
+				// $arr_content['percent'] = $percent;
+				// $arr_content['message'] = $overall_row_counter . " row(s) processed.";
+				// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 				// FOR PROGRESS BAR END <<<
 			}
 			unset($excelObj_Details); //////////////////// lazy-reading END
@@ -724,11 +749,13 @@
 		// close connection to Metadata Database
 		sqlsrv_close($conn);
 		unset($conn);
-		// FOR PRORESS BAR >>>
-		$percent = intval(100); // 20% initialization + 75% row insertion + 5% clean up
-		$arr_content['percent'] = $percent;
-		$arr_content['message'] = $overall_row_counter . " row(s) processed.";
-		file_put_contents("D:/t/log.txt", json_encode($arr_content)); // Write the progress into D:/t/log.txt and serialize the PHP array into JSON format.
+		// FOR PROGRESS BAR >>>
+		updateProgressBar( intval(100), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") ); // 20% initialization + 75% row insertion + 5% clean up
+
+		// $percent = intval(100);
+		// $arr_content['percent'] = $percent;
+		// $arr_content['message'] = $overall_row_counter . " row(s) processed.";
+		// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 		// FOR PROGRESS BAR END <<<
 	}
 
