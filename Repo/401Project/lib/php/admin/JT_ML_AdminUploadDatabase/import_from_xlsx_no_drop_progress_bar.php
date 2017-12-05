@@ -2,7 +2,7 @@
 	/*==================================================================================================================
 	For LA County Assessor's Office - Appraisal Training Record Tracking System use only!
 	Date: Aug. - Dec. 2017
-	Author: James Tseng (tsengj@usc.edu) and Mian Lu (mianlu@usc.edu, miuralu670@gmail.com)
+	Contributor for this file: Mian Lu (mianlu@usc.edu, miuralu670@gmail.com) and James Tseng (tsengj@usc.edu)
 
 	Below are some things to note:
 
@@ -129,28 +129,35 @@
 		//	6.	xlsx reading initialization
 		error_reporting(E_ALL ^ E_NOTICE);
 		require_once 'Classes/PHPExcel.php';
-		// enable caching to reduce memory usage for PHPExcel (tips/trick from StackOverflow)
+		// enable caching to reduce memory usage for PHPExcel (tip/trick from StackOverflow)
 		$cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
 		$cacheSettings = array( ' memoryCacheSize ' => '16MB');
 		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 		// lazy-reading from now on! all Excel file reading are done immediately before using its data, not earlier!
 
 		//	7.	count total number of rows from 3 excel sheets, using 3 "lazy-reading" blocks
-		$excelReader_AnnualReq	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq	->setReadDataOnly(true);
-		$excelObj_AnnualReq		=	$excelReader_AnnualReq->load($var_path_ANNUALREQ);
-		$annualreq				=	$excelObj_AnnualReq->getActiveSheet();
-		$total_num_of_rows		+=	$annualreq->getHighestRow() - 1; // minus one row because of header row in xlsx
-		unset($excelObj_AnnualReq);
-		$excelReader_Summary	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary		->setReadDataOnly(true);
-		$excelObj_Summary		=	$excelReader_Summary->load($var_path_SUMMARY);
-		$summary				=	$excelObj_Summary->getActiveSheet();
-		$total_num_of_rows		+=	$summary->getHighestRow() - 1; // minus one row because of header row in xlsx
-		unset($excelObj_Summary);
-		$excelReader_Details	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details		->setReadDataOnly(true);
-		$excelObj_Details		=	$excelReader_Details->load($var_path_DETAILS);
-		$details				=	$excelObj_Details->getActiveSheet();
-		$total_num_of_rows		+=	$details->getHighestRow() - 1; // minus one row because of header row in xlsx
-		unset($excelObj_Summary);
+		if(DO_STEP_1) {
+			$excelReader_Summary	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary		->setReadDataOnly(true);
+			$excelObj_Summary		=	$excelReader_Summary->load($var_path_SUMMARY);
+			$summary				=	$excelObj_Summary->getActiveSheet();
+			$total_num_of_rows		+=	$summary->getHighestRow() - 1; // minus one row because of header row in xlsx
+			unset($excelObj_Summary);
+		}
+		if(DO_STEP_2) {
+			$excelReader_AnnualReq	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq	->setReadDataOnly(true);
+			$excelObj_AnnualReq		=	$excelReader_AnnualReq->load($var_path_ANNUALREQ);
+			$annualreq				=	$excelObj_AnnualReq->getActiveSheet();
+			$total_num_of_rows		+=	$annualreq->getHighestRow() - 1; // minus one row because of header row in xlsx
+			unset($excelObj_AnnualReq);
+		}
+
+		if(DO_STEP_3) {
+			$excelReader_Details	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details		->setReadDataOnly(true);
+			$excelObj_Details		=	$excelReader_Details->load($var_path_DETAILS);
+			$details				=	$excelObj_Details->getActiveSheet();
+			$total_num_of_rows		+=	$details->getHighestRow() - 1; // minus one row because of header row in xlsx
+			unset($excelObj_Summary);
+		}
 		$log_append_string = "Total number of rows to be inserted: ".(string)$total_num_of_rows."; starting insertion operation...\r\n";
 		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 
@@ -738,7 +745,7 @@
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 		$log_append_string = "Switching the old CURRENT DATABASE to the new CURRENT DATABASE done!\r\n";
 		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
-
+		// yh: code to update database information on "which historical upload operation is the current database based on?"
 		$d = $_POST['dir'];
 		$d = str_replace(UPLOADED_FILES_DIR,"",$d);
 		$d = str_replace("/","",$d);
@@ -749,15 +756,10 @@
 		// close connection to Metadata Database
 		sqlsrv_close($conn);
 		unset($conn);
-		// FOR PROGRESS BAR >>>
-		updateProgressBar( intval(100), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") ); // 20% initialization + 75% row insertion + 5% clean up
-
-		// $percent = intval(100);
-		// $arr_content['percent'] = $percent;
-		// $arr_content['message'] = $overall_row_counter . " row(s) processed.";
-		// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
-		// FOR PROGRESS BAR END <<<
 	}
+	// put the final progress bar update outside of step V.
+	sleep(1); // give a short delay for front end so admin won't be confused
+	updateProgressBar( intval(100), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") ); // 20% initialization + 75% row insertion + 5% clean up
 
 	//	VI.		Other notes below...
 	/* // block comment starter
