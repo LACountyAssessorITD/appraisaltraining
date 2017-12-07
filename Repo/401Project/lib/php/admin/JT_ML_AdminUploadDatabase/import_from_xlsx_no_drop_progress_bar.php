@@ -111,11 +111,22 @@
 			$recv_xlsx_dir = $_POST['dir'];	// e.g. dir = "D:/temp/1599028283" which should contain 3 xlsx files,
 											// uploaded from front end adminUploadPHP.php
 			if ( ($handle = opendir((string)$recv_xlsx_dir))) { // if read directory success
+				$file_counter = intval(0);
 				while (false !== ($entry = readdir($handle))) {
-					if ($entry != "." && $entry != "..") {
+					//substr($haystack, -$length) === $needle)
+					$entry_length = strlen($entry);
+					if ($entry != "." && $entry != ".." && substr($entry, -$entry_length)===".xlsx") {
+						// found a new .xlsx file!
+						$file_counter += 1;
 						$log_append_string = "DIR:: ".$entry."\r\n";
 						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 					}
+				}
+				// do some things
+				if ($file_counter != 3) { // not seeing 3 xlsx from that directory, write error msg to log and exit!
+					$log_append_string = "Fatal error: not exactly 3 xlsx files are provided from front end!\r\n";
+					if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+					die();
 				}
 				closedir($handle);
 			}
