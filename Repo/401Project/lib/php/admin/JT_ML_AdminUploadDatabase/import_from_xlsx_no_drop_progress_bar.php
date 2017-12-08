@@ -56,7 +56,7 @@
 	/*----------------------------------------------------------------------------------------------------------------*/
 	// define functions to be called in main process
 	function checkForExit() { // call in each iteration, so that if front-end "stop" button is pressed, terminate script
-	    echo "Hello world!";
+		echo "Hello world!";
 	}
 
 	function updateProgressBar($percentage, $msg) {
@@ -65,6 +65,20 @@
 		file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content));	// Write the progress into D:/mianlu/ProgressBar.txt and
 																		// serialize the PHP array into JSON format.
 	}
+
+	// below copied directly from a post on StackOverflow
+	function startsWith($haystack, $needle)
+	{
+		 $length = strlen($needle);
+		 return (substr($haystack, 0, $length) === $needle);
+	}
+
+	function endsWith($haystack, $needle)
+	{
+		$length = strlen($needle);
+		return $length === 0 || (substr($haystack, -$length) === $needle);
+	}
+
 	/*----------------------------------------------------------------------------------------------------------------*/
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,7 +91,7 @@
 
 		//	2.	define a bunch of constants & flags; flags are used for branches in following code
 		ini_set('memory_limit', '512M'); // TOT optimize more?
-		define("CALLING_FROM_WEB", false);
+		define("CALLING_FROM_WEB", true);
 		define("PRINT_NOTES", false);
 		define("DO_STEP_1", true);
 		define("DO_STEP_2", false);
@@ -115,7 +129,8 @@
 				while (false !== ($entry = readdir($handle))) {
 					//substr($haystack, -$length) === $needle)
 					$entry_length = strlen($entry);
-					if ($entry != "." && $entry != ".." && substr($entry, -$entry_length)===".xlsx") {
+					// if ($entry != "." && $entry != ".." && substr($entry, -$entry_length)==".xlsx") {
+					if ($entry != "." && $entry != ".." && endsWith($entry, "xlsx")) {
 						// found a new .xlsx file!
 						$file_counter += 1;
 						$log_append_string = "DIR:: ".$entry."\r\n";
@@ -459,6 +474,7 @@
 				)";
 				$srvr_stmt = sqlsrv_query( $conn, $create_temp );
 				if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
+				updateProgressBar( intval(16), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 			}
 			// TrickyWork Pt.2: populate Temp
 			if(true) {
@@ -470,6 +486,7 @@
 				$annualreq              = $excelObj_AnnualReq->getActiveSheet();
 				//////////////////// lazy-reading READY ////////////////////
 				$row_count = (int)2; // actual data starts at row 2 of Excel spreadsheet
+				updateProgressBar( intval(17), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 				while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
 					// select distinct CertID rows from AnnualReq
 					$CertNo         = $annualreq->getCell('D'.$row_count)->getValue();
