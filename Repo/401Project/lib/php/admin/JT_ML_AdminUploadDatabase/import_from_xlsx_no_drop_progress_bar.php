@@ -137,9 +137,9 @@
 		define("CALLING_FROM_WEB", true);
 		define("PRINT_NOTES", false);
 		define("DO_STEP_1", true);
-		define("DO_STEP_2", false);
-		define("DO_STEP_3", false);
-		define("DO_CLEANUP", false);
+		define("DO_STEP_2", true);
+		define("DO_STEP_3", true);
+		define("DO_CLEANUP", true);
 		$var_path_ANNUALREQ = PATH_XLSX_ANNUALREQ;
 		$var_path_SUMMARY = PATH_XLSX_SUMMARY;
 		$var_path_DETAILS = PATH_XLSX_DETAILS;
@@ -194,15 +194,15 @@
 						$log_append_string = "highest column is: ".(string)$excelSheet->getHighestColumn()."\r\n";
 						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 						if		((string)$excelSheet->getHighestColumn() == "U") {
-							if ( false === file_put_contents($log_file, "Overriding path for AnnualReq.xlsx...", FILE_APPEND | LOCK_EX) ) die();
+							if ( false === file_put_contents($log_file, "Overriding path for AnnualReq.xlsx...\r\n", FILE_APPEND | LOCK_EX) ) die();
 							$var_path_ANNUALREQ = (string)$recv_xlsx_dir.$entry;
 						}
 						else if	((string)$excelSheet->getHighestColumn() == "L") {
-							if ( false === file_put_contents($log_file, "Overriding path for Details.xlsx...", FILE_APPEND | LOCK_EX) ) die();
+							if ( false === file_put_contents($log_file, "Overriding path for Details.xlsx...\r\n", FILE_APPEND | LOCK_EX) ) die();
 							$var_path_DETAILS = (string)$recv_xlsx_dir.$entry;
 						}
 						else if	((string)$excelSheet->getHighestColumn() == "J") {
-							if ( false === file_put_contents($log_file, "Overriding path for Summary.xlsx...", FILE_APPEND | LOCK_EX) ) die();
+							if ( false === file_put_contents($log_file, "Overriding path for Summary.xlsx...\r\n", FILE_APPEND | LOCK_EX) ) die();
 							$var_path_SUMMARY = (string)$recv_xlsx_dir.$entry;
 						}
 					}
