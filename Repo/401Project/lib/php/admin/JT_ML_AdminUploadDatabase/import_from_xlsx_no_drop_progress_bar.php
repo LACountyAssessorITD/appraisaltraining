@@ -78,6 +78,25 @@
 		read from again at a later point in the code. This reduces the lifetime of PHPExcel Readers, which might slow
 		down the run time a little bit, but requires less memory. If readers for all 3 xlsx files are simultaneously
 		open, memory usage would dramatically increase.
+
+	7.	Front end webpage receive 3 xlsx files uploaded by Admin who got them from BOE every month. Our system does not
+		check those xlsx files' file names because those are specified by human and could vary from time to time. We
+		decide to implement a simple check to determine which xlsx file is Summary, which one is AnnualReq, and which
+		one is Details: read the number of columns from each of the 3 xlsx received. If the number of columns for one
+		of the xlsx files is "U", then that xlsx file contains AnnualReq data. If it's "L" then it's Details. If it's
+		"J" then it's Summary.
+		Below is original output for counting how many columns each xlsx file (monthly from BOE) have:
+			Listing received xlsx files: AnnualReq Los Angeles.xlsx
+				D:/temp/1512778620/AnnualReq Los Angeles.xlsx
+				highest column is: U
+			Listing received xlsx files: Los Angeles Training Details.xlsx
+				D:/temp/1512778620/Los Angeles Training Details.xlsx
+				highest column is: L
+			Listing received xlsx files: Summary Los Angeles.xlsx
+				D:/temp/1512778620/Summary Los Angeles.xlsx
+				highest column is: J
+		Therefore, our simple and naive xlsx distinguishing would be to simply look at how many columns each xlsx file
+		has, and match it with corresponding Summary/AnnualReq/Details.
 	==================================================================================================================*/
 
 	/*----------------------------------------------------------------------------------------------------------------*/
@@ -166,17 +185,26 @@
 						// found a new .xlsx file! see how many columns it has, and determine which xlsx is it (i.e. is
 						// it Summary? or AnnualReq? or Details?)
 						//////////////////// lazy-reading INIT ////////////////////
-						if ( false === file_put_contents($log_file, "I'm here 1\r\n", FILE_APPEND | LOCK_EX) ) die();
 						$excelReader	=	PHPExcel_IOFactory::createReader('Excel2007');
-						if ( false === file_put_contents($log_file, "I'm here 2\r\n", FILE_APPEND | LOCK_EX) ) die();
 						$excelReader	->	setReadDataOnly(true); // okay to use this line here! (see top comment)
-						if ( false === file_put_contents($log_file, "I'm here 3\r\n", FILE_APPEND | LOCK_EX) ) die();
 						if ( false === file_put_contents($log_file, "I'm here 4 | ".$recv_xlsx_dir.$entry."\r\n", FILE_APPEND | LOCK_EX) ) die();
 						$excelObj		=	$excelReader->load($recv_xlsx_dir.$entry);
 						$excelSheet		=	$excelObj->getActiveSheet();
 						//////////////////// lazy-reading READY ////////////////////
 						$log_append_string = "highest column is: ".(string)$excelSheet->getHighestColumn()."\r\n";
 						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+						if		((string)$excelSheet->getHighestColumn() == "U") {
+							if ( false === file_put_contents($log_file, "Overriding path for AnnualReq.xlsx...", FILE_APPEND | LOCK_EX) ) die();
+							$var_path_ANNUALREQ = (string)$recv_xlsx_dir.$entry;
+						}
+						else if	((string)$excelSheet->getHighestColumn() == "L") {
+							if ( false === file_put_contents($log_file, "Overriding path for Details.xlsx...", FILE_APPEND | LOCK_EX) ) die();
+							$var_path_DETAILS = (string)$recv_xlsx_dir.$entry;
+						}
+						else if	((string)$excelSheet->getHighestColumn() == "J") {
+							if ( false === file_put_contents($log_file, "Overriding path for Summary.xlsx...", FILE_APPEND | LOCK_EX) ) die();
+							$var_path_SUMMARY = (string)$recv_xlsx_dir.$entry;
+						}
 					}
 				}
 				if ($file_counter != 3) { // not seeing 3 xlsx from that directory, write error msg to log and exit!
