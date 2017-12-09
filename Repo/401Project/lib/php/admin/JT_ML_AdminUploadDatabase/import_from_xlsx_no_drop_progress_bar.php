@@ -138,7 +138,7 @@
 		updateProgressBar( intval(0), ((string)$row_counter." row(s) processed.") );
 
 		//	3.	define a log text file to replace "echo" debugging statements (see top comment). Template from PHP.net.
-		$log_file = 'D:/mianlu/most_recent_log.txt';
+		$log_file = 'D:/TrainRec/DatabaseUpdate/most_recent_log.txt';
 		$log_append_string = "This is the beginning of log file!\r\n";
 		// set flag FILE_APPEND to append content to end of file; LOCK_EX flag prevents others writing at the same time
 		if ( false === file_put_contents($log_file, $log_append_string, LOCK_EX) ) die();	// although used in every
@@ -166,9 +166,13 @@
 						// found a new .xlsx file! see how many columns it has, and determine which xlsx is it (i.e. is
 						// it Summary? or AnnualReq? or Details?)
 						//////////////////// lazy-reading INIT ////////////////////
+						if ( false === file_put_contents($log_file, "I'm here 1\r\n", FILE_APPEND | LOCK_EX) ) die();
 						$excelReader	=	PHPExcel_IOFactory::createReader('Excel2007');
+						if ( false === file_put_contents($log_file, "I'm here 2\r\n", FILE_APPEND | LOCK_EX) ) die();
 						$excelReader	->	setReadDataOnly(true); // okay to use this line here! (see top comment)
-						$excelObj		=	$excelReader->load($entry);
+						if ( false === file_put_contents($log_file, "I'm here 3\r\n", FILE_APPEND | LOCK_EX) ) die();
+						if ( false === file_put_contents($log_file, "I'm here 4 | ".$recv_xlsx_dir.$entry."\r\n", FILE_APPEND | LOCK_EX) ) die();
+						$excelObj		=	$excelReader->load($recv_xlsx_dir.$entry);
 						$excelSheet		=	$excelObj->getActiveSheet();
 						//////////////////// lazy-reading READY ////////////////////
 						$log_append_string = "highest column is: ".(string)$excelSheet->getHighestColumn()."\r\n";
