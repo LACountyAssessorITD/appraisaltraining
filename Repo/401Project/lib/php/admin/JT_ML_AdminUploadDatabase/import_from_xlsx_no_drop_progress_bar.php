@@ -51,6 +51,33 @@
 		(which calls this php script using ajax) will constantly poll on that same file, updating its progress bar
 		display every second. Therefore this php script and the front end webpage both run as separate threads,	one
 		writing to a file and the other one reading from it.
+
+	6.	Memory usage for this code is a problem. Normally, recommended memory allocation for PHP (when hosting PHP web-
+		pages on Windows Server using IIS) is 128MB, which is specified in php.ini (a text file, sample provided in path
+		appraisaltraining/Documents/PHP/V7.1 and this folder is what we use for this project). However, 128MB is not
+		enough for this code to work, because this code will have to read from xlsx files that have large amount of
+		cells, and the 3rd party library PHPExcel (that we've decided to use) is known to consume a lot of memory. We
+		have tested the functionalities of PHPExcel on our code and decided that the least amount of memory to allow our
+		code to work is 512MB. This value is set on the //TOT// line of this file. Additionally, we've taken some other
+		measures to optimize the memory usage already (and the final minimum requirement comes down to 512MB). Below are
+		links to some webpages that give useful information:
+			https://stackoverflow.com/questions/3537604/how-to-fix-memory-getting-exhausted-with-phpexcel
+			https://stackoverflow.com/questions/4817651/phpexcel-runs-out-of-256-512-and-also-1024mb-of-ram
+			https://stackoverflow.com/questions/17161925/how-to-close-excel-file-in-php-excel-reader
+		We've employed some measures discussed above, as long as they are appropriate for our project, but one of them
+		we decide not to use is shown below:
+			$reader_example = PHPExcel_IOFactory::createReader('Excel2007');
+			$reader_example->setReadDataOnly(true);
+		Setting a "Excel Reader" to "Read Data Only" will force the reader not to load cell formats (for e.g. date/time,
+		currency, numerical value, plain text), which saves memory, but will be a problem for cells that contain dates.
+		If Excel Reader interpret those cell values as plain numbers instead of dates, then it would be difficult to
+		insert those numbers (obtained from xlsx) as dates into SQL Server later on.
+		Another note: to reduce memory usage, we used "lazy-reading" to open xlsx files, meaning that we only create
+		an instance of "Excel Reader" and start reading data from an xlsx file when it's immediately necessary, but not
+		any earlier. After finish reading using that reader, close it immediately, even if that same xlsx file will be
+		read from again at a later point in the code. This reduces the lifetime of PHPExcel Readers, which might slow
+		down the run time a little bit, but requires less memory. If readers for all 3 xlsx files are simultaneously
+		open, memory usage would dramatically increase.
 	==================================================================================================================*/
 
 	/*----------------------------------------------------------------------------------------------------------------*/
@@ -62,23 +89,20 @@
 	function updateProgressBar($percentage, $msg) {
 		$arr_content['percent'] = (string)$percentage;
 		$arr_content['message'] = (string)$msg;
-		file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content));	// Write the progress into D:/mianlu/ProgressBar.txt and
-																		// serialize the PHP array into JSON format.
+		// serialize the PHP array into JSON format & write the progress into D:/TrainRec/DatabaseUpdate/ProgressBar.txt
+		file_put_contents("D:/TrainRec/DatabaseUpdate/ProgressBar.txt", json_encode($arr_content));
 	}
 
-	// below copied directly from a post on StackOverflow
-	function startsWith($haystack, $needle)
-	{
+	// below two functions copied directly from a post on StackOverflow
+	function StringStartsWith($haystack, $needle) {
 		 $length = strlen($needle);
 		 return (substr($haystack, 0, $length) === $needle);
 	}
-
-	function endsWith($haystack, $needle)
-	{
+	function StringEndsWith($haystack, $needle) {
 		$length = strlen($needle);
 		return $length === 0 || (substr($haystack, -$length) === $needle);
 	}
-
+	// above two functions copied directly from a post on StackOverflow
 	/*----------------------------------------------------------------------------------------------------------------*/
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,10 +125,17 @@
 		$var_path_SUMMARY = PATH_XLSX_SUMMARY;
 		$var_path_DETAILS = PATH_XLSX_DETAILS;
 		$total_num_of_rows = intval(0);
-		$overall_row_counter = intval(0);
+		$row_counter = intval(0);
+
+		//	6.	xlsx reading initialization (see top comment for memory usage issues), then lazy-read from now on!
+		error_reporting(E_ALL ^ E_NOTICE);
+		require_once 'Classes/PHPExcel.php';
+		$cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
+		$cacheSettings = array( ' memoryCacheSize ' => '16MB');
+		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 
 		//	2.1	update progress bar
-		updateProgressBar( intval(0), ((string)$overall_row_counter." row(s) processed.") );
+		updateProgressBar( intval(0), ((string)$row_counter." row(s) processed.") );
 
 		//	3.	define a log text file to replace "echo" debugging statements (see top comment). Template from PHP.net.
 		$log_file = 'D:/mianlu/most_recent_log.txt';
@@ -119,7 +150,7 @@
 																							// be overwritten here
 
 		//	4.	if calling code from web, here are some extra overhead to get everything working. If running this php
-		//		as stand-alone webpage, lines below are skipped
+		//		as stand-alone webpage, toggle value of flag CALLING_FROM_WEB, then lines below would be skipped
 		if (CALLING_FROM_WEB) {
 			// get uploaded files directory, passed to this script from front end ajax code (adminUploadJS.js)
 			$recv_xlsx_dir = $_POST['dir'];	// e.g. dir = "D:/temp/1599028283" which should contain 3 xlsx files,
@@ -127,17 +158,23 @@
 			if ( ($handle = opendir((string)$recv_xlsx_dir))) { // if read directory success
 				$file_counter = intval(0);
 				while (false !== ($entry = readdir($handle))) {
-					//substr($haystack, -$length) === $needle)
 					$entry_length = strlen($entry);
-					// if ($entry != "." && $entry != ".." && substr($entry, -$entry_length)==".xlsx") {
-					if ($entry != "." && $entry != ".." && endsWith($entry, "xlsx")) {
-						// found a new .xlsx file!
+					if ($entry != "." && $entry != ".." && StringEndsWith($entry, "xlsx")) {
 						$file_counter += 1;
-						$log_append_string = "DIR:: ".$entry."\r\n";
+						$log_append_string = "Listing received xlsx files: ".$entry."\r\n";
+						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
+						// found a new .xlsx file! see how many columns it has, and determine which xlsx is it (i.e. is
+						// it Summary? or AnnualReq? or Details?)
+						//////////////////// lazy-reading INIT ////////////////////
+						$excelReader	=	PHPExcel_IOFactory::createReader('Excel2007');
+						$excelReader	->	setReadDataOnly(true); // okay to use this line here! (see top comment)
+						$excelObj		=	$excelReader->load($entry);
+						$excelSheet		=	$excelObj->getActiveSheet();
+						//////////////////// lazy-reading READY ////////////////////
+						$log_append_string = "highest column is: ".(string)$excelSheet->getHighestColumn()."\r\n";
 						if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 					}
 				}
-				// do some things
 				if ($file_counter != 3) { // not seeing 3 xlsx from that directory, write error msg to log and exit!
 					$log_append_string = "Fatal error: not exactly 3 xlsx files are provided from front end!\r\n";
 					if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
@@ -152,25 +189,18 @@
 			}
 		}
 
-		//	6.	xlsx reading initialization
-		error_reporting(E_ALL ^ E_NOTICE);
-		require_once 'Classes/PHPExcel.php';
-		// enable caching to reduce memory usage for PHPExcel (tip/trick from StackOverflow)
-		$cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;
-		$cacheSettings = array( ' memoryCacheSize ' => '16MB');
-		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
-		// lazy-reading from now on! all Excel file reading are done immediately before using its data, not earlier!
-
 		//	7.	count total number of rows from 3 excel sheets, using 3 "lazy-reading" blocks
 		if(DO_STEP_1) {
-			$excelReader_Summary	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Summary		->setReadDataOnly(true);
+			$excelReader_Summary	=	PHPExcel_IOFactory::createReader('Excel2007');
+			// $excelReader_Summary->setReadDataOnly(true);
 			$excelObj_Summary		=	$excelReader_Summary->load($var_path_SUMMARY);
 			$summary				=	$excelObj_Summary->getActiveSheet();
 			$total_num_of_rows		+=	$summary->getHighestRow() - 1; // minus one row because of header row in xlsx
 			unset($excelObj_Summary);
 		}
 		if(DO_STEP_2) {
-			$excelReader_AnnualReq	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_AnnualReq	->setReadDataOnly(true);
+			$excelReader_AnnualReq	=	PHPExcel_IOFactory::createReader('Excel2007');
+			// $excelReader_AnnualReq->setReadDataOnly(true);
 			$excelObj_AnnualReq		=	$excelReader_AnnualReq->load($var_path_ANNUALREQ);
 			$annualreq				=	$excelObj_AnnualReq->getActiveSheet();
 			$total_num_of_rows		+=	$annualreq->getHighestRow() - 1; // minus one row because of header row in xlsx
@@ -178,21 +208,22 @@
 		}
 
 		if(DO_STEP_3) {
-			$excelReader_Details	=	PHPExcel_IOFactory::createReader('Excel2007'); // $excelReader_Details		->setReadDataOnly(true);
+			$excelReader_Details	=	PHPExcel_IOFactory::createReader('Excel2007');
+			// $excelReader_Details->setReadDataOnly(true);
 			$excelObj_Details		=	$excelReader_Details->load($var_path_DETAILS);
 			$details				=	$excelObj_Details->getActiveSheet();
 			$total_num_of_rows		+=	$details->getHighestRow() - 1; // minus one row because of header row in xlsx
 			unset($excelObj_Summary);
 		}
-		$log_append_string = "Total number of rows to be inserted: ".(string)$total_num_of_rows."; starting insertion operation...\r\n";
+		$log_append_string = "Total number of rows to be inserted: ".(string)$total_num_of_rows."; starting now...\r\n";
 		if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 
-		updateProgressBar( intval(5), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+		updateProgressBar(intval(5),((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 
 		// // FOR PROGRESS BAR >>>
 		// $percent = intval(5); // roughly say, 5% of work is done just after counting number of all rows in 3 xlsx files
 		// $arr_content['percent'] = $percent;
-		// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+		// $arr_content['message'] = $row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
 		// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 		// // FOR PROGRESS BAR END <<<
 	}
@@ -214,15 +245,7 @@
 				if ( false === file_put_contents($log_file, $log_append_string, FILE_APPEND | LOCK_EX) ) die();
 				die( print_r( sqlsrv_errors(), true));
 			}
-
-			updateProgressBar( intval(7), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
-
-			// FOR PROGRESS BAR >>>
-			// $percent = intval(7); // roughly say, 7% of work is done up to now
-			// $arr_content['percent'] = $percent;
-			// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
-			// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
-			// FOR PROGRESS BAR END <<<
+			updateProgressBar( intval(7), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 		}
 
 		// step 2 - (if not exist) create metadata database, connect to it, then create & populate DbTable
@@ -269,12 +292,12 @@
 			$srvr_stmt = sqlsrv_query( $conn, $insert_metadata_tbl );
 			if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 
-			updateProgressBar( intval(9), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+			updateProgressBar( intval(9), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 
 			// FOR PROGRESS BAR >>>
 			// $percent = intval(9); // roughly say, 9% of work is done up to now
 			// $arr_content['percent'] = $percent;
-			// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+			// $arr_content['message'] = $row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
 			// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 			// FOR PROGRESS BAR END <<<
 		}
@@ -338,12 +361,12 @@
 
 		// Step 7 - progress bar update
 		if(true) {
-			updateProgressBar( intval(11), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+			updateProgressBar( intval(11), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 
 			// FOR PROGRESS BAR >>>
 			// $percent = intval(11); // roughly say, 11% of work is done up to now
 			// $arr_content['percent'] = $percent;
-			// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+			// $arr_content['message'] = $row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
 			// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 			// FOR PROGRESS BAR END <<<
 		}
@@ -442,12 +465,12 @@
 		$srvr_stmt = sqlsrv_query( $conn, $create_EX );
 		if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
 
-		updateProgressBar( intval(15), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+		updateProgressBar( intval(15), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 
 		// FOR PROGRESS BAR >>>
 		// $percent = intval(15); // roughly say, 15% of work is done up to now
 		// $arr_content['percent'] = $percent;
-		// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+		// $arr_content['message'] = $row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
 		// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 		// FOR PROGRESS BAR END <<<
 	}
@@ -474,7 +497,7 @@
 				)";
 				$srvr_stmt = sqlsrv_query( $conn, $create_temp );
 				if( $srvr_stmt === false ) { die( print_r( sqlsrv_errors(), true)); }
-				updateProgressBar( intval(16), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+				updateProgressBar( intval(16), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 			}
 			// TrickyWork Pt.2: populate Temp
 			if(true) {
@@ -486,7 +509,7 @@
 				$annualreq              = $excelObj_AnnualReq->getActiveSheet();
 				//////////////////// lazy-reading READY ////////////////////
 				$row_count = (int)2; // actual data starts at row 2 of Excel spreadsheet
-				updateProgressBar( intval(17), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+				updateProgressBar( intval(17), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 				while ( $row_count <= $annualreq->getHighestRow() ) { // read until the last line
 					// select distinct CertID rows from AnnualReq
 					$CertNo         = $annualreq->getCell('D'.$row_count)->getValue();
@@ -534,12 +557,12 @@
 				}
 				unset($excelObj_AnnualReq); //////////////////// lazy-reading END
 
-				updateProgressBar( intval(18), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+				updateProgressBar( intval(18), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 
 				// FOR PROGRESS BAR >>>
 				// $percent = intval(18); // roughly say, 18% of work is done up to now
 				// $arr_content['percent'] = $percent;
-				// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+				// $arr_content['message'] = $row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
 				// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 				// FOR PROGRESS BAR END <<<
 			}
@@ -571,12 +594,12 @@
 					}
 				}
 
-				updateProgressBar( intval(20), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+				updateProgressBar( intval(20), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 
 				// FOR PROGRESS BAR >>>
 				// $percent = intval(20); // roughly say, 20% of work is done up to now
 				// $arr_content['percent'] = $percent;
-				// $arr_content['message'] = $overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
+				// $arr_content['message'] = $row_counter." row(s) out of ".(string)$total_num_of_rows." processed.";
 				// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 				// FOR PROGRESS BAR END <<<
 			}
@@ -623,11 +646,11 @@
 
 
 					// FOR PROGRESS BAR >>>
-					$overall_row_counter += 1;
-					updateProgressBar( intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
-					// $percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
+					$row_counter += 1;
+					updateProgressBar( intval(($row_counter/$total_num_of_rows * 100) * 0.75 + 20), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+					// $percent = intval(($row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
 					// $arr_content['percent'] = $percent;
-					// $arr_content['message'] = $overall_row_counter . " row(s) processed.";
+					// $arr_content['message'] = $row_counter . " row(s) processed.";
 					// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 					// FOR PROGRESS BAR END <<<
 				}
@@ -672,12 +695,12 @@
 				if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
 				$row_count ++;
 				// FOR PROGRESS BAR >>>
-				$overall_row_counter += 1;
-				updateProgressBar( intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+				$row_counter += 1;
+				updateProgressBar( intval(($row_counter/$total_num_of_rows * 100) * 0.75 + 20), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 
-				// $percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
+				// $percent = intval(($row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
 				// $arr_content['percent'] = $percent;
-				// $arr_content['message'] = $overall_row_counter . " row(s) processed.";
+				// $arr_content['message'] = $row_counter . " row(s) processed.";
 				// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 				// FOR PROGRESS BAR END <<<
 			}
@@ -725,12 +748,12 @@
 				if( $stmt === false ) die( print_r(sqlsrv_errors(), true) );
 				$row_count ++;
 				// FOR PROGRESS BAR >>>
-				$overall_row_counter += 1;
-				updateProgressBar( intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
+				$row_counter += 1;
+				updateProgressBar( intval(($row_counter/$total_num_of_rows * 100) * 0.75 + 20), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") );
 
-				// $percent = intval(($overall_row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
+				// $percent = intval(($row_counter/$total_num_of_rows * 100) * 0.75 + 20); // consider 0.75 weight on actual insertion, plus assigned 20% progress already completed by initialization, plus 5% final clean-up & update metadata work
 				// $arr_content['percent'] = $percent;
-				// $arr_content['message'] = $overall_row_counter . " row(s) processed.";
+				// $arr_content['message'] = $row_counter . " row(s) processed.";
 				// file_put_contents("D:/mianlu/ProgressBar.txt", json_encode($arr_content)); // Write the progress into D:/mianlu/ProgressBar.txt and serialize the PHP array into JSON format.
 				// FOR PROGRESS BAR END <<<
 			}
@@ -787,7 +810,7 @@
 	}
 	// put the final progress bar update outside of step V.
 	sleep(1); // give a short delay for front end so admin won't be confused
-	updateProgressBar( intval(100), ((string)$overall_row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") ); // 20% initialization + 75% row insertion + 5% clean up
+	updateProgressBar( intval(100), ((string)$row_counter." row(s) out of ".(string)$total_num_of_rows." processed.") ); // 20% initialization + 75% row insertion + 5% clean up
 
 	//	VI.		Other notes below...
 	/* // block comment starter
